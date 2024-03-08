@@ -1,5 +1,5 @@
 import { UserRepository } from '../../interfaces/userRepository';
-import { PrismaUserAdapter as PrismaAdapter } from '../../adapters/usersDatabase';
+import { PrismaUserAdapter as PrismaAdapter } from '../../adapters/userDatabase';
 
 export class GetUser {
     constructor(private readonly userRepository: UserRepository) {} 
@@ -18,4 +18,4 @@ export class GetUser {
 
 
 const userRepository: UserRepository = new PrismaAdapter();
-const getUserUseCase = new GetUser(userRepository);
+const getUserUseCase = new GetUser(userRepository); // Add it on the api layer
