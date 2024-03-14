@@ -8,8 +8,8 @@ import { TableHeader } from "./components/table-header-inbox";
 import TableContentRows from "./components/table-rows-inbox";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
-import { StyledTabCell } from "./styled";
-import { rows } from "./mock";
+import { StyledTabCell } from "./style";
+import { rows } from "../../view/inbox/mock";
 import { Data, Order } from "./type";
 import { getComparator, stableSort } from "./utils";
 
@@ -85,7 +85,8 @@ export default function EnhancedTable() {
 
   return (
     <Paper sx={{ width: "100%", mb: 2 }}>
-      <TableContainer sx={{ maxHeight: 456, maxWidth: 1105 }}>
+      {/* Definir tamaño de la tabla */}
+      <TableContainer sx={{ maxHeight: 456, maxWidth: 1200 }}>
         <Table
           sx={{ minWidth: 750 }}
           aria-labelledby="tableTitle"

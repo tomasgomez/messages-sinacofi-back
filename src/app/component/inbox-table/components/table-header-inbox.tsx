@@ -4,7 +4,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import { EnhancedTableProps, Data } from "../type";
-import { StyledTableCellHeader } from "../styled";
+import { StyledTableCellHeader } from "../style";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { columnsInbox } from "../constants";
 

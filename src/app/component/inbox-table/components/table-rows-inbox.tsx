@@ -7,7 +7,7 @@ import {
   StyledChip,
   StyledMessageContiner,
   StyledMessage,
-} from "../styled";
+} from "../style";
 import { TableProps } from "../type";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -63,6 +63,7 @@ export function TableContentRows(props: TableProps) {
         <StyledTabCell {...rowOptions["message"]}>
           <StyledMessageContiner>
             <StyledMessage>{row.message}</StyledMessage>
+
             {row.stateProgress && (
               <StyledChip variant="solid">En Proceso</StyledChip>
             )}

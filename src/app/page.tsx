@@ -1,6 +1,6 @@
 // import Image from "next/image";
 // import styles from "./page.module.css";
-import DataTable from "./component/table";
+import InboxScreen from "./view/inbox";
 
 export default function Home() {
   return (
@@ -19,7 +19,7 @@ export default function Home() {
           alignItems: "center",
         }}
       >
-        <DataTable />
+        <InboxScreen />
       </div>
     </div>
     // <main className={styles.main}>
