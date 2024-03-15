@@ -9,7 +9,7 @@ import TableContentRows from "./components/table-rows-inbox";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import { StyledTabCell } from "./style";
-import { rows } from "../../view/inbox/mock";
+import { rows } from "../../messages/inbox/mock";
 import { Data, Order } from "./type";
 import { getComparator, stableSort } from "./utils";
 

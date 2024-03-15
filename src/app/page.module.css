@@ -4,7 +4,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 6rem;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  background-color: #ffffff !important;
+  min-height: calc(100vh - 64px);
+  width: calc(100vw - 270px);
 }
 
 .description {

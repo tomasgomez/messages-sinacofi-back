@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import Image from "next/image";
+import AppBar from "@/components/AppBar";
+import SideBar from "@/components/SideBar";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "@/components/Theme";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +20,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body style={{ background: "#fffffff !important" }}>
+        <ThemeProvider theme={theme}>
+          <AppBar />
+          <div style={{ display: "flex", maxWidth: "100vw" }}>
+            <SideBar />
+            {children}
+          </div>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
