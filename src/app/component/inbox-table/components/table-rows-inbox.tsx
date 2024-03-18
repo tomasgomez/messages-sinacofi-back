@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
@@ -56,9 +57,7 @@ export function TableContentRows(props: TableProps) {
           <StyledMessageContiner>
             <StyledMessage>{row.message}</StyledMessage>
 
-            {row.stateProgress && (
-              <StyledChip variant="solid">En Proceso</StyledChip>
-            )}
+            {row.stateProgress && <StyledChip label="En Proceso" />}
           </StyledMessageContiner>
         </StyledTabCell>
         <StyledTabCell {...rowOptions["institution"]}>
