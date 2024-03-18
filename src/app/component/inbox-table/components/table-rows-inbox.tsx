@@ -50,7 +50,7 @@ export function TableContentRows(props: TableProps) {
           scope="row"
           {...rowOptions["osn"]}
         >
-          <ModalLink row={row} isInProcess={true}/>
+          <ModalLink row={row} isInProcess={!!row.stateProgress}/>
         </StyledTabCell>
         <StyledTabCell {...rowOptions["ms"]}>{row.ms}</StyledTabCell>
         <StyledTabCell {...rowOptions["message"]}>
