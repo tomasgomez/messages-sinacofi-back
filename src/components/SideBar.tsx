@@ -258,6 +258,7 @@ const SideBar = () => {
           ) : (
             <>
               <NavegationItem
+              key={nav.key}
               nav={nav}
               open={open === nav.key || (!!nav.children?.length && nav.childrenKeys?.includes(open))}
               handleClick={handleClick}

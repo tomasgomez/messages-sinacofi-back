@@ -1,6 +1,6 @@
 import { styled } from "@mui/system";
 import TableCell from "@mui/material/TableCell";
-import Chip from "@mui/joy/Chip";
+import Chip from '@mui/material/Chip';
 
 export const StyledTabCell = styled(TableCell)`
   max-width: ${(props) => props?.maxwidth}px;
