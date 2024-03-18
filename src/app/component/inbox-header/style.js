@@ -1,5 +1,5 @@
 import { styled } from "@mui/system";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 export const StyledInboxHeaderContent = styled(Box)`
   display: flex;
@@ -25,3 +25,13 @@ export const StyledIconsContent = styled(Box)`
   display: flex;
   justify-content: space-between;
 `;
+
+export const StyledModalItem= styled(Typography)`
+  max-width:80%;
+  font-size:14px;
+`
+
+export const StyledMoalSection=styled(Typography)`
+  font-size: 16px;
+  font-weight:600;
+`

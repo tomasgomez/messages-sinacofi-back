@@ -15,6 +15,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import ExpandableTable from "./expandable-table/expandable-table-inbox";
 import Link from "@mui/material/Link";
+import { ModalLink } from "./modal-link";
 
 export function TableContentRows(props: TableProps) {
   const { handleClick, row, isItemSelected, labelId, withCheckbox } = props;
@@ -49,16 +50,7 @@ export function TableContentRows(props: TableProps) {
           scope="row"
           {...rowOptions["osn"]}
         >
-          <Link
-            component="button"
-            variant="body2"
-            onClick={() => {
-              console.info("the label is: " + row.osn);
-            }}
-            style={{ color: "#00B2E2" }}
-          >
-            {row.osn}
-          </Link>
+          <ModalLink row={row} isInProcess={!!row.stateProgress}/>
         </StyledTabCell>
         <StyledTabCell {...rowOptions["ms"]}>{row.ms}</StyledTabCell>
         <StyledTabCell {...rowOptions["message"]}>
