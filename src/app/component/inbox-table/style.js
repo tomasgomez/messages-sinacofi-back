@@ -1,6 +1,6 @@
 import { styled } from "@mui/system";
 import TableCell from "@mui/material/TableCell";
-import Chip from '@mui/material/Chip';
+import Chip from "@mui/material/Chip";
 
 export const StyledTabCell = styled(TableCell)`
   max-width: ${(props) => props?.maxwidth}px;
@@ -10,6 +10,7 @@ export const StyledTabCell = styled(TableCell)`
 `;
 
 export const StyledChip = styled(Chip)`
+  height: 24px;
   color: white;
   background-color: #00b2e2;
   font-size: 12px;

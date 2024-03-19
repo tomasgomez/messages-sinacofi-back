@@ -8,7 +8,7 @@ export const columnsExpandableTable: ColumnsDataExpandableTable[] = [
   {
     id: "code",
     accessor: "code",
-    label: "Codigo/Mensaje",
+    label: "Código/Mensaje",
     align: Alignment.LEFT,
     fontSize: 13,
   },
@@ -29,7 +29,7 @@ export const columnsExpandableTable: ColumnsDataExpandableTable[] = [
   {
     id: "datetimeReception",
     accessor: "datetimeReception",
-    label: "Fecha y Hora de Recepcion",
+    label: "Fecha y Hora de Recepción",
     align: Alignment.LEFT,
     fontSize: 13,
   },

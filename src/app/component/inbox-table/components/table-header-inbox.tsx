@@ -43,7 +43,7 @@ export function TableHeader(props: EnhancedTableProps) {
           <StyledTableCellHeader
             key={columnsData.id}
             align={columnsData.align}
-            padding="normal"
+            padding="none"
             sortDirection={orderBy === columnsData.id ? order : false}
           >
             <TableSortLabel
