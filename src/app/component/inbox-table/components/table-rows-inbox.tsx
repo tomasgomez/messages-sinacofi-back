@@ -52,6 +52,8 @@ export function TableContentRows(props: TableProps) {
         >
           <ModalLink row={row} isInProcess={!!row.stateProgress}/>
         </StyledTabCell>
+        <StyledTabCell {...rowOptions["date"]}>{row.date}</StyledTabCell>
+        <StyledTabCell {...rowOptions["time"]}>{row.time}</StyledTabCell>
         <StyledTabCell {...rowOptions["ms"]}>{row.ms}</StyledTabCell>
         <StyledTabCell {...rowOptions["message"]}>
           <StyledMessageContiner>
@@ -63,9 +65,12 @@ export function TableContentRows(props: TableProps) {
         <StyledTabCell {...rowOptions["institution"]}>
           {row.institution}
         </StyledTabCell>
-        <StyledTabCell {...rowOptions["date"]}>{row.date}</StyledTabCell>
-        <StyledTabCell {...rowOptions["time"]}>{row.time}</StyledTabCell>
+        <StyledTabCell {...rowOptions["dateSent"]}>{row.dateSent}</StyledTabCell>
+        <StyledTabCell {...rowOptions["timeSent"]}>{row.timeSent}</StyledTabCell>
         <StyledTabCell {...rowOptions["state"]}>{row.state}</StyledTabCell>
+
+
+
         {/* ////////////////// Expandable table Icon /////////////////////// */}
         <StyledTabCell>
           {row.stateProgress && (

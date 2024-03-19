@@ -12,6 +12,7 @@ import { StyledTabCell } from "./style";
 import { rows } from "../../messages/inbox/mock";
 import { Data, Order } from "./type";
 import { getComparator, stableSort } from "./utils";
+import { Grid, Typography } from "@mui/material";
 
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState<Order>("asc");
@@ -87,6 +88,18 @@ export default function EnhancedTable() {
     <Paper sx={{ width: "100%", mb: 2 }}>
       {/* Definir tamaño de la tabla */}
       <TableContainer sx={{ maxHeight: 456, maxWidth: 1200 }}>
+        <Grid container p={2}>
+          <Grid pl={4} item xs={8}>
+            <Typography fontWeight={600}>
+                Recenpción
+            </Typography>
+            </Grid>
+          <Grid item xs={4}>
+            <Typography textAlign={'center'} fontWeight={600}>
+              Enviado
+            </Typography>
+          </Grid>
+        </Grid>
         <Table
           sx={{ minWidth: 750 }}
           aria-labelledby="tableTitle"
