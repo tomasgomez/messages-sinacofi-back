@@ -10,7 +10,10 @@ export function createData(
   date: string,
   time: string,
   state: number,
-  stateProgress: string
+  stateProgress: string,
+  nse:string,
+  dateSent:string,
+  timeSent:string,
 ): Data {
   return {
     id,
@@ -22,6 +25,9 @@ export function createData(
     time,
     state,
     stateProgress,
+    dateSent,
+    timeSent,
+    nse
   };
 }
 
@@ -35,7 +41,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    "inProgress"
+    "inProgress",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     2,
@@ -46,7 +55,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    "inProgress"
+    "inProgress",
+    "102456",
+    "12/03/2025",
+    "10:00"
   ),
   createData(
     3,
@@ -57,7 +69,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    "inProgress"
+    "inProgress",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     4,
@@ -68,7 +83,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     5,
@@ -79,7 +97,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     6,
@@ -90,7 +111,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    "inProgress"
+    "inProgress",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     7,
@@ -101,7 +125,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     8,
@@ -112,7 +139,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     9,
@@ -123,7 +153,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     10,
@@ -134,7 +167,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     11,
@@ -145,7 +181,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    "inProgress"
+    "inProgress",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     12,
@@ -156,7 +195,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     13,
@@ -167,7 +209,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     14,
@@ -178,7 +223,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     15,
@@ -189,7 +237,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     16,
@@ -200,7 +251,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
   createData(
     17,
@@ -211,7 +265,10 @@ export const rows = [
     "21/01/2024",
     "11:00",
     17,
-    ""
+    "",
+    "10123",
+    "12/04/2023",
+    "11:00"
   ),
 ];
 

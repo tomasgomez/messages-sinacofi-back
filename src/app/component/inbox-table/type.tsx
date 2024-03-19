@@ -8,6 +8,9 @@ export interface Data {
   time: string;
   state: number;
   stateProgress: string;
+  dateSent: string;
+  timeSent:string;
+  nse:string;
 }
 
 export type Order = "asc" | "desc";

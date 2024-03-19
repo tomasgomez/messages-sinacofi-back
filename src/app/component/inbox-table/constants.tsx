@@ -7,27 +7,37 @@ export const columnsInbox: Columns[] = [
     align: Alignment.CENTER,
   },
   {
-    id: "ms",
-    label: "MS",
-    align: Alignment.LEFT,
-  },
-  {
-    id: "message",
-    label: "Mensaje",
-    align: Alignment.LEFT,
-  },
-  {
-    id: "institution",
-    label: "Institucion",
-    align: Alignment.LEFT,
-  },
-  {
     id: "date",
     label: "Fecha",
     align: Alignment.LEFT,
   },
   {
     id: "time",
+    label: "Hora",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "ms",
+    label: "MSG",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "message",
+    label: "Descripción",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "institution",
+    label: "Origen",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "dateSent",
+    label: "Fecha",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "timeSent",
     label: "Hora",
     align: Alignment.LEFT,
   },
@@ -76,4 +86,12 @@ export const rowOptions: RowOptions = {
     align: Alignment.LEFT,
     fontSize: 14,
   },
+  timeSent:{
+    align: Alignment.LEFT,
+    fontSize: 14,
+  },
+  dateSent:{
+    align: Alignment.LEFT,
+    fontSize: 14,
+  }
 };
