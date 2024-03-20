@@ -1,5 +1,6 @@
 import { styled } from "@mui/system";
 import { Box, Typography } from "@mui/material";
+import { montserrat } from "@/utils/fonts";
 
 export const StyledInboxHeaderContent = styled(Box)`
   display: flex;
@@ -34,4 +35,6 @@ export const StyledModalItem= styled(Typography)`
 export const StyledMoalSection=styled(Typography)`
   font-size: 16px;
   font-weight:600;
+  font-family: ${montserrat.style.fontFamily};
+  margin-bottom:24px;
 `

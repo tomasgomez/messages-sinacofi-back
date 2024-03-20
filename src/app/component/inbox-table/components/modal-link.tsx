@@ -8,26 +8,32 @@ import Signature from '../../../../../assets/signature.png'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
+import { montserrat } from "@/utils/fonts";
 
 
 export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: boolean; }) {
     return (
         <Box borderBottom={'dashed'} mb={2} pb={2}>
-            <Grid container spacing={1} justifyContent={'space-around'} alignItems={'center'}>
+            <Grid container spacing={1} justifyContent={'space-around'} alignItems={'self-start'} >
                 <Grid item xs={8}>
                     <StyledModalItem noWrap>
                         {`OSN-${props.row.osn}`}
                     </StyledModalItem>
-                    <StyledMoalSection variant="h6">
-                        {`${props.row.ms} - ${props.row.message}`}
-                    </StyledMoalSection>
+                    <Typography 
+                    variant="h6" 
+                    fontWeight={700} 
+                    fontFamily={montserrat.style.fontFamily} 
+                    mb={3}
+                    fontSize={16}>
+                        {`${props.row.ms}`} <span style={{ textTransform: 'capitalize' }}>{`${props.row.message.toLowerCase()}`}</span>
+                    </Typography>
                 </Grid>
                 <Grid item xs={4} display={'flex'} justifyContent={'flex-end'} gap={1}>
-                    <Button variant="contained" sx={{ color: 'white', textTransform: 'none' }} size="large">
+                    <Button variant="contained" sx={{ color: 'white', textTransform: 'none', fontFamily: montserrat.style.fontFamily }} size="large">
                         <ReplyOutlinedIcon />
                         Responder
                     </Button>
-                    <Button variant="contained" sx={{ color: 'white', textTransform: 'none' }} size="large">
+                    <Button variant="contained" sx={{ color: 'white', textTransform: 'none', fontFamily: montserrat.style.fontFamily }} size="large">
                         <PrintOutlinedIcon />
                         Imprimir
                     </Button>
@@ -170,18 +176,23 @@ export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: bo
 export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
     return (
         <>
-            <Grid container spacing={1} justifyContent={'space-around'} alignItems={'center'}>
+            <Grid container spacing={1} justifyContent={'space-around'} alignItems={'self-start'}>
                 <Grid item xs={10}>
                     <StyledModalItem noWrap>
                         {`OSN-${props.row.osn}`}
                     </StyledModalItem>
-                    <StyledMoalSection variant="h6">
-                        {`${props.row.ms} - ${props.row.message}`}
-                    </StyledMoalSection>
+                    <Typography 
+                    variant="h6" 
+                    fontWeight={700} 
+                    fontFamily={montserrat.style.fontFamily} 
+                    mb={3}
+                    fontSize={16}>
+                        {`${props.row.ms}`} <span style={{ textTransform: 'capitalize' }}>{`${props.row.message.toLowerCase()}`}</span>
+                    </Typography>
                 </Grid>
                 {!props.isinProcess &&
                     <Grid item xs={2} display={'flex'} justifyContent={'flex-end'}>
-                        <Button variant="contained" sx={{ color: 'white', textTransform: 'none' }} size="large">
+                        <Button variant="contained" sx={{ color: 'white', textTransform: 'none', fontFamily: montserrat.style.fontFamily }} size="large">
                             <PrintOutlinedIcon />
                             Imprimir
                         </Button>
@@ -189,9 +200,9 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
                     </Grid>
                 }
             </Grid>
-            <Stack spacing={4}>
+            <Stack spacing={3}>
+                <StyledMoalSection variant="h6">Detalles de recepción</StyledMoalSection>
                 <Box>
-                    <StyledMoalSection variant="h6">Detalles de recepción</StyledMoalSection>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>OSN</Typography>
@@ -580,7 +591,11 @@ export function ModalLink(props: { row: Data; isInProcess?: boolean; }) {
             >
                 {props.row.osn}
             </Link>
-            <Modal sx={{ color: 'black', p: 2, pb: 4 }} open={isOpen} onClose={handleClose}>
+            <Modal sx={{
+                color: 'black',
+                p: 2,
+                pb: 4,
+            }} open={isOpen} onClose={handleClose}>
                 <Box p={0} display={'flex'} justifyContent={'flex-end'}>
                     <Button onClick={handleClose}>
                         <Typography fontSize={20}>
