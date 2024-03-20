@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavegationItem from "./List";
+import { montserrat } from "@/utils/fonts";
 
 const Badge = ({ children }: { children: any }) => {
   return (
@@ -235,7 +236,11 @@ const SideBar = () => {
         zIndex: 1,
         padding: "0 !important",
         height: "calc(100vh - 64px)",
-        boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.10)"
+        boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.10)",
+        ['*']:{
+          fontFamily:montserrat.style.fontFamily,
+        }
+
       }}
     >
       <Button
@@ -249,6 +254,7 @@ const SideBar = () => {
       </Button>
       <List
         component="nav"
+
       >
         {navList.map((nav) => (
           nav.url ? (

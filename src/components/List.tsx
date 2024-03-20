@@ -1,3 +1,4 @@
+import { montserrat } from "@/utils/fonts";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { usePathname } from "next/navigation";
@@ -17,11 +18,11 @@ const NavegationItem = ({ open, nav, handleClick, isChild, childSelected }: Nave
     <ListItemButton
       selected={(isSelected || childSelected) && !isChild}
       onClick={() => handleClick(nav.key)}
-      style={{
-        color: isSelected || childSelected ? "#0081A3" : "inherit",
-        backgroundColor: (isSelected && !isChild) || childSelected ? "#DFF8FF" : "inherit",
-        fontWeight: 600,
-      }}
+      sx={{
+          color: isSelected || childSelected ? "#0081A3" : "inherit",
+          backgroundColor: (isSelected && !isChild) || childSelected ? "#DFF8FF" : "inherit",
+          fontWeight: 600
+        }}
     >
       {nav.icon && (
         <ListItemIcon style={{ color: isSelected ? "#0081A3" : "inherit", minWidth: "auto", marginRight: 10 }}>

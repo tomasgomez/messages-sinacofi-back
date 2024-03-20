@@ -31,6 +31,11 @@ export const theme = createTheme({
       roboto.style.fontFamily,
       montserrat.style.fontFamily,
     ].join(", "),
+    h5:{
+      fontFamily:montserrat.style.fontFamily,
+      fontSize:'24px',
+      fontWeight:500
+    }
   },
   palette: {
     primary: {
