@@ -11,6 +11,7 @@ import {
   StyledIconsContent,
 } from "./style";
 import { Typography } from "@mui/material";
+import { montserrat } from "@/utils/fonts";
 
 export default function InboxHeader(props: { amountMessages: number }) {
   const { amountMessages } = props;
@@ -32,7 +33,7 @@ export default function InboxHeader(props: { amountMessages: number }) {
         }}
         width="100%"
       >
-        <Typography variant="subtitle1" style={{ color: "#898989" }}>
+        <Typography variant="subtitle1" sx={{ color: "#898989", fontFamily:montserrat.style.fontFamily }}>
           {amountMessages} mensajes en total
         </Typography>
         <StyledIconsContent width={88}>
