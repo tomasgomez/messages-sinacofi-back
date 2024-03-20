@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "npx prisma generate && next build",
+    "start": "next dev",
     "lint": "next lint"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

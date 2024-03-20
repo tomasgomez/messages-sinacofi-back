@@ -1,6 +1,6 @@
 // import Image from "next/image";
 // import styles from "./page.module.css";
-import InboxScreen from "./view/inbox";
+import InboxScreen from "./messages/inbox/page";
 
 export default function Home() {
   return (
