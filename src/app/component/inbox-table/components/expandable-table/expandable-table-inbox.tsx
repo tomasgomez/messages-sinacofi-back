@@ -15,13 +15,13 @@ export default function ExpandableTable(props: { isOpen: boolean }) {
 
   return (
     <TableRow>
-      <TableCell style={{ padding: 0, width: 1200 }} colSpan={11}>
+      <TableCell style={{ padding: 0 }} colSpan={11}>
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
-          <Table aria-label="purchases" sx={{ width: 1200 }}>
+          <Table aria-label="purchases">
             {/* //////// Header ////// */}
             <TableHead>
               <TableRow>
-                {columnsExpandableTable.map((columnsData, index) => (
+                {columnsExpandableTable.map((columnsData: any, index) => (
                   <StyledTableCellHeader
                     key={columnsData.id}
                     align={columnsData.align}
