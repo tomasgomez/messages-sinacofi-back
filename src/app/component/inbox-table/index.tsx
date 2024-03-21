@@ -85,21 +85,19 @@ export default function EnhancedTable() {
   );
 
   return (
-    <Paper sx={{ width: 1200, mb: 2 }}>
-      {/* Definir tamaño de la tabla */}
-      <TableContainer sx={{ maxHeight: 456, width: 1200 }}>
+    <Paper sx={{ mb: 2 }}>
+      <TableContainer>
         <Grid container p={2}>
-          <Grid pl={4} item xs={8}>
-            <Typography fontWeight={600}>Recenpción</Typography>
+          <Grid pl={6} item xs={9}>
+            <Typography fontWeight={600}>Recepción</Typography>
           </Grid>
-          <Grid item xs={4}>
-            <Typography textAlign={"center"} fontWeight={600}>
+          <Grid item xs={3} paddingLeft="16px">
+            <Typography fontWeight={600}>
               Enviado
             </Typography>
           </Grid>
         </Grid>
         <Table
-          sx={{ width: 1200 }}
           aria-labelledby="tableTitle"
           size="medium"
           stickyHeader

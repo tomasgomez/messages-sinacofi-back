@@ -4,7 +4,7 @@ export const columnsInbox: Columns[] = [
   {
     id: "osn",
     label: "OSN",
-    align: Alignment.CENTER,
+    align: Alignment.LEFT,
   },
   {
     id: "date",

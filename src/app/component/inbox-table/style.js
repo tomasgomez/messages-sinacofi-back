@@ -32,4 +32,5 @@ export const StyledMessage = styled("div")`
 export const StyledTableCellHeader = styled(TableCell)`
   width: fit-content;
   font-weight: bold;
+  padding-left: 16px;
 `;
