@@ -42,6 +42,11 @@ export const columnsInbox: Columns[] = [
     align: Alignment.LEFT,
   },
   {
+    id: "nse",
+    label: "NSE",
+    align: Alignment.LEFT
+  },
+  {
     id: "state",
     label: "Estado",
     align: Alignment.LEFT,
@@ -86,11 +91,11 @@ export const rowOptions: RowOptions = {
     align: Alignment.LEFT,
     fontSize: 14,
   },
-  timeSent:{
+  timeSent: {
     align: Alignment.LEFT,
     fontSize: 14,
   },
-  dateSent:{
+  dateSent: {
     align: Alignment.LEFT,
     fontSize: 14,
   }
