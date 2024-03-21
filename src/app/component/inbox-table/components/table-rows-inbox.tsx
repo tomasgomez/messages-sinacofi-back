@@ -67,6 +67,7 @@ export function TableContentRows(props: TableProps) {
         </StyledTabCell>
         <StyledTabCell {...rowOptions["dateSent"]}>{row.dateSent}</StyledTabCell>
         <StyledTabCell {...rowOptions["timeSent"]}>{row.timeSent}</StyledTabCell>
+        <StyledTabCell {...rowOptions["state"]}>{row.nse}</StyledTabCell>
         <StyledTabCell {...rowOptions["state"]}>{row.state}</StyledTabCell>
 
         {/* ////////////////// Expandable table Icon /////////////////////// */}
