@@ -35,6 +35,10 @@ export const theme = createTheme({
       fontFamily:montserrat.style.fontFamily,
       fontSize:'24px',
       fontWeight:500
+    },
+    button:{
+      fontFamily:montserrat.style.fontFamily,
+      textTransform:'none'
     }
   },
   palette: {

@@ -6,11 +6,11 @@ import {
   Theme,
 } from "@mui/material";
 
-interface ModalProps {
+export interface ModalProps {
   open?: boolean;
   onClose?: () => void;
-
   sx?: SxProps<Theme>;
+  maxWidth?:string;
 }
 
 export function Modal(
@@ -31,7 +31,7 @@ export function Modal(
     >
       <Box
         sx={{
-          maxWidth:'80%',
+          maxWidth:props.maxWidth || '80%',
           position: "relative",
           left: "50%",
           transform: "translate(-50%, 0)",
