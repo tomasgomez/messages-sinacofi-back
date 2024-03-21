@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Grid, Link, Stack, Typography, styled } from "@mui/material";
+import { Box, Button, Grid, IconButton, Link, Stack, Typography, styled } from "@mui/material";
 import { Modal, ModalContent, ModalHeader } from "../../Modal";
 import { Data } from "../type";
 import { StyledModalItem, StyledMoalSection } from "../../inbox-header/style";
@@ -9,6 +9,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import { montserrat } from "@/utils/fonts";
+import { CloseRounded } from "@mui/icons-material";
 
 
 export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: boolean; }) {
@@ -593,22 +594,21 @@ export function ModalLink(props: { row: Data; isInProcess?: boolean; }) {
             </Link>
             <Modal sx={{
                 color: 'black',
-                p: 2,
-                pb: 4,
+                p: "40px",
+                maxWidth: "960px",
             }} open={isOpen} onClose={handleClose}>
-                <Box p={0} display={'flex'} justifyContent={'flex-end'}>
-                    <Button onClick={handleClose}>
-                        <Typography fontSize={20}>
-                            X
-                        </Typography>
-                    </Button>
-                </Box>
+                    <IconButton
+                        onClick={handleClose}
+                        sx={{ position: "absolute", right: "10px", top: "10px" }}
+                    >
+                        <CloseRounded />
+                    </IconButton>
                 {props.isInProcess &&
-                    <Box px={2}>
+                    <Box>
                         <InProcessModalHeaderSection row={props.row} />
                     </Box>
                 }
-                <Box p={2}>
+                <Box>
                     {props.isInProcess ?
                         <InProcessModalMainContent row={props.row} />
                         :
