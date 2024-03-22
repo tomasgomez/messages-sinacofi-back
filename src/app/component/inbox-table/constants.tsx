@@ -44,7 +44,7 @@ export const columnsInbox: Columns[] = [
   {
     id: "nse",
     label: "NSE",
-    align: Alignment.LEFT
+    align: Alignment.LEFT,
   },
   {
     id: "state",
@@ -71,7 +71,7 @@ export const rowOptions: RowOptions = {
     fontSize: 14,
   },
   message: {
-    maxwidth: 450,
+    maxwidth: 350,
     align: Alignment.LEFT,
     fontSize: 14,
   },
@@ -98,5 +98,5 @@ export const rowOptions: RowOptions = {
   dateSent: {
     align: Alignment.LEFT,
     fontSize: 14,
-  }
+  },
 };
