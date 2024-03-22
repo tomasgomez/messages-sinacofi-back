@@ -88,10 +88,10 @@ export default function EnhancedTable() {
     <Paper sx={{ mb: 2 }}>
       <TableContainer>
         <Grid container p={2}>
-          <Grid pl={6} item xs={9}>
+          <Grid pl={6} item xs={8}>
             <Typography fontWeight={600}>Recepción</Typography>
           </Grid>
-          <Grid item xs={3} paddingLeft="16px">
+          <Grid item xs={3} paddingLeft="45px">
             <Typography fontWeight={600}>
               Enviado
             </Typography>
