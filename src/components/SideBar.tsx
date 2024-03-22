@@ -220,7 +220,6 @@ const SideBar = () => {
     setOpen(section === open ? "" : section);
   };
 
-  console.log({ open });
   useEffect(() => {
     const path = pathname.split("/");
     setOpen(path[path.length - 1]);
