@@ -27,8 +27,9 @@ const Menu = ({ children, options }: { children?: any, options: any }) => {
         anchorEl={anchorEl}
         autoFocus={false}
       >
-        {options.length && options.map((option: any) => (
+        {options.length && options.map((option: any, idx: number) => (
           <MenuItem
+            key={`${option.label}-${idx}`}
             selected={false}
             autoFocus={false}
             focusRipple={false}
