@@ -13,6 +13,7 @@ import { rows } from "../../messages/inbox/mock";
 import { Data, Order } from "./type";
 import { getComparator, stableSort } from "./utils";
 import { Grid, Typography } from "@mui/material";
+import { usePathname } from "next/navigation";
 
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState<Order>("asc");
@@ -20,6 +21,8 @@ export default function EnhancedTable() {
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const route=usePathname();
+  const isInbox=route.includes('inbox')
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -103,6 +106,7 @@ export default function EnhancedTable() {
           stickyHeader
         >
           <TableHeader
+            isInbox={isInbox}
             withCheckboxAll
             numSelected={selected.length}
             order={order}
@@ -123,6 +127,7 @@ export default function EnhancedTable() {
                   labelId={labelId}
                   isItemSelected={isItemSelected}
                   handleClick={handleClick}
+                  isInbox={isInbox}
                 />
               );
             })}

@@ -12,13 +12,16 @@ import {
 import { TableProps } from "../type";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import CopyAllIcon from '@mui/icons-material/CopyAll';
 import IconButton from "@mui/material/IconButton";
 import ExpandableTable from "./expandable-table/expandable-table-inbox";
 import Link from "@mui/material/Link";
 import { ModalLink } from "./modal-link";
+import { Box } from "@mui/material";
 
-export function TableContentRows(props: TableProps) {
-  const { handleClick, row, isItemSelected, labelId, withCheckbox } = props;
+export function TableContentRows(props: TableProps & {isInbox:boolean}) {
+  const { handleClick, row, isItemSelected, labelId, withCheckbox, isInbox } = props;
 
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -34,7 +37,7 @@ export function TableContentRows(props: TableProps) {
         {withCheckbox && (
           <StyledTabCell padding="checkbox" {...rowOptions["checkbox"]}>
             <Checkbox
-              onClick={(event) => handleClick(event, row.id)}
+              onClick={(event:React.MouseEvent<HTMLElement>) => handleClick(event, row.id)}
               color="primary"
               checked={isItemSelected}
               inputProps={{
@@ -50,7 +53,7 @@ export function TableContentRows(props: TableProps) {
           scope="row"
           {...rowOptions["osn"]}
         >
-          <ModalLink row={row} isInProcess={!!row.stateProgress}/>
+          <ModalLink isInbox={isInbox} row={row} isInProcess={!!row.stateProgress}/>
         </StyledTabCell>
         <StyledTabCell {...rowOptions["date"]}>{row.date}</StyledTabCell>
         <StyledTabCell {...rowOptions["time"]}>{row.time}</StyledTabCell>
@@ -69,7 +72,26 @@ export function TableContentRows(props: TableProps) {
         <StyledTabCell {...rowOptions["timeSent"]}>{row.timeSent}</StyledTabCell>
         <StyledTabCell {...rowOptions["nse"]}>{row.nse}</StyledTabCell>
         <StyledTabCell {...rowOptions["state"]}>{row.state}</StyledTabCell>
-
+        {!isInbox &&
+        <StyledTabCell {...rowOptions["state"]}>
+        <Box display={'flex'} gap={1}>
+        <IconButton
+              key={`expand-icon-${row.id}`}
+              aria-label="expand row"
+              style={{ padding: 0 }}
+            >
+              <CopyAllIcon/>
+            </IconButton>
+            <IconButton
+              key={`expand-icon-${row.id}`}
+              aria-label="expand row"
+              style={{ padding: 0 }}
+            >
+              <SendOutlinedIcon/>
+            </IconButton>
+            </Box>
+        </StyledTabCell>
+      }
         {/* ////////////////// Expandable table Icon /////////////////////// */}
         <StyledTabCell>
           {row.stateProgress && (

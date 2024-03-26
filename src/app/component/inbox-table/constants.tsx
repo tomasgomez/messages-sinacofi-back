@@ -2,6 +2,11 @@ import { Columns, Alignment, RowOptions } from "./type";
 
 export const columnsInbox: Columns[] = [
   {
+    id: "tsn",
+    label: "TSN",
+    align: Alignment.LEFT,
+  },
+  {
     id: "osn",
     label: "OSN",
     align: Alignment.LEFT,
@@ -32,6 +37,11 @@ export const columnsInbox: Columns[] = [
     align: Alignment.LEFT,
   },
   {
+    id: "destination",
+    label: "Destino",
+    align: Alignment.LEFT,
+  },
+  {
     id: "dateSent",
     label: "Fecha",
     align: Alignment.LEFT,
@@ -49,6 +59,11 @@ export const columnsInbox: Columns[] = [
   {
     id: "state",
     label: "Estado",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "actions",
+    label: "Acciones",
     align: Alignment.LEFT,
   },
 ];

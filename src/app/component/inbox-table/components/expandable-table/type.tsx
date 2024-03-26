@@ -23,7 +23,7 @@ export enum Alignment {
 }
 
 export interface ColumnsDataExpandableTable {
-  id: keyof DataExpandable;
+  id: keyof DataExpandable | 'actions';
   accessor: string;
   label: string;
   align: Alignment;
