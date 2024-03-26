@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Button, Grid, IconButton, Link, Stack, Typography, styled } from "@mui/material";
 import { Modal, ModalContent, ModalHeader } from "../../Modal";
 import { Data } from "../type";
-import { StyledModalItem, StyledMoalSection } from "../../inbox-header/style";
+import { StyledModalItem, StyledMoalSection, StyledCapitalizedSpan } from "../../inbox-header/style";
 import Image from "next/image";
 import Signature from '../../../../../assets/signature.png'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
@@ -26,7 +26,7 @@ export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: bo
                     fontFamily={montserrat.style.fontFamily} 
                     mb={3}
                     fontSize={16}>
-                        {`${props.row.ms}`} <span style={{ textTransform: 'capitalize' }}>{`${props.row.message.toLowerCase()}`}</span>
+                        {`${props.row.ms}`} <StyledCapitalizedSpan style={{ textTransform: 'capitalize' }}>{`${props.row.message.toLowerCase()}`}</StyledCapitalizedSpan>
                     </Typography>
                 </Grid>
                 <Grid item xs={4} display={'flex'} justifyContent={'flex-end'} gap={1}>
@@ -188,7 +188,7 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
                     fontFamily={montserrat.style.fontFamily} 
                     mb={3}
                     fontSize={16}>
-                        {`${props.row.ms}`} <span style={{ textTransform: 'capitalize' }}>{`${props.row.message.toLowerCase()}`}</span>
+                        {`${props.row.ms}`} <StyledCapitalizedSpan style={{ textTransform: 'capitalize' }}>{`${props.row.message.toLowerCase()}`}</StyledCapitalizedSpan>
                     </Typography>
                 </Grid>
                 {!props.isinProcess &&

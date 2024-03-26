@@ -45,10 +45,10 @@ const MenuOptions = () => {
   return (
     <Menu options={options}>
       <Typography color="#565656" fontWeight={500} variant="body1">4002701</Typography>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
         <Typography variant="caption" fontWeight={600} color="#151515">03 - Tratador Mensajes Tipo 7</Typography>
         <ArrowDropDown sx={{ color: "#898989" }} />
-      </div>
+      </Box>
     </Menu>
   );
 };
@@ -105,9 +105,9 @@ const AppBar = () => {
               }}
             >
               <Typography color="#565656" fontWeight={500} variant="caption">Nombre de Institución</Typography>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography variant="body1" fontWeight={600} color="#151515">0027 CORP BANCA</Typography>
-              </div>
+              </Box>
             </Container>
             <Container
               sx={{
@@ -120,9 +120,9 @@ const AppBar = () => {
               }}
             >
               <Typography color="#565656" fontWeight={500} variant="caption">Área de Institución</Typography>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Typography variant="body1" fontWeight={600} color="#151515">05 ÁREA TID</Typography>
-              </div>
+              </Box>
             </Container>
             <SearchField data={[]} placeholder="Buscar..." />
           </Stack>

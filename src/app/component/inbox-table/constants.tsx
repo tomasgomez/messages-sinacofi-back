@@ -51,6 +51,11 @@ export const columnsInbox: Columns[] = [
     label: "Estado",
     align: Alignment.LEFT,
   },
+  {
+    id: "actions",
+    label: "Acciones",
+    align: Alignment.LEFT,
+  },
 ];
 
 export const rowOptions: RowOptions = {

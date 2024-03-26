@@ -38,3 +38,7 @@ export const StyledMoalSection=styled(Typography)`
   font-family: ${montserrat.style.fontFamily};
   margin-bottom:24px;
 `
+
+export const StyledCapitalizedSpan=styled('span')`
+  text-transform:capitalize;
+`

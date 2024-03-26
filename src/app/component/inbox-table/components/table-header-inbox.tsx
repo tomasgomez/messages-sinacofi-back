@@ -19,7 +19,7 @@ export function TableHeader(props: EnhancedTableProps) {
     withCheckboxAll,
   } = props;
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof Data | 'actions') => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -39,7 +39,9 @@ export function TableHeader(props: EnhancedTableProps) {
             />
           </TableCell>
         )}
-        {columnsInbox.map((columnsData) => (
+        {columnsInbox.map((columnsData) =>{
+        if(columnsData.id){  
+        return(
           <StyledTableCellHeader
             key={columnsData.id}
             align={columnsData.align}
@@ -54,7 +56,8 @@ export function TableHeader(props: EnhancedTableProps) {
               {columnsData.label}
             </TableSortLabel>
           </StyledTableCellHeader>
-        ))}
+          )
+        }})}
         <TableCell />
       </TableRow>
     </TableHead>

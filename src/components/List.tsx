@@ -9,13 +9,15 @@ type NavegationItemType = {
   handleClick: any,
   isChild?: boolean,
   childSelected?: boolean,
+  key?:string,
 };
 
-const NavegationItem = ({ open, nav, handleClick, isChild, childSelected }: NavegationItemType) => {
+const NavegationItem = ({ open, nav, handleClick, isChild, childSelected, key }: NavegationItemType) => {
   const pathname = usePathname();
   const isSelected = pathname === nav.url;
   return (
     <ListItemButton
+      key={key}
       selected={(isSelected || childSelected) && !isChild}
       onClick={() => handleClick(nav.key)}
       sx={{

@@ -16,7 +16,7 @@ export interface Data {
 export type Order = "asc" | "desc";
 
 export interface Columns {
-  id: keyof Data;
+  id: keyof Data | 'actions';
   label: string;
   align: Alignment;
 }
@@ -42,7 +42,7 @@ export interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof Data
+    property: keyof Data | 'actions'
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
@@ -57,4 +57,5 @@ export interface TableProps {
   row: Data;
   isItemSelected: boolean;
   handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
+  key:string;
 }
