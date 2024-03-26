@@ -20,8 +20,8 @@ import Link from "@mui/material/Link";
 import { ModalLink } from "./modal-link";
 import { Box } from "@mui/material";
 
-export function TableContentRows(props: TableProps) {
-  const { handleClick, row, isItemSelected, labelId, withCheckbox } = props;
+export function TableContentRows(props: TableProps & {isInbox:boolean}) {
+  const { handleClick, row, isItemSelected, labelId, withCheckbox, isInbox } = props;
 
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -53,7 +53,7 @@ export function TableContentRows(props: TableProps) {
           scope="row"
           {...rowOptions["osn"]}
         >
-          <ModalLink row={row} isInProcess={!!row.stateProgress}/>
+          <ModalLink isInbox={isInbox} row={row} isInProcess={!!row.stateProgress}/>
         </StyledTabCell>
         <StyledTabCell {...rowOptions["date"]}>{row.date}</StyledTabCell>
         <StyledTabCell {...rowOptions["time"]}>{row.time}</StyledTabCell>
@@ -72,6 +72,7 @@ export function TableContentRows(props: TableProps) {
         <StyledTabCell {...rowOptions["timeSent"]}>{row.timeSent}</StyledTabCell>
         <StyledTabCell {...rowOptions["nse"]}>{row.nse}</StyledTabCell>
         <StyledTabCell {...rowOptions["state"]}>{row.state}</StyledTabCell>
+        {!isInbox &&
         <StyledTabCell {...rowOptions["state"]}>
         <Box display={'flex'} gap={1}>
         <IconButton
@@ -90,7 +91,7 @@ export function TableContentRows(props: TableProps) {
             </IconButton>
             </Box>
         </StyledTabCell>
-
+      }
         {/* ////////////////// Expandable table Icon /////////////////////// */}
         <StyledTabCell>
           {row.stateProgress && (

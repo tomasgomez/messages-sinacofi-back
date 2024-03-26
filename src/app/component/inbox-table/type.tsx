@@ -11,6 +11,8 @@ export interface Data {
   dateSent: string;
   timeSent:string;
   nse:string;
+  destination:string;
+  tsn:number;
 }
 
 export type Order = "asc" | "desc";

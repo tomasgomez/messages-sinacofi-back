@@ -12,13 +12,13 @@ import { montserrat } from "@/utils/fonts";
 import { CloseRounded } from "@mui/icons-material";
 
 
-export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: boolean; }) {
+export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: boolean; isInbox?:boolean }) {
     return (
         <Box borderBottom={'dashed'} mb={2} pb={2}>
             <Grid container spacing={1} justifyContent={'space-around'} alignItems={'self-start'} >
                 <Grid item xs={8}>
                     <StyledModalItem noWrap>
-                        {`OSN-${props.row.osn}`}
+                        {`OSN-${props.isInbox? props.row.osn : props.row.tsn}`}
                     </StyledModalItem>
                     <Typography 
                     variant="h6" 
@@ -174,13 +174,13 @@ export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: bo
 }
 
 
-export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
+export function ModalMainContent(props: { row: Data, isinProcess?: boolean; isInbox?:boolean; }) {
     return (
         <>
             <Grid container spacing={1} justifyContent={'space-around'} alignItems={'self-start'}>
                 <Grid item xs={10}>
                     <StyledModalItem noWrap>
-                        {`OSN-${props.row.osn}`}
+                        {`OSN-${props.isInbox ? props.row.osn :props.row.tsn}`}
                     </StyledModalItem>
                     <Typography 
                     variant="h6" 
@@ -208,7 +208,7 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>OSN</Typography>
                             <StyledModalItem noWrap>
-                                {props.row.osn}
+                                {props.isInbox? props.row.osn :props.row.tsn}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
@@ -333,12 +333,12 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
 
 
 
-export function InProcessModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
+export function InProcessModalMainContent(props: { row: Data, isinProcess?: boolean; isInbox?:boolean;}) {
     return (
         <>
             <Box>
                 <StyledModalItem noWrap>
-                    {`OSN-${props.row.osn}`}
+                    {`OSN-${props.isInbox? props.row.osn :props.row.tsn}`}
                 </StyledModalItem>
                 <StyledMoalSection variant="h6">
                     {`${props.row.ms} - ${props.row.message}`}
@@ -351,7 +351,7 @@ export function InProcessModalMainContent(props: { row: Data, isinProcess?: bool
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>OSN</Typography>
                             <StyledModalItem noWrap>
-                                {props.row.osn}
+                                {props.isInbox? props.row.osn :props.row.tsn}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
@@ -574,7 +574,7 @@ export function InProcessModalMainContent(props: { row: Data, isinProcess?: bool
 }
 
 
-export function ModalLink(props: { row: Data; isInProcess?: boolean; }) {
+export function ModalLink(props: { row: Data; isInProcess?: boolean; isInbox?:boolean }) {
     const [isOpen, setIsOpen] = React.useState<boolean>(false)
     const handleClose = () => {
         setIsOpen(false)
@@ -590,7 +590,7 @@ export function ModalLink(props: { row: Data; isInProcess?: boolean; }) {
                 }}
                 style={{ color: "#00B2E2" }}
             >
-                {props.row.osn}
+                {props.isInbox? props.row.osn :props.row.tsn}
             </Link>
             <Modal sx={{
                 color: 'black',
@@ -605,14 +605,14 @@ export function ModalLink(props: { row: Data; isInProcess?: boolean; }) {
                     </IconButton>
                 {props.isInProcess &&
                     <Box>
-                        <InProcessModalHeaderSection row={props.row} />
+                        <InProcessModalHeaderSection isInbox={props.isInbox} row={props.row} />
                     </Box>
                 }
                 <Box>
                     {props.isInProcess ?
-                        <InProcessModalMainContent row={props.row} />
+                        <InProcessModalMainContent isInbox={props.isInbox} row={props.row} />
                         :
-                        <ModalMainContent row={props.row} />
+                        <ModalMainContent isInbox={props.isInbox} row={props.row} />
 
                     }
                 </Box>

@@ -8,7 +8,7 @@ import { StyledTableCellHeader } from "../style";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { columnsInbox } from "../constants";
 
-export function TableHeader(props: EnhancedTableProps) {
+export function TableHeader(props: EnhancedTableProps & {isInbox:boolean}) {
   const {
     onSelectAllClick,
     order,
@@ -40,8 +40,9 @@ export function TableHeader(props: EnhancedTableProps) {
           </TableCell>
         )}
         {columnsInbox.map((columnsData) =>{
-        if(columnsData.id){  
-        return(
+        if(props.isInbox){  
+          if(columnsData.id !=='actions' && columnsData.id !== 'destination' && columnsData.id !== 'tsn') {
+          return(
           <StyledTableCellHeader
             key={columnsData.id}
             align={columnsData.align}
@@ -56,8 +57,27 @@ export function TableHeader(props: EnhancedTableProps) {
               {columnsData.label}
             </TableSortLabel>
           </StyledTableCellHeader>
-          )
-        }})}
+          )}}
+          if(!props.isInbox && columnsData.id !=='institution' && columnsData.id !=='osn'){
+            return(
+              <StyledTableCellHeader
+              key={columnsData.id}
+              align={columnsData.align}
+              padding="none"
+              sortDirection={orderBy === columnsData.id ? order : false}
+            >
+              <TableSortLabel
+                active={orderBy === columnsData.id}
+                direction={orderBy === columnsData.id ? order : "asc"}
+                onClick={createSortHandler(columnsData.id)}
+              >
+                {columnsData.label}
+              </TableSortLabel>
+            </StyledTableCellHeader>
+            )
+          }
+
+})}
         <TableCell />
       </TableRow>
     </TableHead>

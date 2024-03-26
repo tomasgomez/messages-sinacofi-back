@@ -4,6 +4,7 @@ import { DataExpandable, linkAndLabel, StatusMessage } from "../../component/inb
 export function createData(
   id: number,
   osn: number,
+  tsn:number,
   ms: number,
   message: string,
   institution: string,
@@ -14,10 +15,12 @@ export function createData(
   nse:string,
   dateSent:string,
   timeSent:string,
+  destination:string,
 ): Data {
   return {
     id,
     osn,
+    tsn,
     ms,
     message,
     institution,
@@ -27,7 +30,8 @@ export function createData(
     stateProgress,
     dateSent,
     timeSent,
-    nse
+    nse,
+    destination
   };
 }
 
@@ -35,6 +39,7 @@ export const rows = [
   createData(
     1,
     10139,
+    833337,
     671,
     "ACEPTACIÓN ALZAMIENTO HIPOTECARIO (JUAN PÉREZ)",
     "Santander",
@@ -44,11 +49,13 @@ export const rows = [
     "inProgress",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     2,
     10124,
+    833337,
     671,
     "ACEPTACIÓN ALZAMIENTO HIPOTECARIO",
     "HSBC",
@@ -58,11 +65,13 @@ export const rows = [
     "inProgress",
     "102456",
     "12/03/2025",
-    "10:00"
-  ),
+    "10:00",
+    "Santander"
+    ),
   createData(
     3,
     20125,
+    833337,
     671,
     "ACEPTACIÓN ALZAMIENTO HIPOTECARIO",
     "BCI",
@@ -72,11 +81,13 @@ export const rows = [
     "inProgress",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     4,
     30126,
+    833337,
     104,
     "ESTADO SALDOS NETOS RESUMIDOS (BANCOS NACIONALES)",
     "Banco Itau",
@@ -86,11 +97,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     5,
     20127,
+    833337,
     105,
     "CAJEROS - SALDOS NETOS",
     "JP Morgan",
@@ -100,11 +113,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     6,
     10128,
+    833337,
     671,
     "ACEPTACIÓN ALZAMIENTO HIPOTECARIO",
     "Security",
@@ -114,11 +129,13 @@ export const rows = [
     "inProgress",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     7,
     10123,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "Banco de Chile",
@@ -128,11 +145,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     8,
     10138,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "ICBC",
@@ -142,11 +161,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     9,
     10124,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "Macro",
@@ -156,11 +177,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     10,
     10183,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "Patagonia",
@@ -170,11 +193,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     11,
     10166,
+    833337,
     671,
     "ACEPTACIÓN ALZAMIENTO HIPOTECARIO",
     "Santander",
@@ -184,11 +209,13 @@ export const rows = [
     "inProgress",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     12,
     101234,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "HSBC",
@@ -198,11 +225,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     13,
     10125,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "Santander",
@@ -212,11 +241,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     14,
     10127,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "MACRO",
@@ -226,11 +257,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     15,
     10129,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "Publico",
@@ -240,11 +273,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     16,
     10133,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "Santander",
@@ -254,11 +289,13 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
-  ),
+    "11:00",
+    "Santander"
+    ),
   createData(
     17,
     10134,
+    833337,
     136,
     "TRANSFERENCIA DE FONDOS INDIVIDUAL",
     "MACRO",
@@ -268,7 +305,8 @@ export const rows = [
     "",
     "10123",
     "12/04/2023",
-    "11:00"
+    "11:00",
+    "Santander"
   ),
 ];
 
