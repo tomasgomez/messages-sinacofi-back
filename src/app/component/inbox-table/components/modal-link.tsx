@@ -1,8 +1,9 @@
 import React from "react";
 import { Box, Button, Grid, IconButton, Link, Stack, Typography, styled } from "@mui/material";
 import { Modal, ModalContent, ModalHeader } from "../../Modal";
-import { Data } from "../type";
-import { StyledModalItem, StyledMoalSection, StyledCapitalizedSpan } from "../../inbox-header/style";
+import { Data, SentData } from "../type";
+import { StyledModalItem, StyledMoalSection } from "../../inbox-header/style";
+import { StyledCapitalizedSpan } from "../style";
 import Image from "next/image";
 import Signature from '../../../../../assets/signature.png'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
@@ -12,13 +13,13 @@ import { montserrat } from "@/utils/fonts";
 import { CloseRounded } from "@mui/icons-material";
 
 
-export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: boolean; isInbox?:boolean }) {
+export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: boolean; }) {
     return (
         <Box borderBottom={'dashed'} mb={2} pb={2}>
             <Grid container spacing={1} justifyContent={'space-around'} alignItems={'self-start'} >
                 <Grid item xs={8}>
                     <StyledModalItem noWrap>
-                        {`OSN-${props.isInbox? props.row.osn : props.row.tsn}`}
+                        {`OSN-${props.row.osn || props.row.tsn}`}
                     </StyledModalItem>
                     <Typography 
                     variant="h6" 
@@ -174,13 +175,13 @@ export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: bo
 }
 
 
-export function ModalMainContent(props: { row: Data, isinProcess?: boolean; isInbox?:boolean; }) {
+export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
     return (
         <>
             <Grid container spacing={1} justifyContent={'space-around'} alignItems={'self-start'}>
                 <Grid item xs={10}>
                     <StyledModalItem noWrap>
-                        {`OSN-${props.isInbox ? props.row.osn :props.row.tsn}`}
+                        {`OSN-${props.row.osn || props.row.tsn}`}
                     </StyledModalItem>
                     <Typography 
                     variant="h6" 
@@ -208,7 +209,7 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; isIn
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>OSN</Typography>
                             <StyledModalItem noWrap>
-                                {props.isInbox? props.row.osn :props.row.tsn}
+                                {props.row.osn || props.row.tsn}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
@@ -333,12 +334,12 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; isIn
 
 
 
-export function InProcessModalMainContent(props: { row: Data, isinProcess?: boolean; isInbox?:boolean;}) {
+export function InProcessModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
     return (
         <>
             <Box>
                 <StyledModalItem noWrap>
-                    {`OSN-${props.isInbox? props.row.osn :props.row.tsn}`}
+                    {`OSN-${props.row.osn || props.row.tsn}`}
                 </StyledModalItem>
                 <StyledMoalSection variant="h6">
                     {`${props.row.ms} - ${props.row.message}`}
@@ -351,7 +352,7 @@ export function InProcessModalMainContent(props: { row: Data, isinProcess?: bool
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>OSN</Typography>
                             <StyledModalItem noWrap>
-                                {props.isInbox? props.row.osn :props.row.tsn}
+                                {props.row.osn || props.row.tsn}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
@@ -574,7 +575,7 @@ export function InProcessModalMainContent(props: { row: Data, isinProcess?: bool
 }
 
 
-export function ModalLink(props: { row: Data; isInProcess?: boolean; isInbox?:boolean }) {
+export function ModalLink(props: { row: Data; isInProcess?: boolean; }) {
     const [isOpen, setIsOpen] = React.useState<boolean>(false)
     const handleClose = () => {
         setIsOpen(false)
@@ -590,7 +591,7 @@ export function ModalLink(props: { row: Data; isInProcess?: boolean; isInbox?:bo
                 }}
                 style={{ color: "#00B2E2" }}
             >
-                {props.isInbox? props.row.osn :props.row.tsn}
+                {props.row.osn || props.row.tsn || null}
             </Link>
             <Modal sx={{
                 color: 'black',
@@ -605,14 +606,14 @@ export function ModalLink(props: { row: Data; isInProcess?: boolean; isInbox?:bo
                     </IconButton>
                 {props.isInProcess &&
                     <Box>
-                        <InProcessModalHeaderSection isInbox={props.isInbox} row={props.row} />
+                        <InProcessModalHeaderSection row={props.row} />
                     </Box>
                 }
                 <Box>
                     {props.isInProcess ?
-                        <InProcessModalMainContent isInbox={props.isInbox} row={props.row} />
+                        <InProcessModalMainContent row={props.row} />
                         :
-                        <ModalMainContent isInbox={props.isInbox} row={props.row} />
+                        <ModalMainContent row={props.row} />
 
                     }
                 </Box>

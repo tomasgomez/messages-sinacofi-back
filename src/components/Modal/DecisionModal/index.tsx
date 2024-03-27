@@ -17,7 +17,7 @@ const DecisionModal = ({
   onConfirm: any;
 }) => {
   return (
-    <div>
+    <Box>
       <Modal maxWidth={523} open={isOpen} onClose={onClose} withoutClose>
         <Box
           sx={{
@@ -88,7 +88,7 @@ const DecisionModal = ({
           </Box>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 };
 

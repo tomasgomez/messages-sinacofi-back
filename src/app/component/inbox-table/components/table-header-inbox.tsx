@@ -3,12 +3,11 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
-import { EnhancedTableProps, Data } from "../type";
+import { EnhancedTableProps, Data, SentData, KeyOfData } from "../type";
 import { StyledTableCellHeader } from "../style";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { columnsInbox } from "../constants";
 
-export function TableHeader(props: EnhancedTableProps & {isInbox:boolean}) {
+export function TableHeader(props: EnhancedTableProps) {
   const {
     onSelectAllClick,
     order,
@@ -17,11 +16,14 @@ export function TableHeader(props: EnhancedTableProps & {isInbox:boolean}) {
     rowCount,
     onRequestSort,
     withCheckboxAll,
+    columns=[]
   } = props;
   const createSortHandler =
-    (property: keyof Data | 'actions') => (event: React.MouseEvent<unknown>) => {
+    (property: KeyOfData) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
+
+    console.log("las columns", columns)
 
   return (
     <TableHead>
@@ -39,10 +41,7 @@ export function TableHeader(props: EnhancedTableProps & {isInbox:boolean}) {
             />
           </TableCell>
         )}
-        {columnsInbox.map((columnsData) =>{
-        if(props.isInbox){  
-          if(columnsData.id !=='actions' && columnsData.id !== 'destination' && columnsData.id !== 'tsn') {
-          return(
+        {columns.map((columnsData) => (
           <StyledTableCellHeader
             key={columnsData.id}
             align={columnsData.align}
@@ -57,27 +56,7 @@ export function TableHeader(props: EnhancedTableProps & {isInbox:boolean}) {
               {columnsData.label}
             </TableSortLabel>
           </StyledTableCellHeader>
-          )}}
-          if(!props.isInbox && columnsData.id !=='institution' && columnsData.id !=='osn'){
-            return(
-              <StyledTableCellHeader
-              key={columnsData.id}
-              align={columnsData.align}
-              padding="none"
-              sortDirection={orderBy === columnsData.id ? order : false}
-            >
-              <TableSortLabel
-                active={orderBy === columnsData.id}
-                direction={orderBy === columnsData.id ? order : "asc"}
-                onClick={createSortHandler(columnsData.id)}
-              >
-                {columnsData.label}
-              </TableSortLabel>
-            </StyledTableCellHeader>
-            )
-          }
-
-})}
+        ))}
         <TableCell />
       </TableRow>
     </TableHead>

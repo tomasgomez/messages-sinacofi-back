@@ -2,11 +2,6 @@ import { Columns, Alignment, RowOptions } from "./type";
 
 export const columnsInbox: Columns[] = [
   {
-    id: "tsn",
-    label: "TSN",
-    align: Alignment.LEFT,
-  },
-  {
     id: "osn",
     label: "OSN",
     align: Alignment.LEFT,
@@ -37,8 +32,56 @@ export const columnsInbox: Columns[] = [
     align: Alignment.LEFT,
   },
   {
-    id: "destination",
-    label: "Destino",
+    id: "dateSent",
+    label: "Fecha",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "timeSent",
+    label: "Hora",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "nse",
+    label: "NSE",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "state",
+    label: "Estado",
+    align: Alignment.LEFT,
+  },
+];
+
+export const columnsSent: Columns[] = [
+  {
+    id: "tsn",
+    label: "TSN",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "date",
+    label: "Fecha",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "time",
+    label: "Hora",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "ms",
+    label: "MSG",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "message",
+    label: "Descripción",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "institution",
+    label: "Origen",
     align: Alignment.LEFT,
   },
   {
@@ -63,7 +106,7 @@ export const columnsInbox: Columns[] = [
   },
   {
     id: "actions",
-    label: "Acciones",
+    label: "Actions",
     align: Alignment.LEFT,
   },
 ];

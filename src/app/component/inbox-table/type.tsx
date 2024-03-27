@@ -1,6 +1,7 @@
 export interface Data {
   id: number;
-  osn: number;
+  osn?: number;
+  tsn?: number;
   ms: number;
   message: string;
   institution: string;
@@ -11,14 +12,32 @@ export interface Data {
   dateSent: string;
   timeSent:string;
   nse:string;
-  destination:string;
-  tsn:number;
+  actions?:boolean
 }
+export interface SentData {
+  id: number;
+  tsn: number;
+  ms: number;
+  message: string;
+  institution: string;
+  date: string;
+  time: string;
+  state: number;
+  stateProgress: string;
+  dateSent: string;
+  timeSent:string;
+  nse:string;
+  actions:boolean;
+}
+
+export type KeyOfData=keyof Data | keyof SentData
+
+
 
 export type Order = "asc" | "desc";
 
 export interface Columns {
-  id: keyof Data | 'actions';
+  id: KeyOfData
   label: string;
   align: Alignment;
 }
@@ -44,20 +63,20 @@ export interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof Data | 'actions'
+    property: KeyOfData
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
   rowCount: number;
   withCheckboxAll?: boolean;
+  columns?:Columns[]
 }
 
 export interface TableProps {
   withCheckbox?: boolean;
   labelId: string;
-  row: Data;
+  row: Data | any;
   isItemSelected: boolean;
   handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
-  key:string;
 }
