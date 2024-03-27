@@ -21,8 +21,8 @@ import { CopyAll, SendOutlined } from "@mui/icons-material";
 
 export function TableContentRows(props: TableProps) {
   const { handleClick, row, isItemSelected, labelId, withCheckbox } = props;
-
   const [isOpen, setIsOpen] = React.useState(false);
+  const isInboxRow=!row.actions
 
   return (
     <>
@@ -93,6 +93,7 @@ export function TableContentRows(props: TableProps) {
       }
 
         {/* ////////////////// Expandable table Icon /////////////////////// */}
+        {isInboxRow &&
         <StyledTabCell>
           {row.stateProgress && (
             <IconButton
@@ -105,6 +106,7 @@ export function TableContentRows(props: TableProps) {
             </IconButton>
           )}
         </StyledTabCell>
+        }
       </TableRow>
       {/* ////////////////// Expandable table /////////////////////// */}
       <ExpandableTable isOpen={isOpen} />
