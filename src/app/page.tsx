@@ -1,10 +1,11 @@
 // import Image from "next/image";
 // import styles from "./page.module.css";
 import InboxScreen from "./messages/inbox/page";
+import { Box } from "@mui/material";
 
 export default function Home() {
   return (
-    <div
+    <Box
       style={{
         display: "flex",
         justifyContent: "center",
@@ -12,7 +13,7 @@ export default function Home() {
         width: "100%",
       }}
     >
-      <div
+      <Box
         style={{
           display: "flex",
           justifyContent: "center",
@@ -20,15 +21,15 @@ export default function Home() {
         }}
       >
         <InboxScreen />
-      </div>
-    </div>
+      </Box>
+    </Box>
     // <main className={styles.main}>
-    //   <div className={styles.description}>
+    //   <Box className={styles.description}>
     //     <p>
     //       Get started by editing&nbsp;
     //       <code className={styles.code}>src/app/page.tsx</code>
     //     </p>
-    //     <div>
+    //     <Box>
     //       <a
     //         href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
     //         target="_blank"
@@ -44,10 +45,10 @@ export default function Home() {
     //           priority
     //         />
     //       </a>
-    //     </div>
-    //   </div>
+    //     </Box>
+    //   </Box>
 
-    //   <div className={styles.center}>
+    //   <Box className={styles.center}>
     //     <Image
     //       className={styles.logo}
     //       src="/next.svg"
@@ -56,9 +57,9 @@ export default function Home() {
     //       height={37}
     //       priority
     //     />
-    //   </div>
+    //   </Box>
 
-    //   <div className={styles.grid}>
+    //   <Box className={styles.grid}>
     //     <a
     //       href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
     //       className={styles.card}
@@ -108,7 +109,7 @@ export default function Home() {
     //         Instantly deploy your Next.js site to a shareable URL with Vercel.
     //       </p>
     //     </a>
-    //   </div>
+    //   </Box>
     // </main>
 // import Image from "next/image";
 // import styles from "./page.module.css";

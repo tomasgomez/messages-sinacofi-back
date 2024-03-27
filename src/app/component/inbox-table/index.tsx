@@ -9,18 +9,18 @@ import TableContentRows from "./components/table-rows-inbox";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import { StyledTabCell } from "./style";
-import { rows } from "../../messages/inbox/mock";
-import { Data, Order } from "./type";
+import { Columns, Data, Order, SentData } from "./type";
 import { getComparator, stableSort } from "./utils";
 import { Grid, Typography } from "@mui/material";
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props:{rows:Data[] | SentData[], columns:Columns[]}) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("osn");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+  const {rows}=props;
+  
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data
@@ -110,15 +110,15 @@ export default function EnhancedTable() {
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
+            columns={props.columns}
           />
           <TableBody>
             {visibleRows.map((row, index) => {
-              const isItemSelected = isSelected(row.id);
+              const isItemSelected = isSelected(row.id as number);
               const labelId = `enhanced-table-checkbox-${index}`;
               return (
                 <TableContentRows
                   withCheckbox
-                  key={`row-table-data-${row.id}`}
                   row={row}
                   labelId={labelId}
                   isItemSelected={isItemSelected}
