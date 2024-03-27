@@ -53,6 +53,64 @@ export const columnsInbox: Columns[] = [
   },
 ];
 
+export const columnsSent: Columns[] = [
+  {
+    id: "tsn",
+    label: "TSN",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "date",
+    label: "Fecha",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "time",
+    label: "Hora",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "ms",
+    label: "MSG",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "message",
+    label: "Descripción",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "institution",
+    label: "Origen",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "dateSent",
+    label: "Fecha",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "timeSent",
+    label: "Hora",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "nse",
+    label: "NSE",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "state",
+    label: "Estado",
+    align: Alignment.LEFT,
+  },
+  {
+    id: "actions",
+    label: "Actions",
+    align: Alignment.LEFT,
+  },
+];
+
 export const rowOptions: RowOptions = {
   checkbox: {
     // maxwidth: number,

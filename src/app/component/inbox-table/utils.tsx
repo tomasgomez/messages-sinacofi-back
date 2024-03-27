@@ -1,4 +1,4 @@
-import { Order } from "./type";
+import { Data, Order, SentData } from "./type";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -23,7 +23,7 @@ export function getComparator<Key extends keyof any>(
 }
 
 export function stableSort<T>(
-  array: readonly T[],
+  array: readonly Data[] | readonly SentData[],
   comparator: (a: T, b: T) => number
 ) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);

@@ -15,7 +15,7 @@ const SuccessModal = ({
   onClose: any;
 }) => {
   return (
-    <div>
+    <Box>
       <Modal maxWidth={523} open={isOpen} onClose={onClose} withoutClose>
         <Box
           sx={{
@@ -71,7 +71,7 @@ const SuccessModal = ({
           </Button>
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 };
 

@@ -13,8 +13,8 @@ import {
 import { Typography } from "@mui/material";
 import { montserrat } from "@/utils/fonts";
 
-export default function InboxHeader(props: { amountMessages: number }) {
-  const { amountMessages } = props;
+export default function InboxHeader(props: { amountMessages: number, title:string; }) {
+  const { amountMessages, title } = props;
   return (
     <StyledInboxHeaderContent>
       <StyledTitleAndDropdown
@@ -23,7 +23,7 @@ export default function InboxHeader(props: { amountMessages: number }) {
         }}
         width="100%"
       >
-        <Typography variant="h5">Bandeja de Entrada</Typography>
+        <Typography variant="h5">{title}</Typography>
         <DropdrownInbox widthDropdown={300} />
       </StyledTitleAndDropdown>
       <StyledSubtitleAndIcons

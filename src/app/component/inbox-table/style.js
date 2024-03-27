@@ -34,3 +34,8 @@ export const StyledTableCellHeader = styled(TableCell)`
   font-weight: bold;
   padding-left: 16px;
 `;
+
+export const StyledCapitalizedSpan=styled('span')`
+  text-transform: capitalize;
+`
+

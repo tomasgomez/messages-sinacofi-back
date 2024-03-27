@@ -5,7 +5,7 @@ import "./globals.css";
 import Image from "next/image";
 import AppBar from "@/components/AppBar";
 import SideBar from "@/components/SideBar";
-import { ThemeProvider } from "@mui/material";
+import { ThemeProvider, Box } from "@mui/material";
 import { theme } from "@/components/Theme";
 import { ErrorModal } from "@/components/Modal/ErrorModal";
 import SuccessModal from "@/components/Modal/SuccessModal";
@@ -53,10 +53,10 @@ export default function RootLayout({
         <ThemeProvider theme={theme}>
           <MyContexLayout.Provider value={{ setModalState }}>
             <AppBar />
-            <div style={{ display: "flex", maxWidth: "100vw" }}>
+            <Box style={{ display: "flex", maxWidth: "100vw" }}>
               <SideBar />
               {children}
-            </div>
+            </Box>
             {/* ///////////////////////Modal Error///////////////////////// */}
             <ErrorModal
               title={modalState?.title}

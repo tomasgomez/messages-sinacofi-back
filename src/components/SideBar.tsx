@@ -1,6 +1,6 @@
 'use client'
 import { AccountBalance, AccountBalanceOutlined, ArrowDropDownOutlined, AssignmentIndOutlined, BarChart, CloudDownloadOutlined, ConnectWithoutContact, EditOutlined, EmailOutlined, ForwardToInbox, ForwardToInboxOutlined, GroupOutlined, Inbox, NotificationsNone, NotificationsNoneOutlined, SettingsApplicationsOutlined, StackedBarChart, WorkspacesOutlined } from "@mui/icons-material";
-import { Button, Collapse, Container, List, } from "@mui/material";
+import { Button, Collapse, Container, List, Box} from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import { montserrat } from "@/utils/fonts";
 
 const Badge = ({ children }: { children: any }) => {
   return (
-    <div style={{
+    <Box style={{
       display: "flex",
       width: "16px",
       height: "16px",
@@ -22,7 +22,7 @@ const Badge = ({ children }: { children: any }) => {
       fontSize: 10,
       textAlign: "center",
       fontWeight: 600
-    }}>{children}</div>
+    }}>{children}</Box>
   )
 }
 
