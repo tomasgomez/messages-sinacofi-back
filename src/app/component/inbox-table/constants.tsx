@@ -2,47 +2,47 @@ import { Columns, Alignment, RowOptions } from "./type";
 
 export const columnsInbox: Columns[] = [
   {
-    id: "osn",
+    id: "OSN",
     label: "OSN",
     align: Alignment.LEFT,
   },
   {
-    id: "date",
+    id: "creationDate",
     label: "Fecha",
     align: Alignment.LEFT,
   },
   {
-    id: "time",
+    id: "creationTime",
     label: "Hora",
     align: Alignment.LEFT,
   },
   {
-    id: "ms",
+    id: "messageCode",
     label: "MSG",
     align: Alignment.LEFT,
   },
   {
-    id: "message",
+    id: "description",
     label: "Descripción",
     align: Alignment.LEFT,
   },
   {
-    id: "institution",
+    id: "sender",
     label: "Origen",
     align: Alignment.LEFT,
   },
   {
-    id: "dateSent",
+    id: "receivedDate",
     label: "Fecha",
     align: Alignment.LEFT,
   },
   {
-    id: "timeSent",
+    id: "receivedTime",
     label: "Hora",
     align: Alignment.LEFT,
   },
   {
-    id: "nse",
+    id: "NSE",
     label: "NSE",
     align: Alignment.LEFT,
   },

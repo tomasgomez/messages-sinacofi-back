@@ -1,36 +1,50 @@
 export interface Data {
-  id: number;
-  osn?: number;
-  tsn?: number;
-  ms: number;
-  message: string;
-  institution: string;
-  date: string;
-  time: string;
-  state: number;
-  stateProgress: string;
-  dateSent: string;
-  timeSent:string;
-  nse:string;
-  actions?:boolean
-}
-export interface SentData {
-  id: number;
-  tsn: number;
-  ms: number;
-  message: string;
-  institution: string;
-  date: string;
-  time: string;
-  state: number;
-  stateProgress: string;
-  dateSent: string;
-  timeSent:string;
-  nse:string;
-  actions:boolean;
+  id: string;
+  OSN?: string;
+  TSN?: string;
+  NSR? : string;
+  NSQ?: string;
+  destination?: string;
+  messageCode: string;
+  documents: string;
+  description: string;
+  receiver: string;
+  priority: string;
+  sender: string;
+  creationDate: string;
+  creationTime: string;
+  status: string;
+  stateProgress?: string;
+  receivedDate: string;
+  receivedTime:string;
+  NSE?:string;
+  actions?:boolean | string;
 }
 
-export type KeyOfData=keyof Data | keyof SentData
+export interface SentData {
+  id: number;
+  OSN?: string;
+  TSN?: string;
+  NSR? : string;
+  NSQ?: string;
+  destination?: string;
+  messageCode: string;
+  documents: string;
+  description: string;
+  receiver: string;
+  priority: string;
+  sender: string;
+  creationDate: string;
+  creationTime: string;
+  status: string;
+  stateProgress?: string;
+  receivedDate: string;
+  receivedTime:string;
+  NSE?:string;
+  actions?:boolean | string;
+}
+
+export type KeyOfData= keyof Data | keyof SentData
 
 
 
