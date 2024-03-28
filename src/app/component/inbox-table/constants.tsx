@@ -123,13 +123,19 @@ export const rowOptions: RowOptions = {
   osn: {
     align: Alignment.LEFT,
     fontSize: 14,
+    maxwidth:30
+  },
+  nse: {
+    align: Alignment.LEFT,
+    fontSize: 14,
+    maxwidth:30
   },
   ms: {
     align: Alignment.LEFT,
     fontSize: 14,
   },
   message: {
-    maxwidth: 350,
+    maxwidth: 280,
     align: Alignment.LEFT,
     fontSize: 14,
   },
@@ -138,6 +144,7 @@ export const rowOptions: RowOptions = {
     fontSize: 14,
   },
   date: {
+    maxwidth:90,
     align: Alignment.LEFT,
     fontSize: 14,
   },
@@ -148,6 +155,7 @@ export const rowOptions: RowOptions = {
   state: {
     align: Alignment.LEFT,
     fontSize: 14,
+    maxwidth:30
   },
   timeSent: {
     align: Alignment.LEFT,
