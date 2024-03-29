@@ -5,5 +5,30 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = ""
+  url      = "postgresql://sinacofi:hola123@34.135.68.241:5432/sinacofi-mvp"
+}
+
+model Family {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique @db.VarChar(255)
+  institutions String[]
+
+  messages Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  contenido String   @db.Text
+  Family    Family[]
+
+  schemaId String
+  users    String[]
+}
+
+model MessageFamily {
+  messageId  Int
+  familyId   Int
+  assignedAt DateTime @default(now())
+
+  @@id([messageId, familyId])
 }
