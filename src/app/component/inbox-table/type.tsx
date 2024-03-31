@@ -18,11 +18,11 @@ export interface Data {
   receivedDate: string;
   receivedTime:string;
   NSE?:string;
-  actions?:boolean | string;
+  actions?:boolean;
 }
 
 export interface SentData {
-  id: number;
+  id: number | string;
   OSN?: string;
   TSN?: string;
   NSR? : string;
@@ -41,7 +41,7 @@ export interface SentData {
   receivedDate: string;
   receivedTime:string;
   NSE?:string;
-  actions?:boolean | string;
+  actions?:boolean;
 }
 
 export type KeyOfData= keyof Data | keyof SentData

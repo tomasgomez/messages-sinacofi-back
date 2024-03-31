@@ -1,6 +1,6 @@
-import { Data } from "@/app/component/inbox-table/type";
+import { SentData } from "@/app/component/inbox-table/type";
 
-export const mockResponse: Data[] = 
+export const mockResponse: SentData[] = 
  [
         {
             id: "10123",
@@ -21,7 +21,7 @@ export const mockResponse: Data[] =
             receivedDate: "21/01/2024",
             receivedTime: "11:00",
             documents: "",
-            actions: false
+            actions: true
         },
         {
             id: "10124",
@@ -105,7 +105,7 @@ export const mockResponse: Data[] =
             receivedDate: "20/01/2024",
             receivedTime: "15:10",
             documents: "",
-            actions: false
+            actions: true
         },
         {
             id: "10128",
@@ -126,7 +126,7 @@ export const mockResponse: Data[] =
             receivedDate: "20/01/2024",
             receivedTime: "13:01",
             documents: "",
-            actions: false
+            actions: true
         },
         {
             id: "13010",
@@ -147,7 +147,7 @@ export const mockResponse: Data[] =
             receivedDate: "20/01/2024",
             receivedTime: "11:00",
             documents: "",
-            actions: false
+            actions: true
         }
     ]
 ;

@@ -10,7 +10,7 @@ import React from "react";
 export const TableContentLoaderComponent = ({loadingMessage} : { loadingMessage?: string }) => {
     return (
       <TableRow>
-        <TableCell colSpan={10} component="th" scope="row">
+        <TableCell colSpan={20} component="th" scope="row">
           <Box sx={loaderContainerSx}>
             <CircularProgress size={45} thickness={2} />
             <Typography 

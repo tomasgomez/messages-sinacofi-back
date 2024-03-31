@@ -60,8 +60,7 @@ export function TableContentRows(props: TableProps) {
         <StyledTabCell {...rowOptions["description"]}>
           <StyledMessageContiner>
             <StyledMessage>{row.description}</StyledMessage>
-
-            {row.stateProgress && <StyledChip label="En Proceso" />}
+            {row.stateProgress && <StyledChip label="En Proceso" /> /**  TODO: stateProgress update in In Process status */} 
           </StyledMessageContiner>
         </StyledTabCell>
         <StyledTabCell {...rowOptions["sender"]}>

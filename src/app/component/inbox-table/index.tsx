@@ -15,7 +15,7 @@ import { getComparator, stableSort } from "./utils";
 import { Grid, Typography } from "@mui/material";
 import { TableContentLoader } from "./components/table-content-loader";
 
-export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:Columns[], loading: boolean}) {
+export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:Columns[], loading?: boolean}) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("OSN");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
