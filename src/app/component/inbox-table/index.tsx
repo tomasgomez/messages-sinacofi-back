@@ -1,4 +1,5 @@
 "use client";
+
 import * as React from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -9,18 +10,19 @@ import TableContentRows from "./components/table-rows-inbox";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import { StyledTabCell } from "./style";
-import { Columns, Data, Order, SentData } from "./type";
+import { Columns, Data, KeyOfData, Order, SentData } from "./type";
 import { getComparator, stableSort } from "./utils";
 import { Grid, Typography } from "@mui/material";
+import { TableContentLoader } from "./components/table-content-loader";
 
-export default function EnhancedTable(props:{rows:Data[] | SentData[], columns:Columns[]}) {
+export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:Columns[], loading: boolean}) {
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("osn");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("OSN");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const {rows}=props;
-  
+  const {rows, columns, loading } = props;
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data
@@ -32,7 +34,7 @@ export default function EnhancedTable(props:{rows:Data[] | SentData[], columns:C
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = rows.map((n) => n.id as number);
       setSelected(newSelected);
       return;
     }
@@ -110,14 +112,15 @@ export default function EnhancedTable(props:{rows:Data[] | SentData[], columns:C
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
             rowCount={rows.length}
-            columns={props.columns}
+            columns={columns}
           />
           <TableBody>
-            {visibleRows.map((row, index) => {
+            {loading ?  <TableContentLoader loadingMessage="Cargando Registros..."/>  : visibleRows.map((row, index) => {
               const isItemSelected = isSelected(row.id as number);
               const labelId = `enhanced-table-checkbox-${index}`;
               return (
                 <TableContentRows
+                  key={row.id}
                   withCheckbox
                   row={row}
                   labelId={labelId}

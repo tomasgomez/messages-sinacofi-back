@@ -50,29 +50,29 @@ export function TableContentRows(props: TableProps) {
           component="th"
           id={labelId}
           scope="row"
-          {...rowOptions["osn"]}
+          {...rowOptions["OSN"]}
         >
-          <ModalLink row={row} isInProcess={!!row.stateProgress}/>
+          <ModalLink row={row} isInProcess={!!row.status}/>
         </StyledTabCell>
-        <StyledTabCell {...rowOptions["date"]}>{row.date}</StyledTabCell>
-        <StyledTabCell {...rowOptions["time"]}>{row.time}</StyledTabCell>
-        <StyledTabCell {...rowOptions["ms"]}>{row.ms}</StyledTabCell>
-        <StyledTabCell {...rowOptions["message"]}>
+        <StyledTabCell {...rowOptions["creationDate"]}>{row.creationDate}</StyledTabCell>
+        <StyledTabCell {...rowOptions["creationTime"]}>{row.creationTime}</StyledTabCell>
+        <StyledTabCell {...rowOptions["messageCode"]}>{row.messageCode}</StyledTabCell>
+        <StyledTabCell {...rowOptions["description"]}>
           <StyledMessageContiner>
-            <StyledMessage>{row.message}</StyledMessage>
+            <StyledMessage>{row.description}</StyledMessage>
 
             {row.stateProgress && <StyledChip label="En Proceso" />}
           </StyledMessageContiner>
         </StyledTabCell>
-        <StyledTabCell {...rowOptions["institution"]}>
-          {row.institution}
+        <StyledTabCell {...rowOptions["sender"]}>
+          {row.sender}
         </StyledTabCell>
-        <StyledTabCell {...rowOptions["dateSent"]}>{row.dateSent}</StyledTabCell>
-        <StyledTabCell {...rowOptions["timeSent"]}>{row.timeSent}</StyledTabCell>
-        <StyledTabCell {...rowOptions["nse"]}>{row.nse}</StyledTabCell>
-        <StyledTabCell {...rowOptions["state"]}>{row.state}</StyledTabCell>
+        <StyledTabCell {...rowOptions["receivedDate"]}>{row.receivedDate}</StyledTabCell>
+        <StyledTabCell {...rowOptions["receivedTime"]}>{row.receivedTime}</StyledTabCell>
+        <StyledTabCell {...rowOptions["NSE"]}>{row.NSE}</StyledTabCell>
+        <StyledTabCell {...rowOptions["status"]}>{row.status}</StyledTabCell>
         {row.actions &&
-        <StyledTabCell {...rowOptions["state"]}>
+        <StyledTabCell {...rowOptions["status"]}>
         <Box display={'flex'} gap={1}>
         <IconButton
               key={`expand-icon-${row.id}`}

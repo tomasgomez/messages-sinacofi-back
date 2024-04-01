@@ -19,7 +19,7 @@ export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: bo
             <Grid container spacing={1} justifyContent={'space-around'} alignItems={'self-start'} >
                 <Grid item xs={8}>
                     <StyledModalItem noWrap>
-                        {`OSN-${props.row.osn || props.row.tsn}`}
+                        {`OSN-${props.row.OSN || props.row.TSN}`}
                     </StyledModalItem>
                     <Typography 
                     variant="h6" 
@@ -27,7 +27,7 @@ export function InProcessModalHeaderSection(props: { row: Data; isInProcess?: bo
                     fontFamily={montserrat.style.fontFamily} 
                     mb={3}
                     fontSize={16}>
-                        {`${props.row.ms}`} <StyledCapitalizedSpan style={{ textTransform: 'capitalize' }}>{`${props.row.message.toLowerCase()}`}</StyledCapitalizedSpan>
+                        {`${props.row.messageCode}`} <StyledCapitalizedSpan style={{ textTransform: 'capitalize' }}>{`${props.row.description.toLowerCase()}`}</StyledCapitalizedSpan>
                     </Typography>
                 </Grid>
                 <Grid item xs={4} display={'flex'} justifyContent={'flex-end'} gap={1}>
@@ -181,7 +181,7 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
             <Grid container spacing={1} justifyContent={'space-around'} alignItems={'self-start'}>
                 <Grid item xs={10}>
                     <StyledModalItem noWrap>
-                        {`OSN-${props.row.osn || props.row.tsn}`}
+                        {`OSN-${props.row.OSN || props.row.TSN}`}
                     </StyledModalItem>
                     <Typography 
                     variant="h6" 
@@ -189,7 +189,7 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
                     fontFamily={montserrat.style.fontFamily} 
                     mb={3}
                     fontSize={16}>
-                        {`${props.row.ms}`} <StyledCapitalizedSpan style={{ textTransform: 'capitalize' }}>{`${props.row.message.toLowerCase()}`}</StyledCapitalizedSpan>
+                        {`${props.row.messageCode}`} <StyledCapitalizedSpan style={{ textTransform: 'capitalize' }}>{`${props.row.description.toLowerCase()}`}</StyledCapitalizedSpan>
                     </Typography>
                 </Grid>
                 {!props.isinProcess &&
@@ -209,7 +209,7 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>OSN</Typography>
                             <StyledModalItem noWrap>
-                                {props.row.osn || props.row.tsn}
+                                {props.row.OSN || props.row.TSN}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
@@ -221,13 +221,13 @@ export function ModalMainContent(props: { row: Data, isinProcess?: boolean; }) {
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>Fecha</Typography>
                             <StyledModalItem noWrap>
-                                {props.row.date}
+                                {props.row.receivedDate}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>Hora</Typography>
                             <StyledModalItem noWrap>
-                                {props.row.time}
+                                {props.row.receivedTime}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
@@ -339,10 +339,10 @@ export function InProcessModalMainContent(props: { row: Data, isinProcess?: bool
         <>
             <Box>
                 <StyledModalItem noWrap>
-                    {`OSN-${props.row.osn || props.row.tsn}`}
+                    {`OSN-${props.row.OSN || props.row.TSN}`}
                 </StyledModalItem>
                 <StyledMoalSection variant="h6">
-                    {`${props.row.ms} - ${props.row.message}`}
+                    {`${props.row.messageCode} - ${props.row.description}`}
                 </StyledMoalSection>
             </Box>
             <Stack spacing={2}>
@@ -352,7 +352,7 @@ export function InProcessModalMainContent(props: { row: Data, isinProcess?: bool
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>OSN</Typography>
                             <StyledModalItem noWrap>
-                                {props.row.osn || props.row.tsn}
+                                {props.row.OSN || props.row.TSN}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
@@ -364,13 +364,13 @@ export function InProcessModalMainContent(props: { row: Data, isinProcess?: bool
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>Fecha</Typography>
                             <StyledModalItem noWrap>
-                                {props.row.date}
+                                {props.row.receivedDate}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
                             <Typography fontSize={'12px'}>Hora</Typography>
                             <StyledModalItem noWrap>
-                                {props.row.time}
+                                {props.row.receivedTime}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
@@ -591,7 +591,7 @@ export function ModalLink(props: { row: Data; isInProcess?: boolean; }) {
                 }}
                 style={{ color: "#00B2E2" }}
             >
-                {props.row.osn || props.row.tsn || null}
+                {props.row.OSN || props.row.TSN || null}
             </Link>
             <Modal sx={{
                 color: 'black',
