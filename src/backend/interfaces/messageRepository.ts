@@ -1,5 +1,6 @@
+import { Message } from '../entities/message';
 
 export interface MessageRepository {
-    findById(id: string): Promise<Message | null>;
+    find(message: Message): Promise<Message[] | null>
   }
   
