@@ -2,7 +2,7 @@
 
 Project developed with Next and applying Clean Architecture
 
-## Steps
+## Steps  
 
 First, run the development server:
 
