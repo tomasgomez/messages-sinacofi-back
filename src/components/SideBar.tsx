@@ -221,7 +221,7 @@ const SideBar = () => {
   };
 
   useEffect(() => {
-    const path = pathname.split("/");
+    const path = pathname!.split("/");
     setOpen(path[path.length - 1]);
   }, [pathname]);
 

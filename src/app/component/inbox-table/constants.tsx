@@ -47,7 +47,7 @@ export const columnsInbox: Columns[] = [
     align: Alignment.LEFT,
   },
   {
-    id: "state",
+    id: "stateProgress",
     label: "Estado",
     align: Alignment.LEFT,
   },
@@ -55,52 +55,52 @@ export const columnsInbox: Columns[] = [
 
 export const columnsSent: Columns[] = [
   {
-    id: "tsn",
+    id: "TSN",
     label: "TSN",
     align: Alignment.LEFT,
   },
   {
-    id: "date",
+    id: "creationDate",
     label: "Fecha",
     align: Alignment.LEFT,
   },
   {
-    id: "time",
+    id: "creationTime",
     label: "Hora",
     align: Alignment.LEFT,
   },
   {
-    id: "ms",
+    id: "creationTime",
     label: "MSG",
     align: Alignment.LEFT,
   },
   {
-    id: "message",
+    id: "messageCode",
     label: "Descripción",
     align: Alignment.LEFT,
   },
   {
-    id: "institution",
+    id: "sender",
     label: "Origen",
     align: Alignment.LEFT,
   },
   {
-    id: "dateSent",
+    id: "receivedDate",
     label: "Fecha",
     align: Alignment.LEFT,
   },
   {
-    id: "timeSent",
+    id: "receivedTime",
     label: "Hora",
     align: Alignment.LEFT,
   },
   {
-    id: "nse",
+    id: "NSE",
     label: "NSE",
     align: Alignment.LEFT,
   },
   {
-    id: "state",
+    id: "stateProgress",
     label: "Estado",
     align: Alignment.LEFT,
   },
