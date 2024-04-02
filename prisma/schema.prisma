@@ -17,12 +17,25 @@ model Family {
 }
 
 model Message {
-  id Int @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
+  TSN          String
+  OSN          String
+  NSE          String
+  messageCode  String
+  destination  String
+  description  String
+  priority     String
+  status       String
+  sender       String
+  creationDate String
+  creationTime String
+  receiver     String
+  receivedDate String
+  receivedTime String
 
-  Family Family[]
+  parameters Json
 
-  schemaId String
-  users    String[]
+  families Family[]
 }
 
 model MessageFamily {

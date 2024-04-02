@@ -1,5 +1,5 @@
 import { MessageRepository } from '../../interfaces/messageRepository';
-import { PrismaMessageAdapter as PrismaAdapter } from '../../adapters/messageDatabase';
+import { PrismaMessageAdapter as PrismaAdapter } from '../../adapters/prisma/message';
 import { Message } from '../../entities/message';
 
 export class GetMessage {
@@ -7,7 +7,7 @@ export class GetMessage {
   
     async execute(message: Message, count: string, offset: string): Promise<Message[] | null> {
       try {
-        var messageResponse = await this.messageRepository.find(message);
+        var messageResponse = await this.messageRepository.find(message, count, offset);
         return messageResponse;
       } catch (error) {
         // Handle errors appropriately

@@ -14,7 +14,7 @@ export class Message {
     receiver: string;
     receivedDate: string;
     receivedTime: string;
-    parameters: Parameter[];
+    parameters: Parameter[] | any;
 
     constructor(){
         this.id = 0;

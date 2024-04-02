@@ -37,8 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
 
           let [message, count, offset] = result;
 
-
-          /* Use the PrismaAreaAdapter to get the Area from the database */
+          /* Use the PrismaAreaAdapter to get the Message from the database */
           let messageResponse = await getMessageUseCase.execute(message, count, offset)
 
           /* If the message is not found, return a 404 error */
