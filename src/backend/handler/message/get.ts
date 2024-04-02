@@ -2,7 +2,7 @@ import { validateGetMessage } from "@/backend/entities/dataCleaning/message";
 import { getMessageUseCase } from "@/backend/usecases/message/getMessage";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET(req: NextApiRequest, res: NextApiResponse < any > ){
+export async function _get(req: NextApiRequest, res: NextApiResponse < any > ){
     try {
 
         /* Validate the query params and get the Message */

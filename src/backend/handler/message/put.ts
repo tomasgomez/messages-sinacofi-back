@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function PUT(req: NextApiRequest, res: NextApiResponse < any > ) {
+export async function _put(req: NextApiRequest, res: NextApiResponse < any > ) {
     try {
 
         res.status(200).json("");

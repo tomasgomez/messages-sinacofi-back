@@ -15,23 +15,20 @@ import {
   errorHandler,
 } from '@/backend/utils/errorHandler';
 
-import {
-  getMessageUseCase
-} from '@/backend/usecases/message/getMessage';
-import * as messageRequests from '@/backend/handler/message';
+import { messageCalls } from '@/backend/handler/message/handler';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse < any > ) {
   try {
     const method = req.method;
     switch (method) {
       case Methods.GET: 
-        messageRequests.GET(req, res);
+      messageCalls.GET(req, res);
         break;
       case Methods.PUT:
-        messageRequests.PUT(req, res);
+        messageCalls.PUT(req, res);
         break;
       case Methods.POST:
-        messageRequests.POST(req, res);
+        messageCalls.POST(req, res);
         break;
       default:
         res.status(405).end(`Method ${method} Not Allowed`);
