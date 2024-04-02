@@ -1,18 +1,12 @@
-const messagesTypes = {
-    "messageTypes": [{
-       "id": "1", 
-       "messageCode": "199", 
-       "description": "DESCRIPTION" 
-    },
-    {
-       "id": "1", 
-       "messageCode": "199", 
-       "description": "DESCRIPTION" 
-    },
-    {
-       "id": "1", 
-       "messageCode": "199", 
-       "description": "DESCRIPTION" 
-    }
-    ]
- }
+export const messagesTypes = [
+   {
+      "id": "1", 
+      "messageCode": "199", 
+      "description": "TEXTO LIBRE" 
+   },
+   {
+      "id": "2", 
+      "messageCode": "136", 
+      "description": "TRANSFERENCIA DE FONDOS INDIVIDUAL" 
+   },
+];
