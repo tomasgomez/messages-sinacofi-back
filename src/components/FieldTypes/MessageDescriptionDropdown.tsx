@@ -20,8 +20,8 @@ const MessageTypesDropdown = ({
 
   useEffect(() => {
     setLoading(true);
-    getMessageDescriptions().then((messageTypes = []) => {
-      const formattedMessageTypes = messageTypes.map((messageType: any) => ({
+    getMessageDescriptions().then((messageTypes: any) => {
+      const formattedMessageTypes = (messageTypes || [])?.map((messageType: any) => ({
         value: messageType.id,
         label: `${messageType.id} - ${messageType.name}`
       }));

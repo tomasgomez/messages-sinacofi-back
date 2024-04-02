@@ -27,8 +27,8 @@ const InstitutionDropdown = ({
 
   useEffect(() => {
     setLoading(true);
-    getInstitutions().then((institutions = []) => {
-      const formattedInstitutions = institutions.map((institution: any) => ({
+    getInstitutions().then((institutions: any) => {
+      const formattedInstitutions = (institutions || [])?.map((institution: any) => ({
         value: institution.id,
         label: `${institution.id} - ${institution.name}`
       }));
