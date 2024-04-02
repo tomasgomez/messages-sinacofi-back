@@ -77,14 +77,14 @@ const CreateMessage = () => {
           {loading ? (
             <Loader minHeight="400px"/>
           ) : (
-            !messageSchema ? (
+            !messageSchema?.parameters ? (
               <Box minHeight={420} justifyContent="center" width="100%" display="flex" alignItems="center">
                 Formulario de message no encontrado. 
               </Box>
             ) : (
               <>
                 <Grid container spacing={2}>
-                  {messageSchema.parameters.map((field: any) => {
+                  {messageSchema?.parameters?.map((field: any) => {
                       return (
                         <Grid item xs={field.properties.columns}>
                           <FieldSelector type={field.type} props={{...field.properties, ...field }} />
@@ -108,7 +108,7 @@ const CreateMessage = () => {
           )}
         </CardContent>
       </Card>
-      {messageSchema && !loading && (
+      {messageSchema?.parameters && !loading && (
         <Stack direction="row" justifyContent="space-between" gap="12px">
           <Stack direction="row" justifyContent="flex-start" gap="24px" mt="24px">
             <Button variant="contained" /* onClick={onClose} */ color="primary">
