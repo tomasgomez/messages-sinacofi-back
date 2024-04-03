@@ -94,3 +94,37 @@ export interface TableProps {
   isItemSelected: boolean;
   handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
 }
+
+export interface MSDetail {
+  id: string;
+  TSN: string;
+  OSN: string;
+  NSE: string;
+  messageCode: string;
+  destination: string;
+  description: string;
+  priority: string;
+  status: string;
+  sender: string;
+  creationDate: string;
+  creationTime: string;
+  receiver: string;
+  receivedDate: string;
+  receivedTime: string;
+  parameters: MSParameter[];
+};
+
+export interface MSParameter {
+  id: string;
+  name: string;
+  label: string;
+  type: string;
+  description: string;
+  placeholder: string;
+  value: string;
+  validations: {
+      required: boolean;
+      maxLength: number;
+      minLength: number;
+  };
+};
