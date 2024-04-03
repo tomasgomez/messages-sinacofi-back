@@ -3,12 +3,13 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { _get } from '@/backend/handler/message/get';
 import { _post } from '@/backend/handler/message/post';
 import { _put } from '@/backend/handler/message/put';
-import { MessageCalls } from '@/backend/handler/message/interface';
+import { APICalls } from '@/backend/interfaces/calls';
+import { Handler } from "@/backend/entities/handler";
 
 /*
-MesasageHandler
+Mesasage Handler
 */
-class MesasageHandler implements MessageCalls {
+class MesasageHandler extends Handler implements APICalls {
     
     // Get message
     async GET(req: NextApiRequest, res: NextApiResponse < any > ) {
@@ -27,4 +28,5 @@ class MesasageHandler implements MessageCalls {
 
 }
 
-export const messageCalls: MessageCalls = new MesasageHandler();
+// export calls
+export const messageCalls: APICalls = new MesasageHandler();

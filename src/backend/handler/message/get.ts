@@ -1,5 +1,5 @@
 import { validateGetMessage } from "@/backend/entities/dataCleaning/message";
-import { getMessageUseCase } from "@/backend/usecases/message/getMessage";
+import { messageUseCase } from "@/backend/usecases/message/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export async function _get(req: NextApiRequest, res: NextApiResponse < any > ){
@@ -16,7 +16,7 @@ export async function _get(req: NextApiRequest, res: NextApiResponse < any > ){
         let [message, count, offset] = result;
 
         /* Use the PrismaAreaAdapter to get the Message from the database */
-        let messageResponse = await getMessageUseCase.execute(message, count, offset)
+        let messageResponse = await messageUseCase.getMessage(message, count, offset)
 
         /* If the message is not found, return a 404 error */
         if (!messageResponse) {
