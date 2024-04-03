@@ -1,8 +1,67 @@
+const institutionOptions = [
+   {
+       "value": "350",
+       "label": "350 - SEC.PRINCI"
+   },
+   {
+       "value": "729",
+       "label": "729 - LOS HEROES"
+   },
+   {
+       "value": "600",
+       "label": "600 - INKAS ETV"
+   },
+   {
+       "value": "732",
+       "label": "732 - TAPP"
+   },
+   {
+       "value": "730",
+       "label": "730 - TENPO SA"
+   },
+   {
+       "value": "265",
+       "label": "265 - D.C.V."
+   },
+   {
+       "value": "601",
+       "label": "601 - BRINK'S"
+   },
+   {
+       "value": "0016",
+       "label": "0016 - BCI"
+   },
+   {
+       "value": "0037",
+       "label": "0037 - SAN"
+   },
+   {
+       "value": "0031",
+       "label": "0031 - HSBC"
+   },
+   {
+       "value": "0039",
+       "label": "0039 - ITAÚ"
+   },
+   {
+       "value": "0041",
+       "label": "0041 - JPM"
+   },
+   {
+       "value": "0049",
+       "label": "0049 - SECURITY"
+   },
+   {
+       "value": "0051",
+       "label": "0051 - FALABELLA"
+   }
+];
+
 export const messageSchemas = [
    {
       "id": "1", 
       "messageCode": "136", 
-      "description": "DESCRIPTION", 
+      "description": "TRANSFERENCIA DE FONDOS INDIVIDUAL", 
       "parameters": [
          {
             "id": "codeField", 
@@ -46,64 +105,7 @@ export const messageSchemas = [
                "columns": "4",
                "rows": "1",
                "multiple": false,
-               "options": [
-                  {
-                      "value": "350",
-                      "label": "350 - SEC.PRINCI"
-                  },
-                  {
-                      "value": "729",
-                      "label": "729 - LOS HEROES"
-                  },
-                  {
-                      "value": "600",
-                      "label": "600 - INKAS ETV"
-                  },
-                  {
-                      "value": "732",
-                      "label": "732 - TAPP"
-                  },
-                  {
-                      "value": "730",
-                      "label": "730 - TENPO SA"
-                  },
-                  {
-                      "value": "265",
-                      "label": "265 - D.C.V."
-                  },
-                  {
-                      "value": "601",
-                      "label": "601 - BRINK'S"
-                  },
-                  {
-                      "value": "0016",
-                      "label": "0016 - BCI"
-                  },
-                  {
-                      "value": "0037",
-                      "label": "0037 - SAN"
-                  },
-                  {
-                      "value": "0031",
-                      "label": "0031 - HSBC"
-                  },
-                  {
-                      "value": "0039",
-                      "label": "0039 - ITAÚ"
-                  },
-                  {
-                      "value": "0041",
-                      "label": "0041 - JPM"
-                  },
-                  {
-                      "value": "0049",
-                      "label": "0049 - SECURITY"
-                  },
-                  {
-                      "value": "0051",
-                      "label": "0051 - FALABELLA"
-                  }
-              ]
+               "options": institutionOptions,
             }
          },
          {
@@ -171,7 +173,7 @@ export const messageSchemas = [
             "type": "textField", 
             "label": "* 22: Teléfono", 
             "description": "Telefono", 
-            "value": "", 
+            "value": "",
             // "placeholder": "Agregar nombre y cargo del responsable...",
             "properties": {
                "name": "textField",
@@ -302,6 +304,175 @@ export const messageSchemas = [
                "name": "textField",
                "columns": "4",
                "rows": "1",
+            }
+         },
+         {
+            "id": "observations", 
+            "name": "observations", 
+            "type": "textArea", 
+            "label": "* 79: Observaciones", 
+            "description": "* 79: Observaciones", 
+            "value": "",
+            "placeholder": "Agregar observaciones si se estima conveniente...",
+            "properties": {
+               "name": "textArea",
+               "columns": "12",
+               "rows": "4",
+               "multiline": true,
+            }
+         },
+      ]
+   },
+   {
+      "id": "2", 
+      "messageCode": "199", 
+      "description": "TEXTO LIBRE", 
+      "parameters": [
+         {
+            "id": "codeField", 
+            "name": "code", 
+            "label": "Código", 
+            "type": "textField",
+            "defaultValue": "199",
+            "description": "Código del tipo de mensaje", 
+            "placeholder": "-",
+            "properties": {
+               "name": "textfield",
+               "columns": "3",
+               "disabled": true,
+               "rows": "1",
+            }
+         },
+         {
+            "id": "descriptionField", 
+            "name": "code", 
+            "label": "Descripción", 
+            "type": "textField",
+            "defaultValue": "TEXTO LIBRE",
+            "description": "Descripción del tipo de mensaje", 
+            "placeholder": "Seleccione el tipo de mensaje",
+            "properties": {
+               "name": "textfield",
+               "columns": "9",
+               "rows": "1",
+               "disabled": true,
+            }
+         },
+         {
+            "id": "institutionDestination", 
+            "name": "institutionDestination", 
+            "label": "Institución de Destino", 
+            "type": "select",
+            "description": "Todas las instituciones posibles", 
+            "placeholder": "Seleccionar institución de destino...", 
+            "properties": {
+               "name": "select",
+               "columns": "4",
+               "rows": "1",
+               "multiple": false,
+               "options": institutionOptions,
+            }
+         },
+         {
+            "id": "priority", 
+            "name": "priority", 
+            "label": "Prioridad", 
+            "type": "select",
+            "description": "Todas las prioridades posibles", 
+            "placeholder": "Seleccionar prioridad...", 
+            "properties": {
+               "name": "select",
+               "columns": "4",
+               "rows": "1",
+               "multiple": false,
+               "options": [
+                  {
+                     "label": "02 - Normal Sin Aviso de Entrega",
+                     "value": "02",
+                  }
+               ] 
+            }
+         },
+         {
+            "id": "authetication", 
+            "name": "authetication", 
+            "label": "Autenticación", 
+            "type": "select",
+            "description": "Autenticacion select", 
+            "defaultValue": "no",
+            // "placeholder": "Seleccionar institución de destino...", 
+            "properties": {
+                "name": "select",
+                "columns": "4",
+                "rows": "1",
+                "multiple": false,
+                "options": [
+                  {
+                     "label": "Sí",
+                     "value": "yes"
+                  },
+                  {
+                     "label": "No",
+                     "value": "no"
+                  }
+               ] 
+            }
+         },
+         {
+            "id": "userResponsable", 
+            "name": "userResponsable", 
+            "type": "textField", 
+            "label": "Nombre y Cargo del Responsable", 
+            "description": "Nombre y Cargo del Responsable", 
+            "value": "", 
+            "placeholder": "Agregar nombre y cargo del responsable...",
+            "properties": {
+               "name": "textField",
+               "columns": "4",
+               "rows": "1",
+            }
+         },
+         {
+            "id": "ourReference", 
+            "name": "ourReference", 
+            "type": "textField", 
+            "label": "* 20: Nuestra Referencia", 
+            "description": "Nuestra referencia", 
+            "value": "", 
+            "placeholder": "Agregar referencia...",
+            "properties": {
+               "name": "textField",
+               "columns": "4",
+               "rows": "1",
+            }
+         },
+         {
+            "id": "yourReference", 
+            "name": "yourReference", 
+            "type": "textField", 
+            "label": "* 20: Su Referencia", 
+            "description": "Su referencia", 
+            "value": "", 
+            "placeholder": "Agregar referencia...",
+            "properties": {
+               "name": "textField",
+               "columns": "4",
+               "rows": "1",
+            }
+         },
+         {
+            "id": "freeText", 
+            "name": "freeText", 
+            "type": "textArea", 
+            "label": "* 79D: Texto Libre", 
+            "description": "* 79: Texto Libre", 
+            "value": "",
+            "placeholder": "Agregar texto del mensaje...",
+            "properties": {
+               "name": "textArea",
+               "columns": "12",
+               "rows": "8",
+               "multiline": true,
             }
          },
          {
