@@ -14,10 +14,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import ExpandableTable from "./expandable-table/expandable-table-inbox";
-import Link from "@mui/material/Link";
-import { ModalLink } from "./modal-link";
+
 import { Box } from "@mui/material";
 import { CopyAll, SendOutlined } from "@mui/icons-material";
+import { ModalLink } from "./table-modal/link";
 
 export function TableContentRows(props: TableProps) {
   const { handleClick, row, isItemSelected, labelId, withCheckbox } = props;
@@ -52,7 +52,7 @@ export function TableContentRows(props: TableProps) {
           scope="row"
           {...rowOptions["OSN"]}
         >
-          <ModalLink row={row} isInProcess={!!row.status}/>
+          <ModalLink isInProcess={!!row.status}/>
         </StyledTabCell>
         <StyledTabCell {...rowOptions["creationDate"]}>{row.creationDate}</StyledTabCell>
         <StyledTabCell {...rowOptions["creationTime"]}>{row.creationTime}</StyledTabCell>

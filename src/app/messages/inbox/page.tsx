@@ -9,6 +9,8 @@ import { Data } from "@/app/component/inbox-table/type";
 import DataTable from "../../component/inbox-table";
 import { rows } from "./mock";
 import { mockResponse } from "./response-mock";
+import { mockMS199 } from "./mock-ms-199";
+import { ModalLink } from "@/app/component/inbox-table/components/table-modal/link";
 
 export default function InboxScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
