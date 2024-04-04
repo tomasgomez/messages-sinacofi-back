@@ -1,5 +1,5 @@
 import { MessageRepository } from '../../interfaces/messageRepository';
-import { PrismaMessageAdapter as PrismaAdapter } from '../../adapters/prisma/message';
+import { PrismaMessageAdapter as PrismaAdapter } from '../../repository/message';
 import { Message } from '../../entities/message';
 import { MessageUsecases } from '@/backend/interfaces/messageUsecases';
 import { getMessage } from './getMessage';
