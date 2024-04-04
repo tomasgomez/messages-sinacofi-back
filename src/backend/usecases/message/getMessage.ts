@@ -8,7 +8,7 @@ export async function getMessage(repository: MessageRepository, message: Message
     return messageResponse;
   } catch (error) {
     // Handle errors appropriately
-    console.error('Error fetching message:', error);
+    console.error('Error updating message:', error);
     return null;
   }
 }

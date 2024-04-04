@@ -9,7 +9,7 @@ export async function createMessage(repository: MessageRepository, message: Mess
         return messageResponse;
     } catch (error) {
         // Handle errors appropriately
-        console.error('Error fetching message:', error);
+        console.error('Error creating message:', error);
         return null;
     }
 }
