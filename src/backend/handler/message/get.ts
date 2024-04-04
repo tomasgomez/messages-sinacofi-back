@@ -2,6 +2,8 @@ import { validateGetMessage } from "@/backend/entities/dataCleaning/message";
 import { messageUseCase } from "@/backend/usecases/message/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 
+
+// get message function
 export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
     try {
 
