@@ -1,5 +1,5 @@
 import { MessageRepository } from "@/backend/interfaces/messageRepository";
-import { PrismaMessageAdapter as PrismaAdapter } from '../../adapters/prisma/message';
+import { PrismaMessageAdapter as PrismaAdapter } from '../../repository/message';
 import { Message } from '../../entities/message';
 import { MessageDetailUsecases } from "@/backend/interfaces/messageDetailUsecases";
 import { getMessageDetail } from './getMessageDetail';
@@ -15,3 +15,5 @@ export class MessageDetailUsecase implements MessageDetailUsecases {
 
 const messageRepository: MessageRepository = new PrismaAdapter();
 export const messageDetailUseCase = new MessageDetailUsecase(messageRepository); // Add it on the api layer
+
+

@@ -1,5 +1,5 @@
 import { Message } from "@/backend/entities/message";
-import { PrismaClientWrapper } from './client/prismaWrapper';
+import { PrismaClientWrapper } from '../entities/prismaWrapper';
 
 
 export async function create(message: Message): Promise<Message | null> {
