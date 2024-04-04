@@ -1,7 +1,7 @@
 import { MessageRepository } from '../../interfaces/messageRepository';
 import { Message } from '../../entities/message';
   
-export async function _getMessageDetail(repository: MessageRepository, message: Message, count: string, offset: string): Promise<Message[] | null> {
+export async function getMessageDetail(repository: MessageRepository, message: Message, count: string, offset: string): Promise<Message[] | null> {
     try {
         var messageResponse = await repository.find(message, count, offset);
         return messageResponse;

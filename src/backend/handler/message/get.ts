@@ -2,7 +2,7 @@ import { validateGetMessage } from "@/backend/entities/dataCleaning/message";
 import { messageUseCase } from "@/backend/usecases/message/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function _get(req: NextApiRequest, res: NextApiResponse < any > ){
+export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
     try {
 
         /* Validate the query params and get the Message */
@@ -32,3 +32,4 @@ export async function _get(req: NextApiRequest, res: NextApiResponse < any > ){
         res.status(500).json(new Error('Internal server error'));
       }
 }
+
