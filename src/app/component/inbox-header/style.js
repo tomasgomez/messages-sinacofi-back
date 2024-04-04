@@ -36,7 +36,7 @@ export const StyledMoalSection=styled(Typography)`
   font-size: 16px;
   font-weight:600;
   font-family: ${montserrat.style.fontFamily};
-  margin-bottom:24px;
+  margin-bottom:16px;
 `
 
 export const StyledCapitalizedSpan=styled('span')`

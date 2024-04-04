@@ -32,9 +32,9 @@ export const theme = createTheme({
       montserrat.style.fontFamily,
     ].join(", "),
     h5:{
-      fontFamily:montserrat.style.fontFamily,
-      fontSize:'24px',
-      fontWeight:500
+      fontFamily: montserrat.style.fontFamily,
+      fontSize: '24px',
+      fontWeight: 500
     }
   },
   palette: {
@@ -48,4 +48,29 @@ export const theme = createTheme({
   status: {
     danger: orange[500],
   },
+  components: {
+    // Name of the component
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          maxWidth: "calc(100% - 270px)"
+        }
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontFamily: montserrat.style.fontFamily,
+          textTransform: "capitalize",
+
+        },
+        containedPrimary: {
+          color: "#fffffff !important",
+        },
+        colorPrimary: {
+          color: "#fffffff !important",
+        },
+      }
+    }
+  }
 });

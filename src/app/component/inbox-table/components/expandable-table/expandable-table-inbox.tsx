@@ -30,7 +30,7 @@ export default function ExpandableTable(props: { isOpen: boolean }) {
                     sx={{
                       p: 2,
                       pr: index === columnsExpandableTable.length - 1 ? 2 : 0,
-                      pl: index === 0 ? 2 : 0,
+                      pl: 2,
                     }}
                   >
                     <span>{columnsData.label}</span>

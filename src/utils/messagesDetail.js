@@ -25,6 +25,7 @@ const messages = {
             "description": "Todas las instituciones posibles", // String - description of the parameter
             "placeholder": "Seleccionar institución de destino...", // String - value of the parameter
             "value": "", // String - value of the parameter
+            "defaultValue": "", // String - default value of the parameter
             "validations": {
                "required": true, // Boolean - if the parameter is required
                "maxLength": 50, // Number - maximum length of the input
