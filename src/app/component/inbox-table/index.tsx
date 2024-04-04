@@ -83,7 +83,7 @@ export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [order, rows, orderBy, page, rowsPerPage]
   );
 
   return (

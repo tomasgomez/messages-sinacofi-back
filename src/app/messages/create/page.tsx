@@ -27,8 +27,8 @@ const CreateMessage = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const messageCode = searchParams.get("messageCode") || "";
-  const institutionId = searchParams.get("institutionId") || "";
+  const messageCode = searchParams?.get("messageCode") || "";
+  const institutionId = searchParams?.get("institutionId") || "";
 
   useEffect(() => {
     setLoading(true);
@@ -86,7 +86,7 @@ const CreateMessage = () => {
                 <Grid container spacing={2}>
                   {messageSchema?.parameters?.map((field: any) => {
                       return (
-                        <Grid item xs={field.properties.columns}>
+                        <Grid item xs={field.properties.columns} key={field.name}>
                           <FieldSelector type={field.type} props={{...field.properties, ...field }} />
                           {/* // <Field
                           //   {...field.properties}
