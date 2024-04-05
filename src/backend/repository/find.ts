@@ -2,7 +2,7 @@ import { Message } from "@/backend/entities/message";
 import { PrismaClientWrapper } from '../entities/prismaWrapper';
 
 
-export async function find(message: Message, count:string, offset: string): Promise<Message[] | null> {
+export async function find(message: Message, count:string, offset: string): Promise<Message[] | Error> {
     try {
         let messages: Message[];
   
@@ -25,6 +25,8 @@ export async function find(message: Message, count:string, offset: string): Prom
         /* If the attributes are present, add them to the where object */
         if (id) where.id = id;
         if (messageCode) where.messageCode = messageCode;
+
+        console.log('where', where);
   
         /* If count is not present then find all message */
         if (count === '0' || count === '') {
@@ -41,15 +43,14 @@ export async function find(message: Message, count:string, offset: string): Prom
   
         /* If the messages is not found, return an error */
         if (messages.length === 0) {
-          return null;
+          return new Error('Message not found');
+        } else {
+          return messages;
         }
+
+      } catch (error: any) {
   
-        return messages;
-  
-      } catch (error) {
-  
-        //TODO: Handle errors appropriately
         console.error('Error fetching message:', error);
-        return null;
+        return error;
       }
 }

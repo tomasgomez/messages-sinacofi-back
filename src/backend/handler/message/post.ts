@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 export async function post(req: NextApiRequest, res: NextApiResponse < any > ) {
     try {
         let messageResponse = await messageUseCase.createMessage(req.body);
-        res.status(201).json("");
+        res.status(201).json(req.body);
         return;
       } catch (error: any) {
         console.error('Error creating Message:', error);

@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
   try {
     const method = req.method;
     switch (method) {
-      case Methods.GET: messageDetailCalls.GET(req, res);
+      case Methods.GET: await messageDetailCalls.GET(req, res);
         break;
       default:
         res.status(405).end(`Method ${method} Not Allowed`);

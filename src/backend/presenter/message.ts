@@ -8,8 +8,15 @@ export function validateGetMessage(data: any): [Message, string, string] | Error
   let countResponse: string = '0';
   let offsetResponse: string = '0';
 
-  if (id && typeof id === 'number') {
-    message.id = id;
+
+  if (id && typeof id === 'string' && id.trim() !== ''){
+    let idToNumber = parseInt(id);
+
+    if (isNaN(idToNumber)) {
+      return new Error('Invalid id');
+    }
+
+    message.id = idToNumber;
   }
 
   if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {

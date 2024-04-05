@@ -12,15 +12,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
   try {
     const method = req.method;
     switch (method) {
-      case Methods.GET: messageCalls.GET(req, res);
-        break;
-      case Methods.PUT: messageCalls.PUT(req, res);
-        break;
-      case Methods.POST: messageCalls.POST(req, res);
-        break;
+      case Methods.GET: await messageCalls.GET(req, res);
+        return;
+      case Methods.PUT: await messageCalls.PUT(req, res);
+        return;
+      case Methods.POST: await messageCalls.POST(req, res);
+        return;
       default:
         res.status(405).end(`Method ${method} Not Allowed`);
     }
+    return;
   } catch (error: any) {
     console.log('Error:', error);
     errorHandler(error, req, res);
