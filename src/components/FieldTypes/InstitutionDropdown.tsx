@@ -36,7 +36,7 @@ const InstitutionDropdown = ({
       setInstitutionList(withAllOption ? [AllOption, ...formattedInstitutions] : formattedInstitutions);
       setLoading(false);
     });
-  }, []);
+  }, [withAllOption]);
 
   return (
     <Dropdrown

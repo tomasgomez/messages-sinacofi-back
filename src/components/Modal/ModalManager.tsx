@@ -23,7 +23,7 @@ export const useModalManager = ({ component, props }: { component: any, props?: 
 
   const onOpen = useCallback((newprops?: object) => {
     return onModalOpen && onModalOpen(component, { ...props, ...newprops });
-  }, []);
+  }, [component, props, onModalOpen]);
 
   return {
     onOpen,

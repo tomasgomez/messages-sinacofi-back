@@ -141,7 +141,7 @@ const navList = [
 
 const SideBar = () => {
   const [open, setOpen] = useState("");
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
 
   const handleClick = (section: string) => {
     setOpen(section === open ? "" : section);

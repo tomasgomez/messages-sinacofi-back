@@ -1,22 +1,15 @@
 import { MessageRepository } from '../../interfaces/messageRepository';
-import { PrismaMessageAdapter as PrismaAdapter } from '../../adapters/prisma/message';
 import { Message } from '../../entities/message';
 
-export class GetMessage {
-    constructor(private readonly messageRepository: MessageRepository) {} 
-  
-    async execute(message: Message, count: string, offset: string): Promise<Message[] | null> {
-      try {
-        var messageResponse = await this.messageRepository.find(message, count, offset);
-        return messageResponse;
-      } catch (error) {
-        // Handle errors appropriately
-        console.error('Error fetching message:', error);
-        return null;
-      }
-    }
+// Get message function
+export async function getMessage(repository: MessageRepository, message: Message, count: string, offset: string): Promise<Message[] | Error> {
+  try {
+    return repository.find(message, count, offset);
+    
+  } catch (error:  any) {
+    console.error('Error updating message:', error);
+    return error;
   }
+}
 
 
-const messageRepository: MessageRepository = new PrismaAdapter();
-export const getMessageUseCase = new GetMessage(messageRepository); // Add it on the api layer
