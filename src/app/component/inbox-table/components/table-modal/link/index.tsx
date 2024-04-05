@@ -13,14 +13,22 @@ import { ModalMainContent } from "../content";
 import { MSDetail } from "../../../type";
 import { mockMS199 } from "@/app/messages/inbox/mock-ms-199";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
+import { PDFViewer } from "@react-pdf/renderer";
+import Typography from "@mui/material/Typography/Typography";
+import { montserrat } from "@/utils/fonts";
+import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
+import Grid from "@mui/material/Grid/Grid";
+import { PDFTemplate } from "@/app/component/PDFTemplate";
 
 export function ModalLink(props: { isInProcess?: boolean; }) {
     const [data, setData] = React.useState<MSDetail>(mockMS199);
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    const [pdfView, setPdfView] = React.useState<boolean>(false);
     const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
     const handleClose = () => {
-        setIsOpen(false)
+        setIsOpen(false);
+        setPdfView(false);
     };
  
 
@@ -48,6 +56,10 @@ export function ModalLink(props: { isInProcess?: boolean; }) {
         },1000)
     };
 
+    const handlePrint = () => {
+        setPdfView(true);
+    };
+
     return (
         <>
             <Link
@@ -69,11 +81,26 @@ export function ModalLink(props: { isInProcess?: boolean; }) {
                     <Box display='flex' justifyContent='center' py={15}>
                         <CircularProgress size={45} thickness={2} />
                     </Box>
-                : (
+                :  pdfView ? (
                     <>
+                        <Typography variant="h6" fontWeight={700} fontFamily={montserrat.style.fontFamily} mb={3}fontSize={16}>
+                            Previsualización de impresión
+                        </Typography>
+                        <PDFViewer width="100%" height='450px'>
+                            <PDFTemplate data={data}/>
+                        </PDFViewer>
+                    </>
+                ) : ( 
+                    <> 
+                        <Grid item xs={4} position="absolute" right={40}>
+                            <Button onClick={handlePrint} variant="contained" sx={{ color: 'white', textTransform: 'none', fontFamily: montserrat.style.fontFamily }} size="large">
+                                <PrintOutlinedIcon />
+                                Imprimir
+                            </Button>
+                        </Grid>
                         <Box>
                             <ModalHeaderSection data={data} />
-                        </Box>
+                        </Box> 
                         <Box>
                             <ModalMainContent data={data} />
                         </Box>
@@ -84,6 +111,7 @@ export function ModalLink(props: { isInProcess?: boolean; }) {
                         </Box>
                     </>
                 )}
+               
             </Modal>
         </>
     )
