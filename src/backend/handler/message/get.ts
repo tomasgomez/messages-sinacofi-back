@@ -8,24 +8,25 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
     try {
 
         /* Validate the query params and get the Message */
-        // let result = validateGetMessage(req.query);
+        let result = validateGetMessage(req.query);
 
-        // if (result instanceof Error) {
-        //   res.status(400).json(result);
-        //   return;
-        // }
+        if (result instanceof Error) {
+          res.status(400).json(result);
+          return;
+        }
 
-        // let [message, count, offset] = result;
+        let [message, count, offset] = result;
 
-        // /* Use the PrismaAreaAdapter to get the Message from the database */
-        // let messageResponse = await messageUseCase.getMessage(message, count, offset)
+        /* Use the PrismaAreaAdapter to get the Message from the database */
+        let messageResponse = await messageUseCase.getMessage(message, count, offset)
 
-        // /* If the message is not found, return a 404 error */
-        // if (messageResponse instanceof Error) {
+        console.log('messageResponse', messageResponse);
 
-        //   res.status(404).json(messageResponse);
-        //   return;
-        // }
+        /* If the message is not found, return a 404 error */
+        if (messageResponse instanceof Error) {
+          res.status(404).json(messageResponse);
+          return;
+        }
 
         /* Return the message */
         res.status(200).json(messageResponse);

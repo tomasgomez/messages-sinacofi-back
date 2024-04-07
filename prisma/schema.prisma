@@ -32,6 +32,8 @@ model Message {
   receiver     String
   receivedDate String
   receivedTime String
+  documents    String
+  actions      String
 
   parameters Json
 
