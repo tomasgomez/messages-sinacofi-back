@@ -22,6 +22,7 @@ const Form = ({
   schema,
   loading,
   onSubmit,
+  onPrepare,
 }: {
   children?: any;
   title: string;
@@ -29,16 +30,30 @@ const Form = ({
   schema?: any;
   loading?: boolean;
   onSubmit: any;
+  onPrepare: any;
 }) => {
-  const { handleSubmit, register, control, reset, formState: { errors } } = useForm({
+  const { handleSubmit, register, control, reset, getValues, trigger, formState: { errors } } = useForm({
     defaultValues: getDefaultValues(schema),
   });
   
   // const onSubmit: SubmitHandler<{}> = (data: any) => console.log(data)
 
   useEffect(() => {
-    reset(getDefaultValues(schema))
+    reset(getDefaultValues(schema));
   }, [schema, reset]);
+
+  const handlePrepare = () => {
+    trigger().then((validation) => {
+      if (validation) {
+        const values = getValues();
+        onPrepare(values);
+
+      }
+    });
+    // Object.entries(errors || {}).length
+    // console.log({ t, values });
+    // onPrepare(values);
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}> 
@@ -110,7 +125,7 @@ const Form = ({
               <Button variant="contained" /* onClick={onClose} */ color="primary" type="submit">
                 Enviar
               </Button>
-              <Button variant="outlined" /* onClick={onSubmit} */>
+              <Button variant="outlined" /* onClick={onSubmit} */ onClick={handlePrepare}>
                 Grabar en Preparados
               </Button>
             </Stack>
