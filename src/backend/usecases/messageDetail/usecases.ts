@@ -9,7 +9,7 @@ export class MessageDetailUsecase implements MessageDetailUsecases {
     constructor(private readonly messageRepository: MessageRepository) {}
 
     // get message detail
-    getMessageDetail = async (message: Message, count: string, offset: string): Promise<Message[] | null> =>
+    getMessageDetail = async (message: Message, count: string, offset: string): Promise<Message[] | Error> =>
         getMessageDetail(this.messageRepository, message, count, offset)
 }
 

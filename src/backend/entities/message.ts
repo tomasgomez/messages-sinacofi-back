@@ -1,5 +1,5 @@
 export class Message {
-    id: number;
+    id?: number;
     TSN: string;
     OSN: string;
     NSE: string;
@@ -14,10 +14,11 @@ export class Message {
     receiver: string;
     receivedDate: string;
     receivedTime: string;
+    actions: string;
+    documents: string;
     parameters: Parameter[] | any;
 
-    constructor(){
-        this.id = 0;
+    constructor() {
         this.TSN = '';
         this.OSN = '';
         this.NSE = '';
@@ -32,6 +33,8 @@ export class Message {
         this.receiver = '';
         this.receivedDate = '';
         this.receivedTime = '';
+        this.actions = '';
+        this.documents = '';
         this.parameters = [];
     }
 }

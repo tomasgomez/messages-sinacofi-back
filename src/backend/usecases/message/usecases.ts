@@ -14,15 +14,15 @@ export class MessageUscase implements MessageUsecases  {
     constructor(private readonly messageRepository: MessageRepository) {} 
     
     // get message
-    getMessage = async (message: Message, count: string, offset: string): Promise<Message[] | null> => 
+    getMessage = async (message: Message, count: string, offset: string): Promise<Message[] | Error> => 
         getMessage(this.messageRepository, message, count, offset)
     
     // create message
-    createMessage = async (message: Message): Promise<Message | null> => 
+    createMessage = async (message: Message): Promise<Message | Error> => 
         createMessage(this.messageRepository, message);
 
     // update message
-    updateMessage = async (message: Message): Promise<Message | null> => 
+    updateMessage = async (message: Message): Promise<Message | Error> => 
         updateMessage(this.messageRepository, message);
 
     

@@ -1,11 +1,19 @@
 import { messageUseCase } from "@/backend/usecases/message/usecases";
+import { validateCreateMessage } from "@/backend/presenter/message";
 import { NextApiRequest, NextApiResponse } from "next";
 
 // post message function
 export async function post(req: NextApiRequest, res: NextApiResponse < any > ) {
     try {
-        let messageResponse = await messageUseCase.createMessage(req.body);
-        res.status(201).json(req.body);
+        let validatedMessage = await validateCreateMessage(req.body);
+
+        if (validatedMessage instanceof Error) {
+            res.status(400).json(validatedMessage.message);
+            return;
+        }
+
+        let messageResponse = await messageUseCase.createMessage(validatedMessage);
+        res.status(201).json(messageResponse);
         return;
       } catch (error: any) {
         console.error('Error creating Message:', error);

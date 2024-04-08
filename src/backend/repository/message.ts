@@ -6,12 +6,12 @@ import { update } from './update';
 
 export class PrismaMessageAdapter implements MessageRepository {
   // find message
-  find = async(message: Message, count:string, offset: string): Promise<Message[] | null> => find(message, count, offset);
+  find = async(message: Message, count:string, offset: string): Promise<Message[] | Error> => find(message, count, offset);
   
   // create message
-  create = async(message: Message): Promise<Message | null> => create(message);
+  create = async(message: Message): Promise<Message | Error> => create(message);
   
   // update message
-  update = async(message: Message): Promise<Message | null> => update(message);
+  update = async(message: Message): Promise<Message | Error> => update(message);
 
 }
