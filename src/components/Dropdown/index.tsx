@@ -32,7 +32,7 @@ export default function Dropdrown(props: {
     labelKey = "label",
     placeholder,
     loading,
-    loadingMessage = "loading..."
+    loadingMessage = "Cargando..."
   } = props;
   const [optionSelected, setOptionSelected] = React.useState(selected || defaultValue);
   const [isFocused, setIsFocused] = React.useState(false);

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Dropdrown from "../Dropdown";
 
 const MessageTypesDropdown = ({
-  label = "Intituciones",
+  label = "Descripción",
   defaultValue,
   width,
   placeholder,
@@ -22,8 +22,8 @@ const MessageTypesDropdown = ({
     setLoading(true);
     getMessageDescriptions().then((messageTypes: any) => {
       const formattedMessageTypes = (messageTypes || [])?.map((messageType: any) => ({
-        value: messageType.id,
-        label: `${messageType.id} - ${messageType.name}`
+        value: messageType.messageCode,
+        label: `${messageType.messageCode} - ${messageType.description}`
       }));
       setMessageTypes(formattedMessageTypes);
       setLoading(false);

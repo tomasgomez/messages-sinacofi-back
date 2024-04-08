@@ -71,6 +71,30 @@ export const theme = createTheme({
           color: "#fffffff !important",
         },
       }
+    },
+    MuiTextField: {
+      styleOverrides: {
+
+      }
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        disabled: {
+          backgroundColor: "#E5E5E5",
+          color: "#000000 !important",
+        },
+      }
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          color: "#565656 !important",
+        },
+        disabled: {
+          backgroundColor: "#DFF8FF",
+          color: "#565656 !important",
+        }
+      }
     }
   }
 });

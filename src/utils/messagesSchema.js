@@ -64,8 +64,8 @@ export const messageSchemas = [
       "description": "TRANSFERENCIA DE FONDOS INDIVIDUAL", 
       "parameters": [
          {
-            "id": "codeField", 
-            "name": "code", 
+            "id": "messageCode", 
+            "name": "messageCode", 
             "label": "Código", 
             "type": "textField",
             "defaultValue": "136",
@@ -79,8 +79,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "descriptionField", 
-            "name": "code", 
+            "id": "descriptionTypeMessage", 
+            "name": "descriptionTypeMessage", 
             "label": "Descripción", 
             "type": "textField",
             "defaultValue": "TRANSFERENCIA DE FONDOS INDIVIDUAL",
@@ -94,10 +94,11 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "institutionDestination", 
-            "name": "institutionDestination", 
+            "id": "destination", 
+            "name": "destination", 
             "label": "Institución de Destino", 
             "type": "select",
+            "defaultValue": "",
             "description": "Todas las instituciones posibles", 
             "placeholder": "Seleccionar institución de destino...", 
             "properties": {
@@ -154,12 +155,12 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "userResponsable", 
-            "name": "userResponsable", 
+            "id": "sender", // Quien envia
+            "name": "sender", 
             "type": "textField", 
             "label": "Nombre y Cargo del Responsable", 
-            "description": "Nombre y Cargo del Responsable", 
-            "value": "", 
+            "description": "Nombre y Cargo del Responsable",
+            "defaultValue": "",
             "placeholder": "Agregar nombre y cargo del responsable...",
             "properties": {
                "name": "textField",
@@ -170,8 +171,8 @@ export const messageSchemas = [
          {
             "id": "phoneNumber", 
             "name": "phoneNumber", 
-            "type": "textField", 
-            "label": "* 22: Teléfono", 
+            "type": "phoneNumber", 
+            "label": "22: Teléfono", 
             "description": "Telefono", 
             "value": "",
             // "placeholder": "Agregar nombre y cargo del responsable...",
@@ -185,7 +186,7 @@ export const messageSchemas = [
             "id": "reference", 
             "name": "reference", 
             "type": "textField", 
-            "label": "* 20: Nuestra Referencia", 
+            "label": "20: Nuestra Referencia", 
             "description": "Referencia", 
             "value": "", 
             "placeholder": "Agregar referencia...",
@@ -199,9 +200,9 @@ export const messageSchemas = [
             "id": "institutionName", 
             "name": "institutionName", 
             "type": "textField", 
-            "label": "* AF1: Nombre de Institución", 
+            "label": "AF1: Nombre de Institución", 
             "description": "Nombre de la institución", 
-            "value": "", 
+            "defaultValue": "0027 CORP BANCA", 
             "placeholder": "Ingrese el nombre de la institución...",
             "properties": {
                "name": "textField",
@@ -213,7 +214,7 @@ export const messageSchemas = [
             "id": "modality", 
             "name": "modality", 
             "type": "textField", 
-            "label": "* JAE Modalidad", 
+            "label": "JAE Modalidad", 
             "description": "JAE Modalidad", 
             "value": "", 
             // "placeholder": "Agregar referencia...",
@@ -227,8 +228,8 @@ export const messageSchemas = [
             "id": "transmitter", 
             "name": "transmitter", 
             "type": "textField", 
-            "label": "* AMI: BIC Emisor", 
-            "description": "* AMI: BIC Emisor", 
+            "label": "AMI: BIC Emisor", 
+            "description": "AMI: BIC Emisor", 
             "value": "",
             "defaultValue": "CONBCLRM323",
             // "placeholder": "Agregar referencia...",
@@ -243,8 +244,8 @@ export const messageSchemas = [
             "id": "receiver", 
             "name": "receiver", 
             "type": "textField", 
-            "label": "* AMJ: BIC Receptor", 
-            "description": "* AMJ: BIC Receptor", 
+            "label": "AMJ: BIC Receptor", 
+            "description": "AMJ: BIC Receptor", 
             "value": "",
             "defaultValue": "CONBCLRM323",
             // "placeholder": "Agregar referencia...",
@@ -258,8 +259,8 @@ export const messageSchemas = [
             "id": "emissionDate", 
             "name": "emissionDate", 
             "type": "textField", 
-            "label": "* AMK: Fecha de Emisión", 
-            "description": "* AMK: Fecha de Emisión", 
+            "label": "AMK: Fecha de Emisión", 
+            "description": "AMK: Fecha de Emisión", 
             "value": "",
             "defaultValue": new Date().toLocaleDateString(),
             // "defaultValue": "currentDate",
@@ -275,8 +276,8 @@ export const messageSchemas = [
             "id": "typeOfCurrency", 
             "name": "typeOfCurrency", 
             "type": "select", 
-            "label": "* OP2: Tipo de Moneda (ISO 4217)", 
-            "description": "* OP2: Tipo de Moneda (ISO 4217)", 
+            "label": "OP2: Tipo de Moneda (ISO 4217)", 
+            "description": "OP2: Tipo de Moneda (ISO 4217)", 
             "value": "",
             "defaultValue": "clp",
             // "placeholder": "Agregar referencia...",
@@ -286,20 +287,24 @@ export const messageSchemas = [
                "rows": "1",
                "options": [
                   {
-                     "label": "Peso Chileno CLP",
+                     "label": "Peso Chileno (CLP)",
                      "value": "clp"
+                  },
+                  {
+                     "label": "Unidad de Fomento (UF)",
+                     "value": "uf"
                   }
                ]
             }
          },
          {
-            "id": "typeOfCurrency", 
-            "name": "typeOfCurrency", 
-            "type": "textField", 
-            "label": "* OP3: Monto de Operación", 
-            "description": "* OP3: Monto de Operación", 
+            "id": "openrationAmount", 
+            "name": "openrationAmount", 
+            "type": "amount", 
+            "label": "OP3: Monto de Operación", 
+            "description": "OP3: Monto de Operación", 
             "value": "",
-            "defaultValue": "$434,324.03",
+            "defaultValue": "434,324.03",
             "properties": {
                "name": "textField",
                "columns": "4",
@@ -310,8 +315,8 @@ export const messageSchemas = [
             "id": "observations", 
             "name": "observations", 
             "type": "textArea", 
-            "label": "* 79: Observaciones", 
-            "description": "* 79: Observaciones", 
+            "label": "79: Observaciones", 
+            "description": "79: Observaciones", 
             "value": "",
             "placeholder": "Agregar observaciones si se estima conveniente...",
             "properties": {
@@ -329,8 +334,8 @@ export const messageSchemas = [
       "description": "TEXTO LIBRE", 
       "parameters": [
          {
-            "id": "codeField", 
-            "name": "code", 
+            "id": "messageCode", 
+            "name": "messageCode", 
             "label": "Código", 
             "type": "textField",
             "defaultValue": "199",
@@ -344,8 +349,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "descriptionField", 
-            "name": "code", 
+            "id": "descriptionTypeMessage", 
+            "name": "descriptionTypeMessage", 
             "label": "Descripción", 
             "type": "textField",
             "defaultValue": "TEXTO LIBRE",
@@ -359,8 +364,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "institutionDestination", 
-            "name": "institutionDestination", 
+            "id": "destination", 
+            "name": "destination", 
             "label": "Institución de Destino", 
             "type": "select",
             "description": "Todas las instituciones posibles", 
@@ -419,8 +424,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "userResponsable", 
-            "name": "userResponsable", 
+            "id": "sender", 
+            "name": "sender", 
             "type": "textField", 
             "label": "Nombre y Cargo del Responsable", 
             "description": "Nombre y Cargo del Responsable", 
@@ -436,7 +441,7 @@ export const messageSchemas = [
             "id": "ourReference", 
             "name": "ourReference", 
             "type": "textField", 
-            "label": "* 20: Nuestra Referencia", 
+            "label": "20: Nuestra Referencia", 
             "description": "Nuestra referencia", 
             "value": "", 
             "placeholder": "Agregar referencia...",
@@ -450,7 +455,7 @@ export const messageSchemas = [
             "id": "yourReference", 
             "name": "yourReference", 
             "type": "textField", 
-            "label": "* 20: Su Referencia", 
+            "label": "20: Su Referencia", 
             "description": "Su referencia", 
             "value": "", 
             "placeholder": "Agregar referencia...",
@@ -464,8 +469,8 @@ export const messageSchemas = [
             "id": "freeText", 
             "name": "freeText", 
             "type": "textArea", 
-            "label": "* 79D: Texto Libre", 
-            "description": "* 79: Texto Libre", 
+            "label": "79D: Texto Libre", 
+            "description": "79: Texto Libre", 
             "value": "",
             "placeholder": "Agregar texto del mensaje...",
             "properties": {
@@ -479,8 +484,8 @@ export const messageSchemas = [
             "id": "observations", 
             "name": "observations", 
             "type": "textArea", 
-            "label": "* 79: Observaciones", 
-            "description": "* 79: Observaciones", 
+            "label": "79: Observaciones", 
+            "description": "79: Observaciones", 
             "value": "",
             "placeholder": "Agregar observaciones si se estima conveniente...",
             "properties": {
