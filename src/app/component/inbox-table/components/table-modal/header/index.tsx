@@ -25,7 +25,7 @@ export function ModalHeaderSection(props: { data: MSDetail; isInProcess?: boolea
                         mb={3}
                         fontSize={16}
                     >
-                        MS {`${data.messageCode}`} - <StyledCapitalizedSpan style={{ textTransform: 'capitalize' }}>{`${data.description.toLowerCase()}`}</StyledCapitalizedSpan>
+                        MS {`${data?.messageCode}`} - <StyledCapitalizedSpan style={{ textTransform: 'capitalize' }}>{`${data?.description.toLowerCase()}`}</StyledCapitalizedSpan>
                     </Typography>
                 </Grid>
             </Grid>
