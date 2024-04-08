@@ -1,10 +1,16 @@
-import { Message } from "@/backend/entities/message";
-import { MessageRepository } from "@/backend/interfaces/messageRepository";
-import { fetchServerResponse } from "next/dist/client/components/router-reducer/fetch-server-response";
+import {
+    Message
+} from "@/backend/entities/message";
+import {
+    MessageRepository
+} from "@/backend/interfaces/messageRepository";
+import {
+    getChileanTime
+} from "@/backend/utils/functions";
 
 
 // Create message function
-export async function updateMessage(repository: MessageRepository, message: Message): Promise<Message | Error> {
+export async function updateMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
     try {
 
         /* If the message status is 05, create a new message with status 06 */
@@ -28,9 +34,18 @@ export async function updateMessage(repository: MessageRepository, message: Mess
 
             /* Update the status of the message */
             messageCopy.status = "06";
-            
-            messageCopy.receivedDate = new Date().toISOString().slice(0, 10);
-            messageCopy.receivedTime = new Date().toISOString().slice(11, 19);
+
+            /* Get the Chilean time */
+            let response = getChileanTime();
+
+            if (response instanceof Error) {
+                return response;
+            }
+
+            let [dateString, time] = response;
+
+            messageCopy.receivedDate = dateString;
+            messageCopy.receivedTime = time;
 
             /* Delete the id of the message */
             delete messageCopy.id;
@@ -43,10 +58,19 @@ export async function updateMessage(repository: MessageRepository, message: Mess
             }
         }
 
-        /* Update the message */
-        message.receivedDate = new Date().toISOString().slice(0, 10);
-        message.receivedTime = new Date().toISOString().slice(11, 19);
+        /* Get the Chilean time */
+        let response = getChileanTime();
 
+        if (response instanceof Error) {
+            return response;
+        }
+
+        let [dateString, time] = response;
+
+        message.receivedDate = dateString;
+        message.receivedTime = time;
+
+        /* Update the message */
         let messageResponse = await repository.update(message);
 
         return messageResponse;

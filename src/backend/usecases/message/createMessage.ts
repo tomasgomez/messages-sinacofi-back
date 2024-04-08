@@ -1,9 +1,16 @@
-import { Message } from "@/backend/entities/message";
-import { MessageRepository } from "@/backend/interfaces/messageRepository";
+import {
+    Message
+} from "@/backend/entities/message";
+import {
+    MessageRepository
+} from "@/backend/interfaces/messageRepository";
+import {
+    getChileanTime
+} from "@/backend/utils/functions";
 
 
 // Create message function
-export async function createMessage(repository: MessageRepository, message: Message): Promise<Message | Error> {
+export async function createMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
     try {
         // TSN, OSN, NSE, description, status,  creationDate, creationTime, receivedDate, receivedTime
 
@@ -13,15 +20,25 @@ export async function createMessage(repository: MessageRepository, message: Mess
             message.description = "TRANSFERENCIA DE FONDOS INDIVIDUAL";
         }
 
-        message.creationDate = new Date().toISOString().slice(0, 10);
-        message.creationTime = new Date().toISOString().slice(11, 19);
+        /* Get the Chilean time */
+        let response = getChileanTime();
 
-        if (message.status === "06") {
-            message.receivedDate = new Date().toISOString().slice(0, 10);
-            message.receivedTime = new Date().toISOString().slice(11, 19);
+        if (response instanceof Error) {
+            return response;
         }
 
-        let messageResponse = await repository.create(message);  
+        let [dateString, time] = response;
+
+        /* Set the creation date and time */
+        message.creationDate = dateString;
+        message.creationTime = time;
+
+        if (message.status === "06") {
+            message.receivedDate = dateString;
+            message.receivedTime = time;
+        }
+
+        let messageResponse = await repository.create(message);
 
         /* TODO: Add this as a correlative */
         if (messageResponse instanceof Error) {
@@ -41,7 +58,7 @@ export async function createMessage(repository: MessageRepository, message: Mess
 
         messageResponse = await repository.update(messageAux);
         /*  */
-        
+
         return messageResponse;
     } catch (error: any) {
         // Handle errors appropriately
