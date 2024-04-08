@@ -18,17 +18,20 @@ export async function find(message: Message, detail: boolean, count: string, off
     const {
       id,
       messageCode,
+      status,
     } = message;
 
     /* Initialize the where object with the possible attributes to search with */
     const where: {
       id ? : number;
       messageCode ? : string;
+      status ? : string;
     } = {};
 
     /* If the attributes are present, add them to the where object */
     if (id) where.id = id;
     if (messageCode) where.messageCode = messageCode;
+    if (status) where.status = status;
 
     console.log('where', where);
 
