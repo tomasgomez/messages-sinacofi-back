@@ -1,6 +1,5 @@
 const messageCreation = {
     "messageCode": "199",
-    "destination": "21",
     "priority": "02",
     "status": "sent",
     "sender": "0123", // institutionId

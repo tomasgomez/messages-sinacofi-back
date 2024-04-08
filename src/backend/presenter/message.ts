@@ -45,18 +45,12 @@ export function validateGetMessage(data: any): [Message, string, string] | Error
 export function validateCreateMessage(data: any): Message | Error {
   let message: Message = new Message();
 
-  const {messageCode, destination, priority, status, sender, receiver, parameters } = data;
+  const {messageCode, priority, status, receiver, sender, parameters } = data;
 
   if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
     message.messageCode = messageCode;
   } else {
     return new Error('Invalid messageCode');
-  }
-
-  if (destination && typeof destination === 'string' && destination.trim() !== '') {
-    message.destination = destination;
-  } else {
-    return new Error('Invalid destination');
   }
 
   if (priority && typeof priority === 'string' && priority.trim() !== '') {
@@ -71,14 +65,12 @@ export function validateCreateMessage(data: any): Message | Error {
     return new Error('Invalid sender');
   }
 
-  if (receiver && typeof receiver === 'string' && receiver.trim() !== '') {
-    message.receiver = receiver;
-  } else {
-    return new Error('Invalid receiver');
-  }
-
   if (status && typeof status === 'string' && status.trim() !== '') {
     message.status = status;
+  }
+
+  if (receiver && typeof receiver === 'string' && receiver.trim() !== '') {
+    message.receiver = receiver;
   }
 
   if (parameters && typeof parameters === 'object') {

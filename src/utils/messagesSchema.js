@@ -94,8 +94,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "destination", 
-            "name": "destination", 
+            "id": "receiver", 
+            "name": "receiver", 
             "label": "Institución de Destino", 
             "type": "select",
             "defaultValue": "",
@@ -225,8 +225,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "transmitter", 
-            "name": "transmitter", 
+            "id": "transmitterReference", 
+            "name": "transmitterReference", 
             "type": "textField", 
             "label": "AMI: BIC Emisor", 
             "description": "AMI: BIC Emisor", 
@@ -241,8 +241,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "receiver", 
-            "name": "receiver", 
+            "id": "receiverReference", 
+            "name": "receiverReference", 
             "type": "textField", 
             "label": "AMJ: BIC Receptor", 
             "description": "AMJ: BIC Receptor", 
@@ -364,8 +364,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "destination", 
-            "name": "destination", 
+            "id": "receiver", 
+            "name": "receiver", 
             "label": "Institución de Destino", 
             "type": "select",
             "description": "Todas las instituciones posibles", 
