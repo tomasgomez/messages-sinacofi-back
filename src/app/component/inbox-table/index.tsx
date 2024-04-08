@@ -15,13 +15,18 @@ import { getComparator, stableSort } from "./utils";
 import { Grid, Typography } from "@mui/material";
 import { TableContentLoader } from "./components/table-content-loader";
 
-export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:Columns[], loading?: boolean}) {
+export default function EnhancedTable(props: {
+  rows: Data[] | SentData[];
+  // columns: Columns[]; TODO fix this
+  columns: any[];
+  loading?: boolean;
+}) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("OSN");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const {rows, columns, loading } = props;
+  const { rows, columns, loading } = props;
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -94,16 +99,10 @@ export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:
             <Typography fontWeight={600}>Recepción</Typography>
           </Grid>
           <Grid item xs={3} paddingLeft="45px">
-            <Typography fontWeight={600}>
-              Enviado
-            </Typography>
+            <Typography fontWeight={600}>Enviado</Typography>
           </Grid>
         </Grid>
-        <Table
-          aria-labelledby="tableTitle"
-          size="medium"
-          stickyHeader
-        >
+        <Table aria-labelledby="tableTitle" size="medium" stickyHeader>
           <TableHeader
             withCheckboxAll
             numSelected={selected.length}
@@ -115,20 +114,25 @@ export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:
             columns={columns}
           />
           <TableBody>
-            {loading ?  <TableContentLoader loadingMessage="Cargando Registros..."/>  : visibleRows.map((row, index) => {
-              const isItemSelected = isSelected(row.id as number);
-              const labelId = `enhanced-table-checkbox-${index}`;
-              return (
-                <TableContentRows
-                  key={row.id}
-                  withCheckbox
-                  row={row}
-                  labelId={labelId}
-                  isItemSelected={isItemSelected}
-                  handleClick={handleClick}
-                />
-              );
-            })}
+            {loading ? (
+              <TableContentLoader loadingMessage="Cargando Registros..." />
+            ) : (
+              visibleRows.map((row, index) => {
+                const isItemSelected = isSelected(row.id as number);
+                const labelId = `enhanced-table-checkbox-${index}`;
+                return (
+                  <TableContentRows
+                    key={row.id}
+                    withCheckbox
+                    row={row}
+                    labelId={labelId}
+                    isItemSelected={isItemSelected}
+                    handleClick={handleClick}
+                    columns={columns}
+                  />
+                );
+              })
+            )}
             {emptyRows > 0 && (
               <TableRow
                 style={{
