@@ -29,8 +29,11 @@ export async function updateMessage(repository: MessageRepository, message: Mess
             /* Update the status of the message */
             messageCopy.status = "06";
 
-            messageCopy.receivedDate = new Date().toISOString().slice(0, 10);
-            messageCopy.receivedTime = new Date().toISOString().slice(11, 19);
+            let chileSantiagoDate = new Date().toLocaleString('en-US', { timeZone: 'America/Santiago' });
+
+
+            messageCopy.receivedDate = chileSantiagoDate.slice(0, 10);
+            messageCopy.receivedTime = chileSantiagoDate.slice(11, 19);
 
             /* Delete the id of the message */
             delete messageCopy.id;
@@ -44,8 +47,10 @@ export async function updateMessage(repository: MessageRepository, message: Mess
         }
 
         /* Update the message */
-        message.receivedDate = new Date().toISOString().slice(0, 10);
-        message.receivedTime = new Date().toISOString().slice(11, 19);
+        let chileSantiagoDate = new Date().toLocaleString('en-US', { timeZone: 'America/Santiago' });
+
+        message.receivedDate = chileSantiagoDate.slice(0, 10);
+        message.receivedTime = chileSantiagoDate.slice(11, 19);
 
         let messageResponse = await repository.update(message);
 

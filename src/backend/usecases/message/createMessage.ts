@@ -13,12 +13,14 @@ export async function createMessage(repository: MessageRepository, message: Mess
             message.description = "TRANSFERENCIA DE FONDOS INDIVIDUAL";
         }
 
-        message.creationDate = new Date().toISOString().slice(0, 10);
-        message.creationTime = new Date().toISOString().slice(11, 19);
+        const chileSantiagoDate = new Date().toLocaleString('en-US', { timeZone: 'America/Santiago' });
+
+        message.creationDate = chileSantiagoDate.slice(0, 10);
+        message.creationTime = chileSantiagoDate.slice(11, 19);
 
         if (message.status === "06") {
-            message.receivedDate = new Date().toISOString().slice(0, 10);
-            message.receivedTime = new Date().toISOString().slice(11, 19);
+            message.receivedDate = chileSantiagoDate.slice(0, 10);
+            message.receivedTime = chileSantiagoDate.slice(11, 19);
         }
 
         let messageResponse = await repository.create(message);  
