@@ -42,7 +42,8 @@ export default function PreparedScreen() {
         },
         body: JSON.stringify({id: id, status: "05" }),
     }).then(res => res.json()).then(res => {
-        console.log('Mensaje actualizado')
+        console.log('Mensaje actualizado');
+        fetchData();
       });
     } catch (error) {
       console.error("Error al enviar el mensajes", error);
