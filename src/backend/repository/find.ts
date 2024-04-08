@@ -71,9 +71,15 @@ export async function find(message: Message, detail: boolean, count: string, off
     /* If the messages is not found, return an error */
     if (messages.length === 0) {
       return new Error('Message not found');
-    } else {
-      return messages;
     }
+ 
+    if (!detail) {
+      messages.forEach((message) => {
+        message.parameters = [];
+      });
+    }
+ 
+    return messages;
 
   } catch (error: any) {
 
