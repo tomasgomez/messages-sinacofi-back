@@ -52,7 +52,7 @@ export function TableContentRows(props: TableProps) {
           scope="row"
           {...rowOptions["OSN"]}
         >
-          <ModalLink isInProcess={!!row.status}/>
+          <ModalLink isInProcess={!!row.status} data={row} />
         </StyledTabCell>
         <StyledTabCell {...rowOptions["creationDate"]}>{row.creationDate}</StyledTabCell>
         <StyledTabCell {...rowOptions["creationTime"]}>{row.creationTime}</StyledTabCell>

@@ -6,22 +6,18 @@ import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsSent } from "@/app/component/inbox-table/constants";
 import { SentData } from "@/app/component/inbox-table/type";
-import { mockResponse } from "./response-mock";
 
 export default function SentScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [data, setData] = React.useState<SentData[]>(mockResponse);
+  const [data, setData] = React.useState<SentData[]>([]);
 
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('/api/message?type='); // TODO: endpoint api/message is not ready inside this project. Remove this when the endpoint is ready.
-      if (!response.ok) {
+      await fetch('/api/message?type=SENT').then(res => res.json()).then(res => {
+        setData(res)
         setIsLoading(false);
-        throw new Error("Error al solicitar mensajes");
-      }
-      setData(mockResponse); // TODO: MOCK API Sinacofi-V5 - remove this when the endpoint is configured inside NEXT.
-      setIsLoading(false);
+      });
     } catch (error) {
       console.error("Error al solicitar mensajes", error);
       setIsLoading(false);
