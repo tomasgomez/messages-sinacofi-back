@@ -107,14 +107,14 @@ export function TableContentRows(props: TableProps) {
         </StyledTabCell>
         <StyledTabCell {...rowOptions["NSE"]}>{row.NSE || "-"}</StyledTabCell>
         <StyledTabCell {...rowOptions["status"]}>{row.status}</StyledTabCell>
-        {[columns?.find((elem) => elem.id === "actions")].map(
+        {columns?.filter((elem) => elem.id === "actions").map(
           (column: any, idx: number) => (
             <CustomCell
-              key={`row-${column.id}-${idx}`}
-              value={row[column.id] || "-"}
+              key={`row-${column?.id}-${idx}`}
+              value={row[column?.id] || "-"}
               row={row}
               render={column.render}
-              rowOptions={rowOptions[column.id]}
+              rowOptions={rowOptions[column?.id]}
             />
           )
         )}

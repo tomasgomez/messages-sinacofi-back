@@ -19,7 +19,7 @@ export default function PreparedScreen() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      await fetch('/api/message?type=').then(res => res.json()).then(res => {
+      await fetch('/api/message?status=01').then(res => res.json()).then(res => {
         setData(res)
         setIsLoading(false);
       });

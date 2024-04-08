@@ -16,7 +16,7 @@ export default function InboxScreen() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      await fetch('/api/message?type=SENT').then(res => res.json()).then(res => {
+      await fetch('/api/message?status=06').then(res => res.json()).then(res => {
         setData(res)
         setIsLoading(false);
       });
