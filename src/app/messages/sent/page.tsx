@@ -14,7 +14,7 @@ export default function SentScreen() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      await fetch('/api/message?type=SENT').then(res => res.json()).then(res => {
+      await fetch('/api/message?status=05').then(res => res.json()).then(res => {
         setData(res)
         setIsLoading(false);
       });

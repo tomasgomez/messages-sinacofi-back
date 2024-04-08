@@ -2,7 +2,7 @@ import { montserrat } from "@/utils/fonts";
 import { Box, CircularProgress, Typography } from "@mui/material";
 
 const Loader = ({
-  label = "Loading...",
+  label = "Cargando...",
   size = 30,
   minHeight = "200px",
   width = "100%",

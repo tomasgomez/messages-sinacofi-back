@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { Box, IconButton, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
@@ -19,7 +19,7 @@ export default function PreparedScreen() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      await fetch('/api/message?type=').then(res => res.json()).then(res => {
+      await fetch('/api/message?status=01').then(res => res.json()).then(res => {
         setData(res)
         setIsLoading(false);
       });
@@ -32,6 +32,22 @@ export default function PreparedScreen() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const updateMessage = useCallback(async (id: string) => {
+    try {
+      await fetch(`/api/message?id=null&family=null&areaCode=null&institutionCode=null&type=null&date=null`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({id: id, status: "05" }),
+    }).then(res => res.json()).then(res => {
+        console.log('Mensaje actualizado')
+      });
+    } catch (error) {
+      console.error("Error al enviar el mensajes", error);
+    }
+}, []);
 
   const acciones = {
     id: "actions",
@@ -65,7 +81,7 @@ export default function PreparedScreen() {
                 ),
                 isOpen: true,
                 onConfirm: async () => {
-                  console.log("Eliminar mensaje");
+                  updateMessage(row.id);
                 },
               });
             }}
