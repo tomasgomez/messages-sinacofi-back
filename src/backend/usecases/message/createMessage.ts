@@ -13,8 +13,6 @@ export async function createMessage(repository: MessageRepository, message: Mess
             message.description = "TRANSFERENCIA DE FONDOS INDIVIDUAL";
         }
 
-        message.status = "01" //TODO: Cambiar por un enum
-
         message.creationDate = new Date().toISOString().slice(0, 10);
         message.creationTime = new Date().toISOString().slice(11, 19);
 

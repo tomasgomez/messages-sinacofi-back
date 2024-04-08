@@ -45,7 +45,7 @@ export function validateGetMessage(data: any): [Message, string, string] | Error
 export function validateCreateMessage(data: any): Message | Error {
   let message: Message = new Message();
 
-  const {messageCode, destination, priority, sender, receiver, parameters } = data;
+  const {messageCode, destination, priority, status, sender, receiver, parameters } = data;
 
   if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
     message.messageCode = messageCode;
@@ -75,6 +75,10 @@ export function validateCreateMessage(data: any): Message | Error {
     message.receiver = receiver;
   } else {
     return new Error('Invalid receiver');
+  }
+
+  if (status && typeof status === 'string' && status.trim() !== '') {
+    message.status = status;
   }
 
   if (parameters && typeof parameters === 'object') {
