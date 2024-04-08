@@ -2,7 +2,7 @@ export interface Data {
   id: string;
   OSN?: string;
   TSN?: string;
-  NSR? : string;
+  NSR?: string;
   NSQ?: string;
   destination?: string;
   messageCode: string;
@@ -16,16 +16,16 @@ export interface Data {
   status: string;
   stateProgress?: string;
   receivedDate: string;
-  receivedTime:string;
-  NSE?:string;
-  actions?:boolean;
+  receivedTime: string;
+  NSE?: string;
+  actions?: boolean;
 }
 
 export interface SentData {
   id: number | string;
   OSN?: string;
   TSN?: string;
-  NSR? : string;
+  NSR?: string;
   NSQ?: string;
   destination?: string;
   messageCode: string;
@@ -39,21 +39,20 @@ export interface SentData {
   status: string;
   stateProgress?: string;
   receivedDate: string;
-  receivedTime:string;
-  NSE?:string;
-  actions?:boolean;
+  receivedTime: string;
+  NSE?: string;
+  actions?: boolean;
 }
 
-export type KeyOfData= keyof Data | keyof SentData
-
-
+export type KeyOfData = keyof Data | keyof SentData;
 
 export type Order = "asc" | "desc";
 
 export interface Columns {
-  id: KeyOfData
+  id: KeyOfData;
   label: string;
   align: Alignment;
+  render?: any;
 }
 
 export interface RowOptions {
@@ -84,7 +83,7 @@ export interface EnhancedTableProps {
   orderBy: string;
   rowCount: number;
   withCheckboxAll?: boolean;
-  columns?:Columns[]
+  columns?: Columns[];
 }
 
 export interface TableProps {
@@ -93,6 +92,7 @@ export interface TableProps {
   row: Data | any;
   isItemSelected: boolean;
   handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
+  columns: Columns[];
 }
 
 export interface MSDetail {
@@ -112,7 +112,7 @@ export interface MSDetail {
   receivedDate: string;
   receivedTime: string;
   parameters: MSParameter[];
-};
+}
 
 export interface MSParameter {
   id: string;
@@ -123,8 +123,8 @@ export interface MSParameter {
   placeholder: string;
   value: string;
   validations: {
-      required: boolean;
-      maxLength: number;
-      minLength: number;
+    required: boolean;
+    maxLength: number;
+    minLength: number;
   };
-};
+}

@@ -104,11 +104,6 @@ export const columnsSent: Columns[] = [
     label: "Estado",
     align: Alignment.LEFT,
   },
-  {
-    id: "actions",
-    label: "Actions",
-    align: Alignment.LEFT,
-  },
 ];
 
 export const rowOptions: RowOptions = {
@@ -123,12 +118,12 @@ export const rowOptions: RowOptions = {
   osn: {
     align: Alignment.LEFT,
     fontSize: 14,
-    maxwidth:30
+    maxwidth: 30,
   },
   nse: {
     align: Alignment.LEFT,
     fontSize: 14,
-    maxwidth:30
+    maxwidth: 30,
   },
   ms: {
     align: Alignment.LEFT,
@@ -144,7 +139,7 @@ export const rowOptions: RowOptions = {
     fontSize: 14,
   },
   date: {
-    maxwidth:90,
+    maxwidth: 90,
     align: Alignment.LEFT,
     fontSize: 14,
   },
@@ -155,7 +150,7 @@ export const rowOptions: RowOptions = {
   state: {
     align: Alignment.LEFT,
     fontSize: 14,
-    maxwidth:30
+    maxwidth: 30,
   },
   timeSent: {
     align: Alignment.LEFT,
@@ -164,5 +159,8 @@ export const rowOptions: RowOptions = {
   dateSent: {
     align: Alignment.LEFT,
     fontSize: 14,
+  },
+  actions: {
+    align: Alignment.CENTER,
   },
 };
