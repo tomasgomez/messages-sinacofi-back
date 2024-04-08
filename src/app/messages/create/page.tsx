@@ -13,15 +13,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 const defaultPayload = {
 
 }
-const statusCodes = ["sent", "active", "pending"]
+const statusCodes = ["01", "05", "pending"]
 const payloadDefault: string[] = [
   "messageCode",
-  "destination",
   "priority",
   "status",
   "sender",
   "receiver",
-  "authentication",
   "parameters"
 ]
 
@@ -72,9 +70,18 @@ const CreateMessage = () => {
 
   const onSubmit = (data: any) => {
     const payload = getCreateMessagePayload(data, messageSchema);
+    payload.status = "05";
+    router.push("/sent");
     console.log({data, payload})
     createMessage(payload).then((response: any) => console.log({ response }));
     
+  };
+  const onPrepare = (data: any) => {
+    const payload = getCreateMessagePayload(data, messageSchema);
+    payload.status = "01";
+    router.push("/prepared");
+    console.log({data, payload})
+    createMessage(payload).then((response: any) => console.log({ response }));
   };
 
   return (
@@ -91,6 +98,7 @@ const CreateMessage = () => {
         loading={loading}
         schema={messageSchema}
         onSubmit={onSubmit}
+        onPrepare={onPrepare}
       />
     </Container>
   );
