@@ -83,3 +83,19 @@ export function validateCreateMessage(data: any): Message | Error {
 
   return message;
 }
+
+export function validateUpdateMessage(data: any): Message | Error {
+  let message: Message = new Message()
+
+  const {id, status } = data;
+
+  message.id = id;
+
+  if (status && typeof status === 'string' && status.trim() !== '') {
+    message.status = status;
+  } else {
+    return new Error('Invalid status');
+  }
+
+  return message;
+}

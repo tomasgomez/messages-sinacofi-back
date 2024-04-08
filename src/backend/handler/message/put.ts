@@ -1,12 +1,21 @@
 import { messageUseCase } from "@/backend/usecases/message/usecases";
+import { validateUpdateMessage } from "@/backend/presenter/message";
 import { NextApiRequest, NextApiResponse } from "next";
 
 
 // put message function
 export async function put(req: NextApiRequest, res: NextApiResponse < any > ) {
     try {
-        let messageResponse = await messageUseCase.updateMessage(req.body);
-        res.status(200).json(req.body);
+
+        let message = validateUpdateMessage(req.body);
+
+        if (message instanceof Error) {
+            res.status(400).json(message);
+            return;
+        }
+
+        let messageResponse = await messageUseCase.updateMessage(message);
+        res.status(200).json(messageResponse);
         return;
 
     } catch (error) {
