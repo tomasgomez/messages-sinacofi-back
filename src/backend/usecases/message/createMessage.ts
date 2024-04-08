@@ -16,6 +16,11 @@ export async function createMessage(repository: MessageRepository, message: Mess
         message.creationDate = new Date().toISOString().slice(0, 10);
         message.creationTime = new Date().toISOString().slice(11, 19);
 
+        if (message.status === "06") {
+            message.receivedDate = new Date().toISOString().slice(0, 10);
+            message.receivedTime = new Date().toISOString().slice(11, 19);
+        }
+
         let messageResponse = await repository.create(message);  
 
         /* TODO: Add this as a correlative */
