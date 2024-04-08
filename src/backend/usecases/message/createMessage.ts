@@ -18,7 +18,25 @@ export async function createMessage(repository: MessageRepository, message: Mess
 
         let messageResponse = await repository.create(message);  
 
+        /* TODO: Add this as a correlative */
+        if (messageResponse instanceof Error) {
+            return messageResponse;
+        }
 
+        if (messageResponse.id === undefined) {
+            return new Error('No id returned');
+        }
+
+        let messageAux = new Message();
+
+        messageAux.id = messageResponse.id;
+        messageAux.TSN = messageResponse.id.toString().padStart(10, '0');
+        messageAux.OSN = messageResponse.id.toString().padStart(10, '0');
+        messageAux.NSE = messageResponse.id.toString().padStart(10, '0');
+
+        messageResponse = await repository.update(messageAux);
+        /*  */
+        
         return messageResponse;
     } catch (error: any) {
         // Handle errors appropriately
