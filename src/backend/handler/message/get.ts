@@ -24,7 +24,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
 
         /* If the message is not found, return a 404 error */
         if (messageResponse instanceof Error) {
-          res.status(404).json(messageResponse);
+          res.status(404).json([]);
           return;
         }
 
