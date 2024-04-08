@@ -45,7 +45,8 @@ const messagesExamples = {
            "receivedDate": "21/01/2024",
            "receivedTime": "11:00",
            "documents": "",
-           "actions": ""
+           "actions": "",
+           "parameters": []
          },
          {
            "id": "10124",
