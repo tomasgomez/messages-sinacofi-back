@@ -33,7 +33,7 @@ export default function InboxScreen() {
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>
       <Box sx={{ m: 2 }}>
-        <InboxHeader amountMessages={rows.length} title={'Bandeja de Entrada'} />
+        <InboxHeader amountMessages={data.length} title={'Bandeja de Entrada'} />
         <DataTable rows={data} loading={isLoading} columns={columnsInbox} />
       </Box>
     </Paper>

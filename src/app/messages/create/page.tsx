@@ -57,9 +57,9 @@ const CreateMessage = () => {
         setMessageSchema({
           ...schema,
           parameters: schema?.parameters.map((parameter: any) => (
-            parameter.id === "institutionDestination" 
+            parameter.id === "receiver" 
             ? { ...parameter, defaultValue: institutionId } 
-            : parameter.id === "codeField"
+            : parameter.id === "messageCode"
               ? { ...parameter, defaultValue: messageCode } 
               : parameter
           ))
@@ -71,7 +71,7 @@ const CreateMessage = () => {
   const onSubmit = (data: any) => {
     const payload = getCreateMessagePayload(data, messageSchema);
     payload.status = "05";
-    router.push("/sent");
+    router.push("/messages/sent");
     console.log({data, payload})
     createMessage(payload).then((response: any) => console.log({ response }));
     
@@ -79,7 +79,7 @@ const CreateMessage = () => {
   const onPrepare = (data: any) => {
     const payload = getCreateMessagePayload(data, messageSchema);
     payload.status = "01";
-    router.push("/prepared");
+    router.push("/messages/prepared");
     console.log({data, payload})
     createMessage(payload).then((response: any) => console.log({ response }));
   };

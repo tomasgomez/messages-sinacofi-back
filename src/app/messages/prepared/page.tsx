@@ -6,15 +6,15 @@ import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsSent } from "@/app/component/inbox-table/constants";
 import { SentData } from "@/app/component/inbox-table/type";
-import { mockResponse } from "./response-mock";
 import { SendOutlined } from "@mui/icons-material";
 import { MyContexLayout } from "@/app/context";
 
 export default function PreparedScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [data, setData] = React.useState<SentData[]>(mockResponse);
+  const [data, setData] = React.useState<SentData[]>([]);
 
   const { setModalState } = React.useContext(MyContexLayout) as any;
+
 
   const fetchData = async () => {
     try {
@@ -81,6 +81,7 @@ export default function PreparedScreen() {
                   </Typography>
                 ),
                 isOpen: true,
+                
                 onConfirm: async () => {
                   updateMessage(row.id);
                 },
