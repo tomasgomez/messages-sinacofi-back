@@ -12,7 +12,7 @@ export default function Dropdrown(props: {
   label: string;
   width?: number | string;
   options: any;
-  defaultValue?: any
+  defaultValue?: any;
   selected?: any;
   placeholder?: string;
   onChange?: any;
@@ -20,26 +20,26 @@ export default function Dropdrown(props: {
   labelKey?: string;
   loading?: boolean;
   loadingMessage?: string;
-} ) {
+}) {
   const {
     width,
     label,
     options,
-    defaultValue,
+    defaultValue = "",
     selected,
     onChange,
     valueKey = "value",
     labelKey = "label",
     placeholder,
     loading,
-    loadingMessage = "Cargando..."
+    loadingMessage = "Cargando...",
   } = props;
-  const [optionSelected, setOptionSelected] = React.useState(selected || defaultValue);
+  const [optionSelected, setOptionSelected] = React.useState(defaultValue);
   const [isFocused, setIsFocused] = React.useState(false);
 
   React.useEffect(() => {
     setOptionSelected(selected);
-  }, [selected])
+  }, [selected]);
 
   const handleChange = (event: SelectChangeEvent) => {
     onChange(event.target.value as string);
@@ -80,23 +80,21 @@ export default function Dropdrown(props: {
           {loading ? (
             <Loader />
           ) : (
-              // <MenuItem disabled value="">
-              //   {placeholder}
-              //   {/* <em>Placeholder</em> */}
-              // </MenuItem>
-              options.map((option: any, index: number) => (
-                <MenuItem key={`${option[labelKey]}-${index}`} value={option[valueKey]}>
-                  {option[labelKey]}
-                </MenuItem>
-              ))
+            // <MenuItem disabled value="">
+            //   {placeholder}
+            //   {/* <em>Placeholder</em> */}
+            // </MenuItem>
+            options.map((option: any, index: number) => (
+              <MenuItem
+                key={`${option[labelKey]}-${index}`}
+                value={option[valueKey]}
+              >
+                {option[labelKey]}
+              </MenuItem>
+            ))
           )}
         </Select>
       </FormControl>
     </Box>
   );
 }
-
-
-
-
-
