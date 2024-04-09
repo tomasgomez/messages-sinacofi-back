@@ -204,6 +204,7 @@ function getRuleSchema(institutionOptions: any[]) {
                  "label": "* JAE Modalidad",
                  "description": "JAE Modalidad",
                  "value": "",
+
                  // "placeholder": "Agregar referencia...",
                  "properties": {
                     "name": "textField",
@@ -350,6 +351,7 @@ function getRuleSchema(institutionOptions: any[]) {
                  "type": "select",
                  "description": "Todas las instituciones posibles",
                  "placeholder": "Seleccionar institución de destino...",
+                 "defaultValue": "0027 CORP BANCA",
                  "properties": {
                     "name": "select",
                     "columns": "4",
@@ -478,6 +480,15 @@ function getRuleSchema(institutionOptions: any[]) {
       }
 }
 
+// TODO:
+/*
+add this: Incializar forms desde el backend:
+136 y 199 Message Type:
+* AMI: BIC Emisor. (CONBCLRM323 default value from figma)
+* AF1: Nombre de Institución (0027 CORP BANCA default value from figma,/// corresponde a data del current user)
+* AMK: Fecha de Emisión (CurrentDate)
+Institución Destino (current institution selected)
+*/
 
 const institutionOptionsException = [
    { value: '350', label: '350 - SEC.PRINCI' },
