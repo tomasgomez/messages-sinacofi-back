@@ -52,14 +52,14 @@ export async function createMessage(repository: MessageRepository, message: Mess
         let messageAux = new Message();
 
         messageAux.id = messageResponse.id;
-        messageAux.TSN = messageResponse.id.toString().padStart(10, '0');
-        messageAux.OSN = messageResponse.id.toString().padStart(10, '0');
-        messageAux.NSE = messageResponse.id.toString().padStart(10, '0');
+        messageAux.TSN = messageResponse.id.toString().padStart(4, '0');
+        messageAux.OSN = messageResponse.id.toString().padStart(4, '0');
+        messageAux.NSE = messageResponse.id.toString().padStart(4, '0');
 
-        messageResponse = await repository.update(messageAux);
+        let messageUpdated = await repository.update(messageAux);
         /*  */
 
-        return messageResponse;
+        return messageUpdated;
     } catch (error: any) {
         // Handle errors appropriately
         console.error('Error creating message:', error);
