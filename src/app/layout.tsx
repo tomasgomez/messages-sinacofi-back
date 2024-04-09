@@ -75,7 +75,7 @@ export default function RootLayout({
                   modalState?.onConfirm && modalState.onConfirm();
                   setModalState(clearObjet);
                 }}
-                title="Área Creada Exitosamente"
+                title={modalState?.title}
                 body={modalState?.body}
               />
               {/* /////////////////////////////////////////////////////////// */}

@@ -1,4 +1,5 @@
 "use client"
+import { MyContexLayout } from "@/app/context";
 import { createMessage, getMessageSchema } from "@/app/services/common";
 import Dropdrown from "@/components/Dropdown";
 import Field from "@/components/Field";
@@ -8,7 +9,7 @@ import Loader from "@/components/Loader";
 import { CloseRounded, DeleteOutlineOutlined, Remove, RemoveOutlined } from "@mui/icons-material";
 import { Box, Button, Card, CardContent, Container, Grid, IconButton, Stack, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 const defaultPayload = {
 
@@ -43,6 +44,7 @@ const getCreateMessagePayload = (data: any, schema: any) => {
   return payload;
 }
 const CreateMessage = () => {
+  const { setModalState } = useContext(MyContexLayout) as any;
   const [messageSchema, setMessageSchema] = useState({parameters: []});
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -69,19 +71,58 @@ const CreateMessage = () => {
   }, [messageCode, institutionId]);
 
   const onSubmit = (data: any) => {
+    setLoading(true);
     const payload = getCreateMessagePayload(data, messageSchema);
-    payload.status = "05";
-    router.push("/messages/sent");
-    console.log({data, payload})
-    createMessage(payload).then((response: any) => console.log({ response }));
-    
+    createMessage(payload, "05")
+      .then((response: any) => {
+        setLoading(false);
+        setModalState({
+          type: "success",
+          title: "Mensaje Enviado Exitosamente",
+          body: (
+            <>
+              <Typography fontSize={14} fontWeight={400}>
+                NSE: {response?.NSE || "-"}
+              </Typography>
+              <Typography fontSize={14} fontWeight={400}>
+                Fecha: {response?.creationDate || "-"}
+              </Typography>
+              <Typography fontSize={14} fontWeight={400}>
+                Hora: {response?.creationTime || "-"}
+              </Typography>
+            </>
+          ),
+          isOpen: true,
+          onConfirm: () => router.push("/messages/sent"),
+        });
+      });
   };
   const onPrepare = (data: any) => {
+    setLoading(true);
     const payload = getCreateMessagePayload(data, messageSchema);
-    payload.status = "01";
-    router.push("/messages/prepared");
-    console.log({data, payload})
-    createMessage(payload).then((response: any) => console.log({ response }));
+    createMessage(payload, "01")
+      .then((response: any) => {
+        setLoading(false);
+        setModalState({
+          type: "success",
+          title: "Mensaje Grabado en Preparados Exitosamente",
+          body: (
+            <>
+              <Typography fontSize={14} fontWeight={400}>
+                TSN: {response?.TSN || "-"}
+              </Typography>
+              <Typography fontSize={14} fontWeight={400}>
+                Fecha: {response?.creationDate || "-"}
+              </Typography>
+              <Typography fontSize={14} fontWeight={400}>
+                Hora: {response?.creationTime || "-"}
+              </Typography>
+            </>
+          ),
+          isOpen: true,
+          onConfirm: () => router.push("/messages/prepared"),
+        });
+      });
   };
 
   return (

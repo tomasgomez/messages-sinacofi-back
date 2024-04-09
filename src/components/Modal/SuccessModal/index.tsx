@@ -49,7 +49,7 @@ const SuccessModal = ({
                 alignItems: "center",
                 p: 2,
               }}
-              width={260}
+              width="100%"
             >
               {body}
             </Box>

@@ -47,12 +47,8 @@ const Form = ({
       if (validation) {
         const values = getValues();
         onPrepare(values);
-
       }
     });
-    // Object.entries(errors || {}).length
-    // console.log({ t, values });
-    // onPrepare(values);
   }
 
   return (

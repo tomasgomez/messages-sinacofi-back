@@ -43,8 +43,8 @@ export const getMessageSchema = async (messageCode: string, institutionId: any) 
   //   });
 };
 
-export const createMessage = async (data: any) => {
-  const payload = JSON.stringify(data);
+export const createMessage = async (data: any, status: string) => {
+  const payload = JSON.stringify({ ...data, status });
   // return new Promise((resolve) => {
   //   setTimeout(() => {
   //     const schema = messageSchemas.find((messageSchema) => messageSchema.messageCode === messageCode);
