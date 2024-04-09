@@ -41,6 +41,7 @@ const CreateIndividualMessageModal = ({ open, onClose } : { open: boolean; onClo
               setMessageCode(value)
               console.log({ value });
             }}
+            focused={!!messageCode}
           />
         </Grid>
         <Grid item xs={9}>
