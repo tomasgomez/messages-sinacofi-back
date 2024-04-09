@@ -23,8 +23,6 @@ export function TableHeader(props: EnhancedTableProps) {
       onRequestSort(event, property);
     };
 
-    console.log("las columns", columns)
-
   return (
     <TableHead>
       <TableRow>

@@ -30,6 +30,7 @@ const getCreateMessagePayload = (data: any, schema: any) => {
   payloadDefault.forEach((param: string) => {
     payload[param] = data[param];
   });
+  payload.sender = "CORP BANCA"
   // const filteredData = Object.entries(data).filter((el: any) => el.name === )
   payload.parameters = Object.entries(data)
     .filter((el: any) => payload[el[0]] === undefined)
@@ -60,7 +61,7 @@ const CreateMessage = () => {
           ...schema,
           parameters: schema?.parameters.map((parameter: any) => (
             parameter.id === "receiver" 
-            ? { ...parameter, defaultValue: institutionId } 
+            ? { ...parameter, selected: institutionId } 
             : parameter.id === "messageCode"
               ? { ...parameter, defaultValue: messageCode } 
               : parameter
