@@ -42,13 +42,15 @@ export default function SentScreen() {
           >
             <CopyAll />
           </IconButton>
-          <IconButton
-            key={`expand-icon-${row.id}`}
-            aria-label="expand row"
-            style={{ padding: 0 }}
-          >
-            <SendOutlined />
-          </IconButton>
+          {row.status !== '05' && (
+            <IconButton
+              key={`expand-icon-${row.id}`}
+              aria-label="expand row"
+              style={{ padding: 0 }}
+            >
+              <SendOutlined />
+            </IconButton>
+          )}
         </Box>
       );
     },
