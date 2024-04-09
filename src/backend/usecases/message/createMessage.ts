@@ -54,7 +54,6 @@ export async function createMessage(repository: MessageRepository, message: Mess
         messageAux.id = messageResponse.id;
         messageAux.TSN = messageResponse.id.toString().padStart(4, '0');
         messageAux.OSN = messageResponse.id.toString().padStart(4, '0');
-        messageAux.NSE = messageResponse.id.toString().padStart(4, '0');
 
         let messageUpdated = await repository.update(messageAux);
         /*  */

@@ -47,8 +47,14 @@ export async function updateMessage(repository: MessageRepository, message: Mess
             messageCopy.receivedDate = dateString;
             messageCopy.receivedTime = time;
 
+            if (messageCopy.id !== undefined) {
+                messageCopy.NSE = messageCopy.id.toString().padStart(4, '0');
+            }
+
             /* Delete the id of the message */
             delete messageCopy.id;
+
+            
 
             /* Create the message with the updated status */
             let createdMessage = await repository.create(messageCopy);
@@ -67,6 +73,9 @@ export async function updateMessage(repository: MessageRepository, message: Mess
 
         let [dateString, time] = response;
 
+        if (message.id !== undefined) {
+            message.NSE = message.id.toString().padStart(4, '0');
+        }
         message.receivedDate = dateString;
         message.receivedTime = time;
 
