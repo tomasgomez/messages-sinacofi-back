@@ -81,7 +81,7 @@ export const columnsSent: Columns[] = [
   },
   {
     id: "sender",
-    label: "Origen",
+    label: "Destino",
     align: Alignment.LEFT,
   },
   {
