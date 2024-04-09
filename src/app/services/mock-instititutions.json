@@ -7,6 +7,10 @@
       "areaCode": "200"
   },
   {
+    "value": "0027",
+    "label": "CORP BANCA" 
+  },
+  {
       "id": "729",
       "fullName": "SOCIEDAD EMISORA DE TARJETAS LOS HEROES S.A.",
       "rut": "769657371",
