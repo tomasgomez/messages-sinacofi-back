@@ -499,10 +499,11 @@ const institutionOptionsException = [
    { value: '265', label: '265 - D.C.V.' },
    { value: '601', label: "601 - BRINK'S" },
    { value: '0016', label: '0016 - BCI' },
+   { value: '0027', label: '0027 - CORP BANCA' },
    { value: '0037', label: '0037 - SAN' },
    { value: '0031', label: '0031 - HSBC' },
    { value: '0039', label: '0039 - ITAÚ' },
    { value: '0041', label: '0041 - JPM' },
    { value: '0049', label: '0049 - SECURITY' },
    { value: '0051', label: '0051 - FALABELLA' }
- ]
+ ];

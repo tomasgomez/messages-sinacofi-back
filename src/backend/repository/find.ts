@@ -26,12 +26,17 @@ export async function find(message: Message, detail: boolean, count: string, off
       id ? : number;
       messageCode ? : string;
       status ? : string;
+      sender ? : string;
     } = {};
 
     /* If the attributes are present, add them to the where object */
     if (id) where.id = id;
     if (messageCode) where.messageCode = messageCode;
     if (status) where.status = status;
+
+    if (status === '06') {
+      where.sender = "CORP BANCA" // TODO: add filter with institution in front"
+    }
 
     console.log('where', where);
 
