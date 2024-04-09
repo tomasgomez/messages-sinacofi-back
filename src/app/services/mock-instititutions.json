@@ -7,8 +7,8 @@
       "areaCode": "200"
   },
   {
-    "value": "0027",
-    "label": "CORP BANCA" 
+    "name": "CORP BANCA",
+    "id": "0027" 
   },
   {
       "id": "729",
