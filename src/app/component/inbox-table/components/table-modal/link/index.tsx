@@ -11,14 +11,13 @@ import { CloseRounded } from "@mui/icons-material";
 import { ModalHeaderSection } from "../header";
 import { ModalMainContent } from "../content";
 import { Data, MSDetail } from "../../../type";
-import { mockMS199 } from "@/app/messages/inbox/mock-ms-199";
-import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import { PDFViewer } from "@react-pdf/renderer";
 import Typography from "@mui/material/Typography/Typography";
 import { montserrat } from "@/utils/fonts";
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import Grid from "@mui/material/Grid/Grid";
 import { PDFTemplate } from "@/app/component/PDFTemplate";
+import { CircularProgress } from "../../circular-progress";
 
 export function ModalLink(props: { isInProcess?: boolean; data: Data}) {
     const [details, setDetails] = React.useState<MSDetail | undefined>(undefined);
@@ -76,7 +75,7 @@ export function ModalLink(props: { isInProcess?: boolean; data: Data}) {
                 {!!details ? (
                     isLoading ?  
                     <Box display='flex' justifyContent='center' py={15}>
-                        <CircularProgress size={45} thickness={2} />
+                        Cargando Detalle...
                     </Box>
                     :  pdfView ? (
                     <>
@@ -111,7 +110,7 @@ export function ModalLink(props: { isInProcess?: boolean; data: Data}) {
                 ) : 
                 (
                     <Box display='flex' justifyContent='center' py={15}>
-                        <CircularProgress size={45} thickness={2} />
+                        Cargando Detalle...
                     </Box>
                 )
             }
