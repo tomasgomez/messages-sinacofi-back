@@ -17,7 +17,7 @@ import { montserrat } from "@/utils/fonts";
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import Grid from "@mui/material/Grid/Grid";
 import { PDFTemplate } from "@/app/component/PDFTemplate";
-import { CircularProgress } from "../../circular-progress";
+// import { CircularProgress } from "../../circular-progress";
 
 export function ModalLink(props: { isInProcess?: boolean; data: Data}) {
     const [details, setDetails] = React.useState<MSDetail | undefined>(undefined);
