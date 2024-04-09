@@ -61,7 +61,7 @@ const CreateMessage = () => {
           ...schema,
           parameters: schema?.parameters.map((parameter: any) => (
             parameter.id === "receiver" 
-            ? { ...parameter, selected: institutionId } 
+            ? { ...parameter, selected: institutionId, defaultValue: institutionId } 
             : parameter.id === "messageCode"
               ? { ...parameter, defaultValue: messageCode } 
               : parameter
