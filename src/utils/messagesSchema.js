@@ -12,6 +12,10 @@ const institutionOptions = [
        "label": "600 - INKAS ETV"
    },
    {
+       "value": "0027",
+       "label": "0027 - CORP BANCA"
+   },
+   {
        "value": "732",
        "label": "732 - TAPP"
    },
