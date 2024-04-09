@@ -8,7 +8,7 @@ import { ErrorModal } from "@/components/Modal/ErrorModal";
 import SuccessModal from "@/components/Modal/SuccessModal";
 import DecisionModal from "@/components/Modal/DecisionModal";
 import { MyContexLayout } from "./context";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import ModalManagerProvider from "@/components/Modal/ModalManager";
 
 const clearObjet = {
@@ -47,7 +47,9 @@ export default function RootLayout({
               <AppBar />
               <Box style={{ display: "flex", maxWidth: "100vw" }}>
                 <SideBar />
+                <Suspense>
                 {children}
+                </Suspense>
               </Box>
               {/* ///////////////////////Modal Error///////////////////////// */}
               <ErrorModal
