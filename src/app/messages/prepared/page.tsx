@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { Box, IconButton, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
-import { columnsSent } from "@/app/component/inbox-table/constants";
+import { columnsPrepared } from "@/app/component/inbox-table/constants";
 import { SentData } from "@/app/component/inbox-table/type";
 import { SendOutlined } from "@mui/icons-material";
 import { MyContexLayout } from "@/app/context";
@@ -15,14 +15,15 @@ export default function PreparedScreen() {
 
   const { setModalState } = React.useContext(MyContexLayout) as any;
 
-
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      await fetch('/api/message?status=01').then(res => res.json()).then(res => {
-        setData(res)
-        setIsLoading(false);
-      });
+      await fetch("/api/message?status=01")
+        .then((res) => res.json())
+        .then((res) => {
+          setData(res);
+          setIsLoading(false);
+        });
     } catch (error) {
       console.error("Error al solicitar mensajes", error);
       setIsLoading(false);
@@ -35,20 +36,25 @@ export default function PreparedScreen() {
 
   const updateMessage = useCallback(async (id: string) => {
     try {
-      await fetch(`/api/message?id=null&family=null&areaCode=null&institutionCode=null&type=null&date=null`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({id: id, status: "05" }),
-    }).then(res => res.json()).then(res => {
-        console.log('Mensaje actualizado');
-        fetchData();
-      });
+      await fetch(
+        `/api/message?id=null&family=null&areaCode=null&institutionCode=null&type=null&date=null`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: id, status: "05" }),
+        }
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          console.log("Mensaje actualizado");
+          fetchData();
+        });
     } catch (error) {
       console.error("Error al enviar el mensajes", error);
     }
-}, []);
+  }, []);
 
   const acciones = {
     id: "actions",
@@ -81,7 +87,7 @@ export default function PreparedScreen() {
                   </Typography>
                 ),
                 isOpen: true,
-                
+
                 onConfirm: async () => {
                   updateMessage(row.id);
                 },
@@ -96,8 +102,8 @@ export default function PreparedScreen() {
   };
 
   const newColumns = useMemo(() => {
-    return [...columnsSent, acciones];
-  }, [columnsSent, acciones]);
+    return [...columnsPrepared, acciones];
+  }, [columnsPrepared, acciones]);
 
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>
