@@ -6,14 +6,16 @@ const MessageTypesDropdown = ({
   label = "Descripción",
   defaultValue,
   width,
+  value,
   placeholder,
   onChange = () => {},
 } : {
-  label: string,
-  defaultValue?: any,
-  width?: number | string,
-  placeholder: string,
-  onChange?: Function,
+  label: string;
+  defaultValue?: any;
+  width?: number | string;
+  value: any;
+  placeholder: string;
+  onChange?: Function;
 }) => {
   const [messageTypes, setMessageTypes] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,6 +38,7 @@ const MessageTypesDropdown = ({
       label={label}
       options={messageTypes}
       width={width}
+      selected={value}
       loading={loading}
       placeholder={placeholder}
       defaultValue={defaultValue}

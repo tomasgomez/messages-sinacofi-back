@@ -47,6 +47,7 @@ const CreateIndividualMessageModal = ({ open, onClose } : { open: boolean; onClo
           <MessageTypesDropdown
             label="Descripción"
             placeholder="Seleccione el tipo de mensaje"
+            value={messageCode}
             onChange={(value: any) => {
               setMessageCode(value);
             }}
@@ -76,7 +77,7 @@ const CreateIndividualMessageModal = ({ open, onClose } : { open: boolean; onClo
       </Grid>
       <Stack direction="row" justifyContent="flex-end" gap="12px">
         <Button variant="outlined" onClick={onClose}>
-          Cancel
+          Cancelar
         </Button>
         <Button
           variant="contained"
