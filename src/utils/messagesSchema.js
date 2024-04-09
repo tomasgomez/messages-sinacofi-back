@@ -173,6 +173,9 @@ export const messageSchemas = [
             "name": "phoneNumber", 
             "type": "phoneNumber", 
             "label": "22: Teléfono", 
+            "validations": {
+               "pattern": /^(\+?56)?(\s?)(0?9)(\s?)[98765432]\d{7}$/
+            },
             "description": "Telefono", 
             "value": "",
             // "placeholder": "Agregar nombre y cargo del responsable...",
@@ -415,11 +418,11 @@ export const messageSchemas = [
                 "options": [
                   {
                      "label": "Sí",
-                     "value": "yes"
+                     "value": "Sí"
                   },
                   {
                      "label": "No",
-                     "value": "no"
+                     "value": "No"
                   }
                ] 
             }
