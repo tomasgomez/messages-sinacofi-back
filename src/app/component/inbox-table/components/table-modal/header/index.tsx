@@ -34,9 +34,9 @@ export function ModalHeaderSection(props: { data: MSDetail; isInProcess?: boolea
                     <StyledMoalSection variant="h6">Detalles de Recepción</StyledMoalSection>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
-                            <Typography fontSize={'12px'}>OSN</Typography>
+                            <Typography fontSize={'12px'}>TSN</Typography>
                             <StyledModalItem noWrap>
-                                {data.OSN}
+                                {data.TSN}
                             </StyledModalItem>
                         </Grid>
                         <Grid item xs={2}>
