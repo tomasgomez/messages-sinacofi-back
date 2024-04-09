@@ -1,15 +1,24 @@
-import { Message } from '../entities/message';
+import {
+  Message
+} from '../entities/message';
 
 export function validateGetMessage(data: any): [Message, string, string] | Error {
   let message: Message = new Message();
 
-  const { id, messageCode, date, status, count, offset /*, family, areaCode, institutionCode*/ } = data;
+  const {
+    id,
+    messageCode,
+    date,
+    status,
+    count,
+    offset /*, family, areaCode, institutionCode*/
+  } = data;
 
   let countResponse: string = '0';
   let offsetResponse: string = '0';
 
 
-  if (id && typeof id === 'string' && id.trim() !== ''){
+  if (id && typeof id === 'string' && id.trim() !== '') {
     let idToNumber = parseInt(id);
 
     if (isNaN(idToNumber)) {
@@ -45,37 +54,30 @@ export function validateGetMessage(data: any): [Message, string, string] | Error
 export function validateCreateMessage(data: any): Message | Error {
   let message: Message = new Message();
 
-  const {messageCode, priority, status, receiver, sender, parameters } = data;
+  const {
+    messageCode,
+    priority,
+    status,
+    receiver,
+    sender,
+    parameters
+  } = data;
 
-  if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
-    message.messageCode = messageCode;
-  } else {
-    return new Error('Invalid messageCode');
-  }
+  message.messageCode = messageCode;
 
-  if (priority && typeof priority === 'string' && priority.trim() !== '') {
-    message.priority = priority;
-  } else {
-    return new Error('Invalid priority');
-  }
 
-  if (sender && typeof sender === 'string' && sender.trim() !== '') {
-    message.sender = sender;
-  } else {
-    return new Error('Invalid sender');
-  }
+  message.priority = priority;
 
-  if (status && typeof status === 'string' && status.trim() !== '') {
-    message.status = status;
-  }
+  message.sender = sender;
 
-  if (receiver && typeof receiver === 'string' && receiver.trim() !== '') {
-    message.receiver = receiver;
-  }
+  message.status = status;
 
-  if (parameters && typeof parameters === 'object') {
-    message.parameters = parameters;
-  }
+
+  message.receiver = receiver;
+
+
+  message.parameters = parameters;
+
 
   return message;
 }
@@ -83,7 +85,10 @@ export function validateCreateMessage(data: any): Message | Error {
 export function validateUpdateMessage(data: any): Message | Error {
   let message: Message = new Message()
 
-  const {id, status } = data;
+  const {
+    id,
+    status
+  } = data;
 
   message.id = id;
 
