@@ -145,18 +145,18 @@ export const messageSchemas = [
                 "options": [
                   {
                      "label": "Sí",
-                     "value": "yes"
+                     "value": "Sí"
                   },
                   {
                      "label": "No",
-                     "value": "no"
+                     "value": "No"
                   }
                ] 
             }
          },
          {
-            "id": "sender", // Quien envia
-            "name": "sender", 
+            "id": "responsible", // Quien envia
+            "name": "responsible", 
             "type": "textField", 
             "label": "Nombre y Cargo del Responsable", 
             "description": "Nombre y Cargo del Responsable",
@@ -202,10 +202,11 @@ export const messageSchemas = [
             "type": "textField", 
             "label": "AF1: Nombre de Institución", 
             "description": "Nombre de la institución", 
-            "defaultValue": "0027 CORP BANCA", 
+            "defaultValue": "CORP BANCA", 
             "placeholder": "Ingrese el nombre de la institución...",
             "properties": {
                "name": "textField",
+               "disabled": true,
                "columns": "4",
                "rows": "1",
             }
@@ -424,8 +425,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "sender", 
-            "name": "sender", 
+            "id": "responsible", 
+            "name": "responsible", 
             "type": "textField", 
             "label": "Nombre y Cargo del Responsable", 
             "description": "Nombre y Cargo del Responsable", 
