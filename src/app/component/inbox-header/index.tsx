@@ -12,9 +12,24 @@ import {
 } from "./style";
 import { Typography } from "@mui/material";
 import { montserrat } from "@/utils/fonts";
+import { MessageExportContext } from "../MessageExportProvider";
 
 export default function InboxHeader(props: { amountMessages: number, title:string; }) {
   const { amountMessages, title } = props;
+  const { setPrintPDF, selectedMessages, setDownloadPDF } = React.useContext(MessageExportContext);
+
+  const handlePrint = () => {
+    if(selectedMessages.length) {
+      setPrintPDF(true);
+    };
+  };
+
+  const handleDonwload = () => {
+    if(selectedMessages.length) {
+      setDownloadPDF(true);
+    };
+  };
+
   return (
     <StyledInboxHeaderContent>
       <StyledTitleAndDropdown
@@ -47,13 +62,13 @@ export default function InboxHeader(props: { amountMessages: number, title:strin
             style={{
               cursor: "pointer",
             }}
-            onClick={() => console.log("Print")}
+            onClick={handlePrint}
           />
           <FileDownloadOutlinedIcon
             style={{
               cursor: "pointer",
             }}
-            onClick={() => console.log("Download")}
+            onClick={handleDonwload}
           />
         </StyledIconsContent>
       </StyledSubtitleAndIcons>

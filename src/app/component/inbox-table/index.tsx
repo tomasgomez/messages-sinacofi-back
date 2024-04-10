@@ -14,20 +14,16 @@ import { Columns, Data, KeyOfData, Order, SentData } from "./type";
 import { getComparator, stableSort } from "./utils";
 import { Grid, Typography } from "@mui/material";
 import { TableContentLoader } from "./components/table-content-loader";
+import { MessageExportContext } from "../MessageExportProvider";
 
-export default function EnhancedTable(props: {
-  rows: Data[] | SentData[];
-  // columns: Columns[]; TODO fix this
-  columns: any[];
-  loading?: boolean;
-}) {
+export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:Columns[], loading?: boolean}) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("OSN");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { rows, columns, loading } = props;
-
+  const {rows, columns, loading  } = props;
+  const { setSelectedMessages } = React.useContext(MessageExportContext);
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: keyof Data
@@ -44,8 +40,8 @@ export default function EnhancedTable(props: {
       return;
     }
     setSelected([]);
+    setSelectedMessages([]);
   };
-
   const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected: readonly number[] = [];
@@ -63,6 +59,7 @@ export default function EnhancedTable(props: {
       );
     }
     setSelected(newSelected);
+    setSelectedMessages(newSelected);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -80,7 +77,7 @@ export default function EnhancedTable(props: {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows?.length) : 0;
 
   const visibleRows = React.useMemo(
     () =>
@@ -110,7 +107,7 @@ export default function EnhancedTable(props: {
             orderBy={orderBy}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={rows.length}
+            rowCount={rows?.length}
             columns={columns}
           />
           <TableBody>
@@ -148,7 +145,7 @@ export default function EnhancedTable(props: {
       <TablePagination
         rowsPerPageOptions={[5, 7, 10, 25]}
         component="div"
-        count={rows.length}
+        count={rows?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

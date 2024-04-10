@@ -4,12 +4,13 @@ import { Box, IconButton, Paper } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsSent } from "@/app/component/inbox-table/constants";
-import { SentData } from "@/app/component/inbox-table/type";
+import { Columns, SentData } from "@/app/component/inbox-table/type";
 import { CopyAll, SendOutlined } from "@mui/icons-material";
 
 export default function SentScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<SentData[]>([]);
+  const [selected, setSelected] = React.useState<number[]>([]);
 
   const fetchData = async () => {
     try {
@@ -71,8 +72,8 @@ export default function SentScreen() {
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>
       <Box sx={{ m: 2 }}>
-        <InboxHeader amountMessages={data.length} title={"Mensajes Enviados"} />
-        <DataTable rows={data} columns={newColumns} loading={isLoading} />
+        <InboxHeader amountMessages={data.length} title={'Mensajes Enviados'} />
+        <DataTable rows={data} columns={newColumns as  Columns[]} loading={isLoading} />
       </Box>
     </Paper>
   );

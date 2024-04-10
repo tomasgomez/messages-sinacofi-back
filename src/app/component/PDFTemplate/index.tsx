@@ -35,34 +35,39 @@ const styles = StyleSheet.create({
   }
 });
 
-export const PDFTemplate = ({data}: {data: MSDetail}) => {
+export const PDFTemplate = ({data}: {data: MSDetail | MSDetail[]}) => {
+
+  const renderMesage = (data: MSDetail ) => (
+    <View style={styles.section}>
+      <Text>==== S  I  N  A  F  O C  I    TID-WEB ==== TID: </Text>
+      <Text>------------------------------------------------------------------------------------</Text>
+      <Text>{data.messageCode} {data.description} PRI: {data.priority}</Text>
+      <Text>DESTINO: {data.destination}</Text>
+      <Text>------------------------------------------------------------------------------------</Text>
+      {data.parameters.map(field => ( 
+        <React.Fragment key={field.id}>
+          <Text>{field.label} : {field.value}</Text>
+          
+        </React.Fragment>
+      ))}
+      <Text>-------------------------------------------------------------------------------------</Text>
+      <View style={styles.footer}>
+        <Text>IMP:</Text>
+        <Text>AREA:</Text>
+        <Text>LOCAL:</Text>
+        <Text>{data.creationDate}</Text>
+      </View>
+      <Text>====================================================================================</Text>
+    </View>
+  );
+
   return (
-      <Document title={`MS ${data.messageCode} -  ${data.description}`}>
+      <Document title={Array.isArray(data) ? 'Imprimir Mensajes': `MS ${data.messageCode} -  ${data.description}`}>
         <Page 
           size="A4" 
           style={styles.page}
         >
-          <View style={styles.section}>
-            <Text>==== S  I  N  A  F  O C  I    TID-WEB ==== TID: </Text>
-            <Text>------------------------------------------------------------------------------------</Text>
-            <Text>{data.messageCode} {data.description} PRI: {data.priority}</Text>
-            <Text>DESTINO: {data.destination}</Text>
-            <Text>------------------------------------------------------------------------------------</Text>
-            {data.parameters.map(field => ( 
-              <React.Fragment key={field.id}>
-                <Text>{field.label} : {field.value}</Text>
-                
-              </React.Fragment>
-            ))}
-            <Text>-------------------------------------------------------------------------------------</Text>
-            <View style={styles.footer}>
-              <Text>IMP:</Text>
-              <Text>AREA:</Text>
-              <Text>LOCAL:</Text>
-              <Text>{data.creationDate}</Text>
-            </View>
-            <Text>====================================================================================</Text>
-          </View>
+          {Array.isArray(data) ? data.map(messages => renderMesage(messages)) : renderMesage(data) }
         </Page>
       </Document>
   )
