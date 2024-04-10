@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useMemo } from "react";
 import { Box, IconButton, Paper } from "@mui/material";
 import DataTable from "../../component/inbox-table";
@@ -14,10 +14,12 @@ export default function SentScreen() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      await fetch('/api/message?status=05').then(res => res.json()).then(res => {
-        setData(res)
-        setIsLoading(false);
-      });
+      await fetch("/api/message?status=05")
+        .then((res) => res.json())
+        .then((res) => {
+          setData(res);
+          setIsLoading(false);
+        });
     } catch (error) {
       console.error("Error al solicitar mensajes", error);
       setIsLoading(false);
@@ -26,7 +28,7 @@ export default function SentScreen() {
 
   useEffect(() => {
     fetchData();
-  },[]);
+  }, []);
 
   const acciones = {
     id: "actions",
@@ -34,7 +36,13 @@ export default function SentScreen() {
     align: "center",
     render: ({ row }: { row: any }) => {
       return (
-        <Box display={"flex"} gap={1}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <IconButton
             key={`expand-icon-${row.id}`}
             aria-label="expand row"
@@ -42,7 +50,7 @@ export default function SentScreen() {
           >
             <CopyAll />
           </IconButton>
-          {row.status !== '05' && (
+          {row.status !== "05" && (
             <IconButton
               key={`expand-icon-${row.id}`}
               aria-label="expand row"
@@ -60,11 +68,10 @@ export default function SentScreen() {
     return [...columnsSent, acciones];
   }, [columnsSent, acciones]);
 
-
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>
       <Box sx={{ m: 2 }}>
-        <InboxHeader amountMessages={data.length} title={'Mensajes Enviados'}/>
+        <InboxHeader amountMessages={data.length} title={"Mensajes Enviados"} />
         <DataTable rows={data} columns={newColumns} loading={isLoading} />
       </Box>
     </Paper>

@@ -1,55 +1,80 @@
-import { Columns, Alignment, RowOptions } from "./type";
+import { ModalLink } from "./components/modal-link";
+import { StyledChip, StyledMessage, StyledMessageContiner } from "./style";
+import { Columns, Alignment, RowOptions, Data } from "./type";
+
+const descriptor: Columns = {
+  id: "description",
+  label: "Descripción",
+  align: Alignment.LEFT,
+  render: ({ row }: { row: any }) => {
+    return (
+      <StyledMessageContiner>
+        <StyledMessage>{row.description}</StyledMessage>
+        {row.stateProgress && <StyledChip label="En Proceso" />}
+      </StyledMessageContiner>
+    );
+  },
+};
+
+const ONS_COLUMN: Columns = {
+  id: "OSN",
+  label: "OSN",
+  align: Alignment.LEFT,
+  render: ({ row }: { row: Data }) => {
+    return <ModalLink isInProcess={!!row.status} row={row} />;
+  },
+};
 
 export const columnsInbox: Columns[] = [
-  {
-    id: "OSN",
-    label: "OSN",
-    align: Alignment.LEFT,
-  },
+  ONS_COLUMN,
   {
     id: "creationDate",
     label: "Fecha",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "creationTime",
     label: "Hora",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "messageCode",
     label: "MSG",
     align: Alignment.LEFT,
+    sortable: true,
   },
-  {
-    id: "description",
-    label: "Descripción",
-    align: Alignment.LEFT,
-  },
+  descriptor,
   {
     id: "sender",
     label: "Origen",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "receivedDate",
     label: "Fecha",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "receivedTime",
     label: "Hora",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "NSE",
     label: "NSE",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "stateProgress",
     label: "Estado",
     align: Alignment.LEFT,
+    sortable: true,
   },
 ];
 
@@ -58,51 +83,61 @@ export const columnsSent: Columns[] = [
     id: "TSN",
     label: "TSN",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "creationDate",
     label: "Fecha",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "creationTime",
     label: "Hora",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "creationTime",
     label: "MSG",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "messageCode",
     label: "Descripción",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
-    id: "sender",
+    id: "receiver",
     label: "Destino",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "receivedDate",
     label: "Fecha",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "receivedTime",
     label: "Hora",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "NSE",
     label: "NSE",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "stateProgress",
     label: "Estado",
     align: Alignment.LEFT,
+    sortable: true,
   },
 ];
 
@@ -111,51 +146,61 @@ export const columnsPrepared: Columns[] = [
     id: "TSN",
     label: "TSN",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "creationDate",
     label: "Fecha",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "creationTime",
     label: "Hora",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "creationTime",
     label: "MSG",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "messageCode",
     label: "Descripción",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "receiver",
     label: "Destino",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "receivedDate",
     label: "Fecha",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "receivedTime",
     label: "Hora",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "NSE",
     label: "NSE",
     align: Alignment.LEFT,
+    sortable: true,
   },
   {
     id: "stateProgress",
     label: "Estado",
     align: Alignment.LEFT,
+    sortable: true,
   },
 ];
 

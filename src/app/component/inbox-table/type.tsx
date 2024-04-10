@@ -53,6 +53,7 @@ export interface Columns {
   label: string;
   align: Alignment;
   render?: any;
+  sortable?: boolean;
 }
 
 export interface RowOptions {

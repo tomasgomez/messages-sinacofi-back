@@ -16,12 +16,14 @@ export function TableHeader(props: EnhancedTableProps) {
     rowCount,
     onRequestSort,
     withCheckboxAll,
-    columns=[]
+    columns = [],
   } = props;
   const createSortHandler =
     (property: KeyOfData) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
+
+  const withActions = columns.some((elem) => elem.id === "actions");
 
   return (
     <TableHead>
@@ -39,23 +41,33 @@ export function TableHeader(props: EnhancedTableProps) {
             />
           </TableCell>
         )}
-        {columns.map((columnsData) => (
-          <StyledTableCellHeader
-            key={columnsData.id}
-            align={columnsData.align}
-            padding="none"
-            sortDirection={orderBy === columnsData.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === columnsData.id}
-              direction={orderBy === columnsData.id ? order : "asc"}
-              onClick={createSortHandler(columnsData.id)}
+        {columns.map((columnsData) =>
+          columnsData.sortable ? (
+            <StyledTableCellHeader
+              key={columnsData.id}
+              align={columnsData.align}
+              padding="none"
+              sortDirection={orderBy === columnsData.id ? order : false}
+            >
+              <TableSortLabel
+                active={orderBy === columnsData.id}
+                direction={orderBy === columnsData.id ? order : "asc"}
+                onClick={createSortHandler(columnsData.id)}
+              >
+                {columnsData.label}
+              </TableSortLabel>
+            </StyledTableCellHeader>
+          ) : (
+            <StyledTableCellHeader
+              key={columnsData.id}
+              align={columnsData.align}
+              padding="normal"
             >
               {columnsData.label}
-            </TableSortLabel>
-          </StyledTableCellHeader>
-        ))}
-        <TableCell />
+            </StyledTableCellHeader>
+          )
+        )}
+        {!withActions && <TableCell />}
       </TableRow>
     </TableHead>
   );
