@@ -34,8 +34,6 @@ export async function find(message: Message, detail: boolean, count: string, off
     if (messageCode) where.messageCode = messageCode;
     if (status) where.status = status;
 
-    console.log('where', where);
-
     let select = {
       id: true,
       TSN: true,
