@@ -5,14 +5,14 @@ import { Box, IconButton, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsPrepared } from "@/app/component/inbox-table/constants";
-import { SentData } from "@/app/component/inbox-table/type";
+import { Columns, SentData } from "@/app/component/inbox-table/type";
 import { SendOutlined } from "@mui/icons-material";
 import { MyContexLayout } from "@/app/context";
 
 export default function PreparedScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<SentData[]>([]);
-
+  const [selected, setSelected] = React.useState<number[]>([]);
   const { setModalState } = React.useContext(MyContexLayout) as any;
 
   const fetchData = async () => {
@@ -112,7 +112,7 @@ export default function PreparedScreen() {
           amountMessages={data.length}
           title={"Mensajes Preparados"}
         />
-        <DataTable rows={data} columns={newColumns} loading={isLoading} />
+        <DataTable rows={data} columns={newColumns as Columns[]} loading={isLoading} />
       </Box>
     </Paper>
   );
