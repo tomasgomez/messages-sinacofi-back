@@ -17,7 +17,7 @@ import { montserrat } from "@/utils/fonts";
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import Grid from "@mui/material/Grid/Grid";
 import { PDFTemplate } from "@/app/component/PDFTemplate";
-// import { CircularProgress } from "../../circular-progress";
+import Loader from "@/components/Loader";
 
 export function ModalLink(props: { isInProcess?: boolean; data: Data}) {
     const [details, setDetails] = React.useState<MSDetail | undefined>(undefined);
@@ -74,9 +74,7 @@ export function ModalLink(props: { isInProcess?: boolean; data: Data}) {
                 </IconButton>
                 {!!details ? (
                     isLoading ?  
-                    <Box display='flex' justifyContent='center' py={15}>
-                        Cargando Detalle...
-                    </Box>
+                        <Loader label="Cargando Detalle..."/>
                     :  pdfView ? (
                     <>
                         <Typography variant="h6" fontWeight={700} fontFamily={montserrat.style.fontFamily} mb={3}fontSize={16}>
@@ -109,9 +107,7 @@ export function ModalLink(props: { isInProcess?: boolean; data: Data}) {
                     )
                 ) : 
                 (
-                    <Box display='flex' justifyContent='center' py={15}>
-                        Cargando Detalle...
-                    </Box>
+                    <Loader label="Cargando Detalle..."/>
                 )
             }
             </Modal>

@@ -1,4 +1,5 @@
-import { ModalLink } from "./components/modal-link";
+
+import { ModalLink } from "./components/table-modal/link";
 import { StyledChip, StyledMessage, StyledMessageContiner } from "./style";
 import { Columns, Alignment, RowOptions, Data } from "./type";
 
@@ -21,7 +22,7 @@ const ONS_COLUMN: Columns = {
   label: "OSN",
   align: Alignment.LEFT,
   render: ({ row }: { row: Data }) => {
-    return <ModalLink isInProcess={!!row.status} row={row} />;
+    return <ModalLink isInProcess={!!row.status} data={row} />;
   },
 };
 
@@ -84,6 +85,9 @@ export const columnsSent: Columns[] = [
     label: "TSN",
     align: Alignment.LEFT,
     sortable: true,
+    render: ({ row }: { row: Data }) => {
+      return <ModalLink isInProcess={!!row.status} data={row} />;
+    }
   },
   {
     id: "creationDate",
@@ -147,6 +151,9 @@ export const columnsPrepared: Columns[] = [
     label: "TSN",
     align: Alignment.LEFT,
     sortable: true,
+    render: ({ row }: { row: Data }) => {
+      return <ModalLink isInProcess={!!row.status} data={row} />;
+    }
   },
   {
     id: "creationDate",
