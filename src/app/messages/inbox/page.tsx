@@ -2,18 +2,12 @@
 
 import React, { useEffect } from "react";
 
-import { Box, IconButton, Paper, Typography } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsInbox } from "@/app/component/inbox-table/constants";
 import { Data } from "@/app/component/inbox-table/type";
 import DataTable from "../../component/inbox-table";
 import { rows } from "./mock";
-import { PDFTemplate } from "@/app/component/PDFTemplate";
-import { mockMS199 } from "./mock-ms-199";
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
-import { Modal } from '../../component/Modal';
-import { montserrat } from "@/utils/fonts";
-import { CloseRounded } from "@mui/icons-material";
 
 export default function InboxScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);

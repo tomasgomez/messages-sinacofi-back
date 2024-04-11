@@ -1,5 +1,6 @@
 import { montserrat } from "@/utils/fonts";
 import { Box, CircularProgress, Typography } from "@mui/material";
+import './style.css';
 
 const Loader = ({
   label = "Cargando...",
@@ -23,7 +24,7 @@ const Loader = ({
       alignItems: 'center', 
       flexDirection: 'column' 
     }}>
-      <CircularProgress size={size} thickness={thickness} />
+      <Box component="span" className="loader"/>
       {label && (
         <Typography
           variant='body2'
