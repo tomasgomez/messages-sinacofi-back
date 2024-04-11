@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { createContext, useState } from "react";
 import { ModalPrint } from "./inbox-header/ModalPrint";
+import { pdf, usePDF } from "@react-pdf/renderer";
+import { PDFTemplate } from "./PDFTemplate";
+import { MSDetail } from "./inbox-table/type";
 // import { PDFDownloadLink } from "@react-pdf/renderer";
 // import { PDFTemplate } from "./PDFTemplate";
 
@@ -13,7 +16,7 @@ type initialinitialMessageExportType = {
   setDownloadPDF: Function,
   isLoading: boolean,
   setIsLoading: Function,
-  details: [],
+  details: MSDetail[] | [],
   setDetails: Function,
 };
 
@@ -37,11 +40,28 @@ export const MessageExportProvider = ({ children }: { children: any}) => {
   const [selectedMessages, setSelectedMessages] = useState<[]>([]);
   const [printPDF, setPrintPDF] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [details, setDetails] = useState<any>([])
+  const [details, setDetails] = useState<MSDetail[] | []>([])
   const [downloadPDF, setDownloadPDF] = useState<boolean>(false);
 
-  const fetchData = async () => {
+  const downloadPDFFiles = async (data: MSDetail | MSDetail[] ) => {
+    const instance = await pdf(<PDFTemplate data={data}/>)
+    try {
+      const blob = await instance.toBlob();
+      const url = window.URL.createObjectURL(blob as Blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'MS-Detalles.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      setDownloadPDF(false);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
+  };
 
+  const fetchData = async (): Promise<void> => {
     try {
       setIsLoading(true);
       const promises = selectedMessages.map(id =>
@@ -50,8 +70,12 @@ export const MessageExportProvider = ({ children }: { children: any}) => {
       );
 
       const responseData = await Promise.all(promises);
-      setDetails(responseData.map(data => data[0]));
+      const data = responseData.map(data => data[0]);
+      setDetails(data);
       setIsLoading(false);
+      if (downloadPDF) {
+        downloadPDFFiles(data)
+      }
     } catch (error) {
       console.error("Error al solicitar detalle del mensajes", error);
       setIsLoading(false);
@@ -83,7 +107,6 @@ export const MessageExportProvider = ({ children }: { children: any}) => {
     <MessageExportContext.Provider value={contextValue}>
       {children}
       <ModalPrint />
-      {/* {downloadPDF && <PDFDownloadLink download={true} document={<PDFTemplate data={[details]}/>}>a</PDFDownloadLink> } */}
     </MessageExportContext.Provider>
   );
 };
