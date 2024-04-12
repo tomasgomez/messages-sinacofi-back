@@ -1,6 +1,7 @@
 'use client'
-import { AccountBalance, AccountBalanceOutlined, ArrowDropDownOutlined, AssignmentIndOutlined, BarChart, CloudDownloadOutlined, ConnectWithoutContact, EditOutlined, EmailOutlined, ForwardToInbox, ForwardToInboxOutlined, GroupOutlined, Inbox, NotificationsNone, NotificationsNoneOutlined, SettingsApplicationsOutlined, StackedBarChart, WorkspacesOutlined } from "@mui/icons-material";
-import { Button, Collapse, Container, List, } from "@mui/material";
+import { CloudDownloadOutlined, EmailOutlined, ForwardToInboxOutlined, NotificationsNoneOutlined, StackedBarChart, HomeMaxOutlined } from "@mui/icons-material";
+import { Collapse, Container, List, } from "@mui/material";
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -72,44 +73,6 @@ const navList = [
     ],
   },
   {
-    key: "mortgage-discharge",
-    label: "Alzamiento Hipotecario",
-    icon: <EmailOutlined />,
-    childrenKeys: ["in-process", "completed", "search", "deeds-liens", "mortgage-rejected", "informs"],
-    children: [
-      {
-        key: "in-process",
-        label: "En Proceso",
-        url: "/messages/in-process",
-      },
-      {
-        key: "completed",
-        label: "Completados",
-        url: "/messages/completed",
-      },
-      {
-        key: "search",
-        label: "Búsqueda",
-        url: "/messages/search",
-      },
-      {
-        key: "deeds-liens",
-        label: "Escrituras y Reparos",
-        url: "/messages/deeds-liens",
-      },
-      {
-        key: "mortgage-rejected",
-        label: "Rechazados",
-        url: "/messages/mortgage-rejected",
-      },
-      {
-        key: "informs",
-        label: "Informes AH",
-        url: "/messages/informs",
-      }
-    ],
-  },
-  {
     key: "fti-messaging",
     label: "Mensajería FTI",
     icon: <ForwardToInboxOutlined />,
@@ -125,6 +88,44 @@ const navList = [
         label: "Configuración PAMS/TAMS",
         url: "/fti-messaging/pams-tams-configuration"
       },
+    ],
+  },
+  {
+    key: "mortgage-discharge",
+    label: "Alzamiento Hipotecario",
+    icon: <AccountBalanceIcon />,
+    childrenKeys: ["in-process", "completed", "search", "deeds-liens", "mortgage-rejected", "informs"],
+    children: [
+      {
+        key: "in-process",
+        label: "En Proceso",
+        url: "/mortgage-discharge/in-process",
+      },
+      {
+        key: "completed",
+        label: "Completados",
+        url: "/mortgage-discharge/completed",
+      },
+      {
+        key: "search",
+        label: "Búsqueda",
+        url: "/mortgage-discharge/search",
+      },
+      {
+        key: "deeds-liens",
+        label: "Escrituras y Reparos",
+        url: "/mortgage-discharge/deeds-liens",
+      },
+      {
+        key: "mortgage-rejected",
+        label: "Rechazados",
+        url: "/mortgage-discharge/mortgage-rejected",
+      },
+      {
+        key: "informs",
+        label: "Informes AH",
+        url: "/mortgage-discharge/informs",
+      }
     ],
   },
   {
