@@ -72,6 +72,44 @@ const navList = [
     ],
   },
   {
+    key: "mortgage-discharge",
+    label: "Alzamiento Hipotecario",
+    icon: <EmailOutlined />,
+    childrenKeys: ["in-process", "completed", "search", "deeds-liens", "mortgage-rejected", "informs"],
+    children: [
+      {
+        key: "in-process",
+        label: "En Proceso",
+        url: "/messages/in-process",
+      },
+      {
+        key: "completed",
+        label: "Completados",
+        url: "/messages/completed",
+      },
+      {
+        key: "search",
+        label: "Búsqueda",
+        url: "/messages/search",
+      },
+      {
+        key: "deeds-liens",
+        label: "Escrituras y Reparos",
+        url: "/messages/deeds-liens",
+      },
+      {
+        key: "mortgage-rejected",
+        label: "Rechazados",
+        url: "/messages/mortgage-rejected",
+      },
+      {
+        key: "informs",
+        label: "Informes AH",
+        url: "/messages/informs",
+      }
+    ],
+  },
+  {
     key: "fti-messaging",
     label: "Mensajería FTI",
     icon: <ForwardToInboxOutlined />,
