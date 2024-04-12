@@ -117,11 +117,6 @@ const navList = [
         url: "/mortgage-discharge/deeds-liens",
       },
       {
-        key: "mortgage-rejected",
-        label: "Rechazados",
-        url: "/mortgage-discharge/mortgage-rejected",
-      },
-      {
         key: "informs",
         label: "Informes AH",
         url: "/mortgage-discharge/informs",
