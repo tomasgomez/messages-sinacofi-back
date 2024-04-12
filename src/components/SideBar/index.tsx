@@ -1,7 +1,7 @@
 'use client'
-import { CloudDownloadOutlined, EmailOutlined, ForwardToInboxOutlined, NotificationsNoneOutlined, StackedBarChart, HomeMaxOutlined } from "@mui/icons-material";
+
+import { HomeWorkOutlined, CloudDownloadOutlined, EmailOutlined, ForwardToInboxOutlined, NotificationsNoneOutlined, StackedBarChart, HomeMaxOutlined } from "@mui/icons-material";
 import { Collapse, Container, List, } from "@mui/material";
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -93,7 +93,7 @@ const navList = [
   {
     key: "mortgage-discharge",
     label: "Alzamiento Hipotecario",
-    icon: <AccountBalanceIcon />,
+    icon: <HomeWorkOutlined />,
     childrenKeys: ["in-process", "completed", "search", "deeds-liens", "mortgage-rejected", "informs"],
     children: [
       {
