@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Handler } from "@/backend/entities/handler";
+import { Handler } from "@/backend/entities/calls/handler";
 
 import { get } from '@/backend/handler/messageDetail/get';
-import { APICalls } from "@/backend/interfaces/calls";
+import { APICalls } from "@/backend/entities/calls/calls";
 
 /*
 Mesasage Detail hanlder

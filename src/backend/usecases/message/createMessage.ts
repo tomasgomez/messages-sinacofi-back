@@ -1,6 +1,6 @@
 import {
     Message
-} from "@/backend/entities/message";
+} from "@/backend/entities/message/message";
 import {
     MessageRepository
 } from "@/backend/interfaces/messageRepository";

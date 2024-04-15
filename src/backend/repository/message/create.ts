@@ -1,9 +1,9 @@
 import {
     Message
-} from "@/backend/entities/message";
+} from "@/backend/entities/message/message";
 import {
     PrismaClientWrapper
-} from '../entities/prismaWrapper';
+} from '../prismaWrapper';
 
 
 export async function create(message: Message): Promise < Message | Error > {

@@ -3,8 +3,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import  { get }  from '@/backend/handler/message/get';
 import  { post }   from '@/backend/handler/message/post';
 import  { put }  from '@/backend/handler/message/put';
-import { APICalls } from '@/backend/interfaces/calls';
-import { Handler } from "@/backend/entities/handler";
+import { APICalls } from '@/backend/entities/calls/calls';
+import { Handler } from "@/backend/entities/calls/handler";
 
 /*
 Institution Handler

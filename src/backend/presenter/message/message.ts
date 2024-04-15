@@ -1,4 +1,4 @@
-import { Message } from '../entities/message';
+import { Message } from '../../entities/message/message';
 
 export function validateGetMessage(data: any): [Message, string, string] | Error {
   let message: Message = new Message();

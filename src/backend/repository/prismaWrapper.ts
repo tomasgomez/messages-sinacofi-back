@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { prisma } from '../repository/client';
+import { prisma } from './client';
 
 export class PrismaClientWrapper {
   private client: PrismaClient = prisma;

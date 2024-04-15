@@ -1,4 +1,4 @@
-import { Message } from '../entities/message';
+import { Message } from '../entities/message/message';
 
 export interface MessageRepository {
     find(message: Message, detail: boolean, count:string, offset: string): Promise<Message[] | Error>

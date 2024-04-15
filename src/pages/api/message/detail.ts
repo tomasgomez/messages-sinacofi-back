@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Methods } from '@/backend/entities/http';
+import { Methods } from '@/backend/entities/calls/http';
 import { errorHandler } from '@/backend/utils/errorHandler'
 
 // import calls

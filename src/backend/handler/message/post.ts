@@ -1,5 +1,5 @@
 import { messageUseCase } from "@/backend/usecases/message/usecases";
-import { validateCreateMessage } from "@/backend/presenter/message";
+import { validateCreateMessage } from "@/backend/presenter/message/message";
 import { NextApiRequest, NextApiResponse } from "next";
 
 // post message function

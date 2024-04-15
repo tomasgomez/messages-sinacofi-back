@@ -1,4 +1,4 @@
-import { APICalls } from '@/backend/interfaces/calls';
+import { APICalls } from '@/backend/entities/calls/calls';
 import { NextApiRequest, NextApiResponse } from "next";
 
 export abstract class Handler implements APICalls {

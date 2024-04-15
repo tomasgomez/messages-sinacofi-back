@@ -1,5 +1,5 @@
-import { MessageRepository } from '../interfaces/messageRepository';
-import { Message } from '../entities/message';
+import { MessageRepository } from '../../interfaces/messageRepository';
+import { Message } from '../../entities/message/message';
 import { find } from './find';
 import { create } from './create';
 import { update } from './update';

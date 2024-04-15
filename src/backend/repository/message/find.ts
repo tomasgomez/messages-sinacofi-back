@@ -1,9 +1,9 @@
 import {
   Message
-} from "@/backend/entities/message";
+} from "@/backend/entities/message/message";
 import {
   PrismaClientWrapper
-} from '../entities/prismaWrapper';
+} from '../prismaWrapper';
 
 
 export async function find(message: Message, detail: boolean, count: string, offset: string): Promise < Message[] | Error > {

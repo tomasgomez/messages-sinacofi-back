@@ -16,7 +16,7 @@ export class Message {
     receivedTime: string;
     actions: string;
     documents: string;
-    parameters: Parameter[] | any;
+    parameters: any;
 
     constructor() {
         this.TSN = '';

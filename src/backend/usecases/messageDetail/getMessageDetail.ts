@@ -3,7 +3,7 @@ import {
 } from '../../interfaces/messageRepository';
 import {
     Message
-} from '../../entities/message';
+} from '../../entities/message/message';
 
 
 // Get messageDetail function

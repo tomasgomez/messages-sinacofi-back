@@ -1,5 +1,5 @@
 import { MessageRepository } from '../../interfaces/messageRepository';
-import { Message } from '../../entities/message';
+import { Message } from '../../entities/message/message';
 
 // Get message function
 export async function getMessage(repository: MessageRepository, message: Message, count: string, offset: string): Promise<Message[] | Error> {
