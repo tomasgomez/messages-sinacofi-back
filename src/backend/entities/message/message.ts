@@ -1,40 +1,28 @@
-export class Message {
-    id?: number;
-    TSN: string;
-    OSN: string;
-    NSE: string;
-    messageCode: string;
-    destination: string;
-    description: string;
-    priority: string;
-    status: string;
-    sender: string;
-    creationDate: string;
-    creationTime: string;
-    receiver: string;
-    receivedDate: string;
-    receivedTime: string;
-    actions: string;
-    documents: string;
-    parameters: any;
+import { IMessage } from './interface';
 
-    constructor() {
-        this.TSN = '';
-        this.OSN = '';
-        this.NSE = '';
-        this.messageCode = '';
-        this.destination = '';
-        this.description = '';
-        this.priority = '';
-        this.status = '';
-        this.sender = '';
-        this.creationDate = '';
-        this.creationTime = '';
-        this.receiver = '';
-        this.receivedDate = '';
-        this.receivedTime = '';
-        this.actions = '';
-        this.documents = '';
-        this.parameters = [];
+export class Message implements IMessage{
+
+    constructor(
+        public TSN: string,
+        public OSN: string,
+        public NSE: string,
+        public messageCode: string,
+        public destination: string,
+        public description: string,
+        public priority: string,
+        public status: string,
+        public sender: string,
+        public creationDate: string,
+        public creationTime: string,
+        public receiver: string,
+        public receivedDate: string,
+        public receivedTime: string,
+        public actions: string,
+        public documents: string,
+        public parameters: any
+    ) {}
+
+    setParameters(parameters: any) {
+        this.parameters = parameters;
     }
 }
