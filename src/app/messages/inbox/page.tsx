@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 
-import { Box, Paper } from "@mui/material";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsInbox } from "@/app/component/inbox-table/constants";
 import { Data } from "@/app/component/inbox-table/type";
@@ -30,11 +30,22 @@ export default function InboxScreen() {
     fetchData();
   },[]);
 
+  const tableTitle = (
+    <Grid container p={2}>
+      <Grid pl={6} item xs={8}>
+        <Typography fontWeight={600}>Recepción</Typography>
+      </Grid>
+      <Grid item xs={3} paddingLeft="45px">
+        <Typography fontWeight={600}>Enviado</Typography>
+      </Grid>
+    </Grid>
+  );
+
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>
       <Box sx={{ m: 2 }}> 
         <InboxHeader amountMessages={rows.length} title={'Bandeja de Entrada'} />
-        <DataTable rows={data} loading={isLoading} columns={columnsInbox} />
+        <DataTable rows={data} loading={isLoading} columns={columnsInbox} tableTitle={tableTitle}/>
       </Box>
     </Paper>
   );

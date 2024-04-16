@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useMemo } from "react";
-import { Box, IconButton, Paper } from "@mui/material";
+import { Box, Grid, IconButton, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsSent } from "@/app/component/inbox-table/constants";
@@ -69,11 +69,22 @@ export default function SentScreen() {
     return [...columnsSent, acciones];
   }, [columnsSent, acciones]);
 
+  const tableTitle = (
+    <Grid container p={2}>
+      <Grid pl={6} item xs={8}>
+        <Typography fontWeight={600}>Recepción</Typography>
+      </Grid>
+      <Grid item xs={3} paddingLeft="45px">
+        <Typography fontWeight={600}>Enviado</Typography>
+      </Grid>
+    </Grid>
+  );
+
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>
       <Box sx={{ m: 2 }}>
         <InboxHeader amountMessages={data.length} title={'Mensajes Enviados'} />
-        <DataTable rows={data} columns={newColumns as  Columns[]} loading={isLoading} />
+        <DataTable rows={data} columns={newColumns as  Columns[]} loading={isLoading} tableTitle={tableTitle}/>
       </Box>
     </Paper>
   );
