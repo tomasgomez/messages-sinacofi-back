@@ -1,4 +1,3 @@
-
 import { ModalLink } from "./components/table-modal/link";
 import { StyledChip, StyledMessage, StyledMessageContiner } from "./style";
 import { Columns, Alignment, RowOptions, Data } from "./type";
@@ -87,7 +86,7 @@ export const columnsSent: Columns[] = [
     sortable: true,
     render: ({ row }: { row: Data }) => {
       return <ModalLink isInProcess={!!row.status} data={row} />;
-    }
+    },
   },
   {
     id: "creationDate",
@@ -153,7 +152,7 @@ export const columnsPrepared: Columns[] = [
     sortable: true,
     render: ({ row }: { row: Data }) => {
       return <ModalLink isInProcess={!!row.status} data={row} />;
-    }
+    },
   },
   {
     id: "creationDate",

@@ -15,11 +15,17 @@ export default function InProcessScreen() {
       </Box>
       <Box>
         {dataList.map((data) => (
-          <CarDischarge data={data} handlerTrackingModal={setIsOpenTrackingModal}/>
+          <CarDischarge
+            data={data}
+            handlerTrackingModal={setIsOpenTrackingModal}
+          />
         ))}
-        <Header title={'Alzamientos Hipotecarios en Proceso'} />
+        <Header title={"Alzamientos Hipotecarios en Proceso"} />
       </Box>
-      <TrackingModal open={isOpenTrackingModal} onClose={setIsOpenTrackingModal}/>
+      <TrackingModal
+        open={isOpenTrackingModal}
+        onClose={setIsOpenTrackingModal}
+      />
     </Paper>
   );
 }
