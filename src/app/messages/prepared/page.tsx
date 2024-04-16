@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Box, IconButton, Paper, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsPrepared } from "@/app/component/inbox-table/constants";
@@ -55,6 +55,17 @@ export default function PreparedScreen() {
       console.error("Error al enviar el mensajes", error);
     }
   }, []);
+
+  const tableTitle = (
+    <Grid container p={2}>
+      <Grid pl={6} item xs={8}>
+        <Typography fontWeight={600}>Recepción</Typography>
+      </Grid>
+      <Grid item xs={3} paddingLeft="45px">
+        <Typography fontWeight={600}>Enviado</Typography>
+      </Grid>
+    </Grid>
+  );
 
   const acciones = {
     id: "actions",
@@ -112,7 +123,7 @@ export default function PreparedScreen() {
           amountMessages={data.length}
           title={"Mensajes Preparados"}
         />
-        <DataTable rows={data} columns={newColumns as Columns[]} loading={isLoading} />
+        <DataTable rows={data} columns={newColumns as Columns[]} loading={isLoading} tableTitle={tableTitle} />
       </Box>
     </Paper>
   );

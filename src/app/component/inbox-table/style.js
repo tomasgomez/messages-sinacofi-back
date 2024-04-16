@@ -2,10 +2,11 @@ import { styled } from "@mui/system";
 import TableCell from "@mui/material/TableCell";
 import Chip from "@mui/material/Chip";
 
+// TODO: fix mix and max width props
 export const StyledTabCell = styled(TableCell)`
-  max-width: ${(props) => props?.maxwidth}px;
-  min-width: ${(props) => props?.minwidth}px;
-  font-size: ${(props) => props?.fontSize}px;
+  // max-width: ${(props) => props?.maxwidth}px; 
+  // min-width: ${(props) => props?.minwidth}px;
+  // font-size: ${(props) => props?.fontSize}px;
   font-weight: ${(props) => (props?.isBlod ? "bold" : "normal")};
   text-wrap: nowrap;
 `;

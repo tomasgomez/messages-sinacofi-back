@@ -1,18 +1,17 @@
-"use client";
-import * as React from "react";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+'use client';
+
+import { FormControl, InputLabel, MenuItem, Typography } from "@mui/material";
+import Box from "@mui/material/Box/Box";
+import React from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-
-export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
-    const { widthDropdown } = props;
+export const MortgageStatusDropdown = () => {
     const options = [
-        { label: "Todos", value: "todos" },
-        { label: "Alzamiento Hipotecario", value: "alzamiento" },
-        { label: "Camara de Compensacion ATM", value: "camara" },
+        { label: "021 - Evaluación Alzamiento Hipotecario En Proceso", value: "021" },
+        { label: "022 - Evaluación Alzamiento Hipotecario Aceptada", value: "022" },
+        { label: "023 - Evaluación Alzamiento Hipotecario Rechazada", value: "023" },
+        { label: "041 - Firma de Escritura en Proceso", value: "041" },
+        { label: "042 - Escritura Firmada", value: "042" },
     ];
     const [optionSelected, setOptionSelected] = React.useState(options[0].value);
    
@@ -22,13 +21,13 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
     };
 
     return (
-        <Box sx={{ width: widthDropdown }}>
+        <Box sx={{ width: 480 }}>
             <FormControl fullWidth >
             <InputLabel
                 id="simple-select-label"
-                style={{ backgroundColor: "#DFF8FF", width: '142px', textAlign: 'center', paddingLeft: '4px' }}
+                style={{ backgroundColor: "#DFF8FF" }}
             >
-                Tipo de Mensaje
+                Estado Alzamiento Hipotecario
             </InputLabel>
             <Select
                 size="small"
@@ -47,5 +46,5 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
             </Select>
             </FormControl>
         </Box>
-    );
-}
+    )
+};

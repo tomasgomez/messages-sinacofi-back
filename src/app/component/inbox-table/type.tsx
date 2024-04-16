@@ -54,6 +54,7 @@ export interface Columns {
   align: Alignment;
   render?: any;
   sortable?: boolean;
+  withCheckboxAll?: boolean;
 }
 
 export interface RowOptions {

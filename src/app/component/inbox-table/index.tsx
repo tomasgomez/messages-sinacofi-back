@@ -10,19 +10,19 @@ import TableContentRows from "./components/table-rows-inbox";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import { StyledTabCell } from "./style";
-import { Columns, Data, KeyOfData, Order, SentData } from "./type";
+import { Columns, Data, Order, SentData } from "./type";
 import { getComparator, stableSort } from "./utils";
-import { Grid, Typography } from "@mui/material";
+
 import { TableContentLoader } from "./components/table-content-loader";
 import { MessageExportContext } from "../MessageExportProvider";
 
-export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:Columns[], loading?: boolean}) {
+export default function EnhancedTable(props:{rows: Data[] | SentData[] | any[], columns:Columns[], loading?: boolean, withCheckbox?: boolean, tableTitle?: React.ReactNode}) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("OSN");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const {rows, columns, loading  } = props;
+  const {rows, columns, loading, tableTitle, withCheckbox = true  } = props;
   const { setSelectedMessages } = React.useContext(MessageExportContext);
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -89,19 +89,12 @@ export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:
   );
 
   return (
-    <Paper sx={{ mb: 2 }}>
+    <Paper >
       <TableContainer>
-        <Grid container p={2}>
-          <Grid pl={6} item xs={8}>
-            <Typography fontWeight={600}>Recepción</Typography>
-          </Grid>
-          <Grid item xs={3} paddingLeft="45px">
-            <Typography fontWeight={600}>Enviado</Typography>
-          </Grid>
-        </Grid>
+        { tableTitle }
         <Table aria-labelledby="tableTitle" size="medium" stickyHeader>
           <TableHeader
-            withCheckboxAll
+            withCheckboxAll={withCheckbox}
             numSelected={selected.length}
             order={order}
             orderBy={orderBy}
@@ -120,7 +113,7 @@ export default function EnhancedTable(props:{rows: Data[] | SentData[], columns:
                 return (
                   <TableContentRows
                     key={row.id}
-                    withCheckbox
+                    withCheckbox={withCheckbox}
                     row={row}
                     labelId={labelId}
                     isItemSelected={isItemSelected}
