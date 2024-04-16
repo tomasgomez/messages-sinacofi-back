@@ -12,7 +12,13 @@ import CodeColumn from "./codeColumn";
 import InfoColumn from "./infoColumn";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
-const CarDischarge = ({ data, handlerTrackingModal }: { data: any, handlerTrackingModal: (state: boolean) => void }) => {
+const CarDischarge = ({
+  data,
+  handlerTrackingModal,
+}: {
+  data: any;
+  handlerTrackingModal: (state: boolean) => void;
+}) => {
   const {
     code,
     date,
@@ -24,7 +30,8 @@ const CarDischarge = ({ data, handlerTrackingModal }: { data: any, handlerTracki
   } = data;
 
   const handlerOpenModal = () => {
-    handlerTrackingModal(true);
+    // handlerTrackingModal(true);
+    console.log("handlerTrackingModal");
   };
 
   return (
@@ -33,7 +40,9 @@ const CarDischarge = ({ data, handlerTrackingModal }: { data: any, handlerTracki
         <KeyboardArrowRightIcon />
         <CodeColumn code={code} date={date} status={status} />
         <InfoColumn data={data} />
-        <StyledButton onClick={handlerOpenModal}>Base de Seguimiento</StyledButton>
+        <StyledButton onClick={handlerOpenModal}>
+          Base de Seguimiento
+        </StyledButton>
       </StyledCardContent>
     </StyledContentCard>
   );
