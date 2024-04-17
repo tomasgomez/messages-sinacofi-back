@@ -5,9 +5,11 @@ import Header from "./header";
 import CarDischarge from "@/app/mortgage-discharge/components/card";
 import { dataList } from "./mock";
 import { TrackingModal } from "./tracking-modal";
+import { InfoModal } from "./info-modal";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = React.useState(false);
+  const [isOpenDetailModal, setIsOpenDetailgModal] = React.useState(false);
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>
       <Box sx={{ m: 2 }}>
@@ -26,6 +28,8 @@ export default function InProcessScreen() {
         open={isOpenTrackingModal}
         onClose={setIsOpenTrackingModal}
       />
+      {/* <TrackingModal open={isOpenTrackingModal} onClose={setIsOpenTrackingModal}/> */}
+      <InfoModal open={isOpenDetailModal} onClose={() => {}}/>
     </Paper>
   );
 }
