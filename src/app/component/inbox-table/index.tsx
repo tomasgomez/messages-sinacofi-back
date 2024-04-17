@@ -16,13 +16,19 @@ import { getComparator, stableSort } from "./utils";
 import { TableContentLoader } from "./components/table-content-loader";
 import { MessageExportContext } from "../MessageExportProvider";
 
-export default function EnhancedTable(props:{rows: Data[] | SentData[] | any[], columns:Columns[], loading?: boolean, withCheckbox?: boolean, tableTitle?: React.ReactNode}) {
+export default function EnhancedTable(props: {
+  rows: Data[] | SentData[] | any[];
+  columns: Columns[];
+  loading?: boolean;
+  withCheckbox?: boolean;
+  tableTitle?: React.ReactNode;
+}) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("OSN");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const {rows, columns, loading, tableTitle, withCheckbox = true  } = props;
+  const { rows, columns, loading, tableTitle, withCheckbox = true } = props;
   const { setSelectedMessages } = React.useContext(MessageExportContext);
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -89,9 +95,9 @@ export default function EnhancedTable(props:{rows: Data[] | SentData[] | any[], 
   );
 
   return (
-    <Paper >
+    <Paper>
       <TableContainer>
-        { tableTitle }
+        {tableTitle}
         <Table aria-labelledby="tableTitle" size="medium" stickyHeader>
           <TableHeader
             withCheckboxAll={withCheckbox}

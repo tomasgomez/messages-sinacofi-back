@@ -44,7 +44,22 @@ export interface SentData {
   actions?: boolean;
 }
 
-export type KeyOfData = keyof Data | keyof SentData;
+export interface MortgageDischargeData {
+  NSR: string;
+  code: string;
+  description: string;
+  LSN: string;
+  date: string;
+  time: string;
+  status: string;
+  attachments?: string;
+  actions?: boolean;
+}
+
+export type KeyOfData =
+  | keyof Data
+  | keyof SentData
+  | keyof MortgageDischargeData;
 
 export type Order = "asc" | "desc";
 

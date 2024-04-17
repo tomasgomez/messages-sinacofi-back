@@ -22,12 +22,39 @@ export const StyledContentCard = styled(Box)<StyledContentCardProps>(
   })
 );
 
+export const StyledCard = styled(Box)`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px;
+`;
+
+interface StyledBoxShadowProps {
+  borderRadiusComplete?: boolean;
+}
+
+export const StyledBoxShadow = styled(Box)<StyledBoxShadowProps>(
+  ({ borderRadiusComplete }: StyledBoxShadowProps): CSSObject => ({
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    alignItems: "center",
+    borderRadius: borderRadiusComplete
+      ? "10px 10px 0px 0px"
+      : "10px 10px 10px 10px",
+    background: "#fff",
+    boxShadow: "0px 2px 5px 0px rgba(0, 0, 0, 0.1)",
+    transition: "border-radius 0.3s ease",
+  })
+);
+
 export const StyledCardContent = styled(Box)`
   display: flex;
   justify-content: space-between;
   width: 100%;
   align-items: center;
-  margin: 16px;
+  flex-direction: column;
 `;
 
 interface StyledChipProps {
