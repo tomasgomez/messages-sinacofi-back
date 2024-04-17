@@ -1,21 +1,23 @@
 "use client";
 
 import { useContext } from "react";
-
 import { Columns, Alignment } from "@/app/component/inbox-table/type";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { Box, IconButton } from "@mui/material";
 import { ModalContext } from "../../in-process/store/ModalStore";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const acciones: Columns = {
   id: "actions",
   label: "Acciones",
   align: Alignment.CENTER,
   render: ({ row }: { row: any }) => {
-    // const { setIsOpen } = useContext(ModalContext); TODO: uncomment this line to open the modal
+    // TODO: uncomment this line to open the modal
+    // const { setIsOpen } = useContext(ModalContext);
 
     const handlerOpenModal = () => {
-      // setIsOpen(true);  TODO: uncomment this line to open the modal
+      // TODO: uncomment this line to open the modal
+      // setIsOpen(true);
     };
 
     return (
@@ -27,13 +29,21 @@ const acciones: Columns = {
         }}
       >
         <IconButton
-          key={`expand-icon-${row.id}`}
+          key={`drive-icon-${row.id}`}
           aria-label="DriveFileRenameOutlineIcon"
           style={{ padding: 0, color: "#00B2E2" }}
-          onClick={handlerOpenModal}
         >
           <DriveFileRenameOutlineIcon />
         </IconButton>
+        {/* Detail Icon */}
+        {/* <IconButton
+          key={`detail-icon-${row.id}`}
+          aria-label="DetailOutlineIcon"
+          style={{ padding: 0, color: "#565656" }}
+          onClick={handlerOpenModal}
+        >
+          <ErrorOutlineIcon />
+        </IconButton> */}
       </Box>
     );
   },

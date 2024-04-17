@@ -54,6 +54,8 @@ export interface MortgageDischargeData {
   status: string;
   attachments?: string;
   actions?: boolean;
+  messageStatus?: string;
+  isPending?: boolean;
 }
 
 export type KeyOfData =

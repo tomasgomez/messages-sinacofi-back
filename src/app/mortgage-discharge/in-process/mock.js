@@ -6,7 +6,7 @@ export const dataList = [
     OperationStatus: "01 - Envío de Alzamiento Hipotecario",
     Buyer: "98.765.432-1/Juan Pérez",
     OriginInstitution: "0012 - Banco Estado",
-    status: "sent",
+    status: "pending",
   },
   {
     code: "AH00010000000040",
@@ -24,7 +24,7 @@ export const dataList = [
     OperationStatus: "01 - Envío de Alzamiento Hipotecario",
     Buyer: "98.765.432-1/Juan Pérez",
     OriginInstitution: "0012 - Banco Estado",
-    status: "pending",
+    status: "sent",
   },
   {
     code: "AH00010000000040",
@@ -33,7 +33,7 @@ export const dataList = [
     OperationStatus: "01 - Envío de Alzamiento Hipotecario",
     Buyer: "98.765.432-1/Juan Pérez",
     OriginInstitution: "0012 - Banco Estado",
-    status: "sent",
+    status: "pending",
   },
   {
     code: "AH00010000000040",
@@ -51,6 +51,6 @@ export const dataList = [
     OperationStatus: "01 - Envío de Alzamiento Hipotecario",
     Buyer: "98.765.432-1/Juan Pérez",
     OriginInstitution: "0012 - Banco Estado",
-    status: "pending",
+    status: "sent",
   },
 ];

@@ -4,6 +4,8 @@ import { styled, CSSObject } from "@mui/system";
 import { montserrat } from "@/utils/fonts";
 import Button from "@mui/material/Button/Button";
 import Divider from "@mui/material/Divider";
+import CheckIcon from "@mui/icons-material/Check";
+import LinearProgress from "@mui/material/LinearProgress";
 
 interface StyledContentCardProps {
   height?: number;
@@ -128,3 +130,156 @@ export const StyledTypographyData = styled(Typography)`
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
+
+////////////////////////////////// Progress Bar ////////////////////////////////////////////////////////////
+
+export const StyledContainerProgressBar = styled(Box)`
+  height: 80px;
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 16px;
+`;
+
+export const StyledContainerTitleProgressBar = styled(Box)`
+  height: 40px;
+  width: 90px;
+  margin: 16px;
+`;
+
+export const StyledTitleProgressBar = styled(Typography)`
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.42;
+`;
+
+export const StyledContainerBar = styled(Box)`
+  width: 1023px;
+  display: flex;
+  overflow-x: scroll;
+`;
+
+export const StyledContainerBlock = styled(Box)`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: end;
+`;
+
+export const StyledContainerBlockStatus = styled(Box)`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  margin: 4px;
+`;
+
+interface StyledContainerIconProps {
+  status?: string;
+}
+
+const getbackgroundColorIcon = (status?: string): string => {
+  switch (status) {
+    case "Recibido":
+      return "#ECEFFF";
+    case "Enviado":
+      return "#EFFCFF";
+    default:
+      return "#00B2E2";
+  }
+};
+
+export const StyledContainerIcon = styled(Box)<StyledContainerIconProps>(
+  ({ status }: StyledContainerIconProps): CSSObject => ({
+    width: 20,
+    height: 20,
+    backgroundColor: getbackgroundColorIcon(status),
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  })
+);
+
+interface StyledCheckIconProps {
+  iconColor?: string;
+}
+
+const getColorIcon = (iconColor?: string): string => {
+  switch (iconColor) {
+    case "Recibido":
+      return "#0C2093";
+    case "Enviado":
+      return "#00B2E2";
+    default:
+      return "red";
+  }
+};
+
+export const StyledCheckIcon = styled(CheckIcon)<StyledCheckIconProps>(
+  ({ iconColor }: StyledCheckIconProps): CSSObject => ({
+    width: 16,
+    height: 16,
+    color: getColorIcon(iconColor),
+  })
+);
+
+export const StyledTypographyCode = styled(Typography)`
+  color: #151515;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+  margin-top: 4px;
+`;
+
+export const StyledTypographyStatus = styled(Typography)`
+  color: #151515;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+`;
+
+interface StyledLinearProgressProps {
+  borderRadius?: string;
+  backgroundColor?: string;
+  borderRight?: boolean;
+}
+
+const getBorderRadius = (borderRadius?: string): string => {
+  switch (borderRadius) {
+    case "left":
+      return "5000px 0px 0px 5000px";
+    case "right":
+      return "0px 5000px 5000px 0px";
+    case "center":
+      return "0px";
+    default:
+      return "0px";
+  }
+};
+
+export const StyledLinearProgress = styled(
+  LinearProgress
+)<StyledLinearProgressProps>(
+  ({
+    borderRadius,
+    backgroundColor,
+    borderRight,
+  }: StyledLinearProgressProps): CSSObject => ({
+    height: 8,
+    width: 125,
+    borderRadius: getBorderRadius(borderRadius),
+    borderRight: borderRight ? "1px solid #FFF" : "none",
+    backgroundColor: "#d9d9d9",
+    "& .MuiLinearProgress-bar": {
+      backgroundColor: backgroundColor || "transparent",
+    },
+  })
+);

@@ -18,14 +18,13 @@ export default function InProcessScreen() {
         <Box sx={{ m: 2 }}>
           <Header title={"Alzamientos Hipotecarios en Proceso"} />
         </Box>
-        <Box>
+        <Box style={{ maxHeight: 510, overflow: "scroll" }}>
           {dataList.map((data) => (
             <CarDischarge
               data={data}
               handlerTrackingModal={setIsOpenTrackingModal}
             />
           ))}
-          <Header title={"Alzamientos Hipotecarios en Proceso"} />
         </Box>
         <TrackingModal
           open={isOpenTrackingModal}
