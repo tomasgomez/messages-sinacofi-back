@@ -1,51 +1,17 @@
-"use client";
-import * as React from "react";
-import Box from "@mui/material/Box";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import * as React from 'react';
 
+import dayjs from 'dayjs';
 
-export const DateDropdown = (props: { widthDropdown: number }) => {
-    const { widthDropdown } = props;
-    const options = [
-        { label: "Todos", value: "todos" },
-        { label: "Alzamiento Hipotecario", value: "alzamiento" },
-        { label: "Camara de Compensacion ATM", value: "camara" },
-    ];
-    const [optionSelected, setOptionSelected] = React.useState(options[0].value);
-   
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Box } from '@mui/material';
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setOptionSelected(event.target.value as string);
-    };
+export const DatePickerInput = () => {
 
-    return (
-        <Box sx={{ width: widthDropdown }}>
-            <FormControl fullWidth >
-            <InputLabel
-                id="simple-select-label"
-                style={{ backgroundColor: "#DFF8FF", width: '142px', textAlign: 'center', paddingLeft: '4px' }}
-            >
-                Tipo de Mensaje
-            </InputLabel>
-            <Select
-                size="small"
-                sx={{height: '48px'}}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={optionSelected}
-                label="Mensajes por Familia"
-                onChange={handleChange}
-            >
-                {options.map((option, index) => (
-                <MenuItem key={`${option.label}-${index}`} value={option.value}>
-                    {option.label}
-                </MenuItem>
-                ))}
-            </Select>
-            </FormControl>
-        </Box>
-    );
-}
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker label={<Box style={{ backgroundColor: "#DFF8FF"}}>Fecha Inicial y Final</Box>}  defaultValue={dayjs('2022-04-17')} />
+    </LocalizationProvider>
+  );
+};

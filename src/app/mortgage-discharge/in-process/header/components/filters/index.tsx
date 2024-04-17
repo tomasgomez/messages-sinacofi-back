@@ -19,7 +19,7 @@ export const Filter = () => {
       <FilterButton startIcon={<FilterAltOutlinedIcon />} onClick={handleOpenFilter}>
           Filtros
       </FilterButton>
-      {isOpen && <FilterSelector />}
+      {isOpen && <FilterSelector onClose={setIsOpen} />}
     </Box>
   );
 };

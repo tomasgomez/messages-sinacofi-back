@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box/Box";
 import { FilterSectorCard } from "../styles";
-import { DateDropdown } from "./form-elements/date";
+import { DatePickerInput } from "./form-elements/date";
 import { DestinyDropdown } from "./form-elements/destiny-dropdown";
 import { RutInput } from "./form-elements/rut-input";
 import { RegionDropdown } from "./form-elements/region-dropdown";
@@ -9,11 +9,15 @@ import IconButton from "@mui/material/IconButton/IconButton";
 import Typography from "@mui/material/Typography/Typography";
 import { CloseRounded } from "@mui/icons-material";
 
-export const FilterSelector = () => {
+export const FilterSelector = (props: {onClose: Function}) => {
+
+    const handleClose = () => {
+        props.onClose(false)
+    };
     return (
         <FilterSectorCard>
             <IconButton
-                onClick={() => {}}
+                onClick={handleClose}
                 sx={{ position: "absolute", right: "10px", top: "10px" }}
             >
                 <CloseRounded />
@@ -21,7 +25,7 @@ export const FilterSelector = () => {
             <Typography variant="h6" fontWeight={500} mb={2}fontSize={16}>
                 Filtros
             </Typography>
-            {/* <DateDropdown widthDropdown={260}/> */}
+                <DatePickerInput />
                 <DestinyDropdown />
                 <RutInput label="RUT Comprador" />
                 <RutInput label="RUT Vendedor" />
