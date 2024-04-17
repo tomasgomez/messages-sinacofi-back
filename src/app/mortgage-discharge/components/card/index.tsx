@@ -7,9 +7,7 @@ import {
   StyledButton,
   StyledBoxShadow,
 } from "./styled";
-import { Box, Typography, Collapse, Paper } from "@mui/material";
-import StatusChip from "./statusChip";
-import { montserrat } from "@/utils/fonts";
+import { Collapse } from "@mui/material";
 import CodeColumn from "./codeColumn";
 import InfoColumn from "./infoColumn";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -17,7 +15,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import IconButton from "@mui/material/IconButton";
 import DataTable from "@/app/component/inbox-table";
 import { columnsCard } from "./columns";
-import { mockData } from "./mockData";
+import { mockDataAllCases as mockData } from "./mockData";
+// import { mockData } from "./mockData";
+import ProgressBar from "./progress-bar";
+import { reverseArray } from "@/utils/functions";
 
 const CarDischarge = ({
   data,
@@ -76,10 +77,9 @@ const CarDischarge = ({
           </StyledCard>
         </StyledBoxShadow>
         <Collapse in={isOpen} style={{ width: "100%" }}>
-          <Box>
-
-          </Box>
+          <ProgressBar data={reverseArray(mockData)} />
           <DataTable
+            maxHeight={343}
             rows={mockData}
             loading={false}
             columns={columnsCard}

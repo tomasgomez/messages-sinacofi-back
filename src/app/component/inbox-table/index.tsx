@@ -22,13 +22,21 @@ export default function EnhancedTable(props: {
   loading?: boolean;
   withCheckbox?: boolean;
   tableTitle?: React.ReactNode;
+  maxHeight?: number | string;
 }) {
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<keyof Data>("OSN");
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const { rows, columns, loading, tableTitle, withCheckbox = true } = props;
+  const {
+    rows,
+    columns,
+    loading,
+    tableTitle,
+    withCheckbox = true,
+    maxHeight = 500,
+  } = props;
   const { setSelectedMessages } = React.useContext(MessageExportContext);
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -82,8 +90,7 @@ export default function EnhancedTable(props: {
   const isSelected = (id: number) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows?.length) : 0;
+  const emptyRows = Math.max(0, (1 + page) * rowsPerPage - rows?.length);
 
   const visibleRows = React.useMemo(
     () =>
@@ -96,7 +103,7 @@ export default function EnhancedTable(props: {
 
   return (
     <Paper>
-      <TableContainer>
+      <TableContainer style={{ maxHeight }}>
         {tableTitle}
         <Table aria-labelledby="tableTitle" size="medium" stickyHeader>
           <TableHeader
