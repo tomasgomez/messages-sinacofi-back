@@ -7,18 +7,19 @@ import PrintOutlinedIcon from "@mui/icons-material/PrintOutlined"
 import Loader from "@/components/Loader"
 import { PDFViewer } from "@react-pdf/renderer"
 import { PDFTemplate } from "@/app/component/PDFTemplate"
-import React from "react"
+import React, { useContext } from "react"
 import { LatestMessageSection } from "./components/latest-ms"
 import { FirstMessageSection } from "./components/first-ms"
+import { ModalContext } from "../store/ModalStore"
 
 
-export const InfoModal = (props: {open: boolean, onClose: (state: boolean) => void}) => {
+export const InfoModal = () => {
     const [details, setDetails] = React.useState<undefined | any[]>([{}]);
     const [pdfView, setPdfView] = React.useState<boolean>(false);
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
-    
+    const { isOpen, setIsOpen } = useContext(ModalContext);
     const handleClose = () => {
-        props.onClose(false);
+        setIsOpen(false);
     };
 
     const handlePrint = () => {
@@ -28,7 +29,7 @@ export const InfoModal = (props: {open: boolean, onClose: (state: boolean) => vo
     return (
         <Modal 
             sx={{color: 'black', p: "40px",maxWidth: "960px"}}
-            open={props.open}
+            open={isOpen}
             onClose={handleClose}
         >
                 <IconButton

@@ -1,12 +1,23 @@
+"use client";
+
+import { useContext } from "react";
+
 import { Columns, Alignment } from "@/app/component/inbox-table/type";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { Box, IconButton } from "@mui/material";
+import { ModalContext } from "../../in-process/store/ModalStore";
 
 const acciones: Columns = {
   id: "actions",
   label: "Acciones",
   align: Alignment.CENTER,
   render: ({ row }: { row: any }) => {
+    // const { setIsOpen } = useContext(ModalContext); TODO: uncomment this line to open the modal
+
+    const handlerOpenModal = () => {
+      // setIsOpen(true);  TODO: uncomment this line to open the modal
+    };
+
     return (
       <Box
         sx={{
@@ -19,6 +30,7 @@ const acciones: Columns = {
           key={`expand-icon-${row.id}`}
           aria-label="DriveFileRenameOutlineIcon"
           style={{ padding: 0, color: "#00B2E2" }}
+          onClick={handlerOpenModal}
         >
           <DriveFileRenameOutlineIcon />
         </IconButton>
