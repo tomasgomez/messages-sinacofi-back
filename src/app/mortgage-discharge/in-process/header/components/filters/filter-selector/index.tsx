@@ -25,7 +25,8 @@ export const FilterSelector = (props: {onClose: Function}) => {
             <Typography variant="h6" fontWeight={500} mb={2}fontSize={16}>
                 Filtros
             </Typography>
-                <DatePickerInput />
+                <DatePickerInput label="Fecha Inicial"/>
+                <DatePickerInput label="Fecha Final"/>
                 <DestinyDropdown />
                 <RutInput label="RUT Comprador" />
                 <RutInput label="RUT Vendedor" />

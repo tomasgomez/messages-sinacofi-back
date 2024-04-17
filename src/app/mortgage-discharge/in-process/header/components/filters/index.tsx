@@ -8,7 +8,7 @@ import { FilterSelector } from "./filter-selector";
 import Box from "@mui/material/Box/Box";
 
 export const Filter = () => {
-  const [isOpen, setIsOpen] = React.useState(true);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleOpenFilter = () => {
     setIsOpen(!isOpen);
