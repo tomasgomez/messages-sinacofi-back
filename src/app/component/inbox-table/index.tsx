@@ -10,7 +10,7 @@ import TableContentRows from "./components/table-rows-inbox";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import { StyledTabCell } from "./style";
-import { Columns, Data, Order, SentData } from "./type";
+import { Columns, Data, KeyOfData, Order, SentData } from "./type";
 import { getComparator, stableSort } from "./utils";
 
 import { TableContentLoader } from "./components/table-content-loader";
@@ -40,11 +40,11 @@ export default function EnhancedTable(props: {
   const { setSelectedMessages } = React.useContext(MessageExportContext);
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data
+    property: KeyOfData
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+    setOrderBy(property as keyof Data);
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -68,11 +68,11 @@ const ProgressBar = ({ data = [] }: { data?: any }) => {
           />
         </StyledContainerBlock>
 
-        {insideElements.map((elem: any) => {
+        {insideElements.map((elem: any, i: number) => {
           const element = elem;
           const status = !element?.isPending;
           return (
-            <StyledContainerBlock>
+            <StyledContainerBlock key={`key-progress-block-${i}`}>
               {element && (
                 <StyledContainerBlockStatus>
                   <StyledContainerIcon status={element?.messageStatus}>
