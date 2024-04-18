@@ -1,4 +1,4 @@
-import { CloseRounded, DeleteOutlineOutlined } from "@mui/icons-material";
+import { CloseRounded, DeleteOutlineOutlined, WarningAmberOutlined } from "@mui/icons-material";
 import { Box, Button, Card, CardContent, Container, IconButton, Stack, Typography } from "@mui/material";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Loader from "../Loader";
@@ -16,21 +16,21 @@ const getDefaultValues = (schema: any) => {
 };
 
 const Form = ({
-  children,
   title,
   onBack,
   schema,
   loading,
   onSubmit,
   onPrepare,
+  error
 }: {
-  children?: any;
   title: string;
   onBack?: any;
   schema?: any;
   loading?: boolean;
   onSubmit: any;
   onPrepare: any;
+  error: any;
 }) => {
   const { handleSubmit, register, control, reset, getValues, trigger, formState: { errors } } = useForm({
     defaultValues: getDefaultValues(schema),
@@ -83,7 +83,18 @@ const Form = ({
             {loading ? (
               <Loader minHeight="400px"/>
             ) : (
-              !schema?.parameters ? (
+              error ? (
+                <Box sx={{
+                  width: "100%",
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  flexDirection: 'column' 
+                }} minHeight={400}>
+                  <WarningAmberOutlined sx={{ fontSize: "60px", color: "red"}} />
+                  {error}
+                </Box>
+              ) : !schema?.parameters ? (
                 <Box minHeight={420} justifyContent="center" width="100%" display="flex" alignItems="center">
                   Formulario de message no encontrado. 
                 </Box>
@@ -115,8 +126,8 @@ const Form = ({
             )}
           </CardContent>
         </Card>
-        {schema?.parameters && !loading && (
-          <Stack direction="row" justifyContent="space-between" gap="12px">
+        {schema?.parameters && !loading && !error && (
+          <Stack direction="row" justifyContent="space-between" gap="12px" mb="24px">
             <Stack direction="row" justifyContent="flex-start" gap="24px" mt="24px">
               <Button variant="contained" /* onClick={onClose} */ color="primary" type="submit">
                 Enviar
@@ -132,7 +143,6 @@ const Form = ({
             </Box>
           </Stack>
         )}
-      {children}
     </form>
   );
 };

@@ -1,4 +1,4 @@
-import { Grid, TextField, Typography, TextFieldProps, FormControl, InputAdornment, styled } from "@mui/material";
+import { Grid, TextField, Typography, TextFieldProps, FormControl, InputAdornment, styled, Box } from "@mui/material";
 import Dropdrown from "../Dropdown";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
@@ -53,6 +53,15 @@ const Field = ({
 
 const FieldTypes = {
   textField: Field,
+  date: (props: any) => (
+    <Field
+      {...props}
+      type="text"
+      // InputProps={{
+        // startAdornment: <InputAdornment position="start">+</InputAdornment>,
+      // }}
+    />
+  ),
   select: Dropdrown,
   textArea: Field,
   phoneNumber: (props: any) => (
@@ -72,11 +81,37 @@ const FieldTypes = {
         startAdornment: <InputAdornment position="start" sx={{ marginLeft: 0 }}>$</InputAdornment>,
       }}
     />
+  ),
+};
+
+const LabelTypes = {
+  linebreak: (props: any) => (
+    <Box>
+      <Typography variant="caption" sx={{ backgroundColor: "#EFFCFF", color: "#565656"}}>
+        {props.label}
+      </Typography>
+    </Box>
+  ),
+  label: (props: any) => (
+    <Box>
+      {props.label.split("\n").map((label: any) => (
+        <Typography variant={props?.properties?.variant || "body2"} key={label}>
+          {label}<br/>
+        </Typography>
+      ))}
+    </Box>
   )
 };
 
 const FieldSelector = ({ type, props }: { type: any, props: any }) => {
   const FieldGotten = FieldTypes[type as keyof typeof FieldTypes] || FieldTypes.textField;
+  if (type === "lineLabel" || type === "linebreak" || type === "label") {
+    const Label = LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.lineLabel;
+    return (
+      <Label {...props} />
+    );
+  };
+
   return (
     <Controller
       name={props.name}
@@ -114,7 +149,12 @@ const FormBuilder = ({ /* children, */ schema, register, control, errors }: { /*
         {schema?.parameters?.map((field: any) => {
             return (
               <Grid item xs={field.properties.columns} key={field.name}>
-                <FieldSelector type={field.type} props={{...field.properties, ...field, control, ...register(field.name), errors }}/>
+                <FieldSelector type={field.type} props={{
+                  ...field.properties,
+                  ...field,
+                  control,
+                  ...(field.type !== "lineLabel" || field.type !== "linebreak" || field.type !== "labelList") ? register(field.name) : {},
+                  errors }}/>
                 {/* <Field
                   {...field.properties}
                   label={field.label}
