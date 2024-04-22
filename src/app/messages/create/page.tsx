@@ -1,6 +1,6 @@
 "use client"
 import { MyContexLayout } from "@/app/context";
-import { createMessage, getMessageDetails, getMessageSchema } from "@/app/services/common";
+import { createMessage, /* getMessageDetails, */ getMessageSchema } from "@/app/services/common";
 import Dropdrown from "@/components/Dropdown";
 import Field from "@/components/Field";
 import Form from "@/components/Form";
@@ -59,7 +59,7 @@ const CreateMessage = () => {
 
   useEffect(() => {
     setLoading(true);
-    // getMessageDetails(cloneId).then(() => {
+    // /* getMessageDetails( */cloneId).then(() => {
 
     // })
     getMessageSchema(messageCode, institutionId)
