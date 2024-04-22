@@ -106,7 +106,7 @@ const LabelTypes = {
 const FieldSelector = ({ type, props }: { type: any, props: any }) => {
   const FieldGotten = FieldTypes[type as keyof typeof FieldTypes] || FieldTypes.textField;
   if (type === "lineLabel" || type === "linebreak" || type === "label") {
-    const Label = LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.lineLabel;
+    const Label = LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.label;
     return (
       <Label {...props} />
     );
