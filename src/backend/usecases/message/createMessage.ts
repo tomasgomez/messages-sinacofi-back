@@ -7,17 +7,30 @@ import {
 import {
     getChileanTime
 } from "@/backend/utils/functions";
+import {
+    getSchemaTypes
+} from '@/backend/handler/rule/get';
+import { InternalError } from "@/backend/entities/internalError";
+import { MessageStatus } from "@/backend/entities/message/status";
 
 
 // Create message function
 export async function createMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
     try {
-        // TSN, OSN, NSE, description, status,  creationDate, creationTime, receivedDate, receivedTime
 
-        if (message.messageCode == "199") { //TODO: Cambiar por un enum
-            message.description = "TEXTO LIBRE";
-        } else {
-            message.description = "TRANSFERENCIA DE FONDOS INDIVIDUAL";
+        /* Get the schema types */
+        let schemtaTypes = await getSchemaTypes();
+
+        if (schemtaTypes instanceof InternalError) {
+            return schemtaTypes;
+        }
+
+        /* Loop through the schema types and get the description */
+        for (let schemaType of schemtaTypes) {
+            if (message.messageCode === schemaType.messageCode) {
+                message.description = schemaType.description;
+                break;
+            }
         }
 
         /* Get the Chilean time */
@@ -29,38 +42,26 @@ export async function createMessage(repository: MessageRepository, message: Mess
 
         let [dateString, time] = response;
 
-        /* Set the creation date and time */
-        message.creationDate = dateString;
-        message.creationTime = time;
-
-        if (message.status === "06") {
+        /* Set the received date and time */
+        if (message.status === MessageStatus.BANDEJA_DE_ENTRADA) { 
             message.receivedDate = dateString;
             message.receivedTime = time;
         }
 
         let messageResponse = await repository.create(message);
 
-        /* TODO: Add this as a correlative */
+        /* Check if the response is an error */
         if (messageResponse instanceof Error) {
             return messageResponse;
         }
 
+        /* Check if the id is undefined */
         if (messageResponse.id === undefined) {
             return new Error('No id returned');
         }
 
-        let messageAux = new Message();
-
-        messageAux.id = messageResponse.id;
-        messageAux.TSN = messageResponse.id.toString().padStart(4, '0');
-        messageAux.OSN = messageResponse.id.toString().padStart(4, '0');
-
-        let messageUpdated = await repository.update(messageAux);
-        /*  */
-
-        return messageUpdated;
+        return messageResponse;
     } catch (error: any) {
-        // Handle errors appropriately
         console.error('Error creating message:', error);
         return error;
     }

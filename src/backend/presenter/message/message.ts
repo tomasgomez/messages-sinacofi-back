@@ -3,20 +3,13 @@ import { Message } from '../../entities/message/message';
 export function validateGetMessage(data: any): [Message, string, string] | Error {
   let message: Message = new Message();
 
-  const { id, messageCode, date, status, count, offset /*, family, areaCode, institutionCode*/ } = data;
+  const { id, messageCode, date, status, count, offset, family, areaCode, institutionCode } = data;
 
   let countResponse: string = '0';
   let offsetResponse: string = '0';
 
-
   if (id && typeof id === 'string' && id.trim() !== ''){
-    let idToNumber = parseInt(id);
-
-    if (isNaN(idToNumber)) {
-      return new Error('Invalid id');
-    }
-
-    message.id = idToNumber;
+    message.id = id;
   }
 
   if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
@@ -85,7 +78,11 @@ export function validateUpdateMessage(data: any): Message | Error {
 
   const {id, status } = data;
 
-  message.id = id;
+  if (id && typeof id === 'string' && id.trim() !== '') {
+    message.id = id;
+  } else {
+    return new Error('Invalid id');
+  }
 
   if (status && typeof status === 'string' && status.trim() !== '') {
     message.status = status;

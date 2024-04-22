@@ -2,22 +2,21 @@
  * Interface representing a message.
  */
 export interface IMessage {
-    id?: number;
-    TSN: string;
-    OSN: string;
-    NSE: string;
-    messageCode: string;
-    destination: string;
-    description: string;
-    priority: string;
-    status: string;
-    sender: string;
-    creationDate: string;
-    creationTime: string;
-    receiver: string;
-    receivedDate: string;
-    receivedTime: string;
-    actions: string;
-    documents: string;
-    parameters: any;
+    id?: string;
+    TSN?: number | null;
+    OSN?: number | null;
+    NSE?: number | null;
+    messageCode?: string | null;
+    description?: string | null;
+    priority?: string | null;
+    status?: string | null;
+    sender?: string | null;
+    creationDate?: string | null;
+    creationTime?: string | null;
+    receiver?: string | null;
+    receivedDate?: string | null;
+    receivedTime?: string | null;
+    actions?: string | null;
+    documents?: string | null;
+    parameters?: any;
 }

@@ -3,6 +3,7 @@ import { Message } from '../../entities/message/message';
 import { find } from './find';
 import { create } from './create';
 import { update } from './update';
+import { duplicateMessage } from './duplicateMessage';
 
 export class PrismaMessageAdapter implements MessageRepository {
   // find message
@@ -13,5 +14,8 @@ export class PrismaMessageAdapter implements MessageRepository {
   
   // update message
   update = async(message: Message): Promise<Message | Error> => update(message);
+
+  // duplicate message
+  duplicateMessage = async(message: Message): Promise<Message | Error> => duplicateMessage(message);
 
 }

@@ -1,7 +1,6 @@
 export const messages = [
     {
         "messageCode": "136",
-        "destination": "730",
         "priority": "02",
         "sender": "Alexander",
         "status": "01",

@@ -6,7 +6,7 @@ import {
 } from '../prismaWrapper';
 
 
-export async function create(message: Message): Promise < Message | Error > {
+async function create(message: Message): Promise < Message | Error > {
     try {
         const prisma = new PrismaClientWrapper();
 
@@ -14,13 +14,20 @@ export async function create(message: Message): Promise < Message | Error > {
 
         /* Empty message object */
         let messageData: Message = new Message();
+        
+        if (message.setTime) {
+            message.setTime();
+        }
 
-
-        /* Include other attributes if they are provided */
-        if (Object.keys(message).length > 1) {
-            messageData = {
-                ...message
-            };
+        if (Object.keys(message).length > 0) {
+            for (const [key, value] of Object.entries(message)) {
+                if (value !== undefined && key in message) {
+                    messageData[key as keyof Message] = value;
+                }
+            }
+        } else {
+            console.error('No message data provided');
+            return new Error('No message data provided');
         }
 
         /* Create a new message */
@@ -28,9 +35,18 @@ export async function create(message: Message): Promise < Message | Error > {
             data: messageData
         });
 
-        return newMessage
+        if (newMessage === null) {
+            console.error('Error creating message');
+            return new Error('Error creating message');
+        }
+
+        return newMessage as Message;
     } catch (error: any) {
         console.error('Error creating message:', error);
         return error;
     }
 }
+
+export {
+    create
+};

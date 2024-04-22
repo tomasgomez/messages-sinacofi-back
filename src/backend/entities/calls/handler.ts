@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export abstract class Handler implements APICalls {
     // Get
-    async GET(req: NextApiRequest, res: NextApiResponse < any > ){
+    async GET(req: NextApiRequest, res: NextApiResponse < any > ): Promise<any>{
         res.status(405).end(`Method GET Not implemented`);
     };
     // Post

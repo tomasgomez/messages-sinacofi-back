@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Family {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(uuid())
   name         String   @unique @db.VarChar(255)
   institutions String[]
 
@@ -17,32 +17,31 @@ model Family {
 }
 
 model Message {
-  id           Int    @id @default(autoincrement())
-  TSN          String
-  OSN          String
-  NSE          String
-  messageCode  String
-  destination  String
-  description  String
-  priority     String
-  status       String
-  sender       String
-  creationDate String
-  creationTime String
-  receiver     String
-  receivedDate String
-  receivedTime String
-  documents    String
-  actions      String
+  id           String  @id @default(uuid())
+  TSN          Int?    @unique @default(autoincrement())
+  OSN          Int?    @unique @default(autoincrement())
+  NSE          Int?    @unique @default(autoincrement())
+  messageCode  String?
+  description  String?
+  priority     String?
+  status       String?
+  sender       String?
+  creationDate String?
+  creationTime String?
+  receiver     String?
+  receivedDate String?
+  receivedTime String?
+  documents    String?
+  actions      String?
 
-  parameters Json
+  parameters Json?
 
   families Family[]
 }
 
 model MessageFamily {
-  messageId  Int
-  familyId   Int
+  messageId  String
+  familyId   String
   assignedAt DateTime @default(now())
 
   @@id([messageId, familyId])

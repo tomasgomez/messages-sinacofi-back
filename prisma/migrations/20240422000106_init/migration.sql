@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Message" ALTER COLUMN "creationDate" DROP NOT NULL,
+ALTER COLUMN "creationTime" DROP NOT NULL,
+ALTER COLUMN "messageCode" DROP NOT NULL,
+ALTER COLUMN "parameters" DROP NOT NULL;
