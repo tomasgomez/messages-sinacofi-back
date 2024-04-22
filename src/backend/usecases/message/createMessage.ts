@@ -3,7 +3,7 @@ import {
 } from "@/backend/entities/message/message";
 import {
     MessageRepository
-} from "@/backend/interfaces/messageRepository";
+} from "@/backend/repository/messageRepository";
 import {
     getChileanTime
 } from "@/backend/utils/functions";

@@ -1,4 +1,4 @@
-import { MessageRepository } from '../../interfaces/messageRepository';
+import { MessageRepository } from '../messageRepository';
 import { Message } from '../../entities/message/message';
 import { find } from './find';
 import { create } from './create';

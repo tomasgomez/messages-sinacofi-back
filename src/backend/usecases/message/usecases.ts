@@ -1,7 +1,7 @@
-import { MessageRepository } from '../../interfaces/messageRepository';
+import { MessageRepository } from '../../repository/messageRepository';
 import { PrismaMessageAdapter as PrismaAdapter } from '../../repository/message/message';
 import { Message } from '../../entities/message/message';
-import { MessageUsecases } from '@/backend/interfaces/messageUsecases';
+import { MessageUsecases } from '@/backend/usecases/message/interface';
 import { getMessage } from './getMessage';
 import { createMessage } from './createMessage';
 import { updateMessage } from './updateMessage';
@@ -25,7 +25,6 @@ export class MessageUscase implements MessageUsecases  {
     updateMessage = async (message: Message): Promise<Message | Error> => 
         updateMessage(this.messageRepository, message);
 
-    
   }
 
 const messageRepository: MessageRepository = new PrismaAdapter();

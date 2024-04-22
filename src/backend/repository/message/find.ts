@@ -22,7 +22,7 @@ async function find(message: Partial<Message>, detail: boolean, count: string, o
           }
       }
 
-      let select = {
+      let select = { // TODO: this should come from the usecase
           id: true,
           TSN: true,
           OSN: true,

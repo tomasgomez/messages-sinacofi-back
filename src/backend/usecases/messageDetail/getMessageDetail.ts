@@ -1,6 +1,6 @@
 import {
     MessageRepository
-} from '../../interfaces/messageRepository';
+} from '../../repository/messageRepository';
 import {
     Message
 } from '../../entities/message/message';
