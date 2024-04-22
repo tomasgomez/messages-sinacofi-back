@@ -1,5 +1,6 @@
 import { MessageRepository } from "@/backend/repository/messageRepository";
 import { PrismaMessageAdapter as PrismaAdapter } from '../../repository/message/message';
+import { MessageFilter } from '../../entities/message/filter';
 import { Message } from '../../entities/message/message';
 import { MessageForeclosureUsecases } from "./interface";
 import { getMessageForeclosure } from './getMessageForeclosure';
@@ -9,8 +10,8 @@ export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
     constructor(private readonly messageRepository: MessageRepository) {}
 
     // get message detail
-    getMessageForeclosure = async (message: Message, count: string, offset: string): Promise<Message[] | Error> =>
-        getMessageForeclosure(this.messageRepository, message, count, offset)
+    getMessageForeclosure = async (filter: MessageFilter): Promise<Message[] | Error> =>
+        getMessageForeclosure(this.messageRepository, filter)
 }
 
 const messageRepository: MessageRepository = new PrismaAdapter();
