@@ -8,7 +8,7 @@ import { ErrorModal } from "@/components/Modal/ErrorModal";
 import SuccessModal from "@/components/Modal/SuccessModal";
 import DecisionModal from "@/components/Modal/DecisionModal";
 import { MyContexLayout } from "./context";
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import ModalManagerProvider from "@/components/Modal/ModalManager";
 import { MessageExportProvider } from "./component/MessageExportProvider";
 
@@ -39,6 +39,11 @@ export default function RootLayout({
     props?: any;
   }>(clearObjet);
 
+  useEffect(() => {
+    // Perform localStorage action
+    sessionStorage.setItem("Section", "");
+  }, []);
+
   return (
     <html lang="en">
       <body style={{ background: "#fffffff !important" }}>
@@ -49,9 +54,7 @@ export default function RootLayout({
                 <AppBar />
                 <Box style={{ display: "flex", maxWidth: "100vw" }}>
                   <SideBar />
-                  <Suspense>
-                  {children}
-                  </Suspense>
+                  <Suspense>{children}</Suspense>
                 </Box>
                 {/* ///////////////////////Modal Error///////////////////////// */}
                 <ErrorModal
