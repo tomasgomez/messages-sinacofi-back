@@ -1,17 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Handler } from "@/backend/entities/calls/handler";
 
-import { get } from '@/backend/handler/messageDetail/get';
+import { get } from '@/backend/handler/foreclosure/get';
 import { APICalls } from "@/backend/entities/calls/calls";
 
 /*
-Mesasage Detail hanlder
+Mesasage Foreclosure hanlder
 */
-class MesasageDetailHandler extends Handler implements APICalls {
+class MesasageForeclosureHandler extends Handler implements APICalls {
     // Get message
     GET = async (req: NextApiRequest, res: NextApiResponse < any > ) => get(req, res);
 
 }
 
-// export Message detail calls
-export const messageDetailCalls: APICalls = new MesasageDetailHandler();
+// export Message Foreclosure calls
+export const messageForeclosureCalls: APICalls = new MesasageForeclosureHandler();

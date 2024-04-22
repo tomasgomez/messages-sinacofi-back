@@ -1,5 +1,7 @@
 export interface MessageFilter {
     CUK?: string;
+    messageCode?: string;
+    status?: string;
     startDate?: string;
     endDate?: string;
     receiver?: string;

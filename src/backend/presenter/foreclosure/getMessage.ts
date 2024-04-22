@@ -3,10 +3,7 @@ import { MessageFilter } from '@/backend/entities/message/filter';
 export function validateGetMessageForeclosure(data: any): [MessageFilter] | Error {
   const filter: MessageFilter = {};
 
-  const { CUK, startDate, endDate, receiver, clientDni, sellerDni, payerDni, region, count, offset } = data;
-
-  let countResponse: string = '0';
-  let offsetResponse: string = '0';
+  const { CUK, messageCode, status,  startDate, endDate, receiver, clientDni, sellerDni, payerDni, region, count, offset } = data;
 
   if (CUK && typeof CUK === 'string' && CUK.trim() !== '') {
     filter.CUK = CUK.trim();
@@ -46,6 +43,14 @@ export function validateGetMessageForeclosure(data: any): [MessageFilter] | Erro
 
   if (offset && typeof offset === 'string' && offset.trim() !== '') {
     filter.offset = offset.trim();
+  }
+
+  if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
+    filter.messageCode = messageCode.trim();
+  }
+
+  if (status && typeof status === 'string' && status.trim() !== '') {
+    filter.status = status.trim();
   }
 
   return [filter];
