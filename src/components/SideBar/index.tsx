@@ -1,7 +1,15 @@
-'use client'
+"use client";
 
-import { HomeWorkOutlined, CloudDownloadOutlined, EmailOutlined, ForwardToInboxOutlined, NotificationsNoneOutlined, StackedBarChart, HomeMaxOutlined } from "@mui/icons-material";
-import { Collapse, Container, List, } from "@mui/material";
+import {
+  HomeWorkOutlined,
+  CloudDownloadOutlined,
+  EmailOutlined,
+  ForwardToInboxOutlined,
+  NotificationsNoneOutlined,
+  StackedBarChart,
+  HomeMaxOutlined,
+} from "@mui/icons-material";
+import { Collapse, Container, List } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,29 +19,42 @@ import NewMessageButton from "./NewMessageButton";
 
 const Badge = ({ children }: { children: any }) => {
   return (
-    <div style={{
-      display: "flex",
-      width: "16px",
-      height: "16px",
-      justifyContent: "center",
-      alignItems: "center",
-      gap: "10px",
-      backgroundColor: "#00B2E2",
-      borderRadius: 50,
-      color: "#ffffff",
-      fontSize: 10,
-      textAlign: "center",
-      fontWeight: 600
-    }}>{children}</div>
-  )
-}
+    <div
+      style={{
+        display: "flex",
+        width: "16px",
+        height: "16px",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "10px",
+        backgroundColor: "#00B2E2",
+        borderRadius: 50,
+        color: "#ffffff",
+        fontSize: 10,
+        textAlign: "center",
+        fontWeight: 600,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const navList = [
   {
     key: "messages",
     label: "Mensajes",
     icon: <EmailOutlined />,
-    childrenKeys: ["inbox", "sent", "prepared", "prending-reviews", "rejected", "mortgage-processes", "recovered", "create"],
+    childrenKeys: [
+      "inbox",
+      "sent",
+      "prepared",
+      "prending-reviews",
+      "rejected",
+      "mortgage-processes",
+      "recovered",
+      "create",
+    ],
     children: [
       {
         key: "inbox",
@@ -81,12 +102,12 @@ const navList = [
       {
         key: "monitoring",
         label: "Monitoreo",
-        url: "/fti-messaging/monitoring"
+        url: "/fti-messaging/monitoring",
       },
       {
         key: "pams-tams-configuration",
         label: "Configuración PAMS/TAMS",
-        url: "/fti-messaging/pams-tams-configuration"
+        url: "/fti-messaging/pams-tams-configuration",
       },
     ],
   },
@@ -94,7 +115,14 @@ const navList = [
     key: "mortgage-discharge",
     label: "Alzamiento Hipotecario",
     icon: <HomeWorkOutlined />,
-    childrenKeys: ["in-process", "completed", "search", "deeds-liens", "mortgage-rejected", "informs"],
+    childrenKeys: [
+      "in-process",
+      "completed",
+      "search",
+      "deeds-liens",
+      "mortgage-rejected",
+      "informs",
+    ],
     children: [
       {
         key: "in-process",
@@ -120,7 +148,7 @@ const navList = [
         key: "informs",
         label: "Informes AH",
         url: "/mortgage-discharge/informs",
-      }
+      },
     ],
   },
   {
@@ -132,17 +160,17 @@ const navList = [
       {
         key: "its-institutions",
         label: "Institución (ITS01)",
-        url: "/statistics-reports/its-institutions"
+        url: "/statistics-reports/its-institutions",
       },
       {
         key: "its-messages",
         label: "Mensajes (ITS02)",
-        url: "/statistics-reports/its-messages"
+        url: "/statistics-reports/its-messages",
       },
       {
         key: "its-traffic",
         label: "Tráfico (ITS03)",
-        url: "/statistics-reports/its-traffic"
+        url: "/statistics-reports/its-traffic",
       },
     ],
   },
@@ -155,12 +183,12 @@ const navList = [
       {
         key: "per-nse",
         label: "Por NSE",
-        url: "/recovery/per-nse"
+        url: "/recovery/per-nse",
       },
       {
         key: "per-osn",
         label: "Por OSN",
-        url: "/recovery/per-osn"
+        url: "/recovery/per-osn",
       },
     ],
   },
@@ -174,17 +202,26 @@ const navList = [
 ];
 
 const SideBar = () => {
-  const [open, setOpen] = useState("");
-  const pathname = usePathname() || "";
+  const [open, setOpen] = useState(sessionStorage?.getItem("Section") || "");
 
   const handleClick = (section: string) => {
-    setOpen(section === open ? "" : section);
-  };
+    const navSection = navList.find((nav) => nav.key === section);
+    const isChildren = navSection?.childrenKeys?.some((key) => key === open);
 
-  useEffect(() => {
-    const path = pathname.split("/");
-    setOpen(path[path.length - 1]);
-  }, [pathname]);
+    // If you clicked on an already selected element in 'open' and that element is a bigSection => close it
+    if (open === section && !!navSection) {
+      sessionStorage.setItem("Section", "");
+      setOpen("");
+      // If you clicked on an element that is not selected in 'open' but that element is a bigSection and the selected element is a child => close it
+    } else if (open !== section && !!navSection && isChildren) {
+      sessionStorage.setItem("Section", "");
+      setOpen("");
+      // Otherwise, you selected a new closed element => open it
+    } else {
+      sessionStorage.setItem("Section", section);
+      setOpen(section);
+    }
+  };
 
   return (
     <Container
@@ -197,36 +234,54 @@ const SideBar = () => {
         padding: "0 !important",
         height: "calc(100vh - 64px)",
         boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.10)",
-        ['*']:{
-          fontFamily:montserrat.style.fontFamily,
-        }
-
+        ["*"]: {
+          fontFamily: montserrat.style.fontFamily,
+        },
       }}
     >
       <NewMessageButton />
-      <List
-        component="nav"
-      >
-        {navList.map((nav) => (
+      <List component="nav">
+        {navList.map((nav) =>
           nav.url ? (
             <Link href={nav.url} key={nav.key}>
-              <NavegationItem nav={nav} open={open === nav.key} handleClick={handleClick} />
+              <NavegationItem
+                nav={nav}
+                open={open === nav.key}
+                handleClick={handleClick}
+              />
             </Link>
           ) : (
             <>
               <NavegationItem
-              key={nav.key}
-              nav={nav}
-              open={open === nav.key || (!!nav.children?.length && nav.childrenKeys?.includes(open))}
-              handleClick={handleClick}
-              childSelected={!!nav.children?.length && nav.childrenKeys?.includes(open)}
-            />
+                key={nav.key}
+                nav={nav}
+                open={
+                  open === nav.key ||
+                  (!!nav.children?.length && nav.childrenKeys?.includes(open))
+                }
+                handleClick={handleClick}
+                childSelected={
+                  !!nav.children?.length && nav.childrenKeys?.includes(open)
+                }
+              />
               {!!nav.children?.length && nav.children.length > 0 && (
-                <Collapse in={open === nav.key || (!!nav.children?.length && nav.childrenKeys?.includes(open))} timeout="auto" unmountOnExit>
+                <Collapse
+                  in={
+                    open === nav.key ||
+                    (!!nav.children?.length && nav.childrenKeys?.includes(open))
+                  }
+                  timeout="auto"
+                  unmountOnExit
+                >
                   <List component="div" disablePadding>
                     {nav.children.map((subNav) => (
                       <Link href={subNav.url} key={nav.key}>
-                        <NavegationItem nav={subNav} open={open === subNav.key} isChild handleClick={handleClick} />
+                        <NavegationItem
+                          nav={subNav}
+                          open={open === subNav.key}
+                          isChild
+                          handleClick={handleClick}
+                        />
                       </Link>
                     ))}
                   </List>
@@ -234,7 +289,7 @@ const SideBar = () => {
               )}
             </>
           )
-        ))}
+        )}
       </List>
     </Container>
   );
