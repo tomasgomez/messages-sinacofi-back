@@ -1,6 +1,6 @@
 "use client"
 import { MyContexLayout } from "@/app/context";
-import { createMessage, getMessageSchema } from "@/app/services/common";
+import { createMessage, getMessageDetails, getMessageSchema } from "@/app/services/common";
 import Dropdrown from "@/components/Dropdown";
 import Field from "@/components/Field";
 import Form from "@/components/Form";
@@ -14,7 +14,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 const defaultPayload = {
 
 }
-const statusCodes = ["01", "05", "pending"]
+const statusCodes = ["01", "05", "pending"];
 const payloadDefault: string[] = [
   "messageCode",
   "priority",
@@ -22,7 +22,7 @@ const payloadDefault: string[] = [
   "sender",
   "receiver",
   "parameters"
-]
+];
 
 const getCreateMessagePayload = (data: any, schema: any) => {
   const payload: { [key: string]: any } = {};
@@ -38,7 +38,9 @@ const getCreateMessagePayload = (data: any, schema: any) => {
       console.log({ el })
       return {
         name: el[0],
-        label: schema?.parameters.find((field: any) => field.name === el[0]).label,
+        label: schema?.parameters
+          .filter((field: any) => field.type !== "label" && field.type !== "linebreak")
+          .find((field: any) => field.name === el[0])?.label,
         value: el[1],
       }
     });
@@ -47,14 +49,19 @@ const getCreateMessagePayload = (data: any, schema: any) => {
 const CreateMessage = () => {
   const { setModalState } = useContext(MyContexLayout) as any;
   const [messageSchema, setMessageSchema] = useState({parameters: []});
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
   const messageCode = searchParams?.get("messageCode") || "";
   const institutionId = searchParams?.get("institutionId") || "";
+  const cloneId = searchParams?.get("cloneId") || "";
 
   useEffect(() => {
     setLoading(true);
+    // getMessageDetails(cloneId).then(() => {
+
+    // })
     getMessageSchema(messageCode, institutionId)
       .then((schema: any) => {
         setMessageSchema({
@@ -67,6 +74,12 @@ const CreateMessage = () => {
               : parameter
           ))
         });
+      })
+      .catch((error) => {
+        console.log({ error });
+        setError("El schema de formulario no fue encontrado");
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, [messageCode, institutionId]);
@@ -139,6 +152,7 @@ const CreateMessage = () => {
         onBack={router.back}
         loading={loading}
         schema={messageSchema}
+        error={error}
         onSubmit={onSubmit}
         onPrepare={onPrepare}
       />
