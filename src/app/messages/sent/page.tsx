@@ -6,9 +6,11 @@ import InboxHeader from "@/app/component/inbox-header";
 import { columnsSent } from "@/app/component/inbox-table/constants";
 import { Columns, SentData } from "@/app/component/inbox-table/type";
 import { CopyAll, SendOutlined } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 export default function SentScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const router = useRouter();
   const [data, setData] = React.useState<SentData[]>([]);
   const [selected, setSelected] = React.useState<number[]>([]);
 
@@ -31,7 +33,7 @@ export default function SentScreen() {
     fetchData();
   }, []);
 
-  const acciones = {
+  const actions = useMemo(() => ({
     id: "actions",
     label: "Acciones",
     align: "center",
@@ -48,6 +50,7 @@ export default function SentScreen() {
             key={`expand-icon-${row.id}`}
             aria-label="expand row"
             style={{ padding: 0 }}
+            onClick={() => router.push(`/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&cloneId=${row.TSN}`)}
           >
             <CopyAll />
           </IconButton>
@@ -63,11 +66,11 @@ export default function SentScreen() {
         </Box>
       );
     },
-  };
+  }), [router]);
 
   const newColumns = useMemo(() => {
-    return [...columnsSent, acciones];
-  }, [columnsSent, acciones]);
+    return [...columnsSent, actions];
+  }, [actions]);
 
   const tableTitle = (
     <Grid container p={2}>

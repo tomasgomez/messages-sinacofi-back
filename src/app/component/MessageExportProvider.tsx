@@ -1,4 +1,4 @@
-import React, { useEffect, createContext, useState  } from "react";
+import React, { useEffect, createContext, useState, useCallback  } from "react";
 import { ModalPrint } from "./inbox-header/ModalPrint";
 import { pdf, usePDF } from "@react-pdf/renderer";
 import { PDFTemplate } from "./PDFTemplate";
@@ -60,7 +60,7 @@ export const MessageExportProvider = ({ children }: { children: any}) => {
     }
   };
 
-  const fetchData = async (): Promise<void> => {
+  const fetchData = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
       const promises = selectedMessages.map(id =>
@@ -79,19 +79,19 @@ export const MessageExportProvider = ({ children }: { children: any}) => {
       console.error("Error al solicitar detalle del mensajes", error);
       setIsLoading(false);
     }
-  };
+  }, [downloadPDF, selectedMessages]);
 
   useEffect(() => {
     if(printPDF) {
       fetchData();
     }
-  },[printPDF]);
+  },[fetchData, printPDF]);
 
   useEffect(() => {
     if(downloadPDF) {
       fetchData();
     }
-  },[downloadPDF]);
+  },[fetchData, downloadPDF]);
 
   const contextValue = React.useMemo(
     () => ({

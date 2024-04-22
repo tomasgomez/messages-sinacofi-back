@@ -67,7 +67,7 @@ export default function PreparedScreen() {
     </Grid>
   );
 
-  const acciones = {
+  const actions = useMemo(() => ({
     id: "actions",
     label: "Acciones",
     align: "center",
@@ -110,11 +110,11 @@ export default function PreparedScreen() {
         </Box>
       );
     },
-  };
+  }), [setModalState, updateMessage]);
 
   const newColumns = useMemo(() => {
-    return [...columnsPrepared, acciones];
-  }, [columnsPrepared, acciones]);
+    return [...columnsPrepared, actions];
+  }, [actions]);
 
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>

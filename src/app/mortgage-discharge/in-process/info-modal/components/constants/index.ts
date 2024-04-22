@@ -1,3 +1,5 @@
+import { detailsMS } from "../../types";
+
 export const details: detailsMS[] = [
     { label: 'Fecha Aceptación', value: '14/02/2024' },
     { label: 'Requiere Liquidación de Pre Pago', value: 'Si' },

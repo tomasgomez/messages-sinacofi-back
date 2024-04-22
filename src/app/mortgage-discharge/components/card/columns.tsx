@@ -1,11 +1,11 @@
 "use client";
 
-import { useContext } from "react";
+// import { useContext } from "react";
 import { Columns, Alignment } from "@/app/component/inbox-table/type";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { Box, IconButton } from "@mui/material";
-import { ModalContext } from "../../in-process/store/ModalStore";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+// import { ModalContext } from "../../in-process/store/ModalStore";
+// import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const acciones: Columns = {
   id: "actions",
@@ -15,10 +15,10 @@ const acciones: Columns = {
     // TODO: uncomment this line to open the modal
     // const { setIsOpen } = useContext(ModalContext);
 
-    const handlerOpenModal = () => {
+    // const handlerOpenModal = () => {
       // TODO: uncomment this line to open the modal
       // setIsOpen(true);
-    };
+    // };
 
     return (
       <Box
