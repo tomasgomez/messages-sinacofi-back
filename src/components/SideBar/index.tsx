@@ -202,7 +202,17 @@ const navList = [
 ];
 
 const SideBar = () => {
-  const [open, setOpen] = useState(sessionStorage?.getItem("Section") || "");
+  const [open, setOpen] = useState("");
+  const path = (usePathname() || "").split("/");
+
+  useEffect(() => {
+    const section = sessionStorage?.getItem("Section");
+    if (!section) {
+      sessionStorage?.setItem("Section", path[path.length - 1]);
+      setOpen(path[path.length - 1]);
+    }
+    setOpen(section || "");
+  }, []);
 
   const handleClick = (section: string) => {
     const navSection = navList.find((nav) => nav.key === section);

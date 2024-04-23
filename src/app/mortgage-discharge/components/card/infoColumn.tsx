@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Box, Typography } from "@mui/material";
-import { montserrat } from "@/utils/fonts";
+import { Box } from "@mui/material";
 import {
   StyleInfoColumn,
   StyledDivider,
@@ -12,14 +11,14 @@ import StatusChip from "./statusChip";
 const InfoColumn = ({ data }: { data: any }) => {
   const {
     channel,
-    OperationStatus,
-    Buyer,
-    OriginInstitution,
+    operationStatus,
+    buyer,
+    receiver,
   }: {
     channel: string;
-    OperationStatus: string;
-    Buyer: string;
-    OriginInstitution: string;
+    operationStatus: string;
+    buyer: string;
+    receiver: string;
   } = data;
   return (
     <StyleInfoColumn>
@@ -30,17 +29,17 @@ const InfoColumn = ({ data }: { data: any }) => {
       <StyledDivider orientation="vertical" flexItem />
       <Box width={180}>
         <StyledTypographyText>Estado Operación</StyledTypographyText>
-        <StyledTypographyData>{OperationStatus}</StyledTypographyData>
+        <StyledTypographyData>{operationStatus}</StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
       <Box width={160}>
         <StyledTypographyText>Comprador</StyledTypographyText>
-        <StyledTypographyData>{Buyer}</StyledTypographyData>
+        <StyledTypographyData>{buyer}</StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
       <Box width={110}>
         <StyledTypographyText>Institución Origen</StyledTypographyText>
-        <StyledTypographyData>{OriginInstitution}</StyledTypographyData>
+        <StyledTypographyData>{receiver}</StyledTypographyData>
       </Box>
     </StyleInfoColumn>
   );

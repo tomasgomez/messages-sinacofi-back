@@ -21,6 +21,7 @@ export const StyledContentCard = styled(Box)<StyledContentCardProps>(
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    overflow: "scroll",
   })
 );
 
@@ -77,6 +78,7 @@ export const StyledChip = styled(Chip)<StyledChipProps>(
 );
 
 export const StyledCode = styled(Box)`
+  margin: 0px 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -85,7 +87,9 @@ export const StyledCode = styled(Box)`
 
 export const StyledButton = styled(Button)`
   padding: 10px 16px;
+  margin; 0px 16px;
   height: 40px;
+  min-width: 190px;
   border: 1px solid #00b2e2;
   border-radius: 8px;
   color: #00b2e2;
@@ -104,6 +108,7 @@ export const StyleInfoColumn = styled(Box)`
   justify-content: space-around;
   align-items: flex-start;
   height: 100%;
+  margin: 0px 16px;
 `;
 
 export const StyledDivider = styled(Divider)`

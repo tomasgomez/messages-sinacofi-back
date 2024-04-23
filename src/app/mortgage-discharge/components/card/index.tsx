@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   StyledContentCard,
   StyledCardContent,
-  StyledCode,
   StyledCard,
   StyledButton,
   StyledBoxShadow,
@@ -31,18 +30,18 @@ const CarDischarge = ({
   // const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const {
-    code,
-    date,
+    CUK,
+    emissionDate,
     status,
   }: {
-    code: string;
-    date: string;
+    CUK: string;
+    emissionDate: string;
     status: string;
   } = data;
 
   const handlerOpenModal = () => {
     // handlerTrackingModal(true);
-    console.log("handlerTrackingModal");
+    console.log("handlerTrackingModal")
   };
 
   const handlerColapseCard = () => {
@@ -69,7 +68,12 @@ const CarDischarge = ({
                 <KeyboardArrowRightIcon />
               </IconButton>
             )}
-            <CodeColumn code={code} date={date} status={status} />
+            <CodeColumn
+              code={CUK}
+              // code={"AH00010000000040"}
+              date={emissionDate}
+              status={status}
+            />
             <InfoColumn data={data} />
             <StyledButton onClick={handlerOpenModal}>
               Base de Seguimiento
