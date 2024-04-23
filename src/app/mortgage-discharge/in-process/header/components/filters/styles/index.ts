@@ -5,7 +5,7 @@ import Card from "@mui/material/Card/Card";
 
 export const FilterButton = styled(Button)`
   padding: 11px 20px;
-  border: 1px solid #00B2E2;
+  border: 1px solid #00b2e2;
   font-size: 14px;
   border-radius: 8px;
 `;
@@ -20,4 +20,8 @@ export const FilterSectorCard = styled(Card)`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  // Delete if you don't want to limit in the card filter
+  overflow: scroll;
+  height: 550px;
+  ////////////
 `;

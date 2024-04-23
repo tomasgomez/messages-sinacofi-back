@@ -41,7 +41,8 @@ export default function RootLayout({
 
   useEffect(() => {
     // Perform localStorage action
-    sessionStorage.setItem("Section", "");
+    if (!sessionStorage?.getItem("Section"))
+      sessionStorage.setItem("Section", "");
   }, []);
 
   return (

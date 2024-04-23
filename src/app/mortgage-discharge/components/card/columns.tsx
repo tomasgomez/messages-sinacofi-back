@@ -4,7 +4,7 @@
 import { Columns, Alignment } from "@/app/component/inbox-table/type";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import { Box, IconButton } from "@mui/material";
-// import { ModalContext } from "../../in-process/store/ModalStore";
+// import { CardContext } from "../../in-process/store/ModalStore";
 // import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 const acciones: Columns = {
@@ -12,12 +12,12 @@ const acciones: Columns = {
   label: "Acciones",
   align: Alignment.CENTER,
   render: ({ row }: { row: any }) => {
-    // TODO: uncomment this line to open the modal
-    // const { setIsOpen } = useContext(ModalContext);
+    // // TODO: uncomment this line to open the modal
+    // const { setModalIsOpen } = useContext(CardContext);
 
     // const handlerOpenModal = () => {
-      // TODO: uncomment this line to open the modal
-      // setIsOpen(true);
+    //   // TODO: uncomment this line to open the modal
+    //   setModalIsOpen(true);
     // };
 
     return (
