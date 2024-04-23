@@ -18,9 +18,9 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         /* Use the PrismaAreaAdapter to get the Message from the database */
         let messageResponse = await messageDetailUseCase.getMessageDetail(message, count, offset)
 
-        /* If the message is not found, return a 404 error */
+        /* If the message is not found, return a 204 error */
         if (!messageResponse) {
-          res.status(404).json(new Error('message not found'));
+          res.status(204).json([]);
           return;
         }
 

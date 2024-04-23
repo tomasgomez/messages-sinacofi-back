@@ -22,9 +22,9 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
 
         console.log('messageResponse', messageResponse);
 
-        /* If the message is not found, return a 404 error */
+        /* If the message is not found, return a 204 error */
         if (messageResponse instanceof Error) {
-          res.status(404).json([]);
+          res.status(204).json([]);
           return;
         }
 
