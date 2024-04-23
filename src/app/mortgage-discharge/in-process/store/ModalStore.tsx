@@ -17,9 +17,16 @@ const initialCardContextState: initialCardContextStateType = {
 
 export const CardContext = createContext(initialCardContextState);
 
-export const CardContextProvider = ({ children }: { children: any }) => {
+export const CardContextProvider = ({
+  filters,
+  setFilters,
+  children,
+}: {
+  filters: any;
+  setFilters: any;
+  children: any;
+}) => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
-  const [filters, setFilters] = useState<any[]>([]);
 
   const handleChangeAddFilter = (
     label: string,

@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Box, Paper } from "@mui/material";
 import Header from "./header";
 import CarDischarge from "@/app/mortgage-discharge/components/card";
 // import { dataList } from "./mock";
 import { TrackingModal } from "./tracking-modal";
 import { InfoModal } from "./info-modal";
-import { CardContextProvider } from "./store/ModalStore";
+import { CardContext, CardContextProvider } from "./store/ModalStore";
 import { getForeClosureDataCards } from "../api-calls";
 import Loader from "@/components/Loader";
 import { formatData } from "@/utils/mortgage-discharge";
@@ -16,6 +16,8 @@ export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>(null);
+  // TODO: Recall the data with filter after filter something
+  const [filters, setFilters] = React.useState<any[]>([]);
 
   const getDataList = async () => {
     setLoading(true);
@@ -30,7 +32,7 @@ export default function InProcessScreen() {
   }, []);
 
   return (
-    <CardContextProvider>
+    <CardContextProvider filters={filters} setFilters={setFilters}>
       <Paper sx={{ width: "calc(100% - 270px)" }}>
         <Box sx={{ m: 2 }}>
           <Header

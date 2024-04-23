@@ -18,7 +18,6 @@ import { mockDataAllCases as mockData } from "./mockData";
 // import { mockData } from "./mockData";
 import ProgressBar from "./progress-bar";
 import { reverseArray } from "@/utils/functions";
-
 const CarDischarge = ({
   data,
   handlerTrackingModal,
@@ -28,7 +27,6 @@ const CarDischarge = ({
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   // const [isLoading, setIsLoading] = React.useState<boolean>(true);
-
   const {
     CUK,
     emissionDate,
@@ -41,7 +39,7 @@ const CarDischarge = ({
 
   const handlerOpenModal = () => {
     // handlerTrackingModal(true);
-    console.log("handlerTrackingModal")
+    console.log("handlerTrackingModal");
   };
 
   const handlerColapseCard = () => {
