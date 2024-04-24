@@ -29,7 +29,7 @@ export const InputCode = (props: { title: string; options: string[] }) => {
           InputLabelProps={{ shrink: true, style: { background: "#DFF8FF" } }}
           InputProps={{
             ...params.InputProps,
-            sx: { height: "48px", width: "190px" },
+            sx: { height: "48px", width: "220px" },
           }}
         />
       )}

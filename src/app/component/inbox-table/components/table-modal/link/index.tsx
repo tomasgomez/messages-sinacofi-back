@@ -10,7 +10,7 @@ import { CloseRounded } from "@mui/icons-material";
 
 import { ModalHeaderSection } from "../header";
 import { ModalMainContent } from "../content";
-import { Data, MSDetail } from "../../../type";
+import { Message, MSDetail } from "../../../type";
 import { PDFViewer } from "@react-pdf/renderer";
 import Typography from "@mui/material/Typography/Typography";
 import { montserrat } from "@/utils/fonts";
@@ -19,7 +19,7 @@ import Grid from "@mui/material/Grid/Grid";
 import { PDFTemplate } from "@/app/component/PDFTemplate";
 import Loader from "@/components/Loader";
 
-export function ModalLink(props: { isInProcess?: boolean; data: Data}) {
+export function ModalLink(props: { isInProcess?: boolean; data: Message}) {
     const [details, setDetails] = React.useState<MSDetail | undefined>(undefined);
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const [pdfView, setPdfView] = React.useState<boolean>(false);

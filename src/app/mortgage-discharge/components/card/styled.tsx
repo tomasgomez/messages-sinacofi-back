@@ -90,7 +90,8 @@ export const StyledButton = styled(Button)`
   margin; 0px 16px;
   height: 40px;
   min-width: 190px;
-  border: 1px solid #00b2e2;
+  border: ${(props) =>
+    props.disabled ? "1px solid #bdbdbd" : "1px solid #00b2e2"};
   border-radius: 8px;
   color: #00b2e2;
   text-align: center;
@@ -188,10 +189,16 @@ interface StyledContainerIconProps {
 
 const getbackgroundColorIcon = (status?: string): string => {
   switch (status) {
-    case "Recibido":
+    // Recibido
+    case "06":
       return "#ECEFFF";
-    case "Enviado":
+    // Enviado
+    case "05":
       return "#EFFCFF";
+    // Pendiente de Firma
+    case "01":
+      return "#00B2E2";
+    // Default
     default:
       return "#00B2E2";
   }
@@ -215,12 +222,14 @@ interface StyledCheckIconProps {
 
 const getColorIcon = (iconColor?: string): string => {
   switch (iconColor) {
-    case "Recibido":
+    case "06":
       return "#0C2093";
-    case "Enviado":
+    case "05":
       return "#00B2E2";
+    case "01":
+      return "black";
     default:
-      return "red";
+      return "black";
   }
 };
 

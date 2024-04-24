@@ -10,25 +10,22 @@ import TableContentRows from "./components/table-rows-inbox";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import { StyledTabCell } from "./style";
-import { Columns, Data, KeyOfData, Order, SentData } from "./type";
+import { Columns, Message, KeyOfData, Order, SentData } from "./type";
 import { getComparator, stableSort } from "./utils";
 
 import { TableContentLoader } from "./components/table-content-loader";
 import { MessageExportContext } from "../MessageExportProvider";
 
 export default function EnhancedTable(props: {
-  rows: Data[] | SentData[] | any[];
+  rows: Message[] | SentData[] | any[];
   columns: Columns[];
   loading?: boolean;
   withCheckbox?: boolean;
   tableTitle?: React.ReactNode;
   maxHeight?: number | string;
+  defaultOrderBy?: keyof Message;
+  defaultOrder?: Order;
 }) {
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("OSN");
-  const [selected, setSelected] = React.useState<readonly number[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const {
     rows,
     columns,
@@ -36,7 +33,17 @@ export default function EnhancedTable(props: {
     tableTitle,
     withCheckbox = true,
     maxHeight = 500,
+    defaultOrder,
+    defaultOrderBy,
   } = props;
+
+  const [order, setOrder] = React.useState<Order>(defaultOrder || "asc");
+  const [orderBy, setOrderBy] = React.useState<keyof Message>(
+    defaultOrderBy || "OSN"
+  );
+  const [selected, setSelected] = React.useState<readonly number[]>([]);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { setSelectedMessages } = React.useContext(MessageExportContext);
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -44,7 +51,7 @@ export default function EnhancedTable(props: {
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property as keyof Data);
+    setOrderBy(property as keyof Message);
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {

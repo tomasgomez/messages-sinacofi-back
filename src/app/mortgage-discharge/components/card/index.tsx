@@ -14,10 +14,16 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import IconButton from "@mui/material/IconButton";
 import DataTable from "@/app/component/inbox-table";
 import { columnsCard } from "./columns";
-import { mockDataAllCases as mockData } from "./mockData";
+// import { mockDataAllCases as mockData } from "./mockData";
 // import { mockData } from "./mockData";
 import ProgressBar from "./progress-bar";
-import { reverseArray } from "@/utils/functions";
+// import { reverseArray } from "@/utils/functions";
+import {
+  CodeCardMortgageDischarge,
+  InforCardMortgageDischarge,
+} from "@/utils/mortgage-discharge";
+import { Message } from "@/app/component/inbox-table/type";
+
 const CarDischarge = ({
   data,
   handlerTrackingModal,
@@ -26,20 +32,23 @@ const CarDischarge = ({
   handlerTrackingModal: (state: boolean) => void;
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  // const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const {
-    CUK,
-    emissionDate,
-    status,
+    codeData,
+    InfoData,
+    messages,
+    buttonDisabled,
   }: {
-    CUK: string;
-    emissionDate: string;
-    status: string;
+    codeData: CodeCardMortgageDischarge;
+    InfoData: InforCardMortgageDischarge;
+    messages: Message[];
+    buttonDisabled: boolean;
   } = data;
 
+  const { cukCode, foreclosureDate, cukStatus } = codeData;
+
   const handlerOpenModal = () => {
-    // handlerTrackingModal(true);
-    console.log("handlerTrackingModal");
+    handlerTrackingModal(true);
+    // console.log("handlerTrackingModal");
   };
 
   const handlerColapseCard = () => {
@@ -67,25 +76,25 @@ const CarDischarge = ({
               </IconButton>
             )}
             <CodeColumn
-              code={CUK}
-              // code={"AH00010000000040"}
-              date={emissionDate}
-              status={status}
+              code={cukCode}
+              date={foreclosureDate}
+              status={cukStatus}
             />
-            <InfoColumn data={data} />
-            <StyledButton onClick={handlerOpenModal}>
+            <InfoColumn data={InfoData} />
+            <StyledButton onClick={handlerOpenModal} disabled={buttonDisabled}>
               Base de Seguimiento
             </StyledButton>
           </StyledCard>
         </StyledBoxShadow>
         <Collapse in={isOpen} style={{ width: "100%" }}>
-          <ProgressBar data={reverseArray(mockData)} />
+          <ProgressBar data={messages} />
           <DataTable
             maxHeight={343}
-            rows={mockData}
-            loading={false}
+            rows={messages}
             columns={columnsCard}
             withCheckbox={false}
+            defaultOrderBy="id"
+            defaultOrder="desc"
           />
         </Collapse>
       </StyledCardContent>

@@ -1,14 +1,11 @@
-import { Data } from "@/app/component/inbox-table/type";
+import { Message } from "@/app/component/inbox-table/type";
 
-export const mockResponse: Data[] = 
+export const mockResponse: Message[] = 
  [
         {
             id: "10123",
-            TSN: "10123",
-            OSN: "10123",
-            NSE: "",
-            NSR: "",
-            NSQ: "",
+            TSN: 10123,
+            OSN: 10123,
             messageCode: "136",
             destination: "",
             description: "TRANSFERENCIA DE FONDOS INDIVIDUAL",
@@ -20,16 +17,12 @@ export const mockResponse: Data[] =
             receiver: "",
             receivedDate: "21/01/2024",
             receivedTime: "11:00",
-            documents: "",
-            actions: false
+            documents: [],
         },
         {
             id: "10124",
-            TSN: "10124",
-            OSN: "10124",
-            NSE: "",
-            NSR: "",
-            NSQ: "",
+            TSN: 10124,
+            OSN: 10124,
             messageCode: "140",
             destination: "",
             description: "SOLICITUDES DE REEMBOLSO",
@@ -41,16 +34,12 @@ export const mockResponse: Data[] =
             receiver: "",
             receivedDate: "21/01/2024",
             receivedTime: "09:03",
-            documents: "",
-            actions: false
+            documents: [],
         },
         {
             id: "20125",
-            TSN: "20125",
-            OSN: "20125",
-            NSE: "",
-            NSR: "",
-            NSQ: "",
+            TSN: 20125,
+            OSN: 20125,
             messageCode: "142",
             destination: "",
             description: "COMPROMISOS FUTUROS",
@@ -62,16 +51,12 @@ export const mockResponse: Data[] =
             receiver: "",
             receivedDate: "21/01/2024",
             receivedTime: "10:12",
-            documents: "",
-            actions: false
+            documents: [],
         },
         {
             id: "30126",
-            TSN: "30126",
-            OSN: "30126",
-            NSE: "",
-            NSR: "",
-            NSQ: "",
+            TSN: 30126,
+            OSN: 30126,
             messageCode: "226",
             destination: "",
             description: "ESTADO SALDOS NETOS RESUMIDOS (BANC...",
@@ -83,16 +68,12 @@ export const mockResponse: Data[] =
             receiver: "",
             receivedDate: "21/01/2024",
             receivedTime: "12:12",
-            documents: "",
-            actions: false
+            documents: [],
         },
         {
             id: "20127",
-            TSN: "20127",
-            OSN: "20127",
-            NSE: "",
-            NSR: "",
-            NSQ: "",
+            TSN: 20127,
+            OSN: 20127,
             messageCode: "241",
             destination: "",
             description: "CAJEROS-SALDOS NETOS",
@@ -104,16 +85,12 @@ export const mockResponse: Data[] =
             receiver: "",
             receivedDate: "20/01/2024",
             receivedTime: "15:10",
-            documents: "",
-            actions: false
+            documents: [],
         },
         {
             id: "10128",
-            TSN: "10128",
-            OSN: "10128",
-            NSE: "",
-            NSR: "",
-            NSQ: "",
+            TSN: 10128,
+            OSN: 10128,
             messageCode: "199",
             destination: "",
             description: "TEXTO LIBRE",
@@ -125,16 +102,12 @@ export const mockResponse: Data[] =
             receiver: "",
             receivedDate: "20/01/2024",
             receivedTime: "13:01",
-            documents: "",
-            actions: false
+            documents: [],
         },
         {
             id: "13010",
-            TSN: "13010",
-            OSN: "13010",
-            NSE: "",
-            NSR: "",
-            NSQ: "",
+            TSN: 13010,
+            OSN: 13010,
             messageCode: "107",
             destination: "",
             description: "ACEPTACIÓN ALZAMIENTO HIPOTECARIO.",
@@ -146,8 +119,7 @@ export const mockResponse: Data[] =
             receiver: "",
             receivedDate: "20/01/2024",
             receivedTime: "11:00",
-            documents: "",
-            actions: false
+            documents: [],
         }
     ]
 ;

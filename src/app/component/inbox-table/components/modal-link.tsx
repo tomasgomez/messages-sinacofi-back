@@ -10,7 +10,7 @@ import {
   styled,
 } from "@mui/material";
 import { Modal, ModalContent, ModalHeader } from "../../Modal";
-import { Data, SentData } from "../type";
+import { Message, SentData } from "../type";
 import { StyledModalItem, StyledMoalSection } from "../../inbox-header/style";
 import { StyledCapitalizedSpan } from "../style";
 import Image from "next/image";
@@ -22,7 +22,7 @@ import { montserrat } from "@/utils/fonts";
 import { CloseRounded } from "@mui/icons-material";
 
 export function InProcessModalHeaderSection(props: {
-  row: Data;
+  row: Message;
   isInProcess?: boolean;
 }) {
   return (
@@ -225,7 +225,7 @@ export function InProcessModalHeaderSection(props: {
   );
 }
 
-export function ModalMainContent(props: { row: Data; isinProcess?: boolean }) {
+export function ModalMainContent(props: { row: Message; isinProcess?: boolean }) {
   return (
     <>
       <Grid
@@ -377,7 +377,7 @@ export function ModalMainContent(props: { row: Data; isinProcess?: boolean }) {
 }
 
 export function InProcessModalMainContent(props: {
-  row: Data;
+  row: Message;
   isinProcess?: boolean;
 }) {
   return (
@@ -575,7 +575,7 @@ export function InProcessModalMainContent(props: {
   );
 }
 
-export function ModalLink(props: { row: Data; isInProcess?: boolean }) {
+export function ModalLink(props: { row: Message; isInProcess?: boolean }) {
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
   const handleClose = () => {
     setIsOpen(false);

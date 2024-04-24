@@ -12,14 +12,15 @@ const InfoColumn = ({ data }: { data: any }) => {
   const {
     channel,
     operationStatus,
-    buyer,
-    receiver,
+    clientName,
+    institutionDestination,
   }: {
     channel: string;
     operationStatus: string;
-    buyer: string;
-    receiver: string;
+    clientName: string;
+    institutionDestination: string;
   } = data;
+
   return (
     <StyleInfoColumn>
       <Box width={90}>
@@ -34,12 +35,12 @@ const InfoColumn = ({ data }: { data: any }) => {
       <StyledDivider orientation="vertical" flexItem />
       <Box width={160}>
         <StyledTypographyText>Comprador</StyledTypographyText>
-        <StyledTypographyData>{buyer}</StyledTypographyData>
+        <StyledTypographyData>{clientName}</StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
       <Box width={110}>
         <StyledTypographyText>Institución Origen</StyledTypographyText>
-        <StyledTypographyData>{receiver}</StyledTypographyData>
+        <StyledTypographyData>{institutionDestination}</StyledTypographyData>
       </Box>
     </StyleInfoColumn>
   );

@@ -1,32 +1,33 @@
-export interface Data {
+export interface Message {
   id: string;
-  OSN?: string;
-  TSN?: string;
-  NSR?: string;
-  NSQ?: string;
-  destination?: string;
+  TSN?: number;
+  OSN?: number;
+  NSE?: number;
+  NSR?: number;
+  NSQ?: number;
+  LSN?: number;
   messageCode: string;
-  documents?: string;
+  destination?: string;
   description: string;
-  receiver?: string;
   priority?: string;
+  status: string;
   sender: string;
   creationDate: string;
   creationTime: string;
-  status: string;
-  stateProgress?: string;
+  receiver?: string;
   receivedDate: string;
   receivedTime: string;
-  NSE?: string;
-  actions?: boolean;
+  documents?: any[];
+  actions?: any[];
+  parameters?: any[];
 }
 
 export interface SentData {
   id: number | string;
-  OSN?: string;
-  TSN?: string;
-  NSR?: string;
-  NSQ?: string;
+  OSN?: number;
+  TSN?: number;
+  NSR?: number;
+  NSQ?: number;
   destination?: string;
   messageCode: string;
   documents?: string;
@@ -40,8 +41,8 @@ export interface SentData {
   stateProgress?: string;
   receivedDate: string;
   receivedTime: string;
-  NSE?: string;
-  actions?: boolean;
+  NSE?: number;
+  actions?: any[];
 }
 
 export interface MortgageDischargeData {
@@ -59,7 +60,7 @@ export interface MortgageDischargeData {
 }
 
 export type KeyOfData =
-  | keyof Data
+  | keyof Message
   | keyof SentData
   | keyof MortgageDischargeData;
 
@@ -108,7 +109,7 @@ export interface EnhancedTableProps {
 export interface TableProps {
   withCheckbox?: boolean;
   labelId: string;
-  row: Data | any;
+  row: Message | any;
   isItemSelected: boolean;
   handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
   columns: Columns[];
