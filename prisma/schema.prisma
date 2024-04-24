@@ -8,13 +8,13 @@ datasource db {
   url      = "postgresql://sinacofi:hola123@34.135.68.241:5432/message"
 }
 
-model cuk {
+model CUK {
   id                     String  @id @default(uuid())
   name                   String?
   cukCode                String? @unique
   description            String?
   status                 String?
-  createdDate            String?
+  creationDate           String?
   foreclosureDate        String?
   channel                String?
   clientDni              String?
@@ -45,7 +45,7 @@ model Message {
   actions      String?
   parameters   Json?
   cukCode      String?
-  cuk          cuk?    @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+  cuk          CUK?    @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
 }
 
 model Family {

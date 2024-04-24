@@ -48,11 +48,15 @@ async function find(message: Partial<Message>, detail: boolean, count: string, o
           messages = await prismaClient.message.findMany({
               where,
               select,
+              orderBy: { creationDate: 'desc' },
+              take: parseInt(count),
+              skip: parseInt(offset)
           });
       } else {
           messages = await prismaClient.message.findMany({
               where,
               select,
+              orderBy: { creationDate: 'desc' },
               take: parseInt(count),
               skip: parseInt(offset)
           });

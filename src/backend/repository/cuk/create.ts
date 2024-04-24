@@ -34,7 +34,7 @@ async function create(cuk: ICUK): Promise < ICUK | Error > {
             cukData.setCukCode();
         }
 
-        let newCUK = await prismaClient.cuk.create({
+        let newCUK = await prismaClient.cUK.create({
             data: cukData
         });
 

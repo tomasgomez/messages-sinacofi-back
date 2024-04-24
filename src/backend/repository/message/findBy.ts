@@ -13,8 +13,8 @@ async function findBy(filter: MessageFilter): Promise<CUK[] | Error> {
         
 
         // Find the 5 newest CUKs
-        cuks = await prismaClient.cuk.findMany({
-            orderBy: { createdDate: 'desc' },
+        cuks = await prismaClient.cUK.findMany({
+            orderBy: { creationDate: 'desc' },
             take: 5
         });
 

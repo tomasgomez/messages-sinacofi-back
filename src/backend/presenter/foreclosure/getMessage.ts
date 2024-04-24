@@ -6,7 +6,7 @@ export function validateGetMessageForeclosure(data: any): [MessageFilter] | Erro
   const { CUK, messageCode, status,  startDate, endDate, receiver, clientDni, sellerDni, payerDni, region, count, offset } = data;
 
   if (CUK && typeof CUK === 'string' && CUK.trim() !== '') {
-    filter.CUK = CUK.trim();
+    filter.cukCode = CUK.trim();
   }
 
   if (startDate && typeof startDate === 'string' && startDate.trim() !== '') {

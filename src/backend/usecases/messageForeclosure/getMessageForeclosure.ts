@@ -2,11 +2,13 @@ import { MessageRepository } from '../../repository/messageRepository';
 import { CUKRepository } from '../../repository/cukRepository';
 import { CUK } from '../../entities/cuk/cuk';
 import { MessageFilter } from '../../entities/message/filter';
+import { Message } from '../../entities/message/message';
 
 // Get message function
 export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: MessageFilter ): Promise<CUK[] | Error> {
   try {
-    const cuk = new CUK();
+    /* Create a new CUK object */
+    const filterCuk = new CUK();
 
     let count = '5';
     let offset = '0';
@@ -19,28 +21,41 @@ export async function getMessageForeclosure(messageRepository: MessageRepository
       offset = filter.offset;
     }
 
-    const result = await cukRepository.find(cuk, count, offset);
+    filterCuk.cukCode = filter.cukCode;
 
-    if (result instanceof Error) {
-      throw result;
+    /* Get the CUKs */
+    const cuks = await cukRepository.find(filterCuk, count, offset);
+
+    if (cuks instanceof Error) {
+      throw cuks;
     }
 
-    if (result.length === 0) {
+    if (cuks.length === 0) {
       throw new Error('No message found');
     }
 
-    for (const fetchedCuk of result) {
-      const message = await messageRepository.find(fetchedCuk, true, count, offset);
+    /* Get the messages for each CUK */
+    for (const cuk of cuks) {
+      let newMessage = new Message();
 
-      if (message instanceof Error) {
-        throw message;
+      newMessage.cukCode = cuk.cukCode;
+
+      /* Get the messages */
+      const messages = await messageRepository.find(newMessage, false, count, offset);
+
+      if (messages instanceof Error) {
+        throw messages;
       }
 
-      fetchedCuk.messages = message;
+      if (messages.length === 0) {
+        cuk.messages = [];
+        continue;
+      }
+
+      cuk.messages = messages;
     }
 
-
-    return result;
+    return cuks;
   } catch (error:  any) {
     console.error('Error updating message:', error);
     return error;

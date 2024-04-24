@@ -24,14 +24,14 @@ async function find(cuk: CUK, count: string, offset: string): Promise < CUK[] | 
 
         // If count is not present then find all message
         if (count === '0' || count === '') {
-            cuks = await prismaClient.cuk.findMany({
+            cuks = await prismaClient.cUK.findMany({
                 where,
-                orderBy: { createdDate: 'desc' }
+                orderBy: { creationDate: 'desc' }
             });
         } else {
-            cuks = await prismaClient.cuk.findMany({
+            cuks = await prismaClient.cUK.findMany({
                 where,
-                orderBy: { createdDate: 'desc' },
+                orderBy: { creationDate: 'desc' },
                 take: parseInt(count),
                 skip: parseInt(offset)
             });
