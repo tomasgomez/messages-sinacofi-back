@@ -16,14 +16,14 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
 
         let [message] = result;
 
-        // /* Use the PrismaAreaAdapter to get the Message from the database */
-        // let messageResponse = await messageForeclosureUseCase.getMessageForeclosure(message)
+        /* Use the PrismaAreaAdapter to get the Message from the database */
+        let messageResponse = await messageForeclosureUseCase.getMessageForeclosure(message)
 
-        // /* If the message is not found, return a 204 error */
-        // if (!messageResponse) {
-        //   res.status(204).json([]);
-        //   return;
-        // }
+        /* If the message is not found, return a 204 error */
+        if (!messageResponse) {
+          res.status(204).json([]);
+          return;
+        }
 
         if (detail) {
           // /* Return the message */
@@ -32,7 +32,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
         }
 
         /* Return the message */
-        res.status(200).json(message670);
+        res.status(200).json(messageResponse);
 
       } catch (error) {
         console.error('Error fetching message:', error);
