@@ -1,0 +1,5 @@
+export enum MessageTypes {
+    ALZAMIENTO_HIPOTECARIO = "670",
+    TRANSFERENCIA_DE_FONDOS_INDIVIDUAL = "136",
+    TEXTO_LIBRE = "199",
+}

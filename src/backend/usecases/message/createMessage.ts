@@ -12,11 +12,23 @@ import {
 } from '@/backend/handler/rule/get';
 import { InternalError } from "@/backend/entities/internalError";
 import { MessageStatus } from "@/backend/entities/message/status";
+import {MessageTypes} from "@/backend/entities/message/types";
+import { CUK } from "@/backend/entities/cuk/cuk";
 
 
 // Create message function
 export async function createMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
     try {
+
+        if (message.messageCode === MessageTypes.ALZAMIENTO_HIPOTECARIO) {
+            let cuk = new CUK();
+
+            if (cuk.setCukCode){
+                cuk.setCukCode();
+            }
+
+            message.cukCode = cuk.cukCode;
+        }
 
         /* Get the schema types */
         let schemtaTypes = await getSchemaTypes();
