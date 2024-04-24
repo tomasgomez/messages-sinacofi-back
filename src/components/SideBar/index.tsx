@@ -212,7 +212,7 @@ const SideBar = () => {
       setOpen(path[path.length - 1]);
     }
     setOpen(section || "");
-  }, []);
+  }, [path]);
 
   const handleClick = (section: string) => {
     const navSection = navList.find((nav) => nav.key === section);

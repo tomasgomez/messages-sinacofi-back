@@ -1,5 +1,5 @@
 import { handleGenericChangeFilter } from "@/utils/mortgage-discharge";
-import React, { createContext, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 
 type initialCardContextStateType = {
   modalIsOpen: boolean;
@@ -28,12 +28,12 @@ export const CardContextProvider = ({
 }) => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
-  const handleChangeAddFilter = (
+  const handleChangeAddFilter = useCallback((
     label: string,
     value: string | null | undefined
   ) => {
     handleGenericChangeFilter(label, value, setFilters);
-  };
+  }, []);
 
   const contextValue = React.useMemo(
     () => ({ modalIsOpen, setModalIsOpen, filters, handleChangeAddFilter }),
