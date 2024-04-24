@@ -20,9 +20,11 @@ export class Message implements IMessage {
     receiver ? : string | null;
     receivedDate ? : string | null;
     receivedTime ? : string | null;
-    actions ? : string | null;
     documents ? : string | null;
+    actions ? : string | null;
     parameters ? : any;
+    cukCode ? : string | null;
+    cuk ? : any;
 
     constructor() {}
 

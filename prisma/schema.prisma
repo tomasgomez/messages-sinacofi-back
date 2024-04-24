@@ -8,17 +8,25 @@ datasource db {
   url      = "postgresql://sinacofi:hola123@34.135.68.241:5432/message"
 }
 
-model Family {
-  id           String   @id @default(uuid())
-  name         String   @unique @db.VarChar(255)
-  institutions String[]
+model cuk {
+  id                     String  @id @default(uuid())
+  name                   String?
+  cukCode                String? @unique
+  description            String?
+  status                 String?
+  createdDate            String?
+  foreclosureDate        String?
+  channel                String?
+  clientDni              String?
+  clientName             String?
+  institutionDestination String?
 
-  messages Message[]
+  messages Message[] @relation(name: "CukMessages")
 }
 
 model Message {
   id           String  @id @default(uuid())
-  TSN          Int?    @unique @default(autoincrement())
+  TSN          Int?    @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
   OSN          Int?    @unique @default(autoincrement())
   NSE          Int?    @unique @default(autoincrement())
   messageCode  String?
@@ -33,15 +41,20 @@ model Message {
   receivedTime String?
   documents    String?
   actions      String?
+  parameters   Json?
+  cukCode      String?
+  cuk          cuk?    @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+}
 
-  parameters Json?
-
-  families Family[]
+model Family {
+  id           Int      @id @default(autoincrement())
+  name         String   @unique @db.VarChar(255)
+  institutions String[]
 }
 
 model MessageFamily {
-  messageId  String
-  familyId   String
+  messageId  Int
+  familyId   Int
   assignedAt DateTime @default(now())
 
   @@id([messageId, familyId])

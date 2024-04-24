@@ -16,6 +16,7 @@ export interface IMessage {
     receiver?: string | null;
     receivedDate?: string | null;
     receivedTime?: string | null;
+    cukCode ? : string | null;
     actions?: string | null;
     documents?: string | null;
     parameters?: any;
