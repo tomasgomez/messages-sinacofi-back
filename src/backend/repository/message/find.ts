@@ -27,6 +27,7 @@ async function find(message: Partial<Message>, detail: boolean, count: string, o
           TSN: true,
           OSN: true,
           NSE: true,
+          LSN: true,
           messageCode: true,
           description: true,
           priority: true,
