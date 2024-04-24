@@ -1,33 +1,30 @@
 "use client";
 
-// import { useContext } from "react";
 import { Columns, Alignment } from "@/app/component/inbox-table/type";
+import React, { useContext } from "react";
+import { IconButton, Box } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import { Box, IconButton } from "@mui/material";
-// import { CardContext } from "../../in-process/store/ModalStore";
-// import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { CardContext } from "../../in-process/store/ModalStore";
+import Link from '@mui/material/Link';
 
-const acciones: Columns = {
-  id: "actions",
-  label: "Acciones",
-  align: Alignment.CENTER,
-  render: ({ row }: { row: any }) => {
-    // // TODO: uncomment this line to open the modal
-    // const { setModalIsOpen } = useContext(CardContext);
+const AccionesColumn = ({ row }: { row: any }) => {
+  const { status } = row;
+  const { setModalIsOpen } = useContext(CardContext);
 
-    // const handlerOpenModal = () => {
-    //   // TODO: uncomment this line to open the modal
-    //   setModalIsOpen(true);
-    // };
+  const handlerOpenModal = () => {
+    setModalIsOpen(true);
+  };
 
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {status === "01" && (
         <IconButton
           key={`drive-icon-${row.id}`}
           aria-label="DriveFileRenameOutlineIcon"
@@ -35,17 +32,43 @@ const acciones: Columns = {
         >
           <DriveFileRenameOutlineIcon />
         </IconButton>
-        {/* Detail Icon */}
-        {/* <IconButton
+      )}
+      {/* Detail Icon */}
+      {status !== "01" && (
+        <IconButton
           key={`detail-icon-${row.id}`}
           aria-label="DetailOutlineIcon"
           style={{ padding: 0, color: "#565656" }}
           onClick={handlerOpenModal}
         >
           <ErrorOutlineIcon />
-        </IconButton> */}
-      </Box>
-    );
+        </IconButton>
+      )}
+      {/* TODO ADD Sent Icon */}
+    </Box>
+  );
+};
+
+const acciones: Columns = {
+  id: "actions",
+  label: "Acciones",
+  align: Alignment.CENTER,
+  sortable: false,
+  render: ({ row }: { row: any }) => {
+    return <AccionesColumn row={row} />;
+  },
+};
+
+const documents: Columns = {
+  id: "documents",
+  label: "Adjuntos",
+  align: Alignment.LEFT,
+  sortable: false,
+  render: ({ row }: { row: any }) => {
+    if (row?.documents?.length > 0) {
+      return <Link href="#">{row?.documents?.length}</Link>;
+    }
+    return "-";
   },
 };
 
@@ -57,7 +80,7 @@ export const columnsCard: Columns[] = [
     sortable: false,
   },
   {
-    id: "code",
+    id: "messageCode",
     label: "Código",
     align: Alignment.LEFT,
     sortable: false,
@@ -75,13 +98,13 @@ export const columnsCard: Columns[] = [
     sortable: false,
   },
   {
-    id: "date",
+    id: "creationDate",
     label: "Fecha",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "time",
+    id: "creationTime",
     label: "Hora",
     align: Alignment.LEFT,
     sortable: false,
@@ -92,11 +115,6 @@ export const columnsCard: Columns[] = [
     align: Alignment.LEFT,
     sortable: false,
   },
-  {
-    id: "attachments",
-    label: "Adjuntos",
-    align: Alignment.LEFT,
-    sortable: false,
-  },
+  documents,
   acciones,
 ];

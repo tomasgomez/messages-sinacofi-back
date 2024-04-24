@@ -1,6 +1,6 @@
 import { ModalLink } from "./components/table-modal/link";
 import { StyledChip, StyledMessage, StyledMessageContiner } from "./style";
-import { Columns, Alignment, RowOptions, Data } from "./type";
+import { Columns, Alignment, RowOptions, Message } from "./type";
 
 const descriptor: Columns = {
   id: "description",
@@ -20,7 +20,7 @@ const ONS_COLUMN: Columns = {
   id: "OSN",
   label: "OSN",
   align: Alignment.LEFT,
-  render: ({ row }: { row: Data }) => {
+  render: ({ row }: { row: Message }) => {
     return <ModalLink isInProcess={!!row.status} data={row} />;
   },
 };
@@ -84,7 +84,7 @@ export const columnsSent: Columns[] = [
     label: "TSN",
     align: Alignment.LEFT,
     sortable: true,
-    render: ({ row }: { row: Data }) => {
+    render: ({ row }: { row: Message }) => {
       return <ModalLink isInProcess={!!row.status} data={row} />;
     },
   },
@@ -150,7 +150,7 @@ export const columnsPrepared: Columns[] = [
     label: "TSN",
     align: Alignment.LEFT,
     sortable: true,
-    render: ({ row }: { row: Data }) => {
+    render: ({ row }: { row: Message }) => {
       return <ModalLink isInProcess={!!row.status} data={row} />;
     },
   },

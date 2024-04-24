@@ -1,20 +1,23 @@
-import { Data } from "../../component/inbox-table/type";
-import { DataExpandable, linkAndLabel, StatusMessage } from "../../component/inbox-table/components/expandable-table/type";
+import { Message } from "../../component/inbox-table/type";
+import {
+  DataExpandable,
+  linkAndLabel,
+  StatusMessage,
+} from "../../component/inbox-table/components/expandable-table/type";
 
 export function createData(
   id: string,
-  OSN: string,
+  OSN: number,
   messageCode: string,
   description: string,
   sender: string,
   creationDate: string,
   creationTime: string,
   status: string,
-  stateProgress: string,
-  NSE:string,
-  receivedDate:string,
-  receivedTime:string,
-): Data {
+  NSE: number,
+  receivedDate: string,
+  receivedTime: string
+): Message {
   return {
     id,
     OSN,
@@ -24,42 +27,39 @@ export function createData(
     creationDate,
     creationTime,
     status,
-    stateProgress,
     receivedDate,
     receivedTime,
-    NSE
+    NSE,
   };
 }
 
 export const rows = [
   createData(
     "1",
-    "10139",
+    10139,
     "671",
     "ACEPTACIÓN ALZAMIENTO HIPOTECARIO (JUAN PÉREZ)",
     "Santander",
     "21/01/2024",
     "11:00",
     "17",
-    "inProgress",
-    "10123",
+    10123,
     "12/04/2023",
     "11:00"
   ),
   createData(
     "2",
-    "10124",
+    10124,
     "671",
     "ACEPTACIÓN ALZAMIENTO HIPOTECARIO",
     "HSBC",
     "21/01/2024",
     "11:00",
     "17",
-    "inProgress",
-    "102456",
+    102456,
     "12/03/2025",
     "10:00"
-  )
+  ),
 ];
 
 export function createDataExpand(

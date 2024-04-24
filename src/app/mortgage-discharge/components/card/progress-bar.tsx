@@ -11,6 +11,7 @@ import {
   StyledTypographyStatus,
   StyledLinearProgress,
 } from "./styled";
+import { getStatusText, getIsPendingStatus } from "@/utils/mortgage-discharge";
 
 // with status -> green
 // without status -> blue
@@ -43,19 +44,19 @@ const ProgressBar = ({ data = [] }: { data?: any }) => {
         <StyledContainerBlock>
           {firstElement && (
             <StyledContainerBlockStatus>
-              <StyledContainerIcon status={firstElement?.messageStatus}>
-                {!firstElement?.isPending && (
+              <StyledContainerIcon status={firstElement?.status}>
+                {!getIsPendingStatus(firstElement?.status) && (
                   <StyledCheckIcon
                     fontSize="small"
-                    iconColor={firstElement?.messageStatus}
+                    iconColor={firstElement?.status}
                   />
                 )}
               </StyledContainerIcon>
               <StyledTypographyCode>
-                MS {firstElement?.code}
+                MS {firstElement?.messageCode}
               </StyledTypographyCode>
               <StyledTypographyStatus>
-                {firstElement?.messageStatus}
+                {getStatusText(firstElement?.status)}
               </StyledTypographyStatus>
             </StyledContainerBlockStatus>
           )}
@@ -63,31 +64,33 @@ const ProgressBar = ({ data = [] }: { data?: any }) => {
             variant="determinate"
             value={firstElement ? 100 : 0}
             borderRadius="left"
-            backgroundColor={firstElement?.isPending ? "#00B2E2" : "#00BC70"}
+            backgroundColor={
+              getIsPendingStatus(firstElement?.status) ? "#00B2E2" : "#00BC70"
+            }
             borderRight={!!firstElement}
           />
         </StyledContainerBlock>
 
         {insideElements.map((elem: any, i: number) => {
           const element = elem;
-          const status = !element?.isPending;
+          const status = element?.status;
           return (
             <StyledContainerBlock key={`key-progress-block-${i}`}>
               {element && (
                 <StyledContainerBlockStatus>
-                  <StyledContainerIcon status={element?.messageStatus}>
-                    {status && (
+                  <StyledContainerIcon status={element?.status}>
+                    {!getIsPendingStatus(status) && (
                       <StyledCheckIcon
                         fontSize="small"
-                        iconColor={element?.messageStatus}
+                        iconColor={element?.status}
                       />
                     )}
                   </StyledContainerIcon>
                   <StyledTypographyCode>
-                    MS {element?.code}
+                    MS {element?.messageCode}
                   </StyledTypographyCode>
                   <StyledTypographyStatus>
-                    {element?.messageStatus}
+                    {getStatusText(element?.status)}
                   </StyledTypographyStatus>
                 </StyledContainerBlockStatus>
               )}
@@ -95,7 +98,9 @@ const ProgressBar = ({ data = [] }: { data?: any }) => {
                 variant="determinate"
                 value={element ? 100 : 0}
                 borderRadius="center"
-                backgroundColor={status ? "#00BC70" : "#00B2E2"}
+                backgroundColor={
+                  getIsPendingStatus(status) ? "#00B2E2" : "#00BC70"
+                }
                 borderRight={!!element}
               />
             </StyledContainerBlock>
@@ -104,19 +109,19 @@ const ProgressBar = ({ data = [] }: { data?: any }) => {
         <StyledContainerBlock>
           {lastElement && (
             <StyledContainerBlockStatus>
-              <StyledContainerIcon status={lastElement?.messageStatus}>
-                {!lastElement?.isPending && (
+              <StyledContainerIcon status={lastElement?.status}>
+                {!getIsPendingStatus(lastElement?.status) && (
                   <StyledCheckIcon
                     fontSize="small"
-                    iconColor={lastElement?.messageStatus}
+                    iconColor={lastElement?.status}
                   />
                 )}
               </StyledContainerIcon>
               <StyledTypographyCode>
-                MS {lastElement?.code}
+                MS {lastElement?.messageCode}
               </StyledTypographyCode>
               <StyledTypographyStatus>
-                {lastElement?.messageStatus}
+                {getStatusText(lastElement?.status)}
               </StyledTypographyStatus>
             </StyledContainerBlockStatus>
           )}
@@ -125,7 +130,9 @@ const ProgressBar = ({ data = [] }: { data?: any }) => {
             variant="determinate"
             value={lastElement ? 100 : 0}
             borderRadius="right"
-            backgroundColor={lastElement?.isPending ? "#00B2E2" : "#00BC70"}
+            backgroundColor={
+              getIsPendingStatus(lastElement?.status) ? "#00B2E2" : "#00BC70"
+            }
           />
         </StyledContainerBlock>
       </StyledContainerBar>

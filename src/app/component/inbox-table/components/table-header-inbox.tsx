@@ -3,7 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
-import { EnhancedTableProps, Data, SentData, KeyOfData } from "../type";
+import { EnhancedTableProps, KeyOfData } from "../type";
 import { StyledTableCellHeader } from "../style";
 import TableSortLabel from "@mui/material/TableSortLabel";
 

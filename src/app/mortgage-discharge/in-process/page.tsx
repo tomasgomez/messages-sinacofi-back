@@ -7,7 +7,7 @@ import CarDischarge from "@/app/mortgage-discharge/components/card";
 // import { dataList } from "./mock";
 import { TrackingModal } from "./tracking-modal";
 import { InfoModal } from "./info-modal";
-import { CardContext, CardContextProvider } from "./store/ModalStore";
+import { CardContextProvider } from "./store/ModalStore";
 import { getForeClosureDataCards } from "../api-calls";
 import Loader from "@/components/Loader";
 import { formatData } from "@/utils/mortgage-discharge";
@@ -21,7 +21,7 @@ export default function InProcessScreen() {
 
   const getDataList = async () => {
     setLoading(true);
-    const result: { messages: any[] } = await getForeClosureDataCards();
+    const result = await getForeClosureDataCards();
     const dataFormated = formatData(result);
     setData(dataFormated);
     setLoading(false);
@@ -36,7 +36,9 @@ export default function InProcessScreen() {
       <Paper sx={{ width: "calc(100% - 270px)" }}>
         <Box sx={{ m: 2 }}>
           <Header
-            dataCodeList={data?.map((elem: any) => elem.CUK) || []}
+            dataCodeList={
+              data?.map((elem: any) => elem?.codeData?.cukCode) || []
+            }
             title={"Alzamientos Hipotecarios en Proceso"}
           />
         </Box>

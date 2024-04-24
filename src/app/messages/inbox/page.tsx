@@ -1,25 +1,26 @@
-"use client"
+"use client";
 
 import React, { useEffect } from "react";
 
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsInbox } from "@/app/component/inbox-table/constants";
-import { Data } from "@/app/component/inbox-table/type";
+import { Message } from "@/app/component/inbox-table/type";
 import DataTable from "../../component/inbox-table";
-import { rows } from "./mock";
 
 export default function InboxScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [data, setData] = React.useState<Data[]>([]);
+  const [data, setData] = React.useState<Message[]>([]);
 
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      await fetch('/api/message?status=06').then(res => res.json()).then(res => {
-        setData(res)
-        setIsLoading(false);
-      });
+      await fetch("/api/message?status=06")
+        .then((res) => res.json())
+        .then((res) => {
+          setData(res);
+          setIsLoading(false);
+        });
     } catch (error) {
       console.error("Error al solicitar mensajes", error);
       setIsLoading(false);
@@ -28,7 +29,7 @@ export default function InboxScreen() {
 
   useEffect(() => {
     fetchData();
-  },[]);
+  }, []);
 
   const tableTitle = (
     <Grid container p={2}>
@@ -43,10 +44,18 @@ export default function InboxScreen() {
 
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>
-      <Box sx={{ m: 2 }}> 
-        <InboxHeader amountMessages={rows.length} title={'Bandeja de Entrada'} />
-        <DataTable rows={data} loading={isLoading} columns={columnsInbox} tableTitle={tableTitle}/>
+      <Box sx={{ m: 2 }}>
+        <InboxHeader
+          amountMessages={data.length}
+          title={"Bandeja de Entrada"}
+        />
+        <DataTable
+          rows={data}
+          loading={isLoading}
+          columns={columnsInbox}
+          tableTitle={tableTitle}
+        />
       </Box>
     </Paper>
   );
-};
+}
