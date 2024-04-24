@@ -26,7 +26,9 @@ async function find(cuk: CUK, count: string, offset: string): Promise < CUK[] | 
         if (count === '0' || count === '') {
             cuks = await prismaClient.cUK.findMany({
                 where,
-                orderBy: { creationDate: 'desc' }
+                orderBy: { creationDate: 'desc' },
+                take: 5,
+                skip: 0
             });
         } else {
             cuks = await prismaClient.cUK.findMany({
