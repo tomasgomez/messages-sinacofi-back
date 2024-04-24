@@ -2,7 +2,6 @@ import * as React from "react";
 import {
   StyledContentCard,
   StyledCardContent,
-  StyledCode,
   StyledCard,
   StyledButton,
   StyledBoxShadow,
@@ -19,7 +18,6 @@ import { mockDataAllCases as mockData } from "./mockData";
 // import { mockData } from "./mockData";
 import ProgressBar from "./progress-bar";
 import { reverseArray } from "@/utils/functions";
-
 const CarDischarge = ({
   data,
   handlerTrackingModal,
@@ -29,14 +27,13 @@ const CarDischarge = ({
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   // const [isLoading, setIsLoading] = React.useState<boolean>(true);
-
   const {
-    code,
-    date,
+    CUK,
+    emissionDate,
     status,
   }: {
-    code: string;
-    date: string;
+    CUK: string;
+    emissionDate: string;
     status: string;
   } = data;
 
@@ -69,7 +66,12 @@ const CarDischarge = ({
                 <KeyboardArrowRightIcon />
               </IconButton>
             )}
-            <CodeColumn code={code} date={date} status={status} />
+            <CodeColumn
+              code={CUK}
+              // code={"AH00010000000040"}
+              date={emissionDate}
+              status={status}
+            />
             <InfoColumn data={data} />
             <StyledButton onClick={handlerOpenModal}>
               Base de Seguimiento

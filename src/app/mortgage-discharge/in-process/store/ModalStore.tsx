@@ -1,25 +1,46 @@
-import React, { createContext, useState  } from "react";
+import { handleGenericChangeFilter } from "@/utils/mortgage-discharge";
+import React, { createContext, useState } from "react";
 
-type initialModalContextStateType = {
-  isOpen: boolean,
-  setIsOpen: Function,
+type initialCardContextStateType = {
+  modalIsOpen: boolean;
+  setModalIsOpen: Function;
+  filters: any[];
+  handleChangeAddFilter: Function;
 };
 
-const initialModalContextState: initialModalContextStateType = {
-    isOpen: false,
-    setIsOpen: () => {}
+const initialCardContextState: initialCardContextStateType = {
+  modalIsOpen: false,
+  setModalIsOpen: () => {},
+  filters: [],
+  handleChangeAddFilter: () => {},
 };
 
-export const ModalContext = createContext(initialModalContextState);
+export const CardContext = createContext(initialCardContextState);
 
-export const ModalContextProvider = ({ children }: { children: any}) => {
+export const CardContextProvider = ({
+  filters,
+  setFilters,
+  children,
+}: {
+  filters: any;
+  setFilters: any;
+  children: any;
+}) => {
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const contextValue = React.useMemo(() => ({isOpen, setIsOpen}),[isOpen, setIsOpen]);
+  const handleChangeAddFilter = (
+    label: string,
+    value: string | null | undefined
+  ) => {
+    handleGenericChangeFilter(label, value, setFilters);
+  };
+
+  const contextValue = React.useMemo(
+    () => ({ modalIsOpen, setModalIsOpen, filters, handleChangeAddFilter }),
+    [modalIsOpen, setModalIsOpen, filters, handleChangeAddFilter]
+  );
 
   return (
-    <ModalContext.Provider value={contextValue}>
-      {children}
-    </ModalContext.Provider>
+    <CardContext.Provider value={contextValue}>{children}</CardContext.Provider>
   );
 };

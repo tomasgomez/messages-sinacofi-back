@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyledChip } from "./styled";
 
 const StatusChip = ({ status }: { status: string }) => {
-  if (status === "sent") {
+  if (status === "05") {
     return (
       <StyledChip
         colorText="#00B2E2"
@@ -11,7 +11,7 @@ const StatusChip = ({ status }: { status: string }) => {
       />
     );
   }
-  if (status === "received") {
+  if (status === "06") {
     return (
       <StyledChip
         label="Alzamiento Hipotecario Recibido"
@@ -20,7 +20,7 @@ const StatusChip = ({ status }: { status: string }) => {
       />
     );
   }
-  if (status === "pending") {
+  if (status === "01") {
     return (
       <StyledChip
         label="Pendiente de Firma"
