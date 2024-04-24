@@ -2,6 +2,7 @@ import { Message } from "@/backend/entities/message/message";
 import { PrismaClientWrapper } from '../prismaWrapper';
 import { MessageFilter } from "@/backend/entities/message/filter";
 import { CUK } from "@/backend/entities/cuk/cuk";
+import { find as findCuk } from '../cuk/find';
 
 async function findBy(filter: MessageFilter): Promise<CUK[] | Error> {
     try {
@@ -11,11 +12,21 @@ async function findBy(filter: MessageFilter): Promise<CUK[] | Error> {
         const prisma = new PrismaClientWrapper();
         const prismaClient = prisma.getClient();
 
-        // Find the 5 newest CUKs
-        cuks = await prismaClient.cuk.findMany({
-            orderBy: { createdDate: 'desc' },
-            take: 5
-        });
+        if (filter.CUK) {
+            let cuk = new CUK();
+
+            if (filter.cukCode) {
+                cuk.cukCode = filter.cukCode;
+            }
+
+            if (filter.count && filter.offset) {
+                // Find the CUKs that match the provided filter
+                cuks = await findCuk(cuk, filter.count, filter.offset);
+            } else {
+                // Find the CUKs that match the provided filter
+                cuks = await findCuk(cuk, '0', '');
+            }
+
 
         // If no CUKs are found, return an error
         if (cuks.length === 0) {

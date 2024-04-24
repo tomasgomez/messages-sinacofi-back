@@ -33,7 +33,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10124",
@@ -54,7 +54,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10125",
@@ -75,7 +75,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10126",
@@ -96,7 +96,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
            ]
        },
@@ -133,7 +133,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10124",
@@ -154,7 +154,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10125",
@@ -175,7 +175,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10126",
@@ -196,7 +196,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
            ]
        },
@@ -233,7 +233,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10124",
@@ -254,7 +254,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10125",
@@ -275,7 +275,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10126",
@@ -296,7 +296,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
            ]
        },
@@ -333,7 +333,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10124",
@@ -354,7 +354,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10125",
@@ -375,7 +375,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10126",
@@ -396,7 +396,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
            ]
        },
@@ -433,7 +433,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10124",
@@ -454,7 +454,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10125",
@@ -475,7 +475,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
             {
                 "id": "10126",
@@ -496,7 +496,7 @@ export const message670 = {
                 "receivedDate": "24/04/2024",
                 "receivedTime": "11:00",
                 "documents": "",
-                "actions": "",
+                "actions": [],
               },
            ]
        },

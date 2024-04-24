@@ -29,6 +29,8 @@ model Message {
   TSN          Int?    @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
   OSN          Int?    @unique @default(autoincrement())
   NSE          Int?    @unique @default(autoincrement())
+  LSN          Int?    @unique @default(autoincrement())
+  NSR          Int?    @unique @default(autoincrement())
   messageCode  String?
   description  String?
   priority     String?

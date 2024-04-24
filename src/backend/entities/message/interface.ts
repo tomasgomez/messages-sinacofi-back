@@ -3,9 +3,11 @@
  */
 export interface IMessage {
     id?: string;
-    TSN?: number | null;
-    OSN?: number | null;
-    NSE?: number | null;
+    TSN ? : number | null;
+    OSN ? : number | null;
+    NSE ? : number | null;
+    LSN ? : number | null;
+    NSR ? : number | null;
     messageCode?: string | null;
     description?: string | null;
     priority?: string | null;

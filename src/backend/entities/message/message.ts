@@ -10,6 +10,9 @@ export class Message implements IMessage {
     TSN ? : number | null;
     OSN ? : number | null;
     NSE ? : number | null;
+    LSN ? : number | null;
+    NSR ? : number | null;
+    NSQ ? : number | null;
     messageCode ? : string | null;
     description ? : string | null;
     priority ? : string | null;
