@@ -1,40 +1,71 @@
-import { MessageFilter } from '@/backend/entities/message/filter';
+import { Filter } from '@/backend/entities/cuk/filter';
 
-export function validateGetMessageForeclosure(data: any): [MessageFilter] | Error {
-  const filter: MessageFilter = {};
+export function validateGetMessageForeclosure(data: any): Filter | Error {
+  const filter: Filter = {};
 
-  const { CUK, messageCode, status,  startDate, endDate, receiver, clientDni, sellerDni, payerDni, region, count, offset } = data;
+  const { id, name, cukCode, description, startDate, endDate, channel, status, clientDni, clientName, institutionDestination, count, offset } = data;
 
-  if (CUK && typeof CUK === 'string' && CUK.trim() !== '') {
-    filter.cukCode = CUK.trim();
+  if (cukCode && typeof cukCode === 'string' && cukCode.trim() !== '') {
+    // Split the string by commas and trim each code
+    filter.cukCode = cukCode.trim().split(',').map(code => code.trim());
+  }
+
+  if (id && typeof id === 'string' && id.trim() !== '') {
+    // Split the string by commas and trim each id
+    filter.id = id.trim().split(',').map(id => id.trim());
+  }
+
+  if (name && typeof name === 'string' && name.trim() !== '') {
+    // Split the string by commas and trim each name
+    filter.name = name.trim().split(',').map(name => name.trim());
+  }
+
+  if (description && typeof description === 'string' && description.trim() !== '') {
+    // Split the string by commas and trim each description
+    filter.description = description.trim().split(',').map(description => description.trim());
   }
 
   if (startDate && typeof startDate === 'string' && startDate.trim() !== '') {
-    filter.startDate = startDate.trim();
+    // Split the string by commas and trim each startDate
+    let convertedToDate = new Date(startDate.trim());
+    
+    if (convertedToDate.toString() !== 'Invalid Date' || convertedToDate.toString() === 'NaN') {
+      filter.startDate = convertedToDate;
+    }
   }
 
   if (endDate && typeof endDate === 'string' && endDate.trim() !== '') {
-    filter.endDate = endDate.trim();
+    // Split the string by commas and trim each endDate
+    let convertedToDate = new Date(endDate.trim());
+    
+    if (convertedToDate.toString() !== 'Invalid Date' || convertedToDate.toString() === 'NaN') {
+      filter.endDate = convertedToDate;
+    }
   }
 
-  if (receiver && typeof receiver === 'string' && receiver.trim() !== '') {
-    filter.receiver = receiver.trim();
+  if (channel && typeof channel === 'string' && channel.trim() !== '') {
+    // Split the string by commas and trim each channel
+    filter.channel = channel.trim().split(',').map(channel => channel.trim());
+  }
+
+  if (status && typeof status === 'string' && status.trim() !== '') {
+    // Split the string by commas and trim each status
+    filter.status = status.trim().split(',').map(status => status.trim());
   }
 
   if (clientDni && typeof clientDni === 'string' && clientDni.trim() !== '') {
-    filter.clientDni = clientDni.trim();
+    // Split the string by commas and trim each clientDni
+    filter.clientDni = clientDni.trim().split(',').map(clientDni => clientDni.trim());
   }
 
-  if (sellerDni && typeof sellerDni === 'string' && sellerDni.trim() !== '') {
-    filter.sellerDni = sellerDni.trim();
+  if (clientName && typeof clientName === 'string' && clientName.trim() !== '') {
+    // Split the string by commas and trim each clientName
+    filter.clientName = clientName.trim().split(',').map(clientName => clientName.trim());
   }
 
-  if (payerDni && typeof payerDni === 'string' && payerDni.trim() !== '') {
-    filter.payerDni = payerDni.trim();
-  }
-
-  if (region && typeof region === 'string' && region.trim() !== '') {
-    filter.region = region.trim();
+  if (institutionDestination && typeof institutionDestination === 'string' && institutionDestination.trim() !== '') {
+    // Split the string by commas and trim each institutionDestination
+    filter.institutionDestination = institutionDestination.trim().split(',').map(institutionDestination => institutionDestination.trim());
   }
 
   if (count && typeof count === 'string' && count.trim() !== '') {
@@ -45,13 +76,9 @@ export function validateGetMessageForeclosure(data: any): [MessageFilter] | Erro
     filter.offset = offset.trim();
   }
 
-  if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
-    filter.messageCode = messageCode.trim();
+  if (startDate && endDate && startDate > endDate) {
+    return new Error('Invalid date range');
   }
 
-  if (status && typeof status === 'string' && status.trim() !== '') {
-    filter.status = status.trim();
-  }
-
-  return [filter];
+  return filter;
 }

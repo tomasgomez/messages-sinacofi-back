@@ -62,3 +62,31 @@ export function handleNullValues(message: Message, detail: boolean): void {
         }
     });
 }
+
+// Define a function to generate the date range filter
+export function createDateRangeFilter(startDate: Date | undefined, endDate: Date | undefined): Record<string, Record<string, Date>>{
+
+    if (startDate && endDate && startDate < endDate) {
+        return {
+            createdAt: {
+                gte: startDate,
+                lte: endDate,
+            }
+        };
+    } else if (startDate && !endDate) {
+        return {
+            createdAt: {
+                gte: startDate,
+            }
+        };
+    } else if (!startDate && endDate) {
+        return {
+            createdAt: {
+                lte: endDate,
+            }
+        };
+    }
+
+    return {};
+    
+}

@@ -9,9 +9,9 @@ datasource db {
 }
 
 model CUK {
-  id                     String  @id @default(uuid())
+  id                     String   @id @default(uuid())
   name                   String?
-  cukCode                String? @unique
+  cukCode                String?  @unique
   description            String?
   status                 String?
   creationDate           String?
@@ -20,17 +20,19 @@ model CUK {
   clientDni              String?
   clientName             String?
   institutionDestination String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 
   messages Message[] @relation(name: "CukMessages")
 }
 
 model Message {
-  id           String  @id @default(uuid())
-  TSN          Int?    @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
-  OSN          Int?    @unique @default(autoincrement())
-  NSE          Int?    @unique @default(autoincrement())
-  LSN          Int?    @unique @default(autoincrement())
-  NSR          Int?    @unique @default(autoincrement())
+  id           String   @id @default(uuid())
+  TSN          Int?     @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
+  OSN          Int?     @unique @default(autoincrement())
+  NSE          Int?     @unique @default(autoincrement())
+  LSN          Int?     @unique @default(autoincrement())
+  NSR          Int?     @unique @default(autoincrement())
   messageCode  String?
   description  String?
   priority     String?
@@ -45,18 +47,23 @@ model Message {
   actions      String?
   parameters   Json?
   cukCode      String?
-  cuk          CUK?    @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  cuk          CUK?     @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
 }
 
 model Family {
-  id           Int      @id @default(autoincrement())
-  name         String   @unique @db.VarChar(255)
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+
   institutions String[]
 }
 
 model MessageFamily {
   messageId  Int
   familyId   Int
+  createdAt  DateTime @default(now())
   assignedAt DateTime @default(now())
 
   @@id([messageId, familyId])

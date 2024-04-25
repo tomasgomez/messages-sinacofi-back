@@ -1,30 +1,38 @@
-import { MessageRepository } from '../../repository/messageRepository';
-import { CUKRepository } from '../../repository/cukRepository';
-import { CUK } from '../../entities/cuk/cuk';
-import { MessageFilter } from '../../entities/message/filter';
-import { Message } from '../../entities/message/message';
+import {
+  MessageRepository
+} from '../../repository/messageRepository';
+import {
+  CUKRepository
+} from '../../repository/cukRepository';
+import {
+  CUK
+} from '../../entities/cuk/cuk';
+import {
+  Filter
+} from '../../entities/cuk/filter';
 
 // Get message function
-export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: MessageFilter ): Promise<CUK[] | Error> {
+export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: Filter): Promise < CUK[] | Error > {
   try {
-    /* Create a new CUK object */
-    const filterCuk = new CUK();
 
+    /* Set count and offset */
     let count = '5';
     let offset = '0';
 
-    if (filter.count) {
+    if (filter === undefined) {
+      filter = {};
+    }
+
+    if (filter.count !== undefined && filter.count !== '') {
       count = filter.count;
     }
 
-    if (filter.offset) {
+    if (filter.offset !== undefined && filter.offset !== '') {
       offset = filter.offset;
     }
 
-    filterCuk.cukCode = filter.cukCode;
-
     /* Get the CUKs */
-    const cuks = await cukRepository.find(filterCuk, count, offset);
+    const cuks = await cukRepository.find(filter, count, offset);
 
     if (cuks instanceof Error) {
       throw cuks;
@@ -34,32 +42,9 @@ export async function getMessageForeclosure(messageRepository: MessageRepository
       throw new Error('No message found');
     }
 
-    /* Get the messages for each CUK */
-    for (const cuk of cuks) {
-      let newMessage = new Message();
-
-      newMessage.cukCode = cuk.cukCode;
-
-      /* Get the messages */
-      const messages = await messageRepository.find(newMessage, false, count, offset);
-
-      if (messages instanceof Error) {
-        throw messages;
-      }
-
-      if (messages.length === 0) {
-        cuk.messages = [];
-        continue;
-      }
-
-      cuk.messages = messages;
-    }
-
     return cuks;
-  } catch (error:  any) {
+  } catch (error: any) {
     console.error('Error updating message:', error);
     return error;
   }
 }
-
-
