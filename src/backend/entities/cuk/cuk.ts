@@ -43,8 +43,11 @@ export class CUK implements ICUK {
         this.messages.push(message);
     }
 
-    setCukCode ? () {
+    setCukCode ? (institutionCode: string) {
         // AH00010000000040
-        this.cukCode = 'AH0001' + Math.floor(Math.random() * 10000000000);
+        let code = 'AH000'+ institutionCode + Math.floor(Math.random() * 10000000000);
+        console.log('Cuk code created:', code);
+        this.cukCode = code
+        console.log('Cuk code in the cuk obkect:', this.cukCode);
     }
 }

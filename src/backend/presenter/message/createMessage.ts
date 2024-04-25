@@ -3,7 +3,7 @@ import { Message } from '../../entities/message/message';
 export function validateCreateMessage(data: any): Message | Error {
   let message: Message = new Message();
 
-  const {messageCode, priority, status, receiver, sender, parameters } = data;
+  const {messageCode, priority, status, receiver, sender, parameters, cukCode } = data;
 
   if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
     message.messageCode = messageCode;
@@ -33,6 +33,10 @@ export function validateCreateMessage(data: any): Message | Error {
 
   if (parameters && typeof parameters === 'object') {
     message.parameters = parameters;
+  }
+
+  if (cukCode && typeof cukCode === 'string' && cukCode.trim() !== '') {
+    message.cukCode = cukCode;
   }
 
   return message;

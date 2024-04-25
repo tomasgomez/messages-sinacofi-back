@@ -16,6 +16,6 @@ export interface ICUK {
     institutionDestination?: string | null;
 
     setTime?(): void;
-    setCukCode?(): void;
+    setCukCode?(institutionCode: string): void;
 
 }

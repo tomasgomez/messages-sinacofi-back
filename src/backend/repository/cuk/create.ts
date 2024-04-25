@@ -30,10 +30,6 @@ async function create(cuk: ICUK): Promise < ICUK | Error > {
             return new Error('No CUK data provided');
         }
 
-        if (cukData.setCukCode){
-            cukData.setCukCode();
-        }
-
         let newCUK = await prismaClient.cUK.create({
             data: cukData
         });

@@ -12,19 +12,26 @@ import {
 } from '@/backend/handler/rule/get';
 import { InternalError } from "@/backend/entities/internalError";
 import { MessageStatus } from "@/backend/entities/message/status";
-import {MessageTypes} from "@/backend/entities/message/types";
+import { MessageTypes } from "@/backend/entities/message/types";
 import { CUK } from "@/backend/entities/cuk/cuk";
+import { messageForeclosureUseCase } from "../messageForeclosure/usecases";
 
 
 // Create message function
-export async function createMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
+export async function createMessage(repository: MessageRepository, message: Message, ): Promise < Message | Error > {
     try {
 
+        /* Check if is a foreclosure message, then create the foreclosure */
         if (message.messageCode === MessageTypes.ALZAMIENTO_HIPOTECARIO) {
-            let cuk = new CUK();
 
-            if (cuk.setCukCode){
-                cuk.setCukCode();
+            let cuk = await messageForeclosureUseCase.createForeclosure(new CUK, message);
+
+            if (cuk instanceof Error) {
+                return cuk;
+            }
+
+            if (cuk.cukCode === undefined) {
+                return new Error('No cuk code returned');
             }
 
             message.cukCode = cuk.cukCode;

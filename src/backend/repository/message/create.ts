@@ -4,6 +4,9 @@ import {
 import {
     PrismaClientWrapper
 } from '../prismaWrapper';
+import {
+    handleNullValues
+} from "@/backend/utils/functions";
 
 
 async function create(message: Message): Promise < Message | Error > {
@@ -39,6 +42,9 @@ async function create(message: Message): Promise < Message | Error > {
             console.error('Error creating message');
             return new Error('Error creating message');
         }
+        
+        // Loop through each message and handle null values
+        handleNullValues(message, false);
 
         return newMessage as Message;
     } catch (error: any) {
