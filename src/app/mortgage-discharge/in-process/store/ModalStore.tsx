@@ -33,7 +33,7 @@ export const CardContextProvider = ({
     value: string | null | undefined
   ) => {
     handleGenericChangeFilter(label, value, setFilters);
-  }, []);
+  }, [setFilters]);
 
   const contextValue = React.useMemo(
     () => ({ modalIsOpen, setModalIsOpen, filters, handleChangeAddFilter }),
