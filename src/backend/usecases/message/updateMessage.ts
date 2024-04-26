@@ -12,6 +12,7 @@ import {
 // Create message function
 export async function updateMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
     try {
+
         /* If the message status is 05, create a new message with status 06 */
         if (message.status && message.status === MessageStatus.ENVIADO ) {
             if (message.setReceivedTime) {

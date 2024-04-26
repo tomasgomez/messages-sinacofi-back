@@ -13,7 +13,7 @@ export async function update(message: Message): Promise<Message | Error> {
             Object.entries(message).filter(([_, value]) => value !== '')
         );
 
-        delete dataToUpdate.parameters;
+        console.log('Data to update:', dataToUpdate);
 
         /* Update the message */
         const updatedMessage = await prismaClient.message.update({

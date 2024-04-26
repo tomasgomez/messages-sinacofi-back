@@ -3,18 +3,20 @@ import { Message } from '../../entities/message/message';
 export function validateUpdateMessage(data: any): Message | Error {
   let message: Message = new Message()
 
-  const {id, status } = data;
-
-  if (id && typeof id === 'string' && id.trim() !== '') {
-    message.id = id;
-  } else {
-    return new Error('Invalid id');
+  // Convert data to message object
+  if (!data.id || !data.messageCode || !data.priority || !data.status || !data.sender || !data.receiver) {
+    return new Error('Missing required fields');
   }
 
-  if (status && typeof status === 'string' && status.trim() !== '') {
-    message.status = status;
-  } else {
-    return new Error('Invalid status');
+  message.id = data.id;
+  message.messageCode = data.messageCode;
+  message.priority = data.priority;
+  message.status = data.status;
+  message.sender = data.sender;
+  message.receiver = data.receiver;
+  
+  if (data.parameters) {
+    message.parameters = data.parameters;
   }
 
   return message;

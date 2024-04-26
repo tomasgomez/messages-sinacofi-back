@@ -33,6 +33,14 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
                 }
             });
 
+            delete newMessage.LSN;
+            delete newMessage.NSE;
+            delete newMessage.TSN;
+            delete newMessage.OSN;
+            delete newMessage.NSQ;
+            delete newMessage.NSR;
+            
+
             /* Set the status of the new message to ENVIADO */
             newMessage.status = MessageStatus.BANDEJA_DE_ENTRADA;
 
