@@ -5,9 +5,6 @@ import {
     MessageRepository
 } from "@/backend/repository/messageRepository";
 import {
-    getChileanTime
-} from "@/backend/utils/functions";
-import {
     MessageStatus
 } from "@/backend/entities/message/status";
 

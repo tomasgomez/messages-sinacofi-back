@@ -22,7 +22,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     switch (method) {
       case Methods.GET:
 
-        await ruleCalls.GET(req, res);
+        // await ruleCalls.GET(req, res);
+
+        res.status(200).json(ruleTypes);
 
         return;
 
