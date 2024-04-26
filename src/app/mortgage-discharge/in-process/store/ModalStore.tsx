@@ -11,7 +11,7 @@ type initialCardContextStateType = {
 const initialCardContextState: initialCardContextStateType = {
   modalIsOpen: false,
   setModalIsOpen: () => {},
-  filters: [],
+  filters: [{ label: "channel", value: "Personas" }],
   handleChangeAddFilter: () => {},
 };
 
@@ -28,12 +28,12 @@ export const CardContextProvider = ({
 }) => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
-  const handleChangeAddFilter = useCallback((
-    label: string,
-    value: string | null | undefined
-  ) => {
-    handleGenericChangeFilter(label, value, setFilters);
-  }, [setFilters]);
+  const handleChangeAddFilter = useCallback(
+    (label: string, value: string | null | undefined) => {
+      handleGenericChangeFilter(label, value, setFilters);
+    },
+    [setFilters]
+  );
 
   const contextValue = React.useMemo(
     () => ({ modalIsOpen, setModalIsOpen, filters, handleChangeAddFilter }),

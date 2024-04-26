@@ -27,3 +27,13 @@ export function combineArrays(arrayA, arrayB) {
 
   return resultado;
 }
+
+export function IsEmptyObject(elem) {
+  if (!Array.isArray(elem) && typeof elem === "object") {
+    // Comprobamos si el objeto no tiene ninguna propiedad
+    if (Object.keys(elem).length === 0) {
+      return true;
+    }
+  }
+  return false; // Si no es un objeto vacío, retornamos la variable tal cual
+}

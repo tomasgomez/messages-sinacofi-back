@@ -14,7 +14,7 @@ const options = [
 ];
 
 export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
-  const { handleChangeAddFilter, filters } = React.useContext(CardContext);
+  const { handleChangeAddFilter } = React.useContext(CardContext);
 
   const { widthDropdown } = props;
   const [optionSelected, setOptionSelected] = React.useState(options[0].value);
