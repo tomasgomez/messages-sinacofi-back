@@ -73,13 +73,13 @@ export const FilterSelector = (props: { onClose: Function }) => {
         Filtros
       </Typography>
       <DatePickerInput
-        handleChange={handleAuxFilter}
+        onChange={(newValue: any) => handleAuxFilter("startDate", newValue.format("YYYY/MM/DD"))}
         keyLabel="startDate"
         label="Fecha Inicial"
         value={getValue("startDate")}
       />
       <DatePickerInput
-        handleChange={handleAuxFilter}
+        onChange={(newValue: any) => handleAuxFilter("endDate", newValue.format("YYYY/MM/DD"))}
         keyLabel="endDate"
         label="Fecha Final"
         value={getValue("endDate")}

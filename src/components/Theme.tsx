@@ -77,10 +77,18 @@ export const theme = createTheme({
 
       }
     },
-    MuiInputBase: {
+    MuiSelect: {
       styleOverrides: {
         disabled: {
           backgroundColor: "#E5E5E5",
+
+        }
+      }
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        disabled: {
+          backgroundColor: "#E5E5E5 !important",
           color: "#000000 !important",
         },
       }

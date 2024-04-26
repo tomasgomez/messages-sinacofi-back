@@ -22,9 +22,12 @@ export const getMessageDescriptions = async () => {
 };
 
 export const getMessageSchema = async (messageCode: string, institutionId: any) => {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       const schema = messageSchemas.find((messageSchema) => messageSchema.messageCode === messageCode);
+      if (!schema) {
+        reject("Couln't find the form schema");
+      }
       resolve({
         ...schema,
         parameters: schema?.parameters.map((parameter) => (
@@ -43,6 +46,12 @@ export const getMessageSchema = async (messageCode: string, institutionId: any) 
   //   });
 };
 
+
+export const getMessageDetails = async (messageId: number | string) => {
+  return await fetch(`/api/message/detail?id=${messageId}`)
+    .then(res => res.json())
+
+};
 export const createMessage = async (data: any, status: string) => {
   const payload = JSON.stringify({ ...data, status });
   // return new Promise((resolve) => {
@@ -68,3 +77,16 @@ export const createMessage = async (data: any, status: string) => {
   })
     .then((response) => response.json());
 };
+
+export const updateMessage = async (id: string, status: string, data: any = {}) => {
+  return fetch(
+    `/api/message?id=${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data, id: id, status }),
+    }
+  ).then((res) => res.json());
+}

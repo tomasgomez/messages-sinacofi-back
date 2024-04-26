@@ -50,7 +50,7 @@ export default function SentScreen() {
             key={`expand-icon-${row.id}`}
             aria-label="expand row"
             style={{ padding: 0 }}
-            onClick={() => router.push(`/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&cloneId=${row.TSN}`)}
+            onClick={() => router.push(`/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&cloneId=${row.id}`)}
           >
             <CopyAll />
           </IconButton>

@@ -707,7 +707,6 @@ export const messageSchemas = [
             "label": "SGC: Fecha Repertorio", 
             "type": "date",
             "description": "Fecha de repertorio", 
-            "defaultValue": new Date().toLocaleDateString(),
             "placeholder": "", 
             "properties": {
                "name": "date",
@@ -801,7 +800,7 @@ export const messageSchemas = [
             "type": "rut",
             "label": "SGI: RUT del Comprador o Mutuario",
             "description": "rutBuyer",
-            "defaultValue": "RUT Comprador",
+            "defaultValue": "",
             "placeholder": "rutBuyer",
             "properties": {
                "name": "rut",
