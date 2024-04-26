@@ -18,6 +18,7 @@ export default function Dropdrown(props: {
   onChange?: any;
   valueKey?: string;
   labelKey?: string;
+  disabled?: boolean;
   loading?: boolean;
   loadingMessage?: string;
 }) {
@@ -27,6 +28,7 @@ export default function Dropdrown(props: {
     options,
     defaultValue = "",
     selected,
+    disabled,
     onChange,
     valueKey = "value",
     labelKey = "label",
@@ -74,6 +76,7 @@ export default function Dropdrown(props: {
           placeholder={placeholder}
           onChange={handleChange}
           onFocus={handleFocus}
+          disabled={disabled}
           // displayEmpty
           onBlur={handleBlur}
         >

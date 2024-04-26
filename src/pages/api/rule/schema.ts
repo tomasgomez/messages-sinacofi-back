@@ -67,8 +67,8 @@ function getRuleSchema(institutionOptions: any[]) {
             "messageCode": "136",
             "description": "TRANSFERENCIA DE FONDOS INDIVIDUAL",
             "parameters": [{
-                  "id": "codeField",
-                  "name": "code",
+                  "id": "messageCode",
+                  "name": "messageCode",
                   "label": "Código",
                   "type": "textField",
                   "defaultValue": "136",
@@ -83,7 +83,7 @@ function getRuleSchema(institutionOptions: any[]) {
                },
                {
                   "id": "descriptionField",
-                  "name": "code",
+                  "name": "descriptionTypeMessage",
                   "label": "Descripción",
                   "type": "textField",
                   "defaultValue": "TRANSFERENCIA DE FONDOS INDIVIDUAL",
@@ -327,8 +327,8 @@ function getRuleSchema(institutionOptions: any[]) {
             "messageCode": "199",
             "description": "TEXTO LIBRE",
             "parameters": [{
-                  "id": "codeField",
-                  "name": "code",
+                  "id": "messageCode",
+                  "name": "messageCode",
                   "label": "Código",
                   "type": "textField",
                   "defaultValue": "199",
@@ -343,7 +343,7 @@ function getRuleSchema(institutionOptions: any[]) {
                },
                {
                   "id": "descriptionField",
-                  "name": "code",
+                  "name": "descriptionTypeMessage",
                   "label": "Descripción",
                   "type": "textField",
                   "defaultValue": "TEXTO LIBRE",
@@ -493,8 +493,8 @@ function getRuleSchema(institutionOptions: any[]) {
             "messageCode": "670",
             "description": "ALZAMIENTO HIPOTECARIO",
             "parameters": [{
-                  "id": "codeField",
-                  "name": "code",
+                  "id": "messageCode",
+                  "name": "messageCode",
                   "label": "Código",
                   "type": "textField",
                   "defaultValue": "670",
@@ -508,8 +508,8 @@ function getRuleSchema(institutionOptions: any[]) {
                   }
                },
                {
-                  "id": "descriptionField",
-                  "name": "code",
+                  "id": "descriptionTypeMessage",
+                  "name": "descriptionTypeMessage",
                   "label": "Descripción",
                   "type": "textField",
                   "defaultValue": "ALZAMIENTO HIPOTECARIO",
@@ -523,8 +523,8 @@ function getRuleSchema(institutionOptions: any[]) {
                   }
                },
                {
-                  "id": "institutionDestination",
-                  "name": "institutionDestination",
+                  "id": "receiver",
+                  "name": "receiver",
                   "label": "Institución de Destino",
                   "type": "select",
                   "description": "Todas las instituciones posibles",
@@ -544,11 +544,13 @@ function getRuleSchema(institutionOptions: any[]) {
                   "type": "select",
                   "description": "Todas las prioridades posibles",
                   "placeholder": "Seleccionar prioridad...",
+                  "defaultValue": "02", 
                   "properties": {
                      "name": "select",
                      "columns": "4",
                      "rows": "1",
                      "multiple": false,
+                     "selected": "02",
                      "options": [{
                         "label": "02 - Normal Sin Aviso de Entrega",
                         "value": "02",
@@ -561,22 +563,24 @@ function getRuleSchema(institutionOptions: any[]) {
                   "label": "Autenticación",
                   "type": "select",
                   "description": "Autenticacion select",
-                  "defaultValue": "no",
+                  "defaultValue": "No",
                   // "placeholder": "Seleccionar institución de destino...",
                   "properties": {
                      "name": "select",
                      "columns": "4",
                      "rows": "1",
                      "multiple": false,
-                     "options": [{
+                     "selected": "No",
+                     "options": [
+                        {
                            "label": "Sí",
-                           "value": "yes"
+                           "value": "Sí"
                         },
                         {
                            "label": "No",
-                           "value": "no"
+                           "value": "No"
                         }
-                     ]
+                     ] 
                   }
                },
                {
@@ -748,7 +752,7 @@ function getRuleSchema(institutionOptions: any[]) {
                   "label": "SGI: RUT del Comprador o Mutuario",
                   "description": "SGI",
                   "value": "",
-                  "defaultValue": "RUT Comprador",
+                  "defaultValue": "",
                   "placeholder": "SGI",
                   "properties": {
                      "name": "textField",

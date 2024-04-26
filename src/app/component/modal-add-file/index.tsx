@@ -16,13 +16,14 @@ import {
   StyledCenterBoxColumn,
   StyledCenterBoxRow,
 } from "./styled";
+import Image from "next/image";
 
 const AddFileModal = ({
-  isOpen = false,
+  open = false,
   onClose = () => null,
   onConfirm = () => null,
 }: {
-  isOpen: boolean;
+  open: boolean;
   onClose: any;
   onConfirm: any;
 }) => {
@@ -46,7 +47,7 @@ const AddFileModal = ({
   };
   return (
     <Box>
-      <Modal maxWidth={698} open={isOpen} onClose={onClose}>
+      <Modal maxWidth={698} open={open} onClose={onClose}>
         <Typography
           fontFamily={montserrat.style.fontFamily}
           fontSize={20}
@@ -91,8 +92,9 @@ const AddFileModal = ({
               {file && (
                 <StyledCenterBoxColumn>
                   <StyledCenterBoxRow>
-                    <img
+                    <Image
                       src="/imagenPDF.png"
+                      alt="pdf-image.png"
                       loading="lazy"
                       width="30"
                       height="30"
@@ -126,7 +128,7 @@ const AddFileModal = ({
             <StyledCancelButton variant="outlined" onClick={onClose}>
               Cancelar
             </StyledCancelButton>
-            <StyledConfirmButton variant="contained" onClick={onConfirm}>
+            <StyledConfirmButton variant="contained" disabled={!file} onClick={() => onConfirm(file)}>
               Adjuntar Archivo
             </StyledConfirmButton>
           </StyledContainerButtons>

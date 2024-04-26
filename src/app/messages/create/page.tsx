@@ -1,11 +1,13 @@
 "use client"
+import AddFileModal from "@/app/component/modal-add-file";
 import { MyContexLayout } from "@/app/context";
-import { createMessage, /* getMessageDetails, */ getMessageSchema } from "@/app/services/common";
+import { createMessage, getMessageDetails, /* getMessageDetails, */ getMessageSchema, updateMessage } from "@/app/services/common";
 import Dropdrown from "@/components/Dropdown";
 import Field from "@/components/Field";
 import Form from "@/components/Form";
 import FormBuilder from "@/components/FormBuilder";
 import Loader from "@/components/Loader";
+import { useModalManager } from "@/components/Modal";
 import { CloseRounded, DeleteOutlineOutlined, Remove, RemoveOutlined } from "@mui/icons-material";
 import { Box, Button, Card, CardContent, Container, Grid, IconButton, Stack, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -46,8 +48,19 @@ const getCreateMessagePayload = (data: any, schema: any) => {
     });
   return payload;
 }
+const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
+  const currentField = fieldList?.find((field: any) => fieldName === field.name);
+  if (fieldName === "sign" && currentField?.value === "-"){
+    return "";
+  }
+  return currentField?.value || null;
+
+}
 const CreateMessage = () => {
   const { setModalState } = useContext(MyContexLayout) as any;
+  const { onOpen: onSignOpen, onClose } = useModalManager({
+    component: AddFileModal
+  });
   const [messageSchema, setMessageSchema] = useState({parameters: []});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -56,37 +69,119 @@ const CreateMessage = () => {
   const messageCode = searchParams?.get("messageCode") || "";
   const institutionId = searchParams?.get("institutionId") || "";
   const cloneId = searchParams?.get("cloneId") || "";
+  const signMessageId = searchParams?.get("signMessageId") || "";
 
   useEffect(() => {
     setLoading(true);
-    // /* getMessageDetails( */cloneId).then(() => {
-
-    // })
-    getMessageSchema(messageCode, institutionId)
-      .then((schema: any) => {
-        setMessageSchema({
-          ...schema,
-          parameters: schema?.parameters.map((parameter: any) => (
-            parameter.id === "receiver" 
-            ? { ...parameter, selected: institutionId, defaultValue: institutionId } 
-            : parameter.id === "messageCode"
-              ? { ...parameter, defaultValue: messageCode } 
-              : parameter
-          ))
-        });
-      })
-      .catch((error) => {
-        console.log({ error });
-        setError("El schema de formulario no fue encontrado");
-      })
-      .finally(() => {
-        setLoading(false);
+    if(cloneId || signMessageId) {
+      getMessageDetails(cloneId || signMessageId).then((data) => {
+        console.log({ data });
+        getMessageSchema(messageCode, institutionId)
+          .then((schema: any) => {
+            setMessageSchema({
+              ...schema,
+              parameters: schema?.parameters.map((parameter: any) => (
+                parameter.id === "receiver" 
+                ? {
+                  ...parameter,
+                  selected: institutionId,
+                  defaultValue: institutionId,
+                  disabled: true
+                } 
+                : parameter.id === "messageCode"
+                  ? {
+                    ...parameter,
+                    defaultValue: messageCode,
+                    disabled: true
+                  } 
+                : parameter.id === "priority"
+                  ? {
+                    ...parameter,
+                    defaultValue: data[0]?.priority,
+                    disabled: true
+                  } 
+                  // : { ...parameter, disabled: true }
+                  : parameter.id === "sign"
+                    ? {
+                      ...parameter,
+                      type: "password",
+                      defaultValue: initializarField(parameter.name, data[0]?.parameters),
+                      disabled: false
+                    }
+                    : {
+                      ...parameter,
+                      defaultValue: initializarField(parameter.name, data[0]?.parameters),
+                      ...(parameter.type === "select" ? { selected: initializarField(parameter.name, data[0]?.parameters) }: {}),
+                      disabled: true
+                    }
+              ))
+            });
+          })
+          .catch((error) => {
+            console.log({ error });
+            setError("El schema de formulario no fue encontrado");
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       });
-  }, [messageCode, institutionId]);
+    } else {
+      getMessageSchema(messageCode, institutionId)
+        .then((schema: any) => {
+          setMessageSchema({
+            ...schema,
+            parameters: schema?.parameters.map((parameter: any) => (
+              parameter.id === "receiver" 
+              ? { ...parameter, selected: institutionId, defaultValue: institutionId } 
+              : parameter.id === "messageCode"
+                ? { ...parameter, defaultValue: messageCode } 
+                : parameter
+            ))
+          });
+        })
+        .catch((error) => {
+          console.log({ error });
+          setError("El schema de formulario no fue encontrado");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [messageCode, institutionId, cloneId, signMessageId]);
 
   const onSubmit = (data: any) => {
-    setLoading(true);
     const payload = getCreateMessagePayload(data, messageSchema);
+    if (signMessageId) {
+      onSignOpen({
+        onConfirm: (document: any) => {
+          onClose?.();
+          setLoading(true);
+          updateMessage(signMessageId, "05", { ...payload, documents: [document] })
+            .then((response) => {
+              console.log("Mensaje actualizados!");
+              setModalState({
+                type: "success",
+                title: "Firma de mensaje y carga de Copia Maestra/GP exitosa",
+                body: (
+                  <>
+                    <Typography fontSize={14} fontWeight={400}>
+                      Codigo Interno Asignado al nuevo Mensaje: {response?.CUK}
+                    </Typography>
+                  </>
+                ),
+                isOpen: true,
+                onConfirm: () => router.push("/mortgage-discharge/in-process"),
+              });
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+          
+        }
+      });
+      return ;
+    }
+    setLoading(true);
     createMessage(payload, "05")
       .then((response: any) => {
         setLoading(false);

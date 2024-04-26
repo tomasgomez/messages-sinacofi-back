@@ -1,6 +1,10 @@
 import { Grid, TextField, Typography, TextFieldProps, FormControl, InputAdornment, styled, Box } from "@mui/material";
 import Dropdrown from "../Dropdown";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { NumericFormat, PatternFormat } from "react-number-format";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
+import { DatePickerInput } from "@/app/mortgage-discharge/in-process/header/components/filters/filter-selector/form-elements/date";
 
 interface IFormInputs {
   TextField: string
@@ -51,34 +55,77 @@ const Field = ({
   );
 };
 
+const NumberFormatCustom = (props: any) => {
+  const { inputRef, onChange, ...other } = props;
+
+  return (
+    <NumericFormat
+      {...other}
+      getInputRef={inputRef}
+      onValueChange={(values: any) => {
+        onChange(values.value);
+      }}
+      thousandSeparator
+      // isNumericString
+    />
+  );
+}
+
 const FieldTypes = {
   textField: Field,
-  date: (props: any) => (
-    <Field
-      {...props}
-      type="text"
+  date: (props: any) => {
+    console.log("DATEPICKER: ", { props });
+    return (
+      <DatePickerInput {...props} />
+    );
+    // <DatePicker {...props} defaultValue={dayjs(props?.defaultValue)}/>
+    // <Field
+    //   {...props}
+    //   type="text"
       // InputProps={{
         // startAdornment: <InputAdornment position="start">+</InputAdornment>,
       // }}
-    />
-  ),
+    // />
+  },
   select: Dropdrown,
   textArea: Field,
+  // rut: (props: any) => (
+    
+  // ),
   phoneNumber: (props: any) => (
     <Field
       {...props}
-      type="number"
-      // InputProps={{
-        // startAdornment: <InputAdornment position="start">+</InputAdornment>,
-      // }}
+      // type="number"
+      placeholder="+56 (#) ####-####"
+      InputProps={{
+      //   startAdornment: <InputAdornment position="start">+</InputAdornment>,
+        inputComponent: (props: any) => {
+          const { inputRef, onChange, ...other } = props;
+          return (
+            <PatternFormat
+              {...other}
+              format="+56 (#) ####-####"
+              valueIsNumericString={true}
+              getInputRef={inputRef}
+              onValueChange={(values: any) => {
+                onChange(values.value);
+              }}
+            />
+          );
+        }
+      }}
     />
   ),
   amount: (props: any) => (
     <Field
       {...props}
-      type="number"
+      prefix="$"
+      // type="number"
+      // InputProps={{
+      //   startAdornment: <InputAdornment position="start" sx={{ marginLeft: 0 }}>$</InputAdornment>,
+      // }}
       InputProps={{
-        startAdornment: <InputAdornment position="start" sx={{ marginLeft: 0 }}>$</InputAdornment>,
+        inputComponent: NumberFormatCustom
       }}
     />
   ),
@@ -86,10 +133,13 @@ const FieldTypes = {
 
 const LabelTypes = {
   linebreak: (props: any) => (
-    <Box>
-      <Typography variant="caption" sx={{ backgroundColor: "#EFFCFF", color: "#565656"}}>
+    <Box sx={{ position: "relative", overflow: "hidden" }}>
+      <Typography variant="caption" sx={{ backgroundColor: "#EFFCFF", color: "#565656", padding: "4px" }}>
         {props.label}
       </Typography>
+      <svg width="100%" height="1" viewBox="0 0 100% 1" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", top: "50%" }}>
+        <line x1="4.37114e-08" y1="0.5" x2="100%" y2="0.500094" stroke="#898989" stroke-dasharray="5 5"/>
+      </svg>
     </Box>
   ),
   label: (props: any) => (
@@ -105,7 +155,7 @@ const LabelTypes = {
 
 const FieldSelector = ({ type, props }: { type: any, props: any }) => {
   const FieldGotten = FieldTypes[type as keyof typeof FieldTypes] || FieldTypes.textField;
-  if (type === "lineLabel" || type === "linebreak" || type === "label") {
+  if (type === "linebreak" || type === "label") {
     const Label = LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.label;
     return (
       <Label {...props} />
@@ -141,6 +191,7 @@ const FormBuilder = ({ /* children, */ schema, register, control, errors }: { /*
   //   // }
   // });
   // const onSubmit: SubmitHandler<{}> = (data: any) => console.log(data)
+  console.log({ errors });
   return (
     // <Form>
     // <form onSubmit={handleSubmit(onSubmit)}> 
@@ -153,7 +204,7 @@ const FormBuilder = ({ /* children, */ schema, register, control, errors }: { /*
                   ...field.properties,
                   ...field,
                   control,
-                  ...(field.type !== "lineLabel" || field.type !== "linebreak" || field.type !== "labelList") ? register(field.name) : {},
+                  ...(field.type !== "label" || field.type !== "linebreak") ? register(field.name) : {},
                   errors }}/>
                 {/* <Field
                   {...field.properties}

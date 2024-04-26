@@ -40,8 +40,8 @@ export const StyledCancelButton = styled(Button)({
   borderRadius: 8,
 });
 
-export const StyledConfirmButton = styled(Button)({
-  background: "#00B2E2",
+export const StyledConfirmButton = styled(Button)((props: any) => ({
+  backgroundColor: !props.disabled ? "#00B2E2" : "rgba(0, 0, 0, 0.12)",
   color: "white",
   fontSize: 14,
   textTransform: "none",
@@ -49,7 +49,7 @@ export const StyledConfirmButton = styled(Button)({
   width: 160,
   fontFamily: montserrat.style.fontFamily,
   borderRadius: 8,
-});
+}));
 
 export const StyledCenterBoxRow = styled(Box)({
   display: "flex",

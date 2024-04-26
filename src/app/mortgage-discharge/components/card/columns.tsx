@@ -7,10 +7,12 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { CardContext } from "../../in-process/store/ModalStore";
 import Link from '@mui/material/Link';
+import { useRouter } from "next/navigation";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const { status } = row;
   const { setModalIsOpen } = useContext(CardContext);
+  const router = useRouter();
 
   const handlerOpenModal = () => {
     setModalIsOpen(true);
@@ -29,6 +31,8 @@ const AccionesColumn = ({ row }: { row: any }) => {
           key={`drive-icon-${row.id}`}
           aria-label="DriveFileRenameOutlineIcon"
           style={{ padding: 0, color: "#00B2E2" }}
+          onClick={() => router.push(`/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&signMessageId=${row.id}`)}
+
         >
           <DriveFileRenameOutlineIcon />
         </IconButton>

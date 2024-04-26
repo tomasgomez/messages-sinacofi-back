@@ -27,6 +27,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.2",
+    "react-input-mask": "^2.0.4",
+    "react-number-format": "^5.3.4",
     "sharp": "^0.33.2",
     "winston": "^3.13.0"
   },
