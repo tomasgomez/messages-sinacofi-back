@@ -38,10 +38,24 @@ export const FilterDropdowns = (props: {
           id="destiny-select"
           value={optionSelected}
           onChange={handleChangeComplete}
+          MenuProps={{
+            // anchorOrigin: {
+            //   vertical: "bottom",
+            //   horizontal: "center",
+            // },
+            PaperProps: {
+              style: {
+                maxHeight: 150,
+                maxWidth: 262, // Ajusta este valor según tus necesidades
+              },
+            },
+          }}
         >
           {options.map((option, index) => (
             <MenuItem key={`${option.label}-${index}`} value={option.value}>
-              {option.label}
+              <div style={{ overflow: "hidden", textOverflow: "ellipsis" }}>
+                {option.label}
+              </div>
             </MenuItem>
           ))}
         </Select>

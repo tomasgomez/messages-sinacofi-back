@@ -7,10 +7,10 @@ import IconButton from "@mui/material/IconButton/IconButton";
 import Typography from "@mui/material/Typography/Typography";
 import { CloseRounded } from "@mui/icons-material";
 import { CardContext } from "@/app/mortgage-discharge/in-process/store/ModalStore";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { handleGenericChangeFilter } from "@/utils/mortgage-discharge";
 import { FilterDropdowns } from "./form-elements/date/filtersDropdowns";
-import { combineArrays } from "@/utils/functions";
+import { ObjectsAreEquals, combineArrays } from "@/utils/functions";
 import {
   optionsDestination,
   optionsRegion,
@@ -28,39 +28,56 @@ export const FilterSelector = (props: { onClose: Function }) => {
     props.onClose(false);
   };
 
-  const handleAuxFilter = (label: string, value: string) => {
+  const handleAuxFilter = (label: string, value: any) => {
     handleGenericChangeFilter(label, value, setAuxFilters);
   };
 
   const handleClear = () => {
-    setAuxFilters(auxFiltersConstant);
-    // clears the filter, but the initial data has the value "all" in the dropdowns 
-    // so change "all" to "" to clear the state
-    auxFiltersConstant.forEach((elem) => {
-      if (elem.label === "institutionDestination" || elem.label === "region") {
-        handleChangeAddFilter(elem.label, "");
-      } else handleChangeAddFilter(elem.label, elem.value);
-    });
+    if (
+      !ObjectsAreEquals(
+        auxFilters.filter((elem) => elem.label !== "channel"),
+        auxFiltersConstant
+      )
+    ) {
+      setAuxFilters(auxFiltersConstant);
+
+      // clears the filter, but the initial data has the value "all" in the dropdowns
+      // so change "all" to "" to clear the state
+      // auxFiltersConstant.forEach((elem) => {
+      //   if (
+      //     !(
+      //       (elem.label === "institutionDestination" && elem.value === "all") ||
+      //       (elem.label === "region" && elem.value === "all")
+      //     )
+      //   ) {
+      //     handleChangeAddFilter(elem.label, elem.value);
+      //   }
+      // });
+      // handleClose();
+    }
   };
 
   const handleConfirm = () => {
     auxFilters.forEach((elem) => {
       // save the filter if not is a dropdown with the value all
       if (
-        !(
-          (elem.label === "institutionDestination" && elem.value === "all") ||
-          (elem.label === "region" && elem.value === "all")
-        )
+        (elem.label === "institutionDestination" && elem.value === "all") ||
+        (elem.label === "region" && elem.value === "all")
       ) {
+        handleChangeAddFilter(elem.label, "");
+      } else {
         handleChangeAddFilter(elem.label, elem.value);
       }
     });
     handleClose();
   };
 
-  const getValue = (labelKey: string) =>
-    auxFilters.find((filter) => filter.label === labelKey)?.value;
-
+  const getValue = useCallback(
+    (labelKey: string) => {
+      return auxFilters.find((filter) => filter.label === labelKey)?.value;
+    },
+    [auxFilters]
+  );
   return (
     <FilterSectorCard>
       <IconButton
@@ -73,13 +90,17 @@ export const FilterSelector = (props: { onClose: Function }) => {
         Filtros
       </Typography>
       <DatePickerInput
-        onChange={(newValue: any) => handleAuxFilter("startDate", newValue.format("YYYY/MM/DD"))}
+        onChange={(newValue: any) =>
+          handleAuxFilter("startDate", newValue.format("YYYY/MM/DD"))
+        }
         keyLabel="startDate"
         label="Fecha Inicial"
         value={getValue("startDate")}
       />
       <DatePickerInput
-        onChange={(newValue: any) => handleAuxFilter("endDate", newValue.format("YYYY/MM/DD"))}
+        onChange={(newValue: any) =>
+          handleAuxFilter("endDate", newValue.format("YYYY/MM/DD"))
+        }
         keyLabel="endDate"
         label="Fecha Final"
         value={getValue("endDate")}

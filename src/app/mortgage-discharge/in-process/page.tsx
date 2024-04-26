@@ -16,14 +16,12 @@ import { IsEmptyObject } from "@/utils/functions";
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
-  const [data, setData] = React.useState<any>(null);
+  const [data, setData] = React.useState<any>([]);
   // TODO: Recall the data with filter after filter something
   const [filters, setFilters] = React.useState<any[]>([
     { label: "channel", value: "Personas" },
   ]);
 
-  console.log("filters", filters);
-  
   const getDataList = async (filters?: any) => {
     setLoading(true);
     const result = await getForeClosureDataCards(filters);
@@ -38,13 +36,6 @@ export default function InProcessScreen() {
 
   useEffect(() => {
     getDataList(filters);
-  }, []);
-
-  // TODO: Descomentar cuando se implemente el filtro en backend
-  useEffect(() => {
-    if (filters) {
-      getDataList(filters);
-    }
   }, [filters]);
 
   return (
