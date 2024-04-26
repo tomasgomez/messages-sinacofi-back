@@ -22,9 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     switch (method) {
       case Methods.GET:
 
-        // await ruleCalls.GET(req, res);
-
-        res.status(200).json(ruleTypes);
+        await ruleCalls.GET(req, res); //TODO: Implement GET method
 
         return;
 
@@ -47,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
 }
 
 
-var ruleTypes = [{
+export var ruleTypes = [{
     "id": "1",
     "messageCode": "199",
     "description": "TEXTO LIBRE"
