@@ -12,6 +12,7 @@ import {
     createDateRangeFilter
 } from '@/backend/utils/functions';
 import { MessageStatus } from '@/utils/messagesStatus';
+import { MessageTypes } from '@/backend/entities/message/types';
 
 async function find(filter: Filter, count: string, offset: string): Promise < CUK[] | Error > {
     try {
@@ -87,8 +88,24 @@ async function find(filter: Filter, count: string, offset: string): Promise < CU
                         documents: true,
                     },
                     where: {
-                        status: MessageStatus.ENVIADO,
-                    },
+                        OR: [
+                          {
+                            messageCode: {
+                              not: MessageTypes.ALZAMIENTO_HIPOTECARIO
+                            }
+                          },
+                          {
+                            AND: [
+                              {
+                                messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO,
+                              },
+                              {
+                                status: MessageStatus.ENVIADO
+                              }
+                            ]
+                          }
+                        ]
+                      },
                     orderBy: {
                         creationDate: 'desc'
                     },
