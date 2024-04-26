@@ -11,6 +11,7 @@ import {
     handleNullValues,
     createDateRangeFilter
 } from '@/backend/utils/functions';
+import { MessageStatus } from '@/utils/messagesStatus';
 
 async function find(filter: Filter, count: string, offset: string): Promise < CUK[] | Error > {
     try {
@@ -84,7 +85,13 @@ async function find(filter: Filter, count: string, offset: string): Promise < CU
                         receivedTime: true,
                         actions: true,
                         documents: true,
-                    }
+                    },
+                    where: {
+                        status: MessageStatus.ENVIADO,
+                    },
+                    orderBy: {
+                        creationDate: 'desc'
+                    },
                 }
             }
         });
