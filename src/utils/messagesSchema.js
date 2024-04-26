@@ -868,6 +868,10 @@ export const messageSchemas = [
                   {
                      "value": "Region Metropolitana",
                      "label": "Region Metropolitana"
+                  },
+                  {
+                     "value": "Valparaíso",
+                     "label": "Valparaíso"
                   }
                ]
             }
@@ -892,6 +896,26 @@ export const messageSchemas = [
                   {
                      "value": "Ñuñoa",
                      "label": "Ñuñoa"
+                  },
+                  {
+                     "value": "Las Condes",
+                     "label": "Las Condes"
+                  },
+                  {
+                     "value": "Providencia",
+                     "label": "Providencia"
+                  },
+                  {
+                     "value": "Santiago",
+                     "label": "Santiago"
+                  },
+                  {
+                     "value": "La Reina",
+                     "label": "La Reina"
+                  },
+                  {
+                     "value": "La Florida",
+                     "label": "La Florida"
                   }
                ]
             }
