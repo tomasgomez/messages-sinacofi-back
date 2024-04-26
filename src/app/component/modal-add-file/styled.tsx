@@ -50,3 +50,33 @@ export const StyledConfirmButton = styled(Button)({
   fontFamily: montserrat.style.fontFamily,
   borderRadius: 8,
 });
+
+export const StyledCenterBoxRow = styled(Box)({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+export const StyledCenterBoxColumn = styled(StyledCenterBoxRow)({
+  flexDirection: "column",
+});
+
+export const StyledContentBody = styled(StyledCenterBoxColumn)({});
+
+export const StyledContentInput = styled(StyledCenterBoxColumn)({
+  width: 510,
+  justifyContent: "space-around",
+});
+
+export const StyledSpanClick = styled("span")({
+  color: "#00B2E2",
+  textDecoration: "underline",
+  cursor: "pointer",
+});
+
+export const StyledText = styled(Typography)({
+  fontSize: 14,
+  textAlign: "center",
+  fontStyle: "normal",
+  lineHeight: 1.42,
+});

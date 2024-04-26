@@ -9,6 +9,12 @@ import {
   StyledContainerButtons,
   StyledCancelButton,
   StyledConfirmButton,
+  StyledContentBody,
+  StyledContentInput,
+  StyledSpanClick,
+  StyledText,
+  StyledCenterBoxColumn,
+  StyledCenterBoxRow,
 } from "./styled";
 
 const AddFileModal = ({
@@ -23,8 +29,10 @@ const AddFileModal = ({
   const [file, setFile] = useState<any>(null);
 
   const handleFileChange = (event: any) => {
-    const selectedFile = event.target.files[0];
-    setFile(selectedFile);
+    if (event.target.files) {
+      const selectedFile = event.target.files[0];
+      setFile(selectedFile);
+    }
   };
 
   const handleDragOver = (event: any) => {
@@ -47,14 +55,7 @@ const AddFileModal = ({
         >
           Carga de Reparo Escritura AH
         </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
+        <StyledContentBody>
           <Box>
             <StyleddropZone onDragOver={handleDragOver} onDrop={handleDrop}>
               <StyledInput
@@ -63,22 +64,10 @@ const AddFileModal = ({
                 accept="application/pdf"
               />
               {!file && (
-                <div
-                  style={{
-                    width: 510,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                  }}
-                >
+                <StyledContentInput>
                   <FileUploadOutlinedIcon style={{ color: "#565656" }} />
-                  <Typography
-                    textAlign="center"
-                    fontSize={14}
-                    fontStyle="normal"
+                  <StyledText
                     fontWeight={500}
-                    lineHeight={1.42}
                     fontFamily={montserrat.style.fontFamily}
                     style={{
                       color: "rgba(31, 31, 32, 0.70)",
@@ -86,72 +75,40 @@ const AddFileModal = ({
                     }}
                   >
                     Arrastre su Documento de Copia Maestra o haga{" "}
-                    <span
-                      style={{
-                        color: "#00B2E2",
-                        textDecoration: "underline",
-                        cursor: "pointer",
-                      }}
-                    >
-                      click aquí
-                    </span>{" "}
-                    y selecciónalo desde su ordenador.
-                  </Typography>
-                  <Typography
+                    <StyledSpanClick>click aquí</StyledSpanClick> y selecciónalo
+                    desde su ordenador.
+                  </StyledText>
+                  <StyledText
                     width={510}
-                    textAlign="center"
-                    fontSize={14}
-                    fontStyle="normal"
-                    lineHeight={1.42}
                     style={{
                       color: "rgba(31, 31, 32, 0.40)",
                     }}
                   >
                     Documentos en Formato PDF
-                  </Typography>
-                </div>
+                  </StyledText>
+                </StyledContentInput>
               )}
               {file && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
+                <StyledCenterBoxColumn>
+                  <StyledCenterBoxRow>
                     <img
                       src="/imagenPDF.png"
                       loading="lazy"
                       width="30"
                       height="30"
                     />
-                    <Typography
-                      textAlign="center"
+                    <StyledText
                       fontSize={16}
-                      fontStyle="normal"
                       fontFamily={montserrat.style.fontFamily}
-                      lineHeight={1.42}
                       style={{
                         cursor: "pointer",
                         padding: 16,
                       }}
                     >
                       {file?.name}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    textAlign="center"
-                    fontSize={14}
-                    fontStyle="normal"
-                    lineHeight={1.42}
+                    </StyledText>
+                  </StyledCenterBoxRow>
+                  <StyledText
                     style={{
                       color: "#00B2E2",
                       textDecoration: "underline",
@@ -160,45 +117,20 @@ const AddFileModal = ({
                     }}
                   >
                     Volver a Cargar Archivo...
-                  </Typography>
-                </Box>
+                  </StyledText>
+                </StyledCenterBoxColumn>
               )}
             </StyleddropZone>
           </Box>
           <StyledContainerButtons width={"100%"}>
-            <StyledCancelButton
-              variant="outlined"
-              style={{
-                fontSize: 14,
-                textTransform: "none",
-                height: 49,
-                width: 121,
-                fontFamily: montserrat.style.fontFamily,
-                marginRight: 16,
-                borderRadius: 8,
-              }}
-              onClick={onClose}
-            >
+            <StyledCancelButton variant="outlined" onClick={onClose}>
               Cancelar
             </StyledCancelButton>
-            <StyledConfirmButton
-              variant="contained"
-              style={{
-                background: "#00B2E2",
-                color: "white",
-                fontSize: 14,
-                textTransform: "none",
-                height: 48,
-                width: 160,
-                fontFamily: montserrat.style.fontFamily,
-                borderRadius: 8,
-              }}
-              onClick={onConfirm}
-            >
+            <StyledConfirmButton variant="contained" onClick={onConfirm}>
               Adjuntar Archivo
             </StyledConfirmButton>
           </StyledContainerButtons>
-        </Box>
+        </StyledContentBody>
       </Modal>
     </Box>
   );

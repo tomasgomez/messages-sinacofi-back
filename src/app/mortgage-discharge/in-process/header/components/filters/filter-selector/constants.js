@@ -13,9 +13,9 @@ export const optionsRegion = [
 export const auxFiltersConstant = [
   { label: "startDate", value: "" },
   { label: "endDate", value: "" },
-  { label: "destinationInstitution", value: "all" },
-  { label: "buyerID", value: "" },
-  { label: "sellerID", value: "" },
-  { label: "debtorID", value: "" },
+  { label: "institutionDestination", value: "all" },
+  { label: "clientDni", value: "" },
+  { label: "sellerDnI", value: "" },
+  { label: "debtorDni", value: "" },
   { label: "region", value: "all" },
 ];

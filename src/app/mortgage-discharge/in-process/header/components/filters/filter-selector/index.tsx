@@ -37,7 +37,7 @@ export const FilterSelector = (props: { onClose: Function }) => {
     // clears the filter, but the initial data has the value "all" in the dropdowns 
     // so change "all" to "" to clear the state
     auxFiltersConstant.forEach((elem) => {
-      if (elem.label === "destinationInstitution" || elem.label === "region") {
+      if (elem.label === "institutionDestination" || elem.label === "region") {
         handleChangeAddFilter(elem.label, "");
       } else handleChangeAddFilter(elem.label, elem.value);
     });
@@ -48,7 +48,7 @@ export const FilterSelector = (props: { onClose: Function }) => {
       // save the filter if not is a dropdown with the value all
       if (
         !(
-          (elem.label === "destinationInstitution" && elem.value === "all") ||
+          (elem.label === "institutionDestination" && elem.value === "all") ||
           (elem.label === "region" && elem.value === "all")
         )
       ) {
@@ -87,27 +87,27 @@ export const FilterSelector = (props: { onClose: Function }) => {
       <FilterDropdowns
         title="Institución Destino"
         handleChange={handleAuxFilter}
-        keyLabel="destinationInstitution"
+        keyLabel="institutionDestination"
         options={optionsDestination}
-        optionSelected={getValue("destinationInstitution")}
+        optionSelected={getValue("institutionDestination")}
       />
       <RutInput
         handleChange={handleAuxFilter}
-        keyLabel="buyerID"
+        keyLabel="clientDni"
         label="RUT Comprador"
-        value={getValue("buyerID")}
+        value={getValue("clientDni")}
       />
       <RutInput
         handleChange={handleAuxFilter}
-        keyLabel="sellerID"
+        keyLabel="sellerDnI"
         label="RUT Vendedor"
-        value={getValue("sellerID")}
+        value={getValue("sellerDnI")}
       />
       <RutInput
         handleChange={handleAuxFilter}
-        keyLabel="debtorID"
+        keyLabel="debtorDnI"
         label="RUT Deudor"
-        value={getValue("debtorID")}
+        value={getValue("debtorDnI")}
       />
       <FilterDropdowns
         title="Region"

@@ -19,17 +19,24 @@ export default function InProcessScreen() {
   // TODO: Recall the data with filter after filter something
   const [filters, setFilters] = React.useState<any[]>([]);
 
-  const getDataList = async () => {
+  const getDataList = async (filters?: any) => {
     setLoading(true);
-    const result = await getForeClosureDataCards();
+    const result = await getForeClosureDataCards(filters);
     const dataFormated = formatData(result);
     setData(dataFormated);
     setLoading(false);
   };
 
   useEffect(() => {
-    getDataList();
+    getDataList(filters);
   }, []);
+
+  // TODO: Descomentar cuando se implemente el filtro en backend
+  useEffect(() => {
+    if (filters) {
+      getDataList(filters);
+    }
+  }, [filters]);
 
   return (
     <CardContextProvider filters={filters} setFilters={setFilters}>

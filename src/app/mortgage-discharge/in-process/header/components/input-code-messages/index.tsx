@@ -16,7 +16,7 @@ export const InputCode = (props: { title: string; options: string[] }) => {
       value={code}
       onChange={(event: any, newValue: string | null) => {
         setCode(newValue || "");
-        handleChangeAddFilter("CUK", newValue || "");
+        handleChangeAddFilter("cukCode", newValue || "");
       }}
       clearOnBlur={false}
       clearOnEscape={false}
