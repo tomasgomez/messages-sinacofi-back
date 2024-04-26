@@ -88,6 +88,12 @@ const CreateMessage = () => {
                   defaultValue: institutionId,
                   disabled: true
                 } 
+                : parameter.id === "cuk" 
+                ? {
+                  ...parameter,
+                  defaultValue: data[0]?.cukCode,
+                  disabled: true
+                } 
                 : parameter.id === "messageCode"
                   ? {
                     ...parameter,
@@ -165,7 +171,7 @@ const CreateMessage = () => {
                 body: (
                   <>
                     <Typography fontSize={14} fontWeight={400}>
-                      Codigo Interno Asignado al nuevo Mensaje: {response?.CUK}
+                      Codigo Interno Asignado al nuevo Mensaje: {response?.cukCode}
                     </Typography>
                   </>
                 ),
@@ -250,6 +256,15 @@ const CreateMessage = () => {
         error={error}
         onSubmit={onSubmit}
         onPrepare={onPrepare}
+        actions={{
+          submit: {
+            onClick: onSubmit,
+
+          },
+          prepared: {
+            onClick: onPrepare
+          }
+        }}
       />
     </Container>
   );

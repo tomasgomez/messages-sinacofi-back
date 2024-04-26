@@ -853,6 +853,26 @@ export const messageSchemas = [
             }
          },
          {
+            "id": "region",
+            "name": "region",
+            "type": "select",
+            "label": "CS8: Región de",
+            "description": "CS8",
+            "defaultValue": "",
+            "placeholder": "Región",
+            "properties": {
+               "name": "select",
+               "columns": "4",
+               "rows": "1",
+               "options": [
+                  {
+                     "value": "Region Metropolitana",
+                     "label": "Region Metropolitana"
+                  }
+               ]
+            }
+         },
+         {
             "id": "commune",
             "name": "commune",
             "type": "select",
@@ -872,26 +892,6 @@ export const messageSchemas = [
                   {
                      "value": "Ñuñoa",
                      "label": "Ñuñoa"
-                  }
-               ]
-            }
-         },
-         {
-            "id": "region",
-            "name": "region",
-            "type": "select",
-            "label": "CS8: Región de",
-            "description": "CS8",
-            "defaultValue": "",
-            "placeholder": "Región",
-            "properties": {
-               "name": "select",
-               "columns": "4",
-               "rows": "1",
-               "options": [
-                  {
-                     "value": "Region Metropolitana",
-                     "label": "Region Metropolitana"
                   }
                ]
             }
@@ -1014,8 +1014,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "E32",
-            "name": "E32",
+            "id": "debsName",
+            "name": "debsName",
             "type": "textField",
             "label": "E32:",
             "description": "E32",
@@ -1131,8 +1131,8 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "E32",
-            "name": "E32",
+            "id": "moreDetails",
+            "name": "moreDetails",
             "type": "textField",
             "label": "E32:",
             "description": "E32",

@@ -45,7 +45,7 @@ export const formatData = (
     const codeData = {
       cukCode: elem.cukCode,
       foreclosureDate: elem.foreclosureDate,
-      cukStatus: elem.messages[elem.messages.length - 1].status,
+      cukStatus: elem.messages.length ? elem.messages[elem.messages.length - 1].status : "01",
     };
 
     const InfoData = {
