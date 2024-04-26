@@ -2672,7 +2672,7 @@ export const auxFiltersConstant = [
   { label: "endDate", value: "" },
   { label: "institutionDestination", value: "all" },
   { label: "clientDni", value: "" },
-  { label: "sellerDnI", value: "" },
-  { label: "debtorDnI", value: "" },
+  { label: "sellerDni", value: "" },
+  { label: "debtorDni", value: "" },
   { label: "region", value: "all" },
 ];

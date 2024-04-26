@@ -120,15 +120,15 @@ export const FilterSelector = (props: { onClose: Function }) => {
       />
       <RutInput
         handleChange={handleAuxFilter}
-        keyLabel="sellerDnI"
+        keyLabel="sellerDni"
         label="RUT Vendedor"
-        value={getValue("sellerDnI")}
+        value={getValue("sellerDni")}
       />
       <RutInput
         handleChange={handleAuxFilter}
-        keyLabel="debtorDnI"
+        keyLabel="debtorDni"
         label="RUT Deudor"
-        value={getValue("debtorDnI")}
+        value={getValue("debtorDni")}
       />
       <FilterDropdowns
         title="Region"
