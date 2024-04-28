@@ -70,12 +70,6 @@ export const columnsInbox: Columns[] = [
     align: Alignment.LEFT,
     sortable: true,
   },
-  {
-    id: "stateProgress",
-    label: "Estado",
-    align: Alignment.LEFT,
-    sortable: true,
-  },
 ];
 
 export const columnsSent: Columns[] = [
@@ -101,13 +95,13 @@ export const columnsSent: Columns[] = [
     sortable: true,
   },
   {
-    id: "creationTime",
+    id: "messageCode",
     label: "MSG",
     align: Alignment.LEFT,
     sortable: true,
   },
   {
-    id: "messageCode",
+    id: "description",
     label: "Descripción",
     align: Alignment.LEFT,
     sortable: true,
@@ -133,12 +127,6 @@ export const columnsSent: Columns[] = [
   {
     id: "NSE",
     label: "NSE",
-    align: Alignment.LEFT,
-    sortable: true,
-  },
-  {
-    id: "stateProgress",
-    label: "Estado",
     align: Alignment.LEFT,
     sortable: true,
   },
@@ -167,13 +155,13 @@ export const columnsPrepared: Columns[] = [
     sortable: true,
   },
   {
-    id: "creationTime",
+    id: "messageCode",
     label: "MSG",
     align: Alignment.LEFT,
     sortable: true,
   },
   {
-    id: "messageCode",
+    id: "description",
     label: "Descripción",
     align: Alignment.LEFT,
     sortable: true,
@@ -199,12 +187,6 @@ export const columnsPrepared: Columns[] = [
   {
     id: "NSE",
     label: "NSE",
-    align: Alignment.LEFT,
-    sortable: true,
-  },
-  {
-    id: "stateProgress",
-    label: "Estado",
     align: Alignment.LEFT,
     sortable: true,
   },

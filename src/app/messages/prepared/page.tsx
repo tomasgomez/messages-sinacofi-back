@@ -59,7 +59,7 @@ export default function PreparedScreen() {
   const tableTitle = (
     <Grid container p={2}>
       <Grid pl={6} item xs={8}>
-        <Typography fontWeight={600}>Recepción</Typography>
+        <Typography fontWeight={600}>Preparado</Typography>
       </Grid>
       <Grid item xs={3} paddingLeft="45px">
         <Typography fontWeight={600}>Enviado</Typography>

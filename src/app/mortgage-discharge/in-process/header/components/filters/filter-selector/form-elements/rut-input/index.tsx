@@ -16,6 +16,7 @@ export const RutInput = (props: {
       label={label}
       value={value}
       placeholder="Ingrese RUT..."
+      defaultValue={""}
       onChange={(value: any) => {
         handleChange(keyLabel, value);
       }}

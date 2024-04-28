@@ -9,12 +9,20 @@ import { CardContext } from "../../../store/ModalStore";
 
 const options = [
   { label: "Todos", value: "all" },
-  { label: "Alzamiento Hipotecario", value: "alzamiento" },
-  { label: "Camara de Compensacion ATM", value: "camara" },
+  { label: "670", value: "670" },
+  { label: "671", value: "671" },
+  { label: "672", value: "672" },
+  { label: "673", value: "673" },
+  { label: "674", value: "674" },
+  { label: "675", value: "675" },
+  { label: "676", value: "676" },
+  { label: "677", value: "677" },
+  { label: "678", value: "678" },
+  { label: "679", value: "679" },
 ];
 
 export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
-  const { handleChangeAddFilter, filters } = React.useContext(CardContext);
+  const { handleChangeAddFilter } = React.useContext(CardContext);
 
   const { widthDropdown } = props;
   const [optionSelected, setOptionSelected] = React.useState(options[0].value);
@@ -47,6 +55,13 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
           value={optionSelected}
           label="Mensajes por Familia"
           onChange={handleChange}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: 150, // Ajusta este valor según tus necesidades
+              },
+            },
+          }}
         >
           {options.map((option, index) => (
             <MenuItem key={`${option.label}-${index}`} value={option.value}>

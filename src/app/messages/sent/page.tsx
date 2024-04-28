@@ -33,40 +33,47 @@ export default function SentScreen() {
     fetchData();
   }, []);
 
-  const actions = useMemo(() => ({
-    id: "actions",
-    label: "Acciones",
-    align: "center",
-    render: ({ row }: { row: any }) => {
-      return (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <IconButton
-            key={`expand-icon-${row.id}`}
-            aria-label="expand row"
-            style={{ padding: 0 }}
-            onClick={() => router.push(`/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&cloneId=${row.id}`)}
+  const actions = useMemo(
+    () => ({
+      id: "actions",
+      label: "Acciones",
+      align: "center",
+      render: ({ row }: { row: any }) => {
+        return (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <CopyAll />
-          </IconButton>
-          {row.status !== "05" && (
             <IconButton
               key={`expand-icon-${row.id}`}
               aria-label="expand row"
               style={{ padding: 0 }}
+              onClick={() =>
+                router.push(
+                  `/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&cloneId=${row.id}`
+                )
+              }
             >
-              <SendOutlined />
+              <CopyAll />
             </IconButton>
-          )}
-        </Box>
-      );
-    },
-  }), [router]);
+            {row.status !== "05" && (
+              <IconButton
+                key={`expand-icon-${row.id}`}
+                aria-label="expand row"
+                style={{ padding: 0 }}
+              >
+                <SendOutlined />
+              </IconButton>
+            )}
+          </Box>
+        );
+      },
+    }),
+    [router]
+  );
 
   const newColumns = useMemo(() => {
     return [...columnsSent, actions];
@@ -86,8 +93,13 @@ export default function SentScreen() {
   return (
     <Paper sx={{ width: "calc(100% - 270px)" }}>
       <Box sx={{ m: 2 }}>
-        <InboxHeader amountMessages={data.length} title={'Mensajes Enviados'} />
-        <DataTable rows={data} columns={newColumns as  Columns[]} loading={isLoading} tableTitle={tableTitle}/>
+        <InboxHeader amountMessages={data.length} title={"Mensajes Enviados"} />
+        <DataTable
+          rows={data}
+          columns={newColumns as Columns[]}
+          loading={isLoading}
+          tableTitle={tableTitle}
+        />
       </Box>
     </Paper>
   );

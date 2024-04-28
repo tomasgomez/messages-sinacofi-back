@@ -11,31 +11,31 @@ import { CardContextProvider } from "./store/ModalStore";
 import { getForeClosureDataCards } from "../api-calls";
 import Loader from "@/components/Loader";
 import { formatData } from "@/utils/mortgage-discharge";
+import { IsEmptyObject } from "@/utils/functions";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
-  const [data, setData] = React.useState<any>(null);
+  const [data, setData] = React.useState<any>([]);
   // TODO: Recall the data with filter after filter something
-  const [filters, setFilters] = React.useState<any[]>([]);
+  const [filters, setFilters] = React.useState<any[]>([
+    { label: "channel", value: "Personas" },
+  ]);
 
   const getDataList = async (filters?: any) => {
     setLoading(true);
     const result = await getForeClosureDataCards(filters);
-    const dataFormated = formatData(result);
-    setData(dataFormated);
+    if (!IsEmptyObject(result)) {
+      const dataFormated = formatData(result);
+      setData(dataFormated);
+    } else {
+      setData([]);
+    }
     setLoading(false);
   };
 
   useEffect(() => {
     getDataList(filters);
-  }, []);
-
-  // TODO: Descomentar cuando se implemente el filtro en backend
-  useEffect(() => {
-    if (filters) {
-      getDataList(filters);
-    }
   }, [filters]);
 
   return (

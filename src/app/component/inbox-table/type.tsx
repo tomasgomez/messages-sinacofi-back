@@ -23,26 +23,27 @@ export interface Message {
 }
 
 export interface SentData {
-  id: number | string;
-  OSN?: number;
+  id: string;
   TSN?: number;
+  OSN?: number;
+  NSE?: number;
   NSR?: number;
   NSQ?: number;
-  destination?: string;
+  LSN?: number;
   messageCode: string;
-  documents?: string;
+  destination?: string;
   description: string;
-  receiver?: string;
   priority?: string;
-  sender?: string;
+  status: string;
+  sender: string;
   creationDate: string;
   creationTime: string;
-  status: string;
-  stateProgress?: string;
+  receiver?: string;
   receivedDate: string;
   receivedTime: string;
-  NSE?: number;
+  documents?: any[];
   actions?: any[];
+  parameters?: any[];
 }
 
 export interface MortgageDischargeData {

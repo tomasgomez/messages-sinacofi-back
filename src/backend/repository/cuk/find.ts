@@ -111,7 +111,14 @@ async function find(filter: Filter, count: string, offset: string): Promise < CU
                                 messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO,
                               },
                               {
-                                status: MessageStatus.ENVIADO
+                                OR: [
+                                    {
+                                        status: MessageStatus.ENVIADO
+                                    },
+                                    {
+                                        status: MessageStatus.PREPARADO
+                                    }
+                                ]
                               }
                             ]
                           }
