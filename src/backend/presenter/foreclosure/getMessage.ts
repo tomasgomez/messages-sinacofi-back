@@ -1,9 +1,28 @@
-import { Filter } from '@/backend/entities/cuk/filter';
+import {
+  Filter
+} from '@/backend/entities/cuk/filter';
 
 export function validateGetMessageForeclosure(data: any): Filter | Error {
   const filter: Filter = {};
 
-  const { id, name, cukCode, description, startDate, endDate, channel, status, clientDni, clientName, institutionDestination, count, offset } = data;
+  const {
+    id,
+    name,
+    cukCode,
+    description,
+    startDate,
+    endDate,
+    channel,
+    status,
+    clientDni,
+    clientName,
+    institutionDestination,
+    count,
+    offset,
+    rutSeller,
+    region,
+    debtorRut
+  } = data;
 
   if (cukCode && typeof cukCode === 'string' && cukCode.trim() !== '') {
     // Split the string by commas and trim each code
@@ -28,7 +47,7 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   if (startDate && typeof startDate === 'string' && startDate.trim() !== '') {
     // Split the string by commas and trim each startDate
     let convertedToDate = new Date(startDate.trim());
-    
+
     if (convertedToDate.toString() !== 'Invalid Date' || convertedToDate.toString() === 'NaN') {
       filter.startDate = convertedToDate;
     }
@@ -37,7 +56,7 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   if (endDate && typeof endDate === 'string' && endDate.trim() !== '') {
     // Split the string by commas and trim each endDate
     let convertedToDate = new Date(endDate.trim());
-    
+
     if (convertedToDate.toString() !== 'Invalid Date' || convertedToDate.toString() === 'NaN') {
       filter.endDate = convertedToDate;
     }
@@ -66,6 +85,18 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   if (institutionDestination && typeof institutionDestination === 'string' && institutionDestination.trim() !== '') {
     // Split the string by commas and trim each institutionDestination
     filter.institutionDestination = institutionDestination.trim().split(',').map(institutionDestination => institutionDestination.trim());
+  }
+
+  if (rutSeller && typeof rutSeller === 'string' && rutSeller.trim() !== '') {
+    filter.rutSeller = rutSeller.trim();
+  }
+
+  if (region && typeof region === 'string' && region.trim() !== '') {
+    filter.region = region.trim();
+  }
+
+  if (debtorRut && typeof debtorRut === 'string' && debtorRut.trim() !== '') {
+    filter.debtorRut = debtorRut.trim();
   }
 
   if (count && typeof count === 'string' && count.trim() !== '') {

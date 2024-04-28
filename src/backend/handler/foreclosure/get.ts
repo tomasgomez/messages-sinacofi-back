@@ -9,7 +9,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
         let filter = validateGetMessageForeclosure(req.query);
 
         if (filter instanceof Error) {
-          res.status(400).json(filter);
+          res.status(400).json([]);
           return;
         }
 
@@ -19,6 +19,11 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
         /* If the message is not found, return a 204 error */
         if (!messageResponse) {
           res.status(204).json([]);
+          return;
+        }
+
+        if (messageResponse instanceof Error) {
+          res.status(500).json([]);
           return;
         }
 

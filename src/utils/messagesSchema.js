@@ -101,6 +101,11 @@ export const messageSchemas = [
                "columns": "9",
                "rows": "1",
                "disabled": true,
+            },
+            "validations": {
+               "maxLength": 25,
+               "minLength": 1,
+               "required": true
             }
          },
          {
@@ -725,7 +730,7 @@ export const messageSchemas = [
                "name": "number",
                "columns": "4",
                "rows": "1",
-            }
+            },
          },
          {
             "id": "gentlemenInstitution", 

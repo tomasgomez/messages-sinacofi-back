@@ -9,7 +9,12 @@ export interface Filter {
   status ? : string[];
   clientDni ? : string[];
   clientName ? : string[];
+  rutSeller ? : string[] | null;
+  region ? : string[] | null;
+  debtorRut ? : string[] | null;
+
   institutionDestination ? : string[];
+
 
   count ? : string;
   offset ? : string;

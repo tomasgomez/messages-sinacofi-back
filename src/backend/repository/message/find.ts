@@ -31,6 +31,7 @@ async function find(message: Partial < Message > , detail: boolean, count: strin
             OSN: true,
             NSE: true,
             LSN: true,
+            NSR: true,
             messageCode: true,
             description: true,
             priority: true,
@@ -41,6 +42,7 @@ async function find(message: Partial < Message > , detail: boolean, count: strin
             receiver: true,
             receivedDate: true,
             receivedTime: true,
+            cukCode: true,
             actions: true,
             documents: true,
             parameters: detail

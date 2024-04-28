@@ -59,6 +59,15 @@ async function find(filter: Filter, count: string, offset: string): Promise < CU
                 institutionDestination: {
                     in: filter.institutionDestination
                 },
+                rutSeller: {
+                    in: filter.rutSeller
+                },
+                region: {
+                    in: filter.region
+                },
+                debtorRut: {
+                    in: filter.debtorRut
+                },
                 ...dateRangeFilter
             },
             orderBy: {
@@ -74,6 +83,7 @@ async function find(filter: Filter, count: string, offset: string): Promise < CU
                         OSN: true,
                         NSE: true,
                         LSN: true,
+                        NSR: true,
                         messageCode: true,
                         description: true,
                         priority: true,
@@ -84,6 +94,7 @@ async function find(filter: Filter, count: string, offset: string): Promise < CU
                         receiver: true,
                         receivedDate: true,
                         receivedTime: true,
+                        cukCode: true,
                         actions: true,
                         documents: true,
                     },

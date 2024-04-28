@@ -11,7 +11,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         let result = validateGetMessage(req.query);
 
         if (result instanceof Error) {
-          res.status(400).json(result);
+          res.status(400).json([]);
           return;
         }
 
@@ -19,8 +19,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
 
         /* Use the PrismaAreaAdapter to get the Message from the database */
         let messageResponse = await messageUseCase.getMessage(message, count, offset)
-
-        console.log('messageResponse', messageResponse);
 
         /* If the message is not found, return a 204 error */
         if (messageResponse instanceof Error) {

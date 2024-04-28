@@ -14,6 +14,9 @@ export class CUK implements ICUK {
     clientDni?: string | null;
     clientName?: string | null;
     institutionDestination?: string | null;
+    rutSeller?: string | null;
+    region?: string | null;
+    debtorRut?: string | null;
 
     messages?: any[];
 
