@@ -11,11 +11,11 @@ COPY package*.json ./
 RUN npm install
 RUN npm install -g ts-node
 
-# Build your Prisma client during the build
-RUN npx prisma generate
-
 # Copy the rest of your app's source code from your host to your image filesystem.
 COPY . .
+
+# Build your Prisma client during the build
+RUN npx prisma generate
 
 # Build your Next.js app using the environment variables from the file
 RUN source .env 
