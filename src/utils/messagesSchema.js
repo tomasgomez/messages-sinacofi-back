@@ -3288,7 +3288,7 @@ export const messageSchemas = [
             "label": "SGU: Apoderado Nombre, RUT",
             "description": "SGI",
             "defaultValue": "-",
-            "placeholder": "SGI",
+            "placeholder": "-",
             "properties": {
                "name": "textField",
                "columns": "3",

@@ -78,26 +78,44 @@ const NumberFormatCustom = (props: any) => {
 
 const PasswordField = (props: any) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
   const handlerOpenModal = () => {
     setShowPassword((prev) => !prev);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
   };
   return (
     <Field
       {...props}
       type={showPassword ? 'text' : 'password'}
-      endAdornment={
-        <InputAdornment position="end">
-          <IconButton
-            aria-label="toggle password visibility"
-            key={`expand-icon`}
-            onClick={handlerOpenModal}
-            // onMouseDown={setShowPassword}
-            edge="end"
-          >
-            {showPassword ? <VisibilityOff /> : <Visibility />}
-          </IconButton>
-        </InputAdornment>
-      }
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      InputProps={{
+        ...props.InputProps,
+        type: showPassword ? 'text' : 'password',
+        ...(isFocused || props.value ? {
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                key={`expand-icon`}
+                onClick={handlerOpenModal}
+                onMouseDown={handlerOpenModal}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        } : {})
+      }}
     />
   )
 }
