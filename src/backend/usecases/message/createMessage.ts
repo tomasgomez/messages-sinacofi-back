@@ -9,12 +9,22 @@ import {
 } from "@/backend/utils/functions";
 import {
     getSchemaTypes
-} from '@/backend/handler/rule/get';
-import { InternalError } from "@/backend/entities/internalError";
-import { MessageStatus } from "@/backend/entities/message/status";
-import { MessageTypes } from "@/backend/entities/message/types";
-import { CUK } from "@/backend/entities/cuk/cuk";
-import { messageForeclosureUseCase } from "../messageForeclosure/usecases";
+} from "@/backend/usecases/schema/getSchemaTypes";
+import {
+    InternalError
+} from "@/backend/entities/internalError";
+import {
+    MessageStatus
+} from "@/backend/entities/message/status";
+import {
+    MessageTypes
+} from "@/backend/entities/message/types";
+import {
+    CUK
+} from "@/backend/entities/cuk/cuk";
+import {
+    messageForeclosureUseCase
+} from "../messageForeclosure/usecases";
 
 
 // Create message function
@@ -38,14 +48,14 @@ export async function createMessage(repository: MessageRepository, message: Mess
         }
 
         /* Get the schema types */
-        let schemtaTypes = await getSchemaTypes();
+        // let schemaTypes = await getSchema();
 
-        if (schemtaTypes instanceof InternalError) {
-            return schemtaTypes;
+        if (schemaTypes instanceof InternalError) {
+            return schemaTypes;
         }
 
         /* Loop through the schema types and get the description */
-        for (let schemaType of schemtaTypes) {
+        for (let schemaType of schemaTypes) {
             if (message.messageCode === schemaType.messageCode) {
                 message.description = schemaType.description;
                 break;
@@ -62,7 +72,7 @@ export async function createMessage(repository: MessageRepository, message: Mess
         let [dateString, time] = response;
 
         /* Set the received date and time */
-        if (message.status === MessageStatus.BANDEJA_DE_ENTRADA) { 
+        if (message.status === MessageStatus.BANDEJA_DE_ENTRADA) {
             message.receivedDate = dateString;
             message.receivedTime = time;
         }
@@ -85,3 +95,19 @@ export async function createMessage(repository: MessageRepository, message: Mess
         return error;
     }
 }
+var schemaTypes = [{
+        "id": "1",
+        "messageCode": "199",
+        "description": "TEXTO LIBRE"
+    },
+    {
+        "id": "2",
+        "messageCode": "136",
+        "description": "TRANSFERENCIA DE FONDOS INDIVIDUAL"
+    },
+    {
+        "id": "3",
+        "messageCode": "670",
+        "description": "ALZAMIENTO HIPOTECARIO"
+    }
+]

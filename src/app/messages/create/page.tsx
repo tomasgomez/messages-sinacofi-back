@@ -256,15 +256,15 @@ const CreateMessage = () => {
         error={error}
         onSubmit={onSubmit}
         onPrepare={onPrepare}
-        actions={{
-          submit: {
-            onClick: onSubmit,
+        // actions={{
+        //   submit: {
+        //     onClick: onSubmit,
 
-          },
-          prepared: {
-            onClick: onPrepare
-          }
-        }}
+        //   },
+        //   prepared: {
+        //     onClick: onPrepare
+        //   }
+        // }}
       />
     </Container>
   );

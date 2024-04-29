@@ -8,9 +8,6 @@ import {
 import {
   errorHandler
 } from '@/backend/utils/errorHandler';
-import {
-  ruleCalls
-} from '@/backend/handler/rule/handler';
 
 
 /*
@@ -22,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     switch (method) {
       case Methods.GET:
 
-        await ruleCalls.GET(req, res); //TODO: Implement GET method
+        res.status(200).json(ruleTypes);
 
         return;
 

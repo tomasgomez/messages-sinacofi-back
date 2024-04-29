@@ -88,15 +88,18 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   }
 
   if (rutSeller && typeof rutSeller === 'string' && rutSeller.trim() !== '') {
-    filter.rutSeller = rutSeller.trim();
+    // Split the string by commas and trim each rutSeller
+    filter.rutSeller = rutSeller.trim().split(',').map(rutSeller => rutSeller.trim());
   }
 
   if (region && typeof region === 'string' && region.trim() !== '') {
-    filter.region = region.trim();
+    // Split the string by commas and trim each region
+    filter.region = region.trim().split(',').map(region => region.trim());
   }
 
   if (debtorRut && typeof debtorRut === 'string' && debtorRut.trim() !== '') {
-    filter.debtorRut = debtorRut.trim();
+    // Split the string by commas and trim each debtorRut
+    filter.debtorRut = debtorRut.trim().split(',').map(debtorRut => debtorRut.trim());
   }
 
   if (count && typeof count === 'string' && count.trim() !== '') {

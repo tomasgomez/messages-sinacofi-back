@@ -35,6 +35,7 @@ export interface SentData {
   description: string;
   priority?: string;
   status: string;
+  stateProgress?: string;
   sender: string;
   creationDate: string;
   creationTime: string;

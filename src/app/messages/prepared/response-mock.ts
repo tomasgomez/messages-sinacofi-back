@@ -16,7 +16,7 @@ export const mockResponse: SentData[] = [
     receiver: "",
     receivedDate: "",
     receivedTime: "",
-    documents: "",
+    documents: [],
   },
   {
     id: "10124",
@@ -33,7 +33,7 @@ export const mockResponse: SentData[] = [
     receiver: "",
     receivedDate: "",
     receivedTime: "",
-    documents: "",
+    documents: [],
   },
   {
     id: "20125",
@@ -50,7 +50,7 @@ export const mockResponse: SentData[] = [
     receiver: "",
     receivedDate: "",
     receivedTime: "",
-    documents: "",
+    documents: [],
   },
   {
     id: "30126",
@@ -67,7 +67,7 @@ export const mockResponse: SentData[] = [
     receiver: "",
     receivedDate: "",
     receivedTime: "",
-    documents: "",
+    documents: [],
   },
   {
     id: "20127",
@@ -84,7 +84,7 @@ export const mockResponse: SentData[] = [
     receiver: "",
     receivedDate: "",
     receivedTime: "",
-    documents: "",
+    documents: [],
     actions: [true],
   },
   {
@@ -102,7 +102,7 @@ export const mockResponse: SentData[] = [
     receiver: "",
     receivedDate: "",
     receivedTime: "",
-    documents: "",
+    documents: [],
   },
   {
     id: "13010",
@@ -119,7 +119,7 @@ export const mockResponse: SentData[] = [
     receiver: "",
     receivedDate: "",
     receivedTime: "",
-    documents: "",
+    documents: [],
     actions: [true],
   },
 ];
