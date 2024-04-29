@@ -67,7 +67,7 @@ export const PDFTemplate = ({data}: {data: MSDetail | MSDetail[]}) => {
           size="A4" 
           style={styles.page}
         >
-          {Array.isArray(data) ? data.map(messages => renderMesage(messages)) : renderMesage(data) }
+          {data && Array.isArray(data) ? data.map(messages => renderMesage(messages)) : renderMesage(data) }
         </Page>
       </Document>
   )

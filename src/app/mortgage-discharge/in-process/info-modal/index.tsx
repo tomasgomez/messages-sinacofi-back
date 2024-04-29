@@ -13,7 +13,7 @@ import { FirstMessageSection } from "./components/first-ms";
 import { CardContext } from "../store/ModalStore";
 
 export const InfoModal = () => {
-  const [details, setDetails] = React.useState<undefined | any[]>([{}]);
+  const [details, setDetails] = React.useState<undefined | any[]>([]);
   const [pdfView, setPdfView] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const { modalIsOpen, setModalIsOpen } = useContext(CardContext);
