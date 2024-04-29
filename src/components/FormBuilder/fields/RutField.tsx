@@ -1,3 +1,4 @@
+import { FormControl } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useCallback, useMemo, useRef } from "react";
 import MaskedInput from "react-text-mask";
@@ -42,7 +43,7 @@ const RutMask = (props: any) => {
   // };
   const generateMask = (inputValue: any) => {
     // Determine the length of the entered value
-    const enteredLength = inputValue.length;
+    const enteredLength = (inputValue || "").length;
 
     // Define the rut mask pattern based on the entered length
     let rutMask = [];
@@ -116,13 +117,15 @@ const RutMask = (props: any) => {
 const RutField = (props: any) => {
   const inputRef = useRef(null);
   return (
-    <TextField
-      {...props}
-      InputProps={{
-        inputComponent: RutMask,
-        inputRef: inputRef,
-      }}
-    />
+    <FormControl fullWidth>
+      <TextField
+        {...props}
+        InputProps={{
+          inputComponent: RutMask,
+          inputRef: inputRef,
+        }}
+      />
+    </FormControl>
   );
 };
 
