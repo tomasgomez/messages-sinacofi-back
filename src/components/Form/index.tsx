@@ -22,7 +22,8 @@ const Form = ({
   loading,
   onSubmit,
   onPrepare,
-  error
+  error,
+  actions
 }: {
   title: string;
   onBack?: any;
@@ -31,6 +32,7 @@ const Form = ({
   onSubmit: any;
   onPrepare: any;
   error: any;
+  actions: any
 }) => {
   const { handleSubmit, register, control, reset, getValues, trigger, formState: { errors } } = useForm({
     defaultValues: getDefaultValues(schema),
@@ -129,10 +131,10 @@ const Form = ({
         {schema?.parameters && !loading && !error && (
           <Stack direction="row" justifyContent="space-between" gap="12px" mb="24px">
             <Stack direction="row" justifyContent="flex-start" gap="24px" mt="24px">
-              <Button variant="contained" /* onClick={onClose} */ color="primary" type="submit">
+              <Button variant="contained" /* onClick={onClose} */ color="primary" type="submit" disabled={actions.submit.disabled}>
                 Enviar
               </Button>
-              <Button variant="outlined" /* onClick={onSubmit} */ onClick={handlePrepare}>
+              <Button variant="outlined" /* onClick={onSubmit} */ onClick={handlePrepare} disabled={actions.prepared.disabled}>
                 Grabar en Preparados
               </Button>
             </Stack>

@@ -34,8 +34,11 @@ export default function InProcessScreen() {
     setLoading(false);
   };
 
+  // TODO: Descomentar cuando se implemente el filtro en backend
   useEffect(() => {
-    getDataList(filters);
+    if (filters) {
+      getDataList(filters);
+    }
   }, [filters]);
 
   return (

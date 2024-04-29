@@ -617,7 +617,6 @@ export const messageSchemas = [
             "label": "Datos de Hipoteca",
             "properties": {
                "variant": "h6",
-               "isOptional": true,
                "columns": "12",
             }
          },
@@ -806,7 +805,7 @@ export const messageSchemas = [
             "label": "SGI: RUT del Comprador o Mutuario",
             "description": "rutBuyer",
             "defaultValue": "",
-            "placeholder": "rutBuyer",
+            "placeholder": "",
             "properties": {
                "name": "rut",
                "columns": "4",
@@ -835,12 +834,14 @@ export const messageSchemas = [
             "description": "E32",
             "defaultValue": "",
             "placeholder": "",
+            "validations": {
+               "required": false,
+            },
             "properties": {
                "name": "textArea",
                "columns": "12",
                "rows": "3",
                "multiline": true,
-               "isOptional": true,
             }
          },
          {
@@ -930,10 +931,8 @@ export const messageSchemas = [
             "label": "SGJ: Para pagar parte del precio de la compraventa, si corresponde",
             "description": "Para pagar parte del precio de la compraventa, si corresponde",
             "properties": {
-               "name": "linebreak",
                "columns": "12",
                "rows": "1",
-               "isOptional": true
             }
          },
          {
@@ -1019,14 +1018,18 @@ export const messageSchemas = [
             }
          },
          {
-            "id": "CUK",
-            "name": "CUK",
+            "id": "cukCode",
+            "name": "cukCode",
             "type": "textField",
             "label": "CUK: Código de Operación Interno",
             "description": "CUK",
             "defaultValue": "",
             "placeholder": "Código de Operación Interno",
+            "validations": {
+               "required": false
+            },
             "properties": {
+               "disabled": true,
                "name": "textField",
                "columns": "12",
                "rows": "1",
@@ -1050,11 +1053,13 @@ export const messageSchemas = [
             "description": "E32",
             "defaultValue": "",
             "placeholder": "",
+            "validations": {
+               "required": true,
+            },
             "properties": {
                "name": "textField",
                "columns": "4",
                "rows": "1",
-               "isOptional": true,
             }
          },
          {
@@ -1167,12 +1172,14 @@ export const messageSchemas = [
             "description": "E32",
             "defaultValue": "",
             "placeholder": "",
+            "validations": {
+               "required": false,
+            },
             "properties": {
                "name": "textField",
                "columns": "12",
                "rows": "1",
                "disabled": true,
-               "isOptional": true,
             }
          },
          {
@@ -1198,12 +1205,14 @@ export const messageSchemas = [
             "description": "E32",
             "defaultValue": "",
             "placeholder": "",
+            "validations": {
+               "required": false,
+            },
             "properties": {
                "name": "textField",
                "columns": "12",
                "rows": "1",
                "disabled": true,
-               "isOptional": true,
             }
          },
       ],

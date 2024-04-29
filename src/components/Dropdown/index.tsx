@@ -4,9 +4,25 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress, Typography, styled } from "@mui/material";
 import { montserrat } from "@/utils/fonts";
 import Loader from "../Loader";
+
+const StyledSelect = styled(Select)({
+  "& .MuiInputBase-root.Mui-disabled": {
+    backgroundColor: "#E5E5E5",
+    color: "#000000 !important",
+  },
+  "& .MuiFormLabel-root.Mui-disabled": {
+    backgroundColor: "#DFF8FF",
+    color: "#565656 !important",
+  },
+  "& .MuiFormLabel-root": {
+    color: "#565656 !important",
+    backgroundColor: "#DFF8FF"
+  },
+});
+
 
 export default function Dropdrown(props: {
   label: string;
@@ -43,7 +59,7 @@ export default function Dropdrown(props: {
     setOptionSelected(selected);
   }, [selected]);
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleChange = (event: any) => {
     onChange(event.target.value as string);
     setOptionSelected(event.target.value as string);
   };
@@ -68,7 +84,7 @@ export default function Dropdrown(props: {
         >
           {label}
         </InputLabel>
-        <Select
+        <StyledSelect
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={optionSelected}
@@ -96,7 +112,7 @@ export default function Dropdrown(props: {
               </MenuItem>
             ))
           )}
-        </Select>
+        </StyledSelect>
       </FormControl>
     </Box>
   );
