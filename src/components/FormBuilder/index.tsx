@@ -1,10 +1,13 @@
-import { Grid, TextField, Typography, TextFieldProps, FormControl, InputAdornment, styled, Box } from "@mui/material";
+import { Grid, TextField, Typography, TextFieldProps, FormControl, InputAdornment, styled, Box, IconButton } from "@mui/material";
 import Dropdrown from "../Dropdown";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { NumericFormat, PatternFormat } from "react-number-format";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import { DatePickerInput } from "@/app/mortgage-discharge/in-process/header/components/filters/filter-selector/form-elements/date";
+import { useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import RutField from "./fields/RutField";
 
 interface IFormInputs {
   TextField: string
@@ -65,12 +68,57 @@ const NumberFormatCustom = (props: any) => {
       onValueChange={(values: any) => {
         onChange(values.value);
       }}
-      thousandSeparator
+      thousandSeparator="."
+      decimalSeparator=","
+      allowLeadingZeros
       // isNumericString
     />
   );
 }
 
+const PasswordField = (props: any) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handlerOpenModal = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+  return (
+    <Field
+      {...props}
+      type={showPassword ? 'text' : 'password'}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      InputProps={{
+        ...props.InputProps,
+        type: showPassword ? 'text' : 'password',
+        ...(isFocused || props.value ? {
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                key={`expand-icon`}
+                onClick={handlerOpenModal}
+                onMouseDown={handlerOpenModal}
+                edge="end"
+              >
+                {showPassword ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        } : {})
+      }}
+    />
+  )
+}
 const FieldTypes = {
   textField: Field,
   date: (props: any) => {
@@ -89,9 +137,18 @@ const FieldTypes = {
   },
   select: Dropdrown,
   textArea: Field,
-  // rut: (props: any) => (
+  rut: ({ ...other }: any) => (
+    <RutField
+      {...other}
+      // mask="9{1,2}.9{3}.9{3}-(9|k|K)"
+      // valueIsNumericString={true}
+      // getInputRef={inputRef}
+      // onValueChange={(values: any) => {
+      //   onChange(values.value);
+      // }}
+    />
     
-  // ),
+  ),
   phoneNumber: (props: any) => (
     <Field
       {...props}
@@ -129,6 +186,7 @@ const FieldTypes = {
       }}
     />
   ),
+  password: PasswordField
 };
 
 const LabelTypes = {
@@ -155,6 +213,9 @@ const LabelTypes = {
 
 const FieldSelector = ({ type, props }: { type: any, props: any }) => {
   const FieldGotten = FieldTypes[type as keyof typeof FieldTypes] || FieldTypes.textField;
+  if ("password" === type) {
+    console.log({ password: type });
+  }
   if (type === "linebreak" || type === "label") {
     const Label = LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.label;
     return (
@@ -167,15 +228,14 @@ const FieldSelector = ({ type, props }: { type: any, props: any }) => {
       name={props.name}
       control={props.control}
       defaultValue={props.defaultValue}
-      rules={{ required: !props.isOptional, ...props?.validations }}
+      rules={{ ...props?.validations, required: !(props.validations?.required === false) }}
       render={({ field, ...rest }) => {
-        // console.log({ field, rest }); 
         return (
           <FieldGotten
             error={!!props.errors?.[props.name]}
             {...props}
             {...field}
-            label={!props.isOptional ? `* ${props.label}` : props.label}
+            label={props.validations?.required === false ? props.label : `* ${props.label}`}
           />
         )
       }}

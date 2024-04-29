@@ -48,7 +48,9 @@ export class CUK implements ICUK {
 
     setCukCode ? (institutionCode: string) {
         // AH00010000000040
-        let code = 'AH000'+ institutionCode + Math.floor(Math.random() * 10000000000);
+        let randomNumber = Math.floor(Math.random() * 1000); // Generates a random number between 0 and 999
+        let paddedRandomNumber = randomNumber.toString().padStart(8, '0'); // Pads the number with zeros to make it 8 digits long
+        let code = 'AH000' + institutionCode + paddedRandomNumber;
         console.log('Cuk code created:', code);
         this.cukCode = code
         console.log('Cuk code in the cuk obkect:', this.cukCode);

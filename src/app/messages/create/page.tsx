@@ -61,7 +61,7 @@ const CreateMessage = () => {
   const { onOpen: onSignOpen, onClose } = useModalManager({
     component: AddFileModal
   });
-  const [messageSchema, setMessageSchema] = useState({parameters: []});
+  const [messageSchema, setMessageSchema] = useState({parameters: [], actions: { saveDraftDisabled: false, sendButtonDisabled: false }});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -80,6 +80,7 @@ const CreateMessage = () => {
           .then((schema: any) => {
             setMessageSchema({
               ...schema,
+              actions: { saveDraftDisabled: true, sendButtonDisabled: false },
               parameters: schema?.parameters.map((parameter: any) => (
                 parameter.id === "receiver" 
                 ? {
@@ -88,7 +89,7 @@ const CreateMessage = () => {
                   defaultValue: institutionId,
                   disabled: true
                 } 
-                : parameter.id === "cuk" 
+                : parameter.id === "cukCode" 
                 ? {
                   ...parameter,
                   defaultValue: data[0]?.cukCode,
@@ -120,7 +121,7 @@ const CreateMessage = () => {
                       ...(parameter.type === "select" ? { selected: initializarField(parameter.name, data[0]?.parameters) }: {}),
                       disabled: true
                     }
-              ))
+              )).filter((parameter: any) => parameter.id !== "cuk")
             });
           })
           .catch((error) => {
@@ -256,15 +257,16 @@ const CreateMessage = () => {
         error={error}
         onSubmit={onSubmit}
         onPrepare={onPrepare}
-        // actions={{
-        //   submit: {
-        //     onClick: onSubmit,
-
-        //   },
-        //   prepared: {
-        //     onClick: onPrepare
-        //   }
-        // }}
+        actions={{
+          submit: {
+            onClick: onSubmit,
+            disabled: messageSchema.actions?.sendButtonDisabled,
+          },
+          prepared: {
+            onClick: onPrepare,
+            disabled: messageSchema.actions?.saveDraftDisabled,
+          }
+        }}
       />
     </Container>
   );

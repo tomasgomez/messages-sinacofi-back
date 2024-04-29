@@ -3,18 +3,32 @@ import { Message } from '../../entities/message/message';
 export function validateUpdateMessage(data: any): Message | Error {
   let message: Message = new Message()
 
-  // Convert data to message object
-  if (!data.id || !data.messageCode || !data.priority || !data.status || !data.sender || !data.receiver) {
+ if (!data.id) {
     return new Error('Missing required fields');
   }
 
   message.id = data.id;
-  message.messageCode = data.messageCode;
-  message.priority = data.priority;
-  message.status = data.status;
-  message.sender = data.sender;
-  message.receiver = data.receiver;
-  
+
+  if (data.messageCode) {
+    message.messageCode = data.messageCode;
+  }
+
+  if (data.priority) {
+    message.priority = data.priority;
+  }
+
+  if (data.status) {
+    message.status = data.status;
+  }
+
+  if (data.sender) {
+    message.sender = data.sender;
+  }
+
+  if (data.receiver) {
+    message.receiver = data.receiver;
+  }
+
   if (data.parameters) {
     message.parameters = data.parameters;
   }
