@@ -12,14 +12,23 @@ import {
   StyledLinearProgress,
 } from "./styled";
 import { getStatusText, getIsPendingStatus } from "@/utils/mortgage-discharge";
+import { Message } from "@/app/component/inbox-table/type";
 
 // with status -> green
 // without status -> blue
 // without data -> grey
 
-const ProgressBar = ({ data = [] }: { data?: any }) => {
-  let firstElement = null;
-  let lastElement = null;
+const ProgressBar = ({
+  data = [],
+  setSelectorMessage,
+  selectedMessage,
+}: {
+  data?: Message[];
+  setSelectorMessage: Function;
+  selectedMessage: string | null;
+}) => {
+  let firstElement: Message | null = null;
+  let lastElement: Message | null = null;
   let insideElements: any = [];
 
   if (data.length > 0) {
@@ -35,15 +44,26 @@ const ProgressBar = ({ data = [] }: { data?: any }) => {
     insideElements.push(null);
   }
 
+  const handleSelectMessage = (id: string | undefined) => {
+    if (!id || selectedMessage === id) {
+      setSelectorMessage(null);
+    } else setSelectorMessage(id);
+  };
+
+  const isSelectedMessage = (id: string | undefined) =>
+    !selectedMessage || id === selectedMessage;
+
   return (
     <StyledContainerProgressBar>
       <StyledContainerTitleProgressBar>
         <StyledTitleProgressBar>Seguimiento de Mensajes</StyledTitleProgressBar>
       </StyledContainerTitleProgressBar>
       <StyledContainerBar>
-        <StyledContainerBlock>
+        <StyledContainerBlock isSelected={isSelectedMessage(firstElement?.id)}>
           {firstElement && (
-            <StyledContainerBlockStatus>
+            <StyledContainerBlockStatus
+              onClick={() => handleSelectMessage(firstElement?.id)}
+            >
               <StyledContainerIcon status={firstElement?.status}>
                 {!getIsPendingStatus(firstElement?.status) && (
                   <StyledCheckIcon
@@ -75,9 +95,14 @@ const ProgressBar = ({ data = [] }: { data?: any }) => {
           const element = elem;
           const status = element?.status;
           return (
-            <StyledContainerBlock key={`key-progress-block-${i}`}>
+            <StyledContainerBlock
+              isSelected={isSelectedMessage(element?.id)}
+              key={`key-progress-block-${i}`}
+            >
               {element && (
-                <StyledContainerBlockStatus>
+                <StyledContainerBlockStatus
+                  onClick={() => handleSelectMessage(element?.id)}
+                >
                   <StyledContainerIcon status={element?.status}>
                     {!getIsPendingStatus(status) && (
                       <StyledCheckIcon
@@ -106,9 +131,11 @@ const ProgressBar = ({ data = [] }: { data?: any }) => {
             </StyledContainerBlock>
           );
         })}
-        <StyledContainerBlock>
+        <StyledContainerBlock isSelected={isSelectedMessage(lastElement?.id)}>
           {lastElement && (
-            <StyledContainerBlockStatus>
+            <StyledContainerBlockStatus
+              onClick={() => handleSelectMessage(lastElement?.id)}
+            >
               <StyledContainerIcon status={lastElement?.status}>
                 {!getIsPendingStatus(lastElement?.status) && (
                   <StyledCheckIcon

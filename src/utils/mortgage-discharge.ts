@@ -27,6 +27,8 @@ export interface InforCardMortgageDischarge {
   operationStatus: string;
   clientName: string;
   institutionDestination: string;
+  clientDni: string;
+  cukStatus: string;
 }
 
 interface DataMortgageDischarge {
@@ -45,7 +47,9 @@ export const formatData = (
     const codeData = {
       cukCode: elem.cukCode,
       foreclosureDate: elem.foreclosureDate,
-      cukStatus: elem.messages.length ? elem.messages[elem.messages.length - 1].status : "01",
+      cukStatus: elem.messages.length
+        ? elem.messages[elem.messages.length - 1].status
+        : "01",
     };
 
     const InfoData = {
@@ -53,15 +57,25 @@ export const formatData = (
       operationStatus: elem.status,
       clientName: elem.clientName,
       institutionDestination: elem.institutionDestination,
+      clientDni: elem.clientDni,
+      cukStatus: codeData.cukStatus,
     };
 
+    // const mewMessages2: Message[] = [
+    //   ...messages,
+    //   ...messages,
+    //   ...messages,
+    //   ...messages,
+    // ];
+
     // // Mock different status to test
-    // const newMessage: Message[] = messages.map((message, i) => {
+    // const newMessage: Message[] = mewMessages2.map((message, i) => {
     //   const updatedMessage: Message = { ...message };
-    //   if (i === 3) updatedMessage.status = "05";
-    //   if (i === 2) updatedMessage.status = "06";
-    //   if (i === 1) updatedMessage.status = "05";
     //   if (i === 0) updatedMessage.status = "01";
+    //   if (i === 1) updatedMessage.status = "05";
+    //   if (i === 2) updatedMessage.status = "06";
+    //   if (i === 3) updatedMessage.status = "05";
+
     //   return updatedMessage;
     // });
 
@@ -121,7 +135,7 @@ export const getStatusText = (status?: string): string => {
   }
 };
 
-export const getIsPendingStatus = (status: string) => {
+export const getIsPendingStatus = (status: string | undefined) => {
   if (!status || status === "01") {
     return true;
   }

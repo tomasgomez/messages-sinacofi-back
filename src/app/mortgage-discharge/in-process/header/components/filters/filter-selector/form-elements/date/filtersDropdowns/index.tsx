@@ -16,8 +16,7 @@ export const FilterDropdowns = (props: {
   const { handleChange, title, options, keyLabel, optionSelected } = props;
 
   const handleChangeComplete = (event: SelectChangeEvent) => {
-    if (event.target.value === "all") handleChange(keyLabel, "");
-    else handleChange(keyLabel, event.target.value);
+    handleChange(keyLabel, event.target.value);
   };
 
   return (

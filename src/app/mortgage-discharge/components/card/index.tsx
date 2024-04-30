@@ -31,7 +31,11 @@ const CarDischarge = ({
   data: any;
   handlerTrackingModal: (state: boolean) => void;
 }) => {
+  const [selectedMessage, setSelectorMessage] = React.useState<string | null>(
+    null
+  );
   const [isOpen, setIsOpen] = React.useState(false);
+
   const {
     codeData,
     InfoData,
@@ -54,6 +58,19 @@ const CarDischarge = ({
   const handlerColapseCard = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleFilterMessages = React.useCallback(
+    (messages: Message[]): Message[] => {
+      if (selectedMessage) {
+        return messages.filter(
+          (message: Message) => message.id === selectedMessage
+        );
+      } else {
+        return messages;
+      }
+    },
+    [selectedMessage]
+  );
 
   return (
     <StyledContentCard>
@@ -87,10 +104,14 @@ const CarDischarge = ({
           </StyledCard>
         </StyledBoxShadow>
         <Collapse in={isOpen} style={{ width: "100%" }}>
-          <ProgressBar data={messages} />
+          <ProgressBar
+            data={messages}
+            setSelectorMessage={setSelectorMessage}
+            selectedMessage={selectedMessage}
+          />
           <DataTable
             maxHeight={343}
-            rows={messages}
+            rows={handleFilterMessages(messages)}
             columns={columnsCard}
             withCheckbox={false}
             defaultOrderBy="id"
