@@ -63,7 +63,6 @@ export const InfoModal = () => {
         // If the message selected is the older 670, show only that message
         if (
           oldestMessage670?.id === selectedMessage?.id
-          //  && selectedMessage?.messageCode === oldestMessage670?.messageCode
         ) {
           setDetails(messageSelectedDetails);
         } else {

@@ -14,14 +14,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import IconButton from "@mui/material/IconButton";
 import DataTable from "@/app/component/inbox-table";
 import { columnsCard } from "./columns";
-// import { mockDataAllCases as mockData } from "./mockData";
-// import { mockData } from "./mockData";
 import ProgressBar from "./progress-bar";
-// import { reverseArray } from "@/utils/functions";
 import {
   CodeCardMortgageDischarge,
   InforCardMortgageDischarge,
-} from "@/utils/mortgage-discharge";
+} from "@/types/mortgage-discharge";
 import { Message } from "@/app/component/inbox-table/type";
 
 const CarDischarge = ({
@@ -52,7 +49,6 @@ const CarDischarge = ({
 
   const handlerOpenModal = () => {
     handlerTrackingModal(true);
-    // console.log("handlerTrackingModal");
   };
 
   const handlerColapseCard = () => {

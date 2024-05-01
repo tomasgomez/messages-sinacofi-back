@@ -9,6 +9,8 @@ import {
   MortgageDischargeCard,
   DataMortgageDischarge,
   Filter,
+  SmallMsDetailInfoModal,
+  SmallMsInfoModalMortgageDischarge,
 } from "@/types/mortgage-discharge";
 
 export const formatCardData = (
@@ -78,34 +80,12 @@ export const formatCardData = (
   return formattedData;
 };
 
-export const formatModalDetailsData = (
+export const formatModalDetailsCompleted = (
   message: Message
 ): InfoModalMortgageDischarge => {
-  const {
-    NSR,
-    messageCode,
-    description,
-    LSN,
-    sender,
-    creationDate,
-    creationTime,
-    priority,
-    parameters,
-  } = message;
+  const { parameters } = message;
 
-  const dataHeader: DataHeaderInfoModal = {
-    NSR,
-    messageCode,
-    description,
-    LSN,
-    sender,
-    creationDate,
-    creationTime,
-    priority,
-    aunthetication: parameters?.find(
-      (elem: any) => elem.name === "authetication"
-    ).value as string,
-  };
+  const dataHeader = formatModalInfoHeader(message);
 
   const channelDetailsMS: ChannelDetailsMSInfoModal[] = [
     { accessor: "emissionDate", label: "Fecha de Alzamiento" },
@@ -175,6 +155,88 @@ export const formatModalDetailsData = (
   return { dataHeader, channelDetailsMS, propertyDetailsMS, bankDetailsMS };
 };
 
+export const formatModalDetailSmall = (
+  message: Message
+): SmallMsInfoModalMortgageDischarge => {
+  const { messageCode, creationDate, parameters } = message;
+
+  const dataHeader = formatModalInfoHeader(message);
+
+  // Get all data necessary of the parameters
+  const auxiliarSmallMsDetail: SmallMsDetailInfoModal[] = [
+    { accessor: "observations", label: "Observaciones" },
+    { accessor: "sign", label: "Firma Electrónica Receptor" },
+    {
+      accessor: "requiresPrepaidSettlement",
+      label: "Requiere Liquidación de Pre Pago",
+    },
+    {
+      accessor: "debsName",
+      label: "Apoderado Nombre",
+    },
+    {
+      accessor: "debtorRut",
+      label: "RUT",
+    },
+  ];
+
+  parameters?.forEach((parameter) => {
+    const dataIndex = auxiliarSmallMsDetail.findIndex(
+      (detail) => detail.accessor === parameter.name
+    );
+    if (dataIndex !== -1) {
+      auxiliarSmallMsDetail[dataIndex].value = parameter.value;
+    }
+  });
+
+  // Modify the array to the necessary format data
+  const smallMsDetail: SmallMsDetailInfoModal[] = [
+    { accessor: "", label: checkMessageDate(messageCode), value: creationDate },
+    auxiliarSmallMsDetail[2],
+    auxiliarSmallMsDetail[1],
+    {
+      accessor: "",
+      label: "Apoderado Nombre, RUT",
+      value: `${auxiliarSmallMsDetail[3]?.value || "N/A"} ${
+        auxiliarSmallMsDetail[4].value || "N/A"
+      }`,
+    },
+    auxiliarSmallMsDetail[0],
+  ];
+
+  return { dataHeader, smallMsDetail };
+};
+
+const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
+  const {
+    NSR,
+    messageCode,
+    description,
+    LSN,
+    sender,
+    creationDate,
+    creationTime,
+    priority,
+    parameters,
+  } = message;
+
+  const dataHeader: DataHeaderInfoModal = {
+    NSR,
+    messageCode,
+    description,
+    LSN,
+    sender,
+    creationDate,
+    creationTime,
+    priority,
+    aunthetication: parameters?.find(
+      (elem: any) => elem.name === "authetication"
+    ).value as string,
+  };
+
+  return dataHeader;
+};
+
 export const handleGenericChangeFilter = (
   label: string,
   value: string | null | undefined,
@@ -197,30 +259,6 @@ export const handleGenericChangeFilter = (
 
     return [...prevFilters, { label, value }];
   });
-};
-
-export const getStatusText = (status?: string): string => {
-  switch (status) {
-    // Recibido
-    case "06":
-      return "Recibido";
-    // Enviado
-    case "05":
-      return "Enviado";
-    // Pendiente de Firma
-    case "01":
-      return "Pendiente de Firma";
-    // Default
-    default:
-      return "Pendiente de Envio";
-  }
-};
-
-export const getIsPendingStatus = (status: string | undefined) => {
-  if (!status || status === "01") {
-    return true;
-  }
-  return false;
 };
 
 export function getExtremeDateObjects(objects: any[]) {
@@ -252,3 +290,75 @@ export function getExtremeDateObjects(objects: any[]) {
     oldest: oldestObject,
   };
 }
+
+export const getStatusText = (status?: string): string => {
+  switch (status) {
+    // Recibido
+    case "06":
+      return "Recibido";
+    // Enviado
+    case "05":
+      return "Enviado";
+    // Pendiente de Firma
+    case "01":
+      return "Pendiente de Firma";
+    // Default
+    default:
+      return "Pendiente de Envio";
+  }
+};
+
+export const getIsPendingStatus = (status: string | undefined) => {
+  if (!status || status === "01") {
+    return true;
+  }
+  return false;
+};
+
+const checkMessageDate = (messageCode: string) => {
+  switch (messageCode) {
+    // "Alzamiento Hipotecario"
+    case "670":
+      return "Fecha de Alzamiento";
+
+    // Aceptación AH
+    case "671":
+      return "Fecha de Aceptación";
+
+    // Rechazo AH
+    case "672":
+      return "Fecha de Rechazo";
+
+    // Aviso Cliente en Normalización
+    case "673":
+      return "Fecha de Normalización";
+
+    // Solicitud Liquidación Prepago
+    case "674":
+      return "Fecha de Solicitud de Liquidación Prepago";
+
+    // Liquidación Prepago
+    case "675":
+      return "Fecha de Liquidación Prepago";
+
+    // Datos para el Pago AH
+    case "676":
+      return "Fecha de Datos para el Pago";
+
+    // Aviso de Pago
+    case "677":
+      return "Fecha de Aviso de Pago";
+
+    // Rechazo de Pago
+    case "678":
+      return "Fecha de Rechazo de Pago";
+
+    // Aceptación de Pago
+    case "679":
+      return "Fecha de Aceptación de Pago";
+
+    // Otro caso
+    default:
+      return "";
+  }
+};

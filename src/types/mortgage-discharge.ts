@@ -100,6 +100,22 @@ export interface InfoModalMortgageDischarge {
   bankDetailsMS: BankDetailsMSInfoModal;
 }
 
+export interface SmallMsDetailInfoModal extends ObjectInfoModal {
+  accessor:
+    | "creationDate"
+    | "observations"
+    | "sign"
+    | "debsName"
+    | "debtorRut"
+    | "requiresPrepaidSettlement"
+    | "";
+}
+
+export interface SmallMsInfoModalMortgageDischarge {
+  smallMsDetail: SmallMsDetailInfoModal[];
+  dataHeader: DataHeaderInfoModal;
+}
+
 export interface Filter {
   label: string;
   value: string | null | undefined;

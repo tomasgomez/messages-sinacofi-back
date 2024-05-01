@@ -10,17 +10,10 @@ import Typography from "@mui/material/Typography/Typography";
 import Stack from "@mui/material/Stack/Stack";
 import { montserrat } from "@/utils/fonts";
 
-// import {
-//   dataMS670,
-//   detailsMS670Canal,
-//   detailsMS670Inmueble,
-// } from "../constants";
-
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { detailsMS } from "../../types";
 import { IconButton } from "@mui/material";
-import { formatModalDetailsData } from "@/utils/mortgage-discharge";
+import { formatModalDetailsCompleted } from "@/utils/mortgage-discharge";
 import {
   ChannelDetailsMSInfoModal,
   PropertyDetailsMSInfoModal,
@@ -37,7 +30,7 @@ export function FirstMessageSection({
   const [showContent, setShowContent] = React.useState(false);
 
   const { dataHeader, channelDetailsMS, propertyDetailsMS, bankDetailsMS } =
-    formatModalDetailsData(dataMessage);
+  formatModalDetailsCompleted(dataMessage);
 
   const handleShowContent = () => {
     setShowContent(!showContent);

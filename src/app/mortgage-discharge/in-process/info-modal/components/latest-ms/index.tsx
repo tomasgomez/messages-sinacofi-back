@@ -7,19 +7,21 @@ import Grid from "@mui/material/Grid/Grid";
 import Typography from "@mui/material/Typography/Typography";
 import Stack from "@mui/material/Stack/Stack";
 import { montserrat } from "@/utils/fonts";
-import { detailsMS } from "../../types";
-import { data, details } from "../constants";
+import { formatModalDetailSmall } from "@/utils/mortgage-discharge";
+import { SmallMsDetailInfoModal } from "@/types/mortgage-discharge";
 
 export function LatestMessageSection({
   dataMessage = [],
 }: {
   dataMessage: any;
 }) {
+  const { dataHeader, smallMsDetail } = formatModalDetailSmall(dataMessage);
+
   return (
     <Box mb={0.75} pb={2}>
       <Grid>
         <Grid item xs={8}>
-          <StyledModalItem noWrap>LSN 15050</StyledModalItem>
+          <StyledModalItem noWrap>LSN {dataHeader?.LSN}</StyledModalItem>
           <Typography
             variant="h6"
             fontWeight={700}
@@ -27,7 +29,8 @@ export function LatestMessageSection({
             mb={3}
             fontSize={16}
           >
-            MS 671 - Aceptación Alzamiento Hipotecario
+            {`MS ${dataHeader?.messageCode || "-"} -
+              ${dataHeader?.description || "N/A"}`}
           </Typography>
         </Grid>
       </Grid>
@@ -37,27 +40,37 @@ export function LatestMessageSection({
           <Grid container spacing={1}>
             <Grid item xs={2}>
               <Typography fontSize={"12px"}>LSN</Typography>
-              <StyledModalItem noWrap>{data.TSN}</StyledModalItem>
+              <StyledModalItem noWrap>{dataHeader?.LSN || "-"}</StyledModalItem>
             </Grid>
             <Grid item xs={2}>
               <Typography fontSize={"12px"}>Institución Destino</Typography>
-              <StyledModalItem noWrap>{data.sender}</StyledModalItem>
+              <StyledModalItem noWrap>
+                {dataHeader?.sender || "-"}
+              </StyledModalItem>
             </Grid>
             <Grid item xs={2}>
               <Typography fontSize={"12px"}>Fecha</Typography>
-              <StyledModalItem noWrap>{data.creationDate}</StyledModalItem>
+              <StyledModalItem noWrap>
+                {dataHeader?.creationDate || "-"}
+              </StyledModalItem>
             </Grid>
             <Grid item xs={2}>
               <Typography fontSize={"12px"}>Hora</Typography>
-              <StyledModalItem noWrap>{data.creationTime}</StyledModalItem>
+              <StyledModalItem noWrap>
+                {dataHeader?.creationTime || "-"}
+              </StyledModalItem>
             </Grid>
             <Grid item xs={2}>
               <Typography fontSize={"12px"}>Prioridad</Typography>
-              <StyledModalItem noWrap>{data.priority}</StyledModalItem>
+              <StyledModalItem noWrap>
+                {dataHeader?.priority || "-"}
+              </StyledModalItem>
             </Grid>
             <Grid item xs={2}>
               <Typography fontSize={"12px"}>Autenticación</Typography>
-              <StyledModalItem noWrap>No</StyledModalItem>
+              <StyledModalItem noWrap>
+                {dataHeader?.aunthetication || "-"}
+              </StyledModalItem>
             </Grid>
           </Grid>
         </Box>
@@ -66,7 +79,7 @@ export function LatestMessageSection({
             <StyledMoalSection variant="h6">
               Contenido del Mensaje
             </StyledMoalSection>
-            {details?.map((field: detailsMS) => {
+            {smallMsDetail?.map((field: SmallMsDetailInfoModal) => {
               return (
                 <Stack
                   display="flex"
