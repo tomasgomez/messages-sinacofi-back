@@ -10,13 +10,14 @@ import { InfoModal } from "./info-modal";
 import { CardContextProvider } from "./store/ModalStore";
 import { getForeClosureDataCards } from "../api-calls";
 import Loader from "@/components/Loader";
-import { formatData } from "@/utils/mortgage-discharge";
+import { formatCardData } from "@/utils/mortgage-discharge";
 import { IsEmptyObject } from "@/utils/functions";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>([]);
+
   // TODO: Recall the data with filter after filter something
   const [filters, setFilters] = React.useState<any[]>([
     { label: "channel", value: "Personas" },
@@ -26,7 +27,7 @@ export default function InProcessScreen() {
     setLoading(true);
     const result = await getForeClosureDataCards(filters);
     if (!IsEmptyObject(result)) {
-      const dataFormated = formatData(result);
+      const dataFormated = formatCardData(result);
       setData(dataFormated);
     } else {
       setData([]);

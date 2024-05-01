@@ -4,17 +4,18 @@ import { Columns, Alignment } from "@/app/component/inbox-table/type";
 import React, { useContext } from "react";
 import { IconButton, Box } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { CardContext } from "../../in-process/store/ModalStore";
-import Link from '@mui/material/Link';
+import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const { status } = row;
-  const { setModalIsOpen } = useContext(CardContext);
+  const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
   const router = useRouter();
 
-  const handlerOpenModal = () => {
+  const handlerOpenModal = (row: any) => {
+    setSelectedMessage(row);
     setModalIsOpen(true);
   };
 
@@ -31,8 +32,11 @@ const AccionesColumn = ({ row }: { row: any }) => {
           key={`drive-icon-${row.id}`}
           aria-label="DriveFileRenameOutlineIcon"
           style={{ padding: 0, color: "#00B2E2" }}
-          onClick={() => router.push(`/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&signMessageId=${row.id}`)}
-
+          onClick={() =>
+            router.push(
+              `/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&signMessageId=${row.id}`
+            )
+          }
         >
           <DriveFileRenameOutlineIcon />
         </IconButton>
@@ -43,9 +47,9 @@ const AccionesColumn = ({ row }: { row: any }) => {
           key={`detail-icon-${row.id}`}
           aria-label="DetailOutlineIcon"
           style={{ padding: 0, color: "#565656" }}
-          onClick={handlerOpenModal}
+          onClick={() => handlerOpenModal(row)}
         >
-          <ErrorOutlineIcon />
+          <InfoOutlinedIcon />
         </IconButton>
       )}
       {/* TODO ADD Sent Icon */}

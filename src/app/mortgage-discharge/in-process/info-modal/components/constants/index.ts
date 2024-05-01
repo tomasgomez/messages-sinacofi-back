@@ -18,6 +18,7 @@ export const data = {
 
 export const dataMS670 = {
     NSR: '43007',
+    LSN: '3007',
     sender: '0001 - BANCO DE CHILE',
     creationDate: '19/01/2024', 
     creationTime: '11:00:00',

@@ -17,6 +17,7 @@ export interface Message {
   receiver?: string;
   receivedDate: string;
   receivedTime: string;
+  cukCode?: string;
   documents?: any[];
   actions?: any[];
   parameters?: any[];
