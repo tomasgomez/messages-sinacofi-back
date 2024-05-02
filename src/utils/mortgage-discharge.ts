@@ -12,13 +12,16 @@ import {
   SmallMsDetailInfoModal,
   SmallMsInfoModalMortgageDischarge,
 } from "@/types/mortgage-discharge";
+import { sortMessagesOldToNew } from "./messages";
 
 export const formatCardData = (
   data: MortgageDischargeCard[]
 ): DataMortgageDischarge[] => {
   const formattedData = data.map((elem) => {
-    let { messages } = elem;
+    let { messages: unSortedMessages } = elem;
 
+    const messages = sortMessagesOldToNew(unSortedMessages);
+    
     // To Mock Data
 
     // const mewMessages2: Message[] = [
@@ -61,11 +64,9 @@ export const formatCardData = (
     // });
 
     // messages = newMessages;
-
     const ListMessages670 = messages.filter(
       (message) => message?.messageCode === "670"
     );
-
     // The order of the messages is oldest to newest, (1,2,3,4) with respect to creation identifiers
     const mostRecent670 = ListMessages670[ListMessages670.length - 1];
 
