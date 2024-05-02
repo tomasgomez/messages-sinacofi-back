@@ -7,16 +7,23 @@ import PrintOutlinedIcon from "@mui/icons-material/PrintOutlined";
 import Loader from "@/components/Loader";
 import { PDFViewer } from "@react-pdf/renderer";
 import { PDFTemplate } from "@/app/component/PDFTemplate";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { LatestMessageSection } from "./components/latest-ms";
 import { FirstMessageSection } from "./components/first-ms";
 import { CardContext } from "../store/ModalStore";
+import { Message } from "@/app/component/inbox-table/type";
+import { getExtremeDateObjects } from "@/utils/mortgage-discharge";
 
 export const InfoModal = () => {
-  const [details, setDetails] = React.useState<undefined | any[]>([{}]);
+  const [details, setDetails] = React.useState<undefined | any[]>([]);
   const [pdfView, setPdfView] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const { modalIsOpen, setModalIsOpen } = useContext(CardContext);
+  const [showOnlyOneMessage, setShowOnlyOneMessage] =
+    React.useState<boolean>(true);
+
+  const { modalIsOpen, setModalIsOpen, selectedMessage } =
+    useContext(CardContext);
+
   const handleClose = () => {
     setModalIsOpen(false);
   };
@@ -24,6 +31,63 @@ export const InfoModal = () => {
   const handlePrint = () => {
     setPdfView(true);
   };
+
+  const fetchData = async () => {
+    try {
+      if (modalIsOpen && selectedMessage) {
+        setIsLoading(true);
+
+        // Get the cuck and save only the messages
+        const extraMessages = (
+          await fetch(
+            `/api/message/foreclosure?cukCode=${selectedMessage?.cukCode}`
+          ).then((res) => res.json())
+        )[0].messages;
+
+        // If we have to do a Dropdown, we can save all messages
+        // in a state and with the dropdown select the message
+
+        // Get all messages 670
+        const listOftheMessages670 = extraMessages.filter(
+          (message: Message) => message.messageCode === "670"
+        );
+
+        // Get the oldest and the most recent message 670
+        const { oldest: oldestMessage670, latest: mostRecentMessage670 } =
+          getExtremeDateObjects(listOftheMessages670);
+
+        const messageSelectedDetails = await fetch(
+          `/api/message/detail?id=${selectedMessage?.id}`
+        ).then((res) => res.json());
+
+        // If the message selected is the older 670, show only that message
+        if (
+          oldestMessage670?.id === selectedMessage?.id
+        ) {
+          setDetails(messageSelectedDetails);
+        } else {
+          setDetails([
+            ...messageSelectedDetails,
+            ...(await fetch(
+              `/api/message/detail?id=${mostRecentMessage670?.id}`
+            ).then((res) => res.json())),
+          ]);
+
+          // set the state to show 2 details in the modal
+          setShowOnlyOneMessage(false);
+        }
+
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Error al solicitar detalle del mensajes", error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [modalIsOpen]);
 
   return (
     <Modal
@@ -72,11 +136,16 @@ export const InfoModal = () => {
                 Imprimir
               </Button>
             </Grid>
-            <Box borderBottom="1px dashed #898989">
-              <LatestMessageSection />
-            </Box>
+            {!showOnlyOneMessage && (
+              <Box borderBottom="1px dashed #898989">
+                <LatestMessageSection dataMessage={details[1]} />
+              </Box>
+            )}
             <Box>
-              <FirstMessageSection />
+              <FirstMessageSection
+                showOnlyOneMessage={showOnlyOneMessage}
+                dataMessage={details[0]}
+              />
             </Box>
             <Box display={"flex"} justifyContent={"flex-end"} mt={3}>
               <Button

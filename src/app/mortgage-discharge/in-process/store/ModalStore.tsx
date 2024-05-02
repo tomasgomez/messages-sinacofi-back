@@ -1,11 +1,14 @@
 import { handleGenericChangeFilter } from "@/utils/mortgage-discharge";
 import React, { createContext, useCallback, useState } from "react";
+import { Message } from "@/app/component/inbox-table/type";
 
 type initialCardContextStateType = {
   modalIsOpen: boolean;
   setModalIsOpen: Function;
   filters: any[];
   handleChangeAddFilter: Function;
+  selectedMessage: Message | null;
+  setSelectedMessage: Function;
 };
 
 const initialCardContextState: initialCardContextStateType = {
@@ -13,6 +16,8 @@ const initialCardContextState: initialCardContextStateType = {
   setModalIsOpen: () => {},
   filters: [{ label: "channel", value: "Personas" }],
   handleChangeAddFilter: () => {},
+  selectedMessage: null,
+  setSelectedMessage: () => {},
 };
 
 export const CardContext = createContext(initialCardContextState);
@@ -27,6 +32,7 @@ export const CardContextProvider = ({
   children: any;
 }) => {
   const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
   const handleChangeAddFilter = useCallback(
     (label: string, value: string | null | undefined) => {
@@ -36,8 +42,22 @@ export const CardContextProvider = ({
   );
 
   const contextValue = React.useMemo(
-    () => ({ modalIsOpen, setModalIsOpen, filters, handleChangeAddFilter }),
-    [modalIsOpen, setModalIsOpen, filters, handleChangeAddFilter]
+    () => ({
+      modalIsOpen,
+      setModalIsOpen,
+      filters,
+      handleChangeAddFilter,
+      selectedMessage,
+      setSelectedMessage,
+    }),
+    [
+      modalIsOpen,
+      setModalIsOpen,
+      filters,
+      handleChangeAddFilter,
+      selectedMessage,
+      setSelectedMessage,
+    ]
   );
 
   return (

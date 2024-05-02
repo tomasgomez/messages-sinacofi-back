@@ -6,7 +6,6 @@ import {
   StyledTypographyText,
   StyledTypographyData,
 } from "./styled";
-import StatusChip from "./statusChip";
 
 const InfoColumn = ({ data }: { data: any }) => {
   const {
@@ -14,12 +13,25 @@ const InfoColumn = ({ data }: { data: any }) => {
     operationStatus,
     clientName,
     institutionDestination,
+    clientDni,
+    cukStatus,
   }: {
     channel: string;
     operationStatus: string;
     clientName: string;
     institutionDestination: string;
+    clientDni: string;
+    cukStatus: string;
   } = data;
+
+  const getInstitutionText = (cukStatus: string) => {
+    switch (cukStatus) {
+      case "06":
+        return "Institución Origen";
+      default:
+        return "Institución Destino";
+    }
+  };
 
   return (
     <StyleInfoColumn>
@@ -28,18 +40,22 @@ const InfoColumn = ({ data }: { data: any }) => {
         <StyledTypographyData>{channel}</StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box width={180}>
+      <Box width={170}>
         <StyledTypographyText>Estado Operación</StyledTypographyText>
         <StyledTypographyData>{operationStatus}</StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box width={160}>
+      <Box width={170}>
         <StyledTypographyText>Comprador</StyledTypographyText>
-        <StyledTypographyData>{clientName}</StyledTypographyData>
+        <StyledTypographyData>
+          {clientDni}/{clientName}
+        </StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
       <Box width={110}>
-        <StyledTypographyText>Institución Origen</StyledTypographyText>
+        <StyledTypographyText>
+          {getInstitutionText(cukStatus)}
+        </StyledTypographyText>
         <StyledTypographyData>{institutionDestination}</StyledTypographyData>
       </Box>
     </StyleInfoColumn>

@@ -1,51 +1,68 @@
 import { Message } from "@/app/component/inbox-table/type";
 import { Dispatch, SetStateAction } from "react";
+import {
+  BankDetailsMSInfoModal,
+  ChannelDetailsMSInfoModal,
+  DataHeaderInfoModal,
+  PropertyDetailsMSInfoModal,
+  InfoModalMortgageDischarge,
+  MortgageDischargeCard,
+  DataMortgageDischarge,
+  Filter,
+  SmallMsDetailInfoModal,
+  SmallMsInfoModalMortgageDischarge,
+} from "@/types/mortgage-discharge";
 
-interface MortgageDischargeCard {
-  id: string;
-  name: string;
-  description: string;
-  creationDate: string;
-  cukCode: string;
-  foreclosureDate: string;
-  channel: string;
-  status: string;
-  clientDni: string;
-  clientName: string;
-  institutionDestination: string;
-  messages: Message[];
-}
-
-export interface CodeCardMortgageDischarge {
-  cukCode: string;
-  foreclosureDate: string;
-  cukStatus: string;
-}
-
-export interface InforCardMortgageDischarge {
-  channel: string;
-  operationStatus: string;
-  clientName: string;
-  institutionDestination: string;
-}
-
-interface DataMortgageDischarge {
-  codeData: CodeCardMortgageDischarge;
-  InfoData: InforCardMortgageDischarge;
-  messages: Message[];
-  buttonDisabled: boolean;
-}
-
-export const formatData = (
+export const formatCardData = (
   data: MortgageDischargeCard[]
 ): DataMortgageDischarge[] => {
   const formattedData = data.map((elem) => {
-    const { messages } = elem;
+    let { messages } = elem;
+
+    // To Mock Data
+
+    // const mewMessages2: Message[] = [
+    //   ...messages,
+    //   ...messages,
+    //   ...messages,
+    //   ...messages,
+    // ];
+
+    // // Mock different status to test
+    // const newMessages: Message[] = mewMessages2.map((message, i) => {
+    //   const updatedMessage: Message = { ...message };
+
+    //   if (i === 0) updatedMessage.messageCode = "670";
+    //   if (i === 1) updatedMessage.messageCode = "671";
+    //   if (i === 2) updatedMessage.messageCode = "670";
+    //   if (i === 3) updatedMessage.messageCode = "672";
+
+    //   if (i === 0) updatedMessage.status = "05";
+    //   if (i === 1) updatedMessage.status = "05";
+    //   if (i === 2) updatedMessage.status = "06";
+    //   if (i === 3) updatedMessage.status = "05";
+
+    //   if (i === 0) updatedMessage.creationDate = "3/20/2024";
+    //   if (i === 1) updatedMessage.creationDate = "4/7/2024";
+    //   if (i === 2) updatedMessage.creationDate = "5/5/2024";
+    //   if (i === 3) updatedMessage.creationDate = "4/5/2024";
+
+    //   return updatedMessage;
+    // });
+
+    // messages = newMessages;
+
+    const ListMessages670 = messages.filter(
+      (message) => message?.messageCode === "670"
+    );
+    const { latest: mostRecent670 } = getExtremeDateObjects(ListMessages670);
+
+    const buttonDisabled = mostRecent670?.status === "01";
 
     const codeData = {
       cukCode: elem.cukCode,
       foreclosureDate: elem.foreclosureDate,
-      cukStatus: elem.messages.length ? elem.messages[elem.messages.length - 1].status : "01",
+      cukStatus: messages.length ? messages[messages.length - 1].status : "01",
     };
 
     const InfoData = {
@@ -53,21 +70,9 @@ export const formatData = (
       operationStatus: elem.status,
       clientName: elem.clientName,
       institutionDestination: elem.institutionDestination,
+      clientDni: elem.clientDni,
+      cukStatus: codeData.cukStatus,
     };
-
-    // // Mock different status to test
-    // const newMessage: Message[] = messages.map((message, i) => {
-    //   const updatedMessage: Message = { ...message };
-    //   if (i === 3) updatedMessage.status = "05";
-    //   if (i === 2) updatedMessage.status = "06";
-    //   if (i === 1) updatedMessage.status = "05";
-    //   if (i === 0) updatedMessage.status = "01";
-    //   return updatedMessage;
-    // });
-
-    const buttonDisabled =
-      messages.find((message) => message?.messageCode === "670")?.status ===
-      "01";
 
     return { codeData, InfoData, messages, buttonDisabled };
   });
@@ -75,10 +80,162 @@ export const formatData = (
   return formattedData;
 };
 
-interface Filter {
-  label: string;
-  value: string | null | undefined;
-}
+export const formatModalDetailsCompleted = (
+  message: Message
+): InfoModalMortgageDischarge => {
+  const { parameters } = message;
+
+  const dataHeader = formatModalInfoHeader(message);
+
+  const channelDetailsMS: ChannelDetailsMSInfoModal[] = [
+    { accessor: "emissionDate", label: "Fecha de Alzamiento" },
+    { accessor: "channel", label: "Canal" },
+    { accessor: "operationType", label: "Tipo de Operacion" },
+    { accessor: "notaryRepertoire", label: "Notaria Repertorio" },
+    { accessor: "repertoireDate", label: "Fecha Repertorio" },
+    { accessor: "repertoireNumber", label: "Número Repertorio" },
+    { accessor: "gentlemenInstitution", label: "Institución" },
+    { accessor: "donDonaSociety", label: "Vendedor:" },
+    { accessor: "rutSeller", label: "RUT de Vendedor" },
+    { accessor: "buyer", label: "Comprador" },
+    { accessor: "rutBuyer", label: "RUT de Comprador" },
+  ];
+
+  const propertyDetailsMS: PropertyDetailsMSInfoModal[] = [
+    { accessor: "correspondingProperty", label: "Tipo de Inmueble" },
+    {
+      accessor: "propertyDescription",
+      label: "Descripción del Inmueble",
+    },
+    { accessor: "commune", label: "Comuna" },
+    { accessor: "region", label: "Region" },
+    { accessor: "bank", label: "Institución" },
+    { accessor: "buyer", label: "Comprador" },
+    { accessor: "mutualForUF", label: "Monto del Mutuo" },
+    { accessor: "payableWithin", label: "Plazo (años)" },
+    {
+      accessor: "complementaryMutualForUF",
+      label: "Monto del Mutuo Complementario",
+    },
+    { accessor: "cukCode", label: "Código Interno" },
+    { accessor: "debsName", label: "Deudor" },
+    { accessor: "debtorRut", label: "RUT del Deudor" },
+    { accessor: "amountUF", label: "Monto UF" },
+  ];
+
+  const bankDetailsMS: BankDetailsMSInfoModal = {
+    bank: "",
+    amountHeldByTheBank: "",
+    debsName: "",
+    debtorRut: "",
+  };
+
+  parameters?.forEach((parameter) => {
+    const channelIndex = channelDetailsMS.findIndex(
+      (detail) => detail.accessor === parameter.name
+    );
+    if (channelIndex !== -1) {
+      channelDetailsMS[channelIndex].value = parameter.value;
+    }
+    // Only is the parameters is not part of the detailsMSCanal
+    else {
+      const propertyIndex = propertyDetailsMS.findIndex(
+        (detail) => detail.accessor === parameter.name
+      );
+      if (propertyIndex !== -1) {
+        propertyDetailsMS[propertyIndex].value = parameter.value;
+      }
+      // Comparte datos con PropertyIndex por eso va en el else y no dentro de otro if
+      if (parameter.name in bankDetailsMS) {
+        (bankDetailsMS as any)[parameter.name] = parameter.value;
+      }
+    }
+  });
+
+  return { dataHeader, channelDetailsMS, propertyDetailsMS, bankDetailsMS };
+};
+
+export const formatModalDetailSmall = (
+  message: Message
+): SmallMsInfoModalMortgageDischarge => {
+  const { messageCode, creationDate, parameters } = message;
+
+  const dataHeader = formatModalInfoHeader(message);
+
+  // Get all data necessary of the parameters
+  const auxiliarSmallMsDetail: SmallMsDetailInfoModal[] = [
+    { accessor: "observations", label: "Observaciones" },
+    { accessor: "sign", label: "Firma Electrónica Receptor" },
+    {
+      accessor: "requiresPrepaidSettlement",
+      label: "Requiere Liquidación de Pre Pago",
+    },
+    {
+      accessor: "debsName",
+      label: "Apoderado Nombre",
+    },
+    {
+      accessor: "debtorRut",
+      label: "RUT",
+    },
+  ];
+
+  parameters?.forEach((parameter) => {
+    const dataIndex = auxiliarSmallMsDetail.findIndex(
+      (detail) => detail.accessor === parameter.name
+    );
+    if (dataIndex !== -1) {
+      auxiliarSmallMsDetail[dataIndex].value = parameter.value;
+    }
+  });
+
+  // Modify the array to the necessary format data
+  const smallMsDetail: SmallMsDetailInfoModal[] = [
+    { accessor: "", label: checkMessageDate(messageCode), value: creationDate },
+    auxiliarSmallMsDetail[2],
+    auxiliarSmallMsDetail[1],
+    {
+      accessor: "",
+      label: "Apoderado Nombre, RUT",
+      value: `${auxiliarSmallMsDetail[3]?.value || "N/A"} ${
+        auxiliarSmallMsDetail[4].value || "N/A"
+      }`,
+    },
+    auxiliarSmallMsDetail[0],
+  ];
+
+  return { dataHeader, smallMsDetail };
+};
+
+const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
+  const {
+    NSR,
+    messageCode,
+    description,
+    LSN,
+    sender,
+    creationDate,
+    creationTime,
+    priority,
+    parameters,
+  } = message;
+
+  const dataHeader: DataHeaderInfoModal = {
+    NSR,
+    messageCode,
+    description,
+    LSN,
+    sender,
+    creationDate,
+    creationTime,
+    priority,
+    aunthetication: parameters?.find(
+      (elem: any) => elem.name === "authetication"
+    ).value as string,
+  };
+
+  return dataHeader;
+};
 
 export const handleGenericChangeFilter = (
   label: string,
@@ -104,6 +261,36 @@ export const handleGenericChangeFilter = (
   });
 };
 
+export function getExtremeDateObjects(objects: any[]) {
+  if (objects.length === 0) {
+    return {
+      latest: null,
+      oldest: null,
+    };
+  }
+
+  let latestDate = new Date(objects[0].creationDate);
+  let oldestDate = new Date(objects[0].creationDate);
+  let latestObject = objects[0];
+  let oldestObject = objects[0];
+
+  for (let i = 1; i < objects.length; i++) {
+    const currentDate = new Date(objects[i].creationDate);
+    if (currentDate > latestDate) {
+      latestDate = currentDate;
+      latestObject = objects[i];
+    } else if (currentDate < oldestDate) {
+      oldestDate = currentDate;
+      oldestObject = objects[i];
+    }
+  }
+
+  return {
+    latest: latestObject,
+    oldest: oldestObject,
+  };
+}
+
 export const getStatusText = (status?: string): string => {
   switch (status) {
     // Recibido
@@ -121,9 +308,57 @@ export const getStatusText = (status?: string): string => {
   }
 };
 
-export const getIsPendingStatus = (status: string) => {
+export const getIsPendingStatus = (status: string | undefined) => {
   if (!status || status === "01") {
     return true;
   }
   return false;
+};
+
+const checkMessageDate = (messageCode: string) => {
+  switch (messageCode) {
+    // "Alzamiento Hipotecario"
+    case "670":
+      return "Fecha de Alzamiento";
+
+    // Aceptación AH
+    case "671":
+      return "Fecha de Aceptación";
+
+    // Rechazo AH
+    case "672":
+      return "Fecha de Rechazo";
+
+    // Aviso Cliente en Normalización
+    case "673":
+      return "Fecha de Normalización";
+
+    // Solicitud Liquidación Prepago
+    case "674":
+      return "Fecha de Solicitud de Liquidación Prepago";
+
+    // Liquidación Prepago
+    case "675":
+      return "Fecha de Liquidación Prepago";
+
+    // Datos para el Pago AH
+    case "676":
+      return "Fecha de Datos para el Pago";
+
+    // Aviso de Pago
+    case "677":
+      return "Fecha de Aviso de Pago";
+
+    // Rechazo de Pago
+    case "678":
+      return "Fecha de Rechazo de Pago";
+
+    // Aceptación de Pago
+    case "679":
+      return "Fecha de Aceptación de Pago";
+
+    // Otro caso
+    default:
+      return "";
+  }
 };

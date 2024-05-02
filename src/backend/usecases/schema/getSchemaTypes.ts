@@ -35,6 +35,7 @@ export async function getSchemaTypes(filter: Filter): Promise < MessageSchema[] 
       offset = filter.offset;
     }
 
+    /* Get Environment Variables */
     let url = getEnvVariable(envVariables.RULE_CLIENT_URL);
     if (url instanceof Error) {
       return url;
@@ -45,11 +46,35 @@ export async function getSchemaTypes(filter: Filter): Promise < MessageSchema[] 
       return path;
     }
 
+    /* If the messageCode is not empty, add it to the path */
     if (filter.messageCode !== undefined && filter.messageCode.length > 0) {
       path = `${path}?messageCode=${filter.messageCode.join(',')}`;
     }
 
     let schemas = await get(url, path, {},{})
+
+    if (schemas instanceof Error) {
+      throw schemas;
+    }
+
+    if (schemas.length === 0) {
+      throw new Error('No message found');
+    }
+
+    schemas.map((schema: MessageSchema) => {
+      if (schema.parameters === undefined) {
+        return;
+      } else if (schema.parameters.length === 0) {
+        return;
+      } else if (schema.parameters === null) {
+        return;
+      }
+
+      if (schema.parameters) {
+        schema.parameters.map((parameter: any) => {
+        });
+    }
+  });
 
     return schemas;
   } catch (error: any) {

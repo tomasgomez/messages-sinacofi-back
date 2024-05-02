@@ -168,12 +168,22 @@ export const StyledContainerBar = styled(Box)`
   overflow-x: scroll;
 `;
 
-export const StyledContainerBlock = styled(Box)`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: end;
-`;
+interface StyledStyledContainerBlockProps {
+  isSelected?: boolean;
+}
+
+export const StyledContainerBlock = styled(
+  Box
+)<StyledStyledContainerBlockProps>(
+  ({ isSelected }: StyledStyledContainerBlockProps): CSSObject => ({
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "end",
+    opacity: isSelected ? 1 : 0.33,
+    transition: "opacity 0.3s ease",
+  })
+);
 
 export const StyledContainerBlockStatus = styled(Box)`
   display: flex;
@@ -181,8 +191,8 @@ export const StyledContainerBlockStatus = styled(Box)`
   flex-direction: column;
   justify-content: center;
   margin: 4px;
+  cursor: pointer;
 `;
-
 interface StyledContainerIconProps {
   status?: string;
 }

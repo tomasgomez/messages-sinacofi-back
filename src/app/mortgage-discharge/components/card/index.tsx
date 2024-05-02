@@ -14,14 +14,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import IconButton from "@mui/material/IconButton";
 import DataTable from "@/app/component/inbox-table";
 import { columnsCard } from "./columns";
-// import { mockDataAllCases as mockData } from "./mockData";
-// import { mockData } from "./mockData";
 import ProgressBar from "./progress-bar";
-// import { reverseArray } from "@/utils/functions";
 import {
   CodeCardMortgageDischarge,
   InforCardMortgageDischarge,
-} from "@/utils/mortgage-discharge";
+} from "@/types/mortgage-discharge";
 import { Message } from "@/app/component/inbox-table/type";
 
 const CarDischarge = ({
@@ -31,7 +28,11 @@ const CarDischarge = ({
   data: any;
   handlerTrackingModal: (state: boolean) => void;
 }) => {
+  const [selectedMessage, setSelectorMessage] = React.useState<string | null>(
+    null
+  );
   const [isOpen, setIsOpen] = React.useState(false);
+
   const {
     codeData,
     InfoData,
@@ -48,12 +49,24 @@ const CarDischarge = ({
 
   const handlerOpenModal = () => {
     handlerTrackingModal(true);
-    // console.log("handlerTrackingModal");
   };
 
   const handlerColapseCard = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleFilterMessages = React.useCallback(
+    (messages: Message[]): Message[] => {
+      if (selectedMessage) {
+        return messages.filter(
+          (message: Message) => message.id === selectedMessage
+        );
+      } else {
+        return messages;
+      }
+    },
+    [selectedMessage]
+  );
 
   return (
     <StyledContentCard>
@@ -87,10 +100,14 @@ const CarDischarge = ({
           </StyledCard>
         </StyledBoxShadow>
         <Collapse in={isOpen} style={{ width: "100%" }}>
-          <ProgressBar data={messages} />
+          <ProgressBar
+            data={messages}
+            setSelectorMessage={setSelectorMessage}
+            selectedMessage={selectedMessage}
+          />
           <DataTable
             maxHeight={343}
-            rows={messages}
+            rows={handleFilterMessages(messages)}
             columns={columnsCard}
             withCheckbox={false}
             defaultOrderBy="id"
