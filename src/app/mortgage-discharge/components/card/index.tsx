@@ -20,6 +20,7 @@ import {
   InforCardMortgageDischarge,
 } from "@/types/mortgage-discharge";
 import { Message } from "@/app/component/inbox-table/type";
+import { reverseArray } from "@/utils/functions";
 
 const CarDischarge = ({
   data,
@@ -107,7 +108,7 @@ const CarDischarge = ({
           />
           <DataTable
             maxHeight={343}
-            rows={handleFilterMessages(messages)}
+            rows={handleFilterMessages(reverseArray(messages))}
             columns={columnsCard}
             withCheckbox={false}
             defaultOrderBy="id"

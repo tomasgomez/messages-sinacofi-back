@@ -26,6 +26,8 @@ export const formatCardData = (
     //   ...messages,
     //   ...messages,
     //   ...messages,
+    //   ...messages,
+    //   ...messages,
     // ];
 
     // // Mock different status to test
@@ -33,19 +35,27 @@ export const formatCardData = (
     //   const updatedMessage: Message = { ...message };
 
     //   if (i === 0) updatedMessage.messageCode = "670";
-    //   if (i === 1) updatedMessage.messageCode = "671";
+    //   if (i === 1) updatedMessage.messageCode = "672";
     //   if (i === 2) updatedMessage.messageCode = "670";
     //   if (i === 3) updatedMessage.messageCode = "672";
+    //   if (i === 4) updatedMessage.messageCode = "670";
+    //   if (i === 5) updatedMessage.messageCode = "671";
+    //   if (i === 6) updatedMessage.messageCode = "674";
 
     //   if (i === 0) updatedMessage.status = "05";
-    //   if (i === 1) updatedMessage.status = "05";
-    //   if (i === 2) updatedMessage.status = "06";
-    //   if (i === 3) updatedMessage.status = "05";
+    //   if (i === 1) updatedMessage.status = "06";
+    //   if (i === 2) updatedMessage.status = "05";
+    //   if (i === 3) updatedMessage.status = "06";
+    //   if (i === 4) updatedMessage.status = "05";
+    //   if (i === 5) updatedMessage.status = "06";
+    //   if (i === 6) updatedMessage.status = "05";
 
     //   if (i === 0) updatedMessage.creationDate = "3/20/2024";
-    //   if (i === 1) updatedMessage.creationDate = "4/7/2024";
-    //   if (i === 2) updatedMessage.creationDate = "5/5/2024";
-    //   if (i === 3) updatedMessage.creationDate = "4/5/2024";
+    //   if (i === 1) updatedMessage.creationDate = "4/1/2024";
+    //   if (i === 2) updatedMessage.creationDate = "4/5/2024";
+    //   if (i === 3) updatedMessage.creationDate = "4/15/2024";
+    //   if (i === 4) updatedMessage.creationDate = "4/16/2024";
+    //   if (i === 5) updatedMessage.creationDate = "4/17/2024";
 
     //   return updatedMessage;
     // });
@@ -55,7 +65,9 @@ export const formatCardData = (
     const ListMessages670 = messages.filter(
       (message) => message?.messageCode === "670"
     );
-    const { latest: mostRecent670 } = getExtremeDateObjects(ListMessages670);
+
+    // The order of the messages is oldest to newest, (1,2,3,4) with respect to creation identifiers
+    const mostRecent670 = ListMessages670[ListMessages670.length - 1];
 
     const buttonDisabled = mostRecent670?.status === "01";
 
@@ -261,34 +273,23 @@ export const handleGenericChangeFilter = (
   });
 };
 
-export function getExtremeDateObjects(objects: any[]) {
-  if (objects.length === 0) {
-    return {
-      latest: null,
-      oldest: null,
-    };
+export function findPreviousMessage670(
+  originalArray: Message[],
+  id: string
+): Message | null {
+  const currentIndex = originalArray.findIndex((object) => object.id === id);
+
+  if (currentIndex === -1) {
+    return null; // Retorna null si el objeto con el ID proporcionado no se encuentra
   }
 
-  let latestDate = new Date(objects[0].creationDate);
-  let oldestDate = new Date(objects[0].creationDate);
-  let latestObject = objects[0];
-  let oldestObject = objects[0];
+  let previousMessage = originalArray[currentIndex - 1];
 
-  for (let i = 1; i < objects.length; i++) {
-    const currentDate = new Date(objects[i].creationDate);
-    if (currentDate > latestDate) {
-      latestDate = currentDate;
-      latestObject = objects[i];
-    } else if (currentDate < oldestDate) {
-      oldestDate = currentDate;
-      oldestObject = objects[i];
-    }
+  while (previousMessage && previousMessage.messageCode !== "670") {
+    previousMessage = originalArray[originalArray.indexOf(previousMessage) - 1];
   }
 
-  return {
-    latest: latestObject,
-    oldest: oldestObject,
-  };
+  return previousMessage || originalArray[currentIndex]; // Retorna el mensaje previo si se encuentra, de lo contrario retorna null
 }
 
 export const getStatusText = (status?: string): string => {

@@ -12,7 +12,7 @@ import { LatestMessageSection } from "./components/latest-ms";
 import { FirstMessageSection } from "./components/first-ms";
 import { CardContext } from "../store/ModalStore";
 import { Message } from "@/app/component/inbox-table/type";
-import { getExtremeDateObjects } from "@/utils/mortgage-discharge";
+import { findPreviousMessage670 } from "@/utils/mortgage-discharge";
 
 export const InfoModal = () => {
   const [details, setDetails] = React.useState<undefined | any[]>([]);
@@ -47,29 +47,24 @@ export const InfoModal = () => {
         // If we have to do a Dropdown, we can save all messages
         // in a state and with the dropdown select the message
 
-        // Get all messages 670
-        const listOftheMessages670 = extraMessages.filter(
-          (message: Message) => message.messageCode === "670"
-        );
-
-        // Get the oldest and the most recent message 670
-        const { oldest: oldestMessage670, latest: mostRecentMessage670 } =
-          getExtremeDateObjects(listOftheMessages670);
-
         const messageSelectedDetails = await fetch(
           `/api/message/detail?id=${selectedMessage?.id}`
         ).then((res) => res.json());
 
-        // If the message selected is the older 670, show only that message
-        if (
-          oldestMessage670?.id === selectedMessage?.id
-        ) {
+        // If the message selected is the first (the oldest) 670, show only that message
+        // The order of the messages is oldest to newest, (1,2,3,4) with respect to creation identifiers
+        if (selectedMessage.id === extraMessages[0].id) {
           setDetails(messageSelectedDetails);
         } else {
+          const previousMessage670 = findPreviousMessage670(
+            extraMessages,
+            selectedMessage?.id
+          );
+
           setDetails([
             ...messageSelectedDetails,
             ...(await fetch(
-              `/api/message/detail?id=${mostRecentMessage670?.id}`
+              `/api/message/detail?id=${previousMessage670?.id}`
             ).then((res) => res.json())),
           ]);
 
