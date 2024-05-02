@@ -18,6 +18,6 @@ export class SchemaUsecase implements SchemaUsecases {
 
 }
 
-export const SchemaUseCase = new SchemaUsecase();
+export const schemaUseCase = new SchemaUsecase();
 
 
