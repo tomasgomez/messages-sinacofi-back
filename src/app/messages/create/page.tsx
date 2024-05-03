@@ -158,7 +158,7 @@ const CreateMessage = () => {
 
   const onSubmit = (data: any) => {
     const payload = getCreateMessagePayload(data, messageSchema);
-    if (signMessageId) {
+    if (true) {
       onSignOpen({
         onConfirm: (document: any) => {
           onClose?.();

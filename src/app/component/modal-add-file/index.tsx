@@ -15,6 +15,14 @@ import {
   StyledText,
   StyledCenterBoxColumn,
   StyledCenterBoxRow,
+  StyledContentHeader,
+  FileStatusStep,
+  StepStatusContainer,
+  StyledCheckIcon,
+  StyledContainerIcon,
+  FileStatusStepContainer,
+  StyledNextStep,
+  StyledUploadIcon,
 } from "./styled";
 import Image from "next/image";
 
@@ -27,12 +35,30 @@ const AddFileModal = ({
   onClose: any;
   onConfirm: any;
 }) => {
-  const [file, setFile] = useState<any>(null);
+  const [step, setStep] = useState<number>(0);
+  const [tempFile, setTempFile] = useState<any>(null);
+  const [cmFile, setCmFile] = useState<any>(null);
+  const [gpFile, setGpFile] = useState<any>(null);
+
+  console.log('# file', tempFile);
+  console.log('# cmFile', cmFile);
+  console.log('# cmFile', gpFile);
+
+  const fileOrder = [
+    {file: 'Copia Maestra', type: 'CM'},
+    {file: 'GP', type: 'GP'}
+  ]
 
   const handleFileChange = (event: any) => {
     if (event.target.files) {
       const selectedFile = event.target.files[0];
-      setFile(selectedFile);
+      if(step === 0 ){
+        setTempFile(selectedFile);
+        setCmFile(selectedFile);
+      } else {
+        setTempFile(selectedFile);
+        setGpFile(selectedFile);
+      }
     }
   };
 
@@ -43,19 +69,58 @@ const AddFileModal = ({
   const handleDrop = (event: any) => {
     event.preventDefault();
     const selectedFile = event.dataTransfer.files[0];
-    setFile(selectedFile);
+    if( step === 0 ){
+      setTempFile(selectedFile);
+      setCmFile(selectedFile);
+    } else {
+      setTempFile(selectedFile);
+      setGpFile(selectedFile);
+    }
   };
+
+  const handleNextStep = () => {
+    setStep(1)
+    setTempFile(null);
+  };
+
   return (
     <Box>
       <Modal maxWidth={698} open={open} onClose={onClose}>
+        <StyledContentHeader>
         <Typography
           fontFamily={montserrat.style.fontFamily}
           fontSize={20}
           fontWeight="bold"
-          style={{ padding: "16px 16px 32px 0px" }}
+          style={{ padding: "16px 16px 32px 0px"}}
         >
-          Carga de Reparo Escritura AH
+          Carga de {fileOrder[step].file}
         </Typography>
+        <StepStatusContainer>
+          <FileStatusStepContainer>
+            {step ?
+              <StyledContainerIcon status="#00BC701A">
+                <StyledCheckIcon />
+              </StyledContainerIcon>
+              : 
+              <StyledContainerIcon status="#fff" border="#00B2E2">
+                <StyledUploadIcon />
+              </StyledContainerIcon>
+            }
+            <FileStatusStep>Cargar CM</FileStatusStep>
+          </FileStatusStepContainer>
+          - - -
+          <FileStatusStepContainer>
+            {step ? 
+              <StyledContainerIcon status="#fff" border="#00B2E2">
+                <StyledUploadIcon />
+              </StyledContainerIcon> 
+              :
+              <StyledNextStep />
+            }
+            <FileStatusStep>Cargar GP</FileStatusStep>
+          </FileStatusStepContainer>
+        </StepStatusContainer>
+        </StyledContentHeader>
         <StyledContentBody>
           <Box>
             <StyleddropZone onDragOver={handleDragOver} onDrop={handleDrop}>
@@ -63,8 +128,9 @@ const AddFileModal = ({
                 type="file"
                 onChange={handleFileChange}
                 accept="application/pdf"
+                multiple
               />
-              {!file && (
+              {!tempFile && (
                 <StyledContentInput>
                   <FileUploadOutlinedIcon style={{ color: "#565656" }} />
                   <StyledText
@@ -75,7 +141,7 @@ const AddFileModal = ({
                       margin: 8,
                     }}
                   >
-                    Arrastre su Documento de Copia Maestra o haga{" "}
+                    Arrastre su Documento de {fileOrder[step].file} o haga{" "}
                     <StyledSpanClick>click aquí</StyledSpanClick> y selecciónalo
                     desde su ordenador.
                   </StyledText>
@@ -88,8 +154,8 @@ const AddFileModal = ({
                     Documentos en Formato PDF
                   </StyledText>
                 </StyledContentInput>
-              )}
-              {file && (
+              )} 
+              {tempFile && (
                 <StyledCenterBoxColumn>
                   <StyledCenterBoxRow>
                     <Image
@@ -107,7 +173,7 @@ const AddFileModal = ({
                         padding: 16,
                       }}
                     >
-                      {file?.name}
+                      {tempFile?.name}
                     </StyledText>
                   </StyledCenterBoxRow>
                   <StyledText
@@ -121,16 +187,22 @@ const AddFileModal = ({
                     Volver a Cargar Archivo...
                   </StyledText>
                 </StyledCenterBoxColumn>
-              )}
+              )} 
             </StyleddropZone>
           </Box>
           <StyledContainerButtons width={"100%"}>
             <StyledCancelButton variant="outlined" onClick={onClose}>
               Cancelar
             </StyledCancelButton>
-            <StyledConfirmButton variant="contained" disabled={!file} onClick={() => onConfirm(file)}>
-              Adjuntar Archivo
-            </StyledConfirmButton>
+            {step === 0 ?
+              <StyledConfirmButton variant="contained" disabled={!tempFile} onClick={handleNextStep}>
+                Siguiente
+              </StyledConfirmButton>
+            :
+              <StyledConfirmButton variant="contained" disabled={!tempFile} onClick={() => onConfirm(tempFile)}>
+                Cargar y Finalizar
+              </StyledConfirmButton>
+            }
           </StyledContainerButtons>
         </StyledContentBody>
       </Modal>

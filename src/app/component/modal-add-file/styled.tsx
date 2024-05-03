@@ -1,6 +1,17 @@
 import { styled } from "@mui/system";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, CSSObject, Typography } from "@mui/material";
 import { montserrat } from "@/utils/fonts";
+import CheckIcon from "@mui/icons-material/Check";
+import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+
+interface StyledCheckIconProps {
+  iconColor?: string;
+}
+
+interface StyledContainerIconProps {
+  status?: string;
+  border?: string;
+}
 
 export const StyleddropZone = styled("div")({
   width: 610,
@@ -49,6 +60,7 @@ export const StyledConfirmButton = styled(Button)((props: any) => ({
   width: 160,
   fontFamily: montserrat.style.fontFamily,
   borderRadius: 8,
+  textWrap: 'nowrap'
 }));
 
 export const StyledCenterBoxRow = styled(Box)({
@@ -63,6 +75,67 @@ export const StyledCenterBoxColumn = styled(StyledCenterBoxRow)({
 
 export const StyledContentBody = styled(StyledCenterBoxColumn)({});
 
+export const StyledContentHeader = styled(Box)({
+  display: 'flex',
+  justifyContent: 'space-between'
+});
+export const StepStatusContainer = styled(Box)({
+  display: 'flex',
+  justifyContent: 'space-between'
+});
+
+export const FileStatusStepContainer = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: '5px',
+});
+export const FileStatusStep = styled(Typography)({
+  fontSize: 10,
+  fontWeight: 500,
+  textAlign: "center",
+  lineHeight: '12px',
+  width: '40px',
+  textWrap: 'wrap'
+});
+
+export const StyledContainerIcon = styled(Box)<StyledContainerIconProps>(
+  ({ status, border }: StyledContainerIconProps): CSSObject => ({
+    width: 14,
+    height: 14,
+    backgroundColor: status,
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border:  `1px solid ${border}`,
+  })
+);
+
+export const StyledNextStep = styled(Box)({
+    width: 14,
+    height: 14,
+    backgroundColor: '#CBCBCB',
+    borderRadius: "50%",
+  }
+);
+
+export const StyledCheckIcon = styled(CheckIcon)<StyledCheckIconProps>(
+  ({ iconColor }: StyledCheckIconProps): CSSObject => ({
+    width: 10,
+    height: 10,
+    color: '#00BC70',
+  })
+);
+
+export const StyledUploadIcon = styled(FileUploadOutlinedIcon)<StyledCheckIconProps>(
+  ({ iconColor }: StyledCheckIconProps): CSSObject => ({
+    width: 10,
+    height: 10,
+    color: '#00B2E2',
+  })
+);
+
 export const StyledContentInput = styled(StyledCenterBoxColumn)({
   width: 510,
   justifyContent: "space-around",
@@ -70,9 +143,9 @@ export const StyledContentInput = styled(StyledCenterBoxColumn)({
 
 export const StyledSpanClick = styled("span")({
   color: "#00B2E2",
-  textDecoration: "underline",
-  cursor: "pointer",
 });
+
+// #CBCBCB
 
 export const StyledText = styled(Typography)({
   fontSize: 14,
