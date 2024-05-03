@@ -4,6 +4,9 @@ import {
 import {
     Message
 } from '../entities/message/message';
+import {
+    Filter
+} from '../entities/global/filter';
 
 export function getEnvVariable(name: string): string | Error {
     try {
@@ -48,7 +51,7 @@ export function handleNullValues(message: Message, detail: boolean): void {
     }
 
     // Define keys that should be treated as arrays when null
-    const arrayKeys: Array<keyof Message> = ['actions', 'documents', 'parameters'];
+    const arrayKeys: Array < keyof Message > = ['actions', 'documents', 'parameters'];
 
     // Loop through each key-value pair in the message object
     Object.entries(message).forEach(([key, value]) => {
@@ -64,7 +67,7 @@ export function handleNullValues(message: Message, detail: boolean): void {
 }
 
 // Define a function to generate the date range filter
-export function createDateRangeFilter(startDate: Date | undefined, endDate: Date | undefined): Record<string, Record<string, Date>>{
+export function createDateRangeFilter(startDate: Date | undefined, endDate: Date | undefined): Record < string, Record < string, Date >> {
 
     if (startDate && endDate && startDate < endDate) {
         return {
@@ -88,5 +91,20 @@ export function createDateRangeFilter(startDate: Date | undefined, endDate: Date
     }
 
     return {};
-    
+
+}
+
+export function processStringArrayField(fieldName: string, fieldValue: string, filter: Filter) {
+    if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
+        filter[fieldName] = fieldValue.trim().split(',').map(value => value.trim());
+    }
+}
+
+export function processDateField(fieldName: string, fieldValue: string, filter: Filter) {
+    if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
+        const convertedToDate = new Date(fieldValue.trim());
+        if (!isNaN(convertedToDate.getTime())) {
+            filter[fieldName] = convertedToDate;
+        }
+    }
 }

@@ -9,7 +9,7 @@ import {
 // Get messageDetail function
 export async function getMessageDetail(repository: MessageRepository, message: Message, count: string, offset: string): Promise < Message[] | Error > {
     try {
-        var messageResponse = await repository.find(message, true, count, offset);
+        let messageResponse = await repository.find(message, true, count, offset);
         return messageResponse;
     } catch (error: any) {
         // Handle errors appropriately

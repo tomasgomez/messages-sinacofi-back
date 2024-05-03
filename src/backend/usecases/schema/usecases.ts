@@ -6,7 +6,6 @@ import { getSchema } from './getSchema';
 
 // Schema Detail usecases
 export class SchemaUsecase implements SchemaUsecases {
-    constructor() {}
 
     // get Schema detail
     getSchemaTypes = async (filter: Filter): Promise<MessageSchema[] | Error> =>

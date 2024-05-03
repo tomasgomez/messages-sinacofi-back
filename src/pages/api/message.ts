@@ -20,8 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
         return;
       default:
         res.status(405).end(`Method ${method} Not Allowed`);
+        return;
     }
-    return;
   } catch (error: any) {
     console.log('Error:', error);
     errorHandler(error, req, res);

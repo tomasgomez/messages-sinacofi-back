@@ -1,4 +1,6 @@
 export interface Filter {
+  [key: string]: string | string[] | Date | undefined | null;
+
   id ? : string[];
   name ? : string[];
   cukCode ? : string[];
