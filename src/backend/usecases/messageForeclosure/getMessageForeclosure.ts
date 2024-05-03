@@ -15,24 +15,8 @@ import {
 export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: Filter): Promise < CUK[] | Error > {
   try {
 
-    /* Set count and offset */
-    let count = '5';
-    let offset = '0';
-
-    if (filter === undefined) {
-      filter = {};
-    }
-
-    if (filter.count !== undefined && filter.count !== '') {
-      count = filter.count;
-    }
-
-    if (filter.offset !== undefined && filter.offset !== '') {
-      offset = filter.offset;
-    }
-
     /* Get the CUKs */
-    const cuks = await cukRepository.find(filter, count, offset);
+    const cuks = await cukRepository.find(filter);
 
     if (cuks instanceof Error) {
       throw cuks;

@@ -19,20 +19,8 @@ import {
 export async function getSchemaTypes(filter: Filter): Promise < MessageSchema[] | Error > {
   try {
 
-    /* Set count and offset */
-    let count = '5';
-    let offset = '0';
-
     if (filter === undefined) {
       filter = {};
-    }
-
-    if (filter.count !== undefined && filter.count !== '') {
-      count = filter.count;
-    }
-
-    if (filter.offset !== undefined && filter.offset !== '') {
-      offset = filter.offset;
     }
 
     /* Get Environment Variables */
@@ -62,18 +50,17 @@ export async function getSchemaTypes(filter: Filter): Promise < MessageSchema[] 
     }
 
     schemas.map((schema: MessageSchema) => {
-      if (schema.parameters === undefined) {
-        return;
-      } else if (schema.parameters.length === 0) {
-        return;
-      } else if (schema.parameters === null) {
-        return;
-      }
-
-      if (schema.parameters) {
+      if (schema.parameters !== undefined && schema.parameters !== null && schema.parameters.length !== 0) {
         schema.parameters.map((parameter: any) => {
+          if (parameter.properties !== undefined && parameter.properties !== null) {
+            let properties: any = {};
+            parameter.properties.map((property: any) => {
+              properties[property.key] = property.value;
+            });
+            parameter.properties = properties;
+          }
         });
-    }
+      }
   });
 
     return schemas;

@@ -4,7 +4,7 @@ import { Message } from '../../entities/message/message';
 // Get message function
 export async function getMessage(repository: MessageRepository, message: Message, count: string, offset: string): Promise<Message[] | Error> {
   try {
-    return repository.find(message, false, count, offset);
+    return await repository.find(message, false, count, offset);
     
   } catch (error:  any) {
     console.error('Error updating message:', error);

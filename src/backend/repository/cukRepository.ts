@@ -9,6 +9,6 @@ import {
 } from '../entities/cuk/filter';
 
 export interface CUKRepository {
-  find(filter: Filter, count: string, offset: string): Promise < CUK[] | Error >
+  find(filter: Filter): Promise < CUK[] | Error >
   create(cuk: ICUK): Promise < ICUK | Error >
 }

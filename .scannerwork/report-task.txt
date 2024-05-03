@@ -1,0 +1,6 @@
+projectKey=Sinacofi-Messages
+serverUrl=http://localhost:9000
+serverVersion=10.5.1.90531
+dashboardUrl=http://localhost:9000/dashboard?id=Sinacofi-Messages
+ceTaskId=0d843819-f475-4724-b293-ffbb27baf5a0
+ceTaskUrl=http://localhost:9000/api/ce/task?id=0d843819-f475-4724-b293-ffbb27baf5a0

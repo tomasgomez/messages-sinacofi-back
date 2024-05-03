@@ -21,7 +21,26 @@ export class MessageSchemaFront implements IMessageSchema {
         public name: string,
         public createdAt: Date,
         public updatedAt: Date,
-        public parameters?: any[]
+        public parameters?: Parameter[]
     ) {}
 }
 
+export interface Parameter {
+    id: string;
+    messageCode: string;
+    label: string;
+    type: string;
+    defaultValue: string;
+    description: string;
+    placeholder: string;
+    properties: Properties;
+    validations: Validations;
+}
+
+export interface Properties {
+    [key: string]: string;
+}
+
+export interface Validations {
+    [key: string]: string;
+}
