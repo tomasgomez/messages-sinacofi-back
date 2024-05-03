@@ -1,5 +1,5 @@
 import { validateGetSchema } from "@/backend/presenter/schema/getSchema";
-import { SchemaUseCase } from "@/backend/usecases/schema/usecases";
+import { schemaUseCase } from "@/backend/usecases/schema/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 
 
@@ -21,7 +21,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         }
 
         /* Use the PrismaAreaAdapter to get the Schema from the database */
-        let schemaResponse = await SchemaUseCase.getSchema(filter.messageCode[0])
+        let schemaResponse = await schemaUseCase.getSchema(filter.messageCode[0])
 
         /* If the Schema is not found, return a 204 error */
         if (schemaResponse instanceof Error) {

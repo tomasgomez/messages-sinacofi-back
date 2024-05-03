@@ -95,7 +95,7 @@ export async function createMessage(repository: MessageRepository, message: Mess
         return error;
     }
 }
-var schemaTypes = [{
+const schemaTypes = [{
         "id": "1",
         "messageCode": "199",
         "description": "TEXTO LIBRE"

@@ -75,4 +75,4 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
     }
 }
 
-var _attributesToExclude = ['id', 'TSN', 'OSN', 'NSE', 'actions', 'documents'];
+const _attributesToExclude = ['id', 'TSN', 'OSN', 'NSE', 'actions', 'documents'];

@@ -6,7 +6,7 @@ import {
 } from '../entities/cuk/interface';
 import {
   Filter
-} from '../entities/cuk/filter';
+} from '../entities/global/filter';
 
 export interface CUKRepository {
   find(filter: Filter, count: string, offset: string): Promise < CUK[] | Error >

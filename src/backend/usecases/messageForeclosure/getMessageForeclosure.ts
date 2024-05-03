@@ -9,7 +9,7 @@ import {
 } from '../../entities/cuk/cuk';
 import {
   Filter
-} from '../../entities/cuk/filter';
+} from '../../entities/global/filter';
 
 // Get message function
 export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: Filter): Promise < CUK[] | Error > {

@@ -43,7 +43,7 @@ export const MessageExportProvider = ({ children }: { children: any}) => {
   const [downloadPDF, setDownloadPDF] = useState<boolean>(false);
 
   const downloadPDFFiles = async (data: MSDetail | MSDetail[] ) => {
-    const instance = await pdf(<PDFTemplate data={data}/>)
+    const instance = pdf(<PDFTemplate data={data}/>)
     try {
       const blob = await instance.toBlob();
       const url = window.URL.createObjectURL(blob as Blob);

@@ -2,7 +2,7 @@ import { MessageRepository } from "@/backend/repository/messageRepository";
 import { CUKRepository } from "@/backend/repository/cukRepository";
 import { PrismaMessageAdapter as PrismaAdapter } from '../../repository/message/message';
 import { PrismaCukAdapter as PrismaCukAdapter } from '../../repository/cuk/cuk';
-import { Filter } from '../../entities/cuk/filter';
+import { Filter } from '../../entities/global/filter';
 import { Message } from '../../entities/message/message';
 import { MessageForeclosureUsecases } from "./interface";
 import { getMessageForeclosure } from './getMessageForeclosure';

@@ -1,34 +1,25 @@
 import { Message } from '../../entities/message/message';
 
 export function validateCreateMessage(data: any): Message | Error {
-  let message: Message = new Message();
+  const { messageCode, status, receiver, sender, parameters, cukCode } = data;
 
-  const {messageCode, priority, status, receiver, sender, parameters, cukCode } = data;
-
-  if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
-    message.messageCode = messageCode;
-  } else {
+  if (!messageCode || typeof messageCode !== 'string' || messageCode.trim() === '') {
     return new Error('Invalid messageCode');
   }
 
-  if (priority && typeof priority === 'string' && priority.trim() !== '') {
-    message.priority = priority;
-  } else {
-    return new Error('Invalid priority');
-  }
+  let message: Message = new Message();
+  message.messageCode = messageCode.trim();
 
   if (sender && typeof sender === 'string' && sender.trim() !== '') {
-    message.sender = sender;
-  } else {
-    return new Error('Invalid sender');
+    message.sender = sender.trim();
   }
 
   if (status && typeof status === 'string' && status.trim() !== '') {
-    message.status = status;
+    message.status = status.trim();
   }
 
   if (receiver && typeof receiver === 'string' && receiver.trim() !== '') {
-    message.receiver = receiver;
+    message.receiver = receiver.trim();
   }
 
   if (parameters && typeof parameters === 'object') {
@@ -36,7 +27,7 @@ export function validateCreateMessage(data: any): Message | Error {
   }
 
   if (cukCode && typeof cukCode === 'string' && cukCode.trim() !== '') {
-    message.cukCode = cukCode;
+    message.cukCode = cukCode.trim();
   }
 
   return message;

@@ -27,14 +27,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
         /*await messageCalls.PUT(req, res);
                return;*/
         res.status(200).json(req.body);
+        return;
       case Methods.POST:
         /*await messageCalls.POST(req, res);
                return;*/
         res.status(201).json(req.body);
+        return;
       default:
         res.status(405).end(`Method ${method} Not Allowed`);
+        return;
     }
-    return;
   } catch (error: any) {
     console.log('Error:', error);
     errorHandler(error, req, res);
@@ -42,7 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
 }
 
 
-export var ruleTypes = [{
+export const ruleTypes = [{
     "id": "1",
     "messageCode": "199",
     "description": "TEXTO LIBRE"
