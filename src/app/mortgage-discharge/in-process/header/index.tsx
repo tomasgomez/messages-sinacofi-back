@@ -19,6 +19,7 @@ import { MessageTypeDropdown } from "./components/dropdown-type-messages";
 import { InputCode } from "./components/input-code-messages";
 import { Filter } from "./components/filters";
 import { CardContext } from "../store/ModalStore";
+import { MessageStatusDropdown } from "./components/dropdown-status-messages";
 
 export default function InboxHeader(props: {
   title: string;
@@ -51,7 +52,8 @@ export default function InboxHeader(props: {
       </HeaderContent>
       <FilterContainer>
         <InputCode options={dataCodeList} title="Código de operación" />
-        <MessageTypeDropdown widthDropdown={360} />
+        <MessageTypeDropdown widthDropdown={300} />
+        <MessageStatusDropdown widthDropdown={300} />
         <Box ml="auto">
           <Filter />
         </Box>
