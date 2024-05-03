@@ -11,8 +11,8 @@ import React, { useContext, useEffect } from "react";
 import { LatestMessageSection } from "./components/latest-ms";
 import { FirstMessageSection } from "./components/first-ms";
 import { CardContext } from "../store/ModalStore";
-import { Message } from "@/app/component/inbox-table/type";
-import { getExtremeDateObjects } from "@/utils/mortgage-discharge";
+import { findPreviousMessage670 } from "@/utils/mortgage-discharge";
+import { sortMessagesOldToNew } from "@/utils/messages";
 
 export const InfoModal = () => {
   const [details, setDetails] = React.useState<undefined | any[]>([]);
@@ -37,43 +37,42 @@ export const InfoModal = () => {
       if (modalIsOpen && selectedMessage) {
         setIsLoading(true);
 
-        // Get the cuck and save only the messages
-        const extraMessages = (
-          await fetch(
-            `/api/message/foreclosure?cukCode=${selectedMessage?.cukCode}`
-          ).then((res) => res.json())
-        )[0].messages;
-
-        // If we have to do a Dropdown, we can save all messages
-        // in a state and with the dropdown select the message
-
-        // Get all messages 670
-        const listOftheMessages670 = extraMessages.filter(
-          (message: Message) => message.messageCode === "670"
+        // Get the cuck and save only the messages and sort oldest to newest
+        // If we have to do a Dropdown, we can save all messages in a state and with the dropdown select the message
+        const extraMessages = sortMessagesOldToNew(
+          (
+            await fetch(
+              `/api/message/foreclosure?cukCode=${selectedMessage?.cukCode}`
+            ).then((res) => res.json())
+          )[0].messages
         );
-
-        // Get the oldest and the most recent message 670
-        const { oldest: oldestMessage670, latest: mostRecentMessage670 } =
-          getExtremeDateObjects(listOftheMessages670);
 
         const messageSelectedDetails = await fetch(
           `/api/message/detail?id=${selectedMessage?.id}`
         ).then((res) => res.json());
 
-        // If the message selected is the older 670, show only that message
-        if (
-          oldestMessage670?.id === selectedMessage?.id
-        ) {
+        // If you selected the first 670 show only this message
+        // How the array was sorted => the first message is 670 and the first is 670
+        if (selectedMessage.id === extraMessages[0].id) {
+          // Save only the selected messages
           setDetails(messageSelectedDetails);
         } else {
+          // If you selected another message, we need to get the previous 670
+          // to display next to the selected message
+          const previousMessage670 = findPreviousMessage670(
+            extraMessages,
+            selectedMessage?.id
+          );
+
+          // Save the selected message and the previous 670 message
           setDetails([
             ...messageSelectedDetails,
             ...(await fetch(
-              `/api/message/detail?id=${mostRecentMessage670?.id}`
+              `/api/message/detail?id=${previousMessage670?.id}`
             ).then((res) => res.json())),
           ]);
 
-          // set the state to show 2 details in the modal
+          // Set the state to show 2 details in the modal
           setShowOnlyOneMessage(false);
         }
 
