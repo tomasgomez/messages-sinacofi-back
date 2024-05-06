@@ -64,9 +64,9 @@ function extractValidations(rules: any[]): Validations {
 
     if (rules) {
         rules.forEach((rule: any) => {
-            if (rule.name && rule.value) {
-                const ruleName = rule.name.replace(/\d+$/, ''); // Remove numbers from the end of the rule name
-                validations[ruleName] = rule.value;
+            if (rule.condition && rule.value) {
+                const ruleCondition = rule.condition.replace(/\d+$/, ''); // Remove numbers from the end of the rule name
+                validations[ruleCondition] = rule.value;
             }
         });
     }
