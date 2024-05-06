@@ -1,4 +1,4 @@
-import { Message } from '../../entities/message/message';
+import { Message } from '@/backend/entities/message/message';
 
 export function validateCreateMessage(data: any): Message | Error {
   const { messageCode, status, receiver, sender, parameters, cukCode } = data;

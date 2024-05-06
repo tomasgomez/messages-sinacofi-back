@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { get as getSchema } from "@/backend/handler/schema/getSchema";
+
+import  { getSchemaTypes }  from '@/backend/handler/schemaTypes/getSchemaTypes';
 import { APICalls } from '@/backend/entities/calls/calls';
 import { Handler } from "@/backend/entities/calls/handler";
 
@@ -7,9 +8,8 @@ import { Handler } from "@/backend/entities/calls/handler";
 Schema Handler
 */
 class SchemaHandler extends Handler implements APICalls {
-    
-    // Get schema
-    GET = async (req: NextApiRequest, res: NextApiResponse < any > ) => getSchema(req, res);
+
+    GET = async (req: NextApiRequest, res: NextApiResponse < any > ) => getSchemaTypes(req, res);
 
 }
 

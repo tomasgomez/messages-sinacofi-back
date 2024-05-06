@@ -1,4 +1,4 @@
-import { validateGetMessage } from "@/backend/presenter/message/getMessage";
+import { validateGetMessage } from "@/backend/handler/message/presenter/getMessage";
 import { messageUseCase } from "@/backend/usecases/message/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 

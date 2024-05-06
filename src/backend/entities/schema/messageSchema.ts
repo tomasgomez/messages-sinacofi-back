@@ -15,12 +15,12 @@ export class MessageSchema implements IMessageSchema {
 export class MessageSchemaFront implements IMessageSchema {
    
     constructor(
-        public id: string,
-        public messageCode: string,
-        public description: string,
-        public name: string,
-        public createdAt: Date,
-        public updatedAt: Date,
+        public id?: string,
+        public messageCode?: string,
+        public description?: string,
+        public name?: string,
+        public createdAt?: Date,
+        public updatedAt?: Date,
         public parameters?: Parameter[]
     ) {}
 }
@@ -31,6 +31,7 @@ export interface Parameter {
     label: string;
     type: string;
     defaultValue: string;
+    priority: number;
     description: string;
     placeholder: string;
     properties: Properties;

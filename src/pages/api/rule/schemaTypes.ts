@@ -12,7 +12,7 @@ import {
 // import calls
 import {
    schemaCalls
-} from '@/backend/handler/schema/handler';
+} from '@/backend/handler/schemaTypes/handler';
 
 /*
 Message API 

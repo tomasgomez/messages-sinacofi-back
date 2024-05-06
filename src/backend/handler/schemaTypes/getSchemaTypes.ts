@@ -1,14 +1,15 @@
-import { validateGetSchema } from "@/backend/presenter/schema/getSchema";
+import { adaptSchemaTypes } from "@/backend/handler/schemaTypes/presenter/adaptSchemaTypes";
+import { validateGetSchemaTypes } from "@/backend/handler/schemaTypes/presenter/getSchema";
 import { schemaUseCase } from "@/backend/usecases/schema/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 
 
 // get Schema function
-export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
+export async function getSchemaTypes(req: NextApiRequest, res: NextApiResponse < any > ){
     try {
 
         /* Validate the query params and get the Schema */
-        let filter = validateGetSchema(req.query);
+        let filter = validateGetSchemaTypes(req.query);
 
         if (filter instanceof Error) {
           res.status(400).json([]);
@@ -24,8 +25,10 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
           return;
         }
 
+        let adaptedShema = adaptSchemaTypes(schemaResponse);
+
         /* Return the Schema */
-        res.status(200).json(schemaResponse);
+        res.status(200).json(adaptedShema);
         return;
 
       } catch (error) {

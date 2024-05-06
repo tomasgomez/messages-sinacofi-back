@@ -1,4 +1,4 @@
-import { validateGetMessageForeclosure } from "@/backend/presenter/foreclosure/getMessage";
+import { validateGetMessageForeclosure } from "@/backend/handler/foreclosure/presenter/getMessage";
 import { messageForeclosureUseCase } from "@/backend/usecases/messageForeclosure/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 

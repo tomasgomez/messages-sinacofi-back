@@ -2,7 +2,11 @@ import {
   Filter
 } from '../../entities/schema/filter';
 import {
-  MessageSchema
+  MessageSchema,
+  MessageSchemaFront,
+  Parameter,
+  Properties,
+  Validations
 } from '../../entities/schema/messageSchema';
 import {
   getEnvVariable
@@ -48,20 +52,6 @@ export async function getSchemaTypes(filter: Filter): Promise < MessageSchema[] 
     if (schemas.length === 0) {
       throw new Error('No message found');
     }
-
-    schemas.map((schema: MessageSchema) => {
-      if (schema.parameters !== undefined && schema.parameters !== null && schema.parameters.length !== 0) {
-        schema.parameters.map((parameter: any) => {
-          if (parameter.properties !== undefined && parameter.properties !== null) {
-            let properties: any = {};
-            parameter.properties.map((property: any) => {
-              properties[property.key] = property.value;
-            });
-            parameter.properties = properties;
-          }
-        });
-      }
-  });
 
     return schemas;
   } catch (error: any) {

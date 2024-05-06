@@ -1,11 +1,11 @@
 // schema.entity.ts
 export interface Schema {
-    id: number;                 // Unique identifier for the form
-    messageCode: string;        // Message code associated with the form
-    description: string;        // Description of the form schema
-    name: string;               // Name of the form
-    createdAt: Date;            // Date and time the form was created
-    updatedAt: Date;            // Date and time the form was last updated
+    id?: number;                 // Unique identifier for the form
+    messageCode?: string;        // Message code associated with the form
+    description?: string;        // Description of the form schema
+    name?: string;               // Name of the form
+    createdAt?: Date;            // Date and time the form was created
+    updatedAt?: Date;            // Date and time the form was last updated
   }
   
   // parameters.entity.ts

@@ -18,19 +18,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     const method = req.method;
     switch (method) {
       case Methods.GET:
-
         res.status(200).json(ruleTypes);
-
         return;
 
       case Methods.PUT:
-        /*await messageCalls.PUT(req, res);
-               return;*/
         res.status(200).json(req.body);
         return;
       case Methods.POST:
-        /*await messageCalls.POST(req, res);
-               return;*/
         res.status(201).json(req.body);
         return;
       default:
