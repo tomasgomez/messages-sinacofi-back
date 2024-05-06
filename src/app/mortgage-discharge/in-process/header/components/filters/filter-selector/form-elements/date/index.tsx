@@ -41,7 +41,6 @@ export const DatePickerInput = (props: {
   //   },
   //   [onChange]
   // );
-  console.log({value, onChange, props})
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <StyledDatePicker

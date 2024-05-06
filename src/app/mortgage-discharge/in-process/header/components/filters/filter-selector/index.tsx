@@ -14,6 +14,7 @@ import { ObjectsAreEquals, combineArrays } from "@/utils/functions";
 import {
   optionsDestination,
   optionsRegion,
+  optionsNotoria,
   auxFiltersConstant,
 } from "./constants";
 
@@ -62,6 +63,7 @@ export const FilterSelector = (props: { onClose: Function }) => {
       // save the filter if not is a dropdown with the value all
       if (
         (elem.label === "institutionDestination" && elem.value === "all") ||
+        (elem.label === "notaryRepertoire" && elem.value === "all") ||
         (elem.label === "region" && elem.value === "all")
       ) {
         handleChangeAddFilter(elem.label, "");
@@ -90,17 +92,13 @@ export const FilterSelector = (props: { onClose: Function }) => {
         Filtros
       </Typography>
       <DatePickerInput
-        onChange={(newValue: any) =>
-          handleAuxFilter("startDate", newValue.format("YYYY/MM/DD"))
-        }
+        onChange={(newValue: any) => handleAuxFilter("startDate", newValue)}
         keyLabel="startDate"
         label="Fecha Inicial"
         value={getValue("startDate")}
       />
       <DatePickerInput
-        onChange={(newValue: any) =>
-          handleAuxFilter("endDate", newValue.format("YYYY/MM/DD"))
-        }
+        onChange={(newValue: any) => handleAuxFilter("endDate", newValue)}
         keyLabel="endDate"
         label="Fecha Final"
         value={getValue("endDate")}
@@ -129,6 +127,21 @@ export const FilterSelector = (props: { onClose: Function }) => {
         keyLabel="debtorDni"
         label="RUT Deudor"
         value={getValue("debtorDni")}
+      />
+      <FilterDropdowns
+        title="Notoria"
+        handleChange={handleAuxFilter}
+        keyLabel="notaryRepertoire"
+        options={optionsNotoria}
+        optionSelected={getValue("notaryRepertoire")}
+      />
+      <DatePickerInput
+        onChange={(newValue: any) =>
+          handleAuxFilter("repertoireDate", newValue)
+        }
+        keyLabel="repertoireDate"
+        label="Fecha de Repertorio"
+        value={getValue("repertoireDate")}
       />
       <FilterDropdowns
         title="Region"

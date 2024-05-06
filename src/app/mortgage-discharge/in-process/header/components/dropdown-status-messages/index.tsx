@@ -9,19 +9,13 @@ import { CardContext } from "../../../store/ModalStore";
 
 const options = [
   { label: "Todos", value: "all" },
-  { label: "670 - Alzamiento Hipotecario", value: "670" },
-  { label: "671 - Aceptación Alzamiento Hipotecario", value: "671" },
-  { label: "672 - Rechazo Alzamiento Hipotecario", value: "672" },
-  { label: "673 - Aviso de Cliente en Normalización", value: "673" },
-  { label: "674 - Solicitud de Liquidación de Prepago ", value: "674" },
-  { label: "675 - Liquidación de Prepago", value: "675" },
-  { label: "676 - Datos para el Pago de Alzamiento Hipotecario", value: "676" },
-  { label: "677 - Aviso de Pago", value: "677" },
-  { label: "678 - Rechazo de Pago", value: "678" },
-  { label: "679 - Aceptación de Pago", value: "679" },
+  { label: "Pendiente de Envio", value: "01" },
+  { label: "Pendiente de Firma", value: "01" },
+  { label: "Operaciones Enviadas", value: "05" },
+  { label: "Operaciones Recibidas", value: "06" },
 ];
 
-export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
+export const MessageStatusDropdown = (props: { widthDropdown: number }) => {
   const { handleChangeAddFilter } = React.useContext(CardContext);
 
   const { widthDropdown } = props;
@@ -29,8 +23,8 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
 
   const handleChange = (event: SelectChangeEvent) => {
     setOptionSelected(event.target.value as string);
-    if (event.target.value === "all") handleChangeAddFilter("messageType", "");
-    else handleChangeAddFilter("messageType", event.target.value);
+    if (event.target.value === "all") handleChangeAddFilter("status", "");
+    else handleChangeAddFilter("status", event.target.value);
   };
 
   return (
@@ -45,7 +39,7 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
             paddingLeft: "4px",
           }}
         >
-          Tipo de Mensaje
+          Estado de Mensaje
         </InputLabel>
         <Select
           size="small"
@@ -53,12 +47,11 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={optionSelected}
-          label="Mensajes por Familia"
+          label="Estado de Mensaje"
           onChange={handleChange}
           MenuProps={{
             PaperProps: {
               style: {
-                maxWidth: widthDropdown,
                 maxHeight: 150, // Ajusta este valor según tus necesidades
               },
             },
@@ -66,9 +59,7 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
         >
           {options.map((option, index) => (
             <MenuItem key={`${option.label}-${index}`} value={option.value}>
-              <div style={{ overflow: "hidden", textOverflow: "ellipsis" }}>
-                {option.label}
-              </div>
+              {option.label}
             </MenuItem>
           ))}
         </Select>

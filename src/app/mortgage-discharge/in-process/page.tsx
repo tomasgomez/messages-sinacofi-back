@@ -4,7 +4,6 @@ import React, { useContext, useEffect } from "react";
 import { Box, Paper } from "@mui/material";
 import Header from "./header";
 import CarDischarge from "@/app/mortgage-discharge/components/card";
-// import { dataList } from "./mock";
 import { TrackingModal } from "./tracking-modal";
 import { InfoModal } from "./info-modal";
 import { CardContextProvider } from "./store/ModalStore";
@@ -18,7 +17,6 @@ export default function InProcessScreen() {
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>([]);
 
-  // TODO: Recall the data with filter after filter something
   const [filters, setFilters] = React.useState<any[]>([
     { label: "channel", value: "Personas" },
   ]);
@@ -35,7 +33,6 @@ export default function InProcessScreen() {
     setLoading(false);
   };
 
-  // TODO: Descomentar cuando se implemente el filtro en backend
   useEffect(() => {
     if (filters) {
       getDataList(filters);
