@@ -1,21 +1,28 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsInbox } from "@/app/component/inbox-table/constants";
 import { Message } from "@/app/component/inbox-table/type";
 import DataTable from "../../component/inbox-table";
+import { MyContexLayout } from "@/app/context";
 
 export default function InboxScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<Message[]>([]);
 
+  // Change after add users "selectedInsitution"
+  const { selectedInsitution } = useContext(MyContexLayout) as any;
+
   const fetchData = async () => {
     try {
+      // after backend change yo have to this change to this
+      // selectedInsitution = await intitutionCodeToLabel(selectedInsitution)
+      // because we have to filter by label
       setIsLoading(true);
-      await fetch("/api/message?status=06")
+      await fetch(`/api/message?status=06&receiver=${selectedInsitution}`)
         .then((res) => res.json())
         .then((res) => {
           setData(res);
@@ -29,7 +36,7 @@ export default function InboxScreen() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedInsitution]);
 
   const tableTitle = (
     <Grid container p={2}>

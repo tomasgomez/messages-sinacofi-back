@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import { Box, Grid, IconButton, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
@@ -7,6 +7,8 @@ import { columnsSent } from "@/app/component/inbox-table/constants";
 import { Columns, SentData } from "@/app/component/inbox-table/type";
 import { CopyAll, SendOutlined } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { MyContexLayout } from "@/app/context";
+import { intitutionCodeToLabel } from "@/utils/intitutions";
 
 export default function SentScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -14,10 +16,17 @@ export default function SentScreen() {
   const [data, setData] = React.useState<SentData[]>([]);
   const [selected, setSelected] = React.useState<number[]>([]);
 
+  // Change after add users "selectedInsitution"
+  const { selectedInsitution } = useContext(MyContexLayout) as any;
+
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      await fetch("/api/message?status=05")
+      // Backend have the sender like a label not a code
+      const selectedInsitutionLabel = await intitutionCodeToLabel(
+        selectedInsitution
+      );
+      await fetch(`/api/message?status=05&sender=${selectedInsitutionLabel}`)
         .then((res) => res.json())
         .then((res) => {
           setData(res);
@@ -31,7 +40,7 @@ export default function SentScreen() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedInsitution]);
 
   const actions = useMemo(
     () => ({

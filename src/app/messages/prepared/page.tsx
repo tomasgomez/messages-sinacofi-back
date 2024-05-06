@@ -8,17 +8,26 @@ import { columnsPrepared } from "@/app/component/inbox-table/constants";
 import { Columns, SentData } from "@/app/component/inbox-table/type";
 import { SendOutlined } from "@mui/icons-material";
 import { MyContexLayout } from "@/app/context";
+import { intitutionCodeToLabel } from "@/utils/intitutions";
 
 export default function PreparedScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<SentData[]>([]);
   const [selected, setSelected] = React.useState<number[]>([]);
-  const { setModalState } = React.useContext(MyContexLayout) as any;
+  
+  // Change after add users "selectedInsitution"
+  const { setModalState, selectedInsitution } = React.useContext(
+    MyContexLayout
+  ) as any;
 
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      await fetch("/api/message?status=01")
+      // Backend have the sender like a label not a code
+      const selectedInsitutionLabel = await intitutionCodeToLabel(
+        selectedInsitution
+      );
+      await fetch(`/api/message?status=01&sender=${selectedInsitutionLabel}`)
         .then((res) => res.json())
         .then((res) => {
           setData(res);
@@ -32,7 +41,7 @@ export default function PreparedScreen() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [selectedInsitution]);
 
   const updateMessage = useCallback(async (id: string) => {
     try {
@@ -67,50 +76,53 @@ export default function PreparedScreen() {
     </Grid>
   );
 
-  const actions = useMemo(() => ({
-    id: "actions",
-    label: "Acciones",
-    align: "center",
-    render: ({ row }: { row: any }) => {
-      return (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <IconButton
-            key={`expand-icon-${row.id}`}
-            aria-label="expand row"
-            style={{ padding: 0 }}
-            onClick={() => {
-              setModalState({
-                type: "decision",
-                title: "¿Quieres enviar esta mensaje?",
-                body: (
-                  <Typography
-                    fontSize={14}
-                    fontWeight={400}
-                    style={{ paddingBottom: 16 }}
-                  >
-                    TSN: {row?.TSN}
-                  </Typography>
-                ),
-                isOpen: true,
-
-                onConfirm: async () => {
-                  updateMessage(row.id);
-                },
-              });
+  const actions = useMemo(
+    () => ({
+      id: "actions",
+      label: "Acciones",
+      align: "center",
+      render: ({ row }: { row: any }) => {
+        return (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <SendOutlined />
-          </IconButton>
-        </Box>
-      );
-    },
-  }), [setModalState, updateMessage]);
+            <IconButton
+              key={`expand-icon-${row.id}`}
+              aria-label="expand row"
+              style={{ padding: 0 }}
+              onClick={() => {
+                setModalState({
+                  type: "decision",
+                  title: "¿Quieres enviar esta mensaje?",
+                  body: (
+                    <Typography
+                      fontSize={14}
+                      fontWeight={400}
+                      style={{ paddingBottom: 16 }}
+                    >
+                      TSN: {row?.TSN}
+                    </Typography>
+                  ),
+                  isOpen: true,
+
+                  onConfirm: async () => {
+                    updateMessage(row.id);
+                  },
+                });
+              }}
+            >
+              <SendOutlined />
+            </IconButton>
+          </Box>
+        );
+      },
+    }),
+    [setModalState, updateMessage]
+  );
 
   const newColumns = useMemo(() => {
     return [...columnsPrepared, actions];
@@ -123,7 +135,12 @@ export default function PreparedScreen() {
           amountMessages={data.length}
           title={"Mensajes Preparados"}
         />
-        <DataTable rows={data} columns={newColumns as Columns[]} loading={isLoading} tableTitle={tableTitle} />
+        <DataTable
+          rows={data}
+          columns={newColumns as Columns[]}
+          loading={isLoading}
+          tableTitle={tableTitle}
+        />
       </Box>
     </Paper>
   );

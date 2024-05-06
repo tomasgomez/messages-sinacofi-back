@@ -1,5 +1,3 @@
-import { Message } from "@/app/component/inbox-table/type";
-
 // Message API Documentation
 const messages = {
   messages: [
@@ -178,15 +176,4 @@ const messagesExamples = {
       actions: "",
     },
   ],
-};
-
-const parseDateTimeMessages = (obj: Message): Date => {
-  const dateTimeString = `${obj.creationDate} ${obj.creationTime}`;
-  return new Date(dateTimeString);
-};
-
-export const sortMessagesOldToNew = (obj: Message[]): Message[] => {
-  return obj.sort(
-    (a, b) => parseDateTimeMessages(a).getTime() - parseDateTimeMessages(b).getTime()
-  );
 };

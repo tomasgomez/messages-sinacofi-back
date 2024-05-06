@@ -11,11 +11,15 @@ import { getForeClosureDataCards } from "../api-calls";
 import Loader from "@/components/Loader";
 import { formatCardData } from "@/utils/mortgage-discharge";
 import { IsEmptyObject } from "@/utils/functions";
+import { MyContexLayout } from "@/app/context";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>([]);
+
+  // Change after add users "selectedInsitution"
+  const { selectedInsitution } = React.useContext(MyContexLayout) as any;
 
   const [filters, setFilters] = React.useState<any[]>([
     { label: "channel", value: "Personas" },
@@ -34,10 +38,15 @@ export default function InProcessScreen() {
   };
 
   useEffect(() => {
-    if (filters) {
-      getDataList(filters);
-    }
-  }, [filters]);
+    // Add the institution destination to the filters after changing it
+    const auxFilter = [
+      ...filters,
+      // institutionDestination is a code so not need the funtion intitutionCodeToLabel
+      { label: "institutionDestination", value: selectedInsitution },
+      { label: "institutionOrigin", value: selectedInsitution },
+    ];
+    getDataList(auxFilter);
+  }, [filters, selectedInsitution]);
 
   return (
     <CardContextProvider filters={filters} setFilters={setFilters}>
