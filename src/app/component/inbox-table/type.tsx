@@ -13,7 +13,7 @@ export interface Message {
   status: string;
   sender: string;
   creationDate: string;
-  creationTime: string;
+  creationTime?: string;
   receiver?: string;
   receivedDate: string;
   receivedTime: string;

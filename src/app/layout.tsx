@@ -28,6 +28,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Change after add users "selectedInsitution"
+  const [selectedInsitution, setSelectedInsitution] = useState("0027");
   const [modalState, setModalState] = useState<{
     type: "success" | "error" | "decision" | "none";
     title: string;
@@ -51,7 +53,13 @@ export default function RootLayout({
         <ModalManagerProvider>
           <MessageExportProvider>
             <ThemeProvider theme={theme}>
-              <MyContexLayout.Provider value={{ setModalState }}>
+              <MyContexLayout.Provider
+                value={{
+                  setModalState,
+                  selectedInsitution,
+                  setSelectedInsitution,
+                }}
+              >
                 <AppBar />
                 <Box style={{ display: "flex", maxWidth: "100vw" }}>
                   <SideBar />
