@@ -1,5 +1,5 @@
 
-import { Filter } from "@/backend/entities/cuk/filter";
+import { Filter } from "@/backend/entities/global/filter";
 import { CUK } from "@/backend/entities/cuk/cuk";
 import { ICUK } from "@/backend/entities/cuk/interface";
 import { Message } from "@/backend/entities/message/message";

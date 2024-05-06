@@ -21,7 +21,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         }
 
         /* Use the PrismaAreaAdapter to get the Schema from the database */
-        let schemaResponse = await schemaUseCase.getSchema(filter.messageCode[0])
+        let schemaResponse = await schemaUseCase.getSchema(filter.messageCode[0]) //TODO: Change this to getSchema
 
         /* If the Schema is not found, return a 204 error */
         if (schemaResponse instanceof Error) {

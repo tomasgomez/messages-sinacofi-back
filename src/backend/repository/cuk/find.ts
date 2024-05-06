@@ -1,6 +1,6 @@
 import {
     Filter
-} from '@/backend/entities/cuk/filter';
+} from '@/backend/entities/global/filter';
 import {
     PrismaClientWrapper
 } from '../prismaWrapper';
@@ -14,7 +14,7 @@ import {
 import { MessageStatus } from '@/utils/messagesStatus';
 import { MessageTypes } from '@/backend/entities/message/types';
 
-async function find(filter: Filter, count: string, offset: string): Promise < CUK[] | Error > {
+async function find(filter: Filter): Promise < CUK[] | Error > {
     try {
         let cuks: CUK[];
 
@@ -22,8 +22,8 @@ async function find(filter: Filter, count: string, offset: string): Promise < CU
         const prismaClient = prisma.getClient();
 
         // Parse count and offset from filter
-        let countAsInt = parseInt(count || '0', 10);
-        let offsetAsInt = parseInt(offset || '0', 10);
+        let countAsInt = parseInt(filter.count || '0', 10);
+        let offsetAsInt = parseInt(filter.offset || '0', 10);
 
         let dateRangeFilter = createDateRangeFilter(filter.startDate, filter.endDate);
 
