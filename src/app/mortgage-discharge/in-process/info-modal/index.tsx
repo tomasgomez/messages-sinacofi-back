@@ -12,7 +12,7 @@ import { LatestMessageSection } from "./components/latest-ms";
 import { FirstMessageSection } from "./components/first-ms";
 import { CardContext } from "../store/ModalStore";
 import { findPreviousMessage670 } from "@/utils/mortgage-discharge";
-import { sortMessagesOldToNew } from "@/utils/messages";
+import { sortMessagesOldToNew } from "@/utils/messagesFuntions";
 
 export const InfoModal = () => {
   const [details, setDetails] = React.useState<undefined | any[]>([]);

@@ -12,7 +12,7 @@ import {
   SmallMsDetailInfoModal,
   SmallMsInfoModalMortgageDischarge,
 } from "@/types/mortgage-discharge";
-import { sortMessagesOldToNew } from "./messages";
+import { sortMessagesOldToNew } from "./messagesFuntions";
 
 export const formatCardData = (
   data: MortgageDischargeCard[]

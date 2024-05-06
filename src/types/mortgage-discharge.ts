@@ -12,6 +12,11 @@ export interface MortgageDischargeCard {
   clientDni: string;
   clientName: string;
   institutionDestination: string;
+  rutSeller?: null;
+  region?: null;
+  debtorRut?: null;
+  createdAt: string;
+  updatedAt: string;
   messages: Message[];
 }
 

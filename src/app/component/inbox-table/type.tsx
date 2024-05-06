@@ -13,7 +13,7 @@ export interface Message {
   status: string;
   sender: string;
   creationDate: string;
-  creationTime?: string;
+  creationTime: string;
   receiver?: string;
   receivedDate: string;
   receivedTime: string;
@@ -49,17 +49,22 @@ export interface SentData {
 }
 
 export interface MortgageDischargeData {
-  NSR: string;
-  code: string;
   description: string;
-  LSN: string;
-  date: string;
-  time: string;
   status: string;
-  attachments?: string;
-  actions?: boolean;
-  messageStatus?: string;
-  isPending?: boolean;
+  id: string;
+  name: string;
+  cukCode: string;
+  creationDate: string;
+  foreclosureDate: string;
+  channel: string;
+  clientDni: string;
+  clientName: string;
+  institutionDestination: string;
+  rutSeller?: null;
+  region?: null;
+  debtorRut?: null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type KeyOfData =
