@@ -9,9 +9,9 @@ datasource db {
 }
 
 model CUK {
-  id                     String   @id @default(uuid())
+  id                     String    @id @default(uuid())
   name                   String?
-  cukCode                String?  @unique
+  cukCode                String?   @unique
   description            String?
   status                 String?
   creationDate           String?
@@ -23,19 +23,37 @@ model CUK {
   rutSeller              String?
   region                 String?
   debtorRut              String?
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  messages               Message[] @relation(name: "CukMessages")
+}
 
-  messages Message[] @relation(name: "CukMessages")
+model Parameters {
+  id           String    @id @default(uuid())
+  name         String
+  messageCode  String
+  label        String
+  type         String
+  placeholder  String
+  description  String
+  defaultValue String?
+  priority     Int
+  value        String
+  properties   Json
+  validations  Json
+  Message      Message[]
+
+  @@unique([name, messageCode])
+  @@index([name])
 }
 
 model Message {
-  id           String   @id @default(uuid())
-  TSN          Int?     @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
-  OSN          Int?     @unique @default(autoincrement())
-  NSE          Int?     @unique @default(autoincrement())
-  LSN          Int?     @unique @default(autoincrement())
-  NSR          Int?     @unique @default(autoincrement())
+  id           String      @id @default(uuid())
+  TSN          Int?        @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
+  OSN          Int?        @unique @default(autoincrement())
+  NSE          Int?        @unique @default(autoincrement())
+  LSN          Int?        @unique @default(autoincrement())
+  NSR          Int?        @unique @default(autoincrement())
   messageCode  String?
   description  String?
   priority     String?
@@ -48,11 +66,12 @@ model Message {
   receivedTime String?
   documents    String?
   actions      String?
-  parameters   Json?
+  parameters   Parameters? @relation(fields: [parametersId], references: [id])
   cukCode      String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  cuk          CUK?     @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  cuk          CUK?        @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+  parametersId String?
 }
 
 model Family {
