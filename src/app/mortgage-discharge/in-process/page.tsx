@@ -17,7 +17,7 @@ export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>([]);
-  const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
 
   // Change after add users "selectedInsitution"
@@ -117,7 +117,7 @@ export default function InProcessScreen() {
         />
         <InfoModal />
         <TablePagination
-          rowsPerPageOptions={[3, 5, 7, 10, 25, 50]}
+          rowsPerPageOptions={[5, 7, 10, 25, 50]}
           component="div"
           count={data?.length}
           rowsPerPage={rowsPerPage}
