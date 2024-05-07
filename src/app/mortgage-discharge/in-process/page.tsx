@@ -82,29 +82,35 @@ export default function InProcessScreen() {
         </Box>
         <Box style={{ maxHeight: maxHeight, overflow: "scroll" }}>
           {loading ? (
-            <Loader label="Cargando Alzamientos Hipotecarios..." />
-          ) : (
-            data.map((elemCard: any, i: number) => (
-              <CarDischarge
-                key={`key-card-${i}`}
-                data={elemCard}
-                handlerTrackingModal={setIsOpenTrackingModal}
-              />
-            ))
-          )}
-          {data.length < rowsPerPage && (
-            <div
-              style={{
-                height:
-                  data.length === 0
-                    ? maxHeight
-                    : espaceByRow < maxHeight
-                    ? maxHeight - espaceByRow
-                    : 0,
-              }}
+            <Loader
+              label="Cargando Alzamientos Hipotecarios..."
+              minHeight={470}
             />
+          ) : (
+            <>
+              {data.map((elemCard: any, i: number) => (
+                <CarDischarge
+                  key={`key-card-${i}`}
+                  data={elemCard}
+                  handlerTrackingModal={setIsOpenTrackingModal}
+                />
+              ))}
+              {data.length < rowsPerPage && (
+                <div
+                  style={{
+                    height:
+                      data.length === 0
+                        ? maxHeight
+                        : espaceByRow < maxHeight
+                        ? maxHeight - espaceByRow
+                        : 0,
+                  }}
+                />
+              )}
+            </>
           )}
         </Box>
+
         <TrackingModal
           open={isOpenTrackingModal}
           onClose={setIsOpenTrackingModal}
