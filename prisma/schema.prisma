@@ -28,32 +28,13 @@ model CUK {
   messages               Message[] @relation(name: "CukMessages")
 }
 
-model Parameters {
-  id           String    @id @default(uuid())
-  name         String
-  messageCode  String
-  label        String
-  type         String
-  placeholder  String
-  description  String
-  defaultValue String?
-  priority     Int
-  value        String
-  properties   Json
-  validations  Json
-  Message      Message[]
-
-  @@unique([name, messageCode])
-  @@index([name])
-}
-
 model Message {
-  id           String      @id @default(uuid())
-  TSN          Int?        @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
-  OSN          Int?        @unique @default(autoincrement())
-  NSE          Int?        @unique @default(autoincrement())
-  LSN          Int?        @unique @default(autoincrement())
-  NSR          Int?        @unique @default(autoincrement())
+  id           String   @id @default(uuid())
+  TSN          Int?     @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
+  OSN          Int?     @unique @default(autoincrement())
+  NSE          Int?     @unique @default(autoincrement())
+  LSN          Int?     @unique @default(autoincrement())
+  NSR          Int?     @unique @default(autoincrement())
   messageCode  String?
   description  String?
   priority     String?
@@ -66,12 +47,48 @@ model Message {
   receivedTime String?
   documents    String?
   actions      String?
-  parameters   Parameters? @relation(fields: [parametersId], references: [id])
-  cukCode      String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  cuk          CUK?        @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
-  parametersId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cukCode String?
+
+  parameters Parameters[]
+  files      File[]
+  cuk        CUK?         @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+}
+
+model Parameters {
+  id           String   @id @default(uuid())
+  name         String?
+  messageCode  String?
+  label        String?
+  type         String?
+  placeholder  String?
+  description  String?
+  defaultValue String?
+  priority     Int
+  value        String?
+  properties   Json
+  validations  Json
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  messageId String
+  Message   Message @relation(fields: [messageId], references: [id])
+
+  @@unique([name, messageCode])
+  @@index([name])
+}
+
+model File {
+  id        Int      @id @default(autoincrement())
+  filename  String
+  content   String
+  url       String
+  createdAt DateTime @default(now())
+
+  messageId String
+  Message   Message @relation(fields: [messageId], references: [id])
 }
 
 model Family {
