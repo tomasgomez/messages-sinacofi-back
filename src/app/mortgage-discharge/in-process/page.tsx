@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useContext, useEffect } from "react";
-import { Box, Paper } from "@mui/material";
+import React, { useEffect } from "react";
+import { Box, Paper, TablePagination } from "@mui/material";
 import Header from "./header";
 import CarDischarge from "@/app/mortgage-discharge/components/card";
 import { TrackingModal } from "./tracking-modal";
@@ -17,6 +17,8 @@ export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>([]);
+  const [rowsPerPage, setRowsPerPage] = React.useState(3);
+  const [page, setPage] = React.useState(0);
 
   // Change after add users "selectedInsitution"
   const { selectedInsitution } = React.useContext(MyContexLayout) as any;
@@ -44,9 +46,28 @@ export default function InProcessScreen() {
       // institutionDestination is a code so not need the funtion intitutionCodeToLabel
       { label: "institutionDestination", value: selectedInsitution },
       { label: "institutionOrigin", value: selectedInsitution },
+      { label: "count", value: rowsPerPage },
+      { label: "offset", value: `${page * rowsPerPage}` },
     ];
     getDataList(auxFilter);
-  }, [filters, selectedInsitution]);
+  }, [filters, selectedInsitution, rowsPerPage, page]);
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const espaceByRow = data.length * 81 + 36 * 2;
+  const maxHeight = 470;
 
   return (
     <CardContextProvider filters={filters} setFilters={setFilters}>
@@ -59,7 +80,7 @@ export default function InProcessScreen() {
             title={"Alzamientos Hipotecarios en Proceso"}
           />
         </Box>
-        <Box style={{ maxHeight: 510, overflow: "scroll" }}>
+        <Box style={{ maxHeight: maxHeight, overflow: "scroll" }}>
           {loading ? (
             <Loader label="Cargando Alzamientos Hipotecarios..." />
           ) : (
@@ -71,12 +92,40 @@ export default function InProcessScreen() {
               />
             ))
           )}
+          {data.length < rowsPerPage && (
+            <div
+              style={{
+                height:
+                  data.length === 0
+                    ? maxHeight
+                    : espaceByRow < maxHeight
+                    ? maxHeight - espaceByRow
+                    : 0,
+              }}
+            />
+          )}
         </Box>
         <TrackingModal
           open={isOpenTrackingModal}
           onClose={setIsOpenTrackingModal}
         />
         <InfoModal />
+        <TablePagination
+          rowsPerPageOptions={[3, 5, 7, 10, 25, 50]}
+          component="div"
+          count={data?.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          style={{ marginRight: 36 }}
+          labelRowsPerPage="Registros por página:"
+          labelDisplayedRows={({ from, to, count }) => (
+            <span>
+              Página {from} - {to} de {count}
+            </span>
+          )}
+        />
       </Paper>
     </CardContextProvider>
   );
