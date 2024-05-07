@@ -12,7 +12,7 @@ export const HeaderContainer = styled(Box)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 26px;
+  margin: 16px;
   flex-direction: column;
 `;
 
