@@ -49,7 +49,7 @@ function adaptParameter(parameter: any): Parameter {
         description: "",
         placeholder,
         properties: {
-            "multiple": multiple ? "true" : "false",
+            "multiple": multiple,
             "rows": row,
             "columns": column,
             "options": optionValues
@@ -64,12 +64,22 @@ function extractValidations(rules: any[]): Validations {
 
     if (rules) {
         rules.forEach((rule: any) => {
+            console.log(rule.condition);
+            console.log(rule.value);
             if (rule.condition && rule.value) {
                 const ruleCondition = rule.condition.replace(/\d+$/, ''); // Remove numbers from the end of the rule name
-                validations[ruleCondition] = rule.value;
+
+            if (rule.value == 'true' ) {
+                rule.value = true;
+            } else if (rule.value == 'false') {
+                rule.value = false;
+            }
+                
+            validations[ruleCondition] = rule.value;
             }
         });
     }
+
 
     return validations;
 }
