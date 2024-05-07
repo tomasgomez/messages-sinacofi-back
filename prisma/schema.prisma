@@ -76,8 +76,8 @@ model Parameters {
   messageId String
   Message   Message @relation(fields: [messageId], references: [id])
 
-  @@unique([name, messageCode])
-  @@index([name])
+  @@unique([messageId, name])
+  @@index([messageId, name])
 }
 
 model File {
