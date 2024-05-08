@@ -7,4 +7,5 @@ import { Message } from "@/backend/entities/message/message";
 export interface MessageForeclosureUsecases {
     getMessageForeclosure(filter: Filter, count: string, offset: string): Promise<CUK[] | Error>;
     createForeclosure(cuk: CUK, message: Message): Promise < ICUK | Error >
+    handleForeclosure(cuk: CUK, message: Message): Promise < ICUK | Error >
 }

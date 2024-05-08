@@ -43,17 +43,19 @@ export async function getSchemaTypes(filter: Filter): Promise < MessageSchema[] 
       path = `${path}?messageCode=${filter.messageCode.join(',')}`;
     }
 
+    
     let schemas = await get(url, path, {},{})
+  
 
     if (schemas instanceof Error) {
       throw schemas;
     }
 
-    if (schemas.length === 0) {
+    if (!schemas.data || schemas.data.length === 0) {
       throw new Error('No message found');
     }
 
-    return schemas;
+    return schemas.data;
   } catch (error: any) {
     console.error('Error updating message:', error);
     return error;

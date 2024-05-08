@@ -11,20 +11,17 @@ import {
     getSchemaTypes
 } from "@/backend/usecases/schema/getSchemaTypes";
 import {
-    InternalError
-} from "@/backend/entities/internalError";
-import {
     MessageStatus
 } from "@/backend/entities/message/status";
-import {
-    MessageTypes
-} from "@/backend/entities/message/types";
 import {
     CUK
 } from "@/backend/entities/cuk/cuk";
 import {
     messageForeclosureUseCase
 } from "../messageForeclosure/usecases";
+import {
+    isForeclosureMessageCode
+} from "@/backend/entities/cuk/codes";
 
 
 // Create message function
@@ -32,9 +29,9 @@ export async function createMessage(repository: MessageRepository, message: Mess
     try {
 
         /* Check if is a foreclosure message, then create the foreclosure */
-        if (message.messageCode === MessageTypes.ALZAMIENTO_HIPOTECARIO) {
+        if (isForeclosureMessageCode(message.messageCode ?? '')) {
 
-            let cuk = await messageForeclosureUseCase.createForeclosure(new CUK, message);
+            let cuk = await messageForeclosureUseCase.handleForeclosure(new CUK, message);
 
             if (cuk instanceof Error) {
                 return cuk;
@@ -48,9 +45,9 @@ export async function createMessage(repository: MessageRepository, message: Mess
         }
 
         /* Get the schema types */
-        // let schemaTypes = await getSchema();
+        let schemaTypes = await getSchemaTypes({});
 
-        if (schemaTypes instanceof InternalError) {
+        if (schemaTypes instanceof Error) {
             return schemaTypes;
         }
 
@@ -95,19 +92,3 @@ export async function createMessage(repository: MessageRepository, message: Mess
         return error;
     }
 }
-const schemaTypes = [{
-        "id": "1",
-        "messageCode": "199",
-        "description": "TEXTO LIBRE"
-    },
-    {
-        "id": "2",
-        "messageCode": "136",
-        "description": "TRANSFERENCIA DE FONDOS INDIVIDUAL"
-    },
-    {
-        "id": "3",
-        "messageCode": "670",
-        "description": "ALZAMIENTO HIPOTECARIO"
-    }
-]

@@ -7,6 +7,7 @@ import { Message } from '../../entities/message/message';
 import { MessageForeclosureUsecases } from "./interface";
 import { getMessageForeclosure } from './getMessageForeclosure';
 import { createForeclosure } from './createForeclosure';
+import { handleForeclosure } from './handleForeclosure';
 import { CUK } from '../../entities/cuk/cuk';
 import { ICUK } from '../../entities/cuk/interface';
 
@@ -23,6 +24,9 @@ export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
     // create foreclosure
     createForeclosure = async (cuk: CUK, message: Message): Promise < ICUK | Error > => 
         createForeclosure(this.cukRepository, cuk, message)
+
+    handleForeclosure = async (cuk: CUK, message: Message): Promise < ICUK | Error > =>
+        handleForeclosure(this.cukRepository, cuk, message)
 }
 
 const messageRepository: MessageRepository = new PrismaAdapter();

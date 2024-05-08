@@ -66,10 +66,10 @@ model Parameters {
   placeholder  String?
   description  String?
   defaultValue String?
-  priority     Int
+  priority     Int?
   value        String?
-  properties   Json
-  validations  Json
+  properties   Json?
+  validations  Json?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
