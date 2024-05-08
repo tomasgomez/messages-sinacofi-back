@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Box, Paper, TablePagination } from "@mui/material";
 import Header from "./header";
 import CarDischarge from "@/app/mortgage-discharge/components/card";
@@ -66,9 +66,17 @@ export default function InProcessScreen() {
     setPage(newPage);
   };
 
-  const espaceByRow = data.length * 81 + 36 * 2;
   const maxHeight = 470;
+  const margin = 32;
+  const cardHeight = 88;
 
+  const getHeight = useCallback(() => {
+    if (data.length === 0) return maxHeight;
+    const espaceByRow = data.length * (cardHeight + margin) + margin;
+    if (espaceByRow < maxHeight) return maxHeight - espaceByRow;
+    return 0;
+  }, [data.length]);
+  
   return (
     <CardContextProvider filters={filters} setFilters={setFilters}>
       <Paper sx={{ width: "calc(100% - 270px)" }}>
@@ -95,18 +103,11 @@ export default function InProcessScreen() {
                   handlerTrackingModal={setIsOpenTrackingModal}
                 />
               ))}
-              {data.length < rowsPerPage && (
-                <div
-                  style={{
-                    height:
-                      data.length === 0
-                        ? maxHeight
-                        : espaceByRow < maxHeight
-                        ? maxHeight - espaceByRow
-                        : 0,
-                  }}
-                />
-              )}
+              <div
+                style={{
+                  height: getHeight(),
+                }}
+              />
             </>
           )}
         </Box>
