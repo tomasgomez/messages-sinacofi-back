@@ -49,22 +49,23 @@ export interface SentData {
 }
 
 export interface MortgageDischargeData {
-  description: string;
-  status: string;
   id: string;
   name: string;
   cukCode: string;
+  description: string;
+  status: string;
   creationDate: string;
   foreclosureDate: string;
   channel: string;
   clientDni: string;
   clientName: string;
   institutionDestination: string;
-  rutSeller?: null;
-  region?: null;
-  debtorRut?: null;
+  rutSeller?: string;
+  region?: string;
+  debtorRut?: string;
   createdAt: string;
   updatedAt: string;
+  messages: Message[];
 }
 
 export type KeyOfData =

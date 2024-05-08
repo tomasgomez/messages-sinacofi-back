@@ -1,24 +1,9 @@
-import { Message } from "@/app/component/inbox-table/type";
+import {
+  Message,
+  MortgageDischargeData,
+} from "@/app/component/inbox-table/type";
 
-export interface MortgageDischargeCard {
-  id: string;
-  name: string;
-  description: string;
-  creationDate: string;
-  cukCode: string;
-  foreclosureDate: string;
-  channel: string;
-  status: string;
-  clientDni: string;
-  clientName: string;
-  institutionDestination: string;
-  rutSeller?: null;
-  region?: null;
-  debtorRut?: null;
-  createdAt: string;
-  updatedAt: string;
-  messages: Message[];
-}
+export interface MortgageDischargeCard extends MortgageDischargeData {}
 
 export interface CodeCardMortgageDischarge {
   cukCode: string;
@@ -35,11 +20,22 @@ export interface InforCardMortgageDischarge {
   cukStatus: string;
 }
 
+// TODO change after backend changes
+export interface ModalTrackingData {
+  cukCode: string;
+  seller: string;
+  buyer: string;
+  debtor: string;
+  region: string;
+  institutionDestination: string;
+}
+
 export interface DataMortgageDischarge {
   codeData: CodeCardMortgageDischarge;
-  InfoData: InforCardMortgageDischarge;
+  infoData: InforCardMortgageDischarge;
   messages: Message[];
   buttonDisabled: boolean;
+  modalTrackingData: ModalTrackingData;
 }
 
 export interface DataHeaderInfoModal {
@@ -55,8 +51,8 @@ export interface DataHeaderInfoModal {
 }
 
 interface ObjectInfoModal {
-  accessor: string;
-  label: string;
+  accessor?: string;
+  label?: string;
   value?: string;
 }
 
