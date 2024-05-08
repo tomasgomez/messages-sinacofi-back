@@ -1,9 +1,11 @@
 import {
-    IMessage
+    IMessage,
+    Parameter
 } from './interface';
 import {
     getChileanTime
 } from '../../utils/functions';
+
 
 export class Message implements IMessage {
     id ? : string;
@@ -25,7 +27,7 @@ export class Message implements IMessage {
     receivedTime ? : string | null;
     documents ? : any; //TODO: Define the type of this property and every any
     actions ? : any;
-    parameters ? : any;
+    parameters? : Parameter[] ;
     cukCode ? : string | null;
     cuk ? : any;
 
