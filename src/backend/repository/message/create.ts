@@ -35,7 +35,17 @@ async function create(message: Message): Promise < Message | Error > {
 
         /* Create a new message */
         const newMessage = await prismaClient.message.create({
-            data: messageData
+            data: {
+              ...messageData,
+              parameters: {
+                createMany: {
+                  data: messageData.parameters ?? [],
+                }
+              }
+            },
+            include: {
+              parameters: true // This ensures that the created parameters are included in the returned message
+            }
         });
 
         if (newMessage === null) {

@@ -23,3 +23,21 @@ export interface IMessage {
     documents?: any;
     parameters?: any;
 }
+
+export interface Parameter {
+    id: string ; 
+    name: string;
+    messageCode?: string;
+    label?: string;
+    type?: string;
+    placeholder?: string;
+    description?: string;
+    defaultValue?: string;
+    priority?: number;
+    value?: string;
+    properties?: any;
+    validations?: any;
+    createdAt?: Date;
+    updatedAt?: Date;
+    messageId?:string;
+}
