@@ -28,6 +28,7 @@ export interface ModalTrackingData {
   debtor: string;
   region: string;
   institutionDestination: string;
+  history: any[];
 }
 
 export interface DataMortgageDischarge {

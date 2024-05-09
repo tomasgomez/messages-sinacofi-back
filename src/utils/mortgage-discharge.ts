@@ -90,11 +90,12 @@ export const formatCardData = (
 
     const modalTrackingData: ModalTrackingData = {
       cukCode: elem.cukCode,
-      seller: `${elem?.rutSeller || "rutSeller"} ${elem?.seller || "seller"}`,
-      buyer: `${elem?.rutBuyer || "rutBuyer"} ${elem?.buyer || "buyer"}`,
-      debtor: `${elem?.debtorRut || "debtorRut"} ${elem?.debtor || "debtor"}`,
+      seller: `${elem?.ownerDni || ""} ${elem?.owner || ""}`,
+      buyer: `${elem?.buyerDni || ""} ${elem?.buyer || ""}`,
+      debtor: `${elem?.borrowerDni || ""} ${elem?.borrower || ""}`,
       region: elem.region || "",
       institutionDestination: elem.institutionDestination || "",
+      history: elem?.history || [],
     };
 
     return { codeData, infoData, messages, buttonDisabled, modalTrackingData };

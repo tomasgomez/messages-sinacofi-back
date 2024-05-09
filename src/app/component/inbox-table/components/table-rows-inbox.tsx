@@ -5,9 +5,6 @@ import Checkbox from "@mui/material/Checkbox";
 import { rowOptions } from "../constants";
 import {
   StyledTabCell,
-  StyledChip,
-  StyledMessageContiner,
-  StyledMessage,
 } from "../style";
 import { TableProps } from "../type";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -15,14 +12,13 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import ExpandableTable from "./expandable-table/expandable-table-inbox";
 
-import { Box } from "@mui/material";
-import { CopyAll, SendOutlined } from "@mui/icons-material";
-
 type CustomCellType = {
   value: any;
   render: any;
   row: any;
   rowOptions?: any;
+  highlightLastRow?: boolean;
+  isLastRow?: boolean;
 };
 
 const CustomCell = ({
@@ -30,20 +26,35 @@ const CustomCell = ({
   render: Component,
   row,
   rowOptions,
+  highlightLastRow,
+  isLastRow,
 }: CustomCellType) => {
   return (
-    <StyledTabCell component="th" scope="row" {...rowOptions}>
+    <StyledTabCell
+      component="th"
+      highlightRow={highlightLastRow && isLastRow}
+      scope="row"
+      {...rowOptions}
+    >
       {Component ? <Component value={value} row={row} /> : value}
     </StyledTabCell>
   );
 };
 
 export function TableContentRows(props: TableProps) {
-  const { handleClick, row, isItemSelected, labelId, withCheckbox, columns } =
-    props;
+  const {
+    handleClick,
+    row,
+    isItemSelected,
+    labelId,
+    withCheckbox,
+    columns,
+    highlightLastRow,
+    isLastRow,
+    noExtraColumn,
+  } = props;
   const [isOpen, setIsOpen] = React.useState(false);
   const withActions = columns.some((elem) => elem.id === "actions");
-
   return (
     <>
       <TableRow
@@ -75,10 +86,12 @@ export function TableContentRows(props: TableProps) {
             row={row}
             render={column.render}
             rowOptions={rowOptions[column?.id]}
+            highlightLastRow={highlightLastRow}
+            isLastRow={isLastRow}
           />
         ))}
         {/* ////////////////// Expandable table Icon /////////////////////// */}
-        {!withActions && (
+        {!withActions && !noExtraColumn && (
           <StyledTabCell>
             {row.stateProgress && (
               <IconButton

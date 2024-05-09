@@ -11,29 +11,29 @@ import {
   buttonUpdateStateSx,
 } from "./components/styles";
 import { ModalTrackingData } from "@/types/mortgage-discharge";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { updateForeClosureMessage } from "../../api-calls";
 
 export const TrackingModal = (props: {
   open: boolean;
   onClose: (state: boolean) => void;
   data: ModalTrackingData | undefined;
+  handleGetDataList: () => void;
 }) => {
-  const [loading, setLoading] = useState(true);
-  const { open, onClose, data } = props;
+  const [statusSelected, setStatusSelected] = useState("021");
+  const { open, onClose, data, handleGetDataList } = props;
+
   const handleClose = () => {
     onClose(false);
   };
 
-  useEffect(() => {
-    if (open) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
-    }
-  }, []);
+  const { cukCode, history, ...restOfData } = data || {};
 
-  const { cukCode, ...restOfData } = data || {};
+  const handleChange = async () => {
+    await updateForeClosureMessage(cukCode, statusSelected);
+    handleClose();
+    await handleGetDataList();
+  };
 
   return (
     <Modal
@@ -60,8 +60,8 @@ export const TrackingModal = (props: {
         Base de Seguimiento Alzamiento Hipotecario
       </Typography>
       <Box display="flex" gap="20px">
-        <CardDetails data={restOfData} loading={loading} />
-        <CardStatusUpdate loading={loading} />
+        <CardDetails data={restOfData} />
+        <CardStatusUpdate data={history} />
       </Box>
       <Box display="flex" my="28px">
         <Box flex={1}>
@@ -83,14 +83,25 @@ export const TrackingModal = (props: {
           </Typography>
         </Box>
         <Box>
-          <MortgageStatusDropdown />
+          <MortgageStatusDropdown
+            value={statusSelected}
+            onChange={setStatusSelected}
+          />
         </Box>
       </Box>
       <Box display="flex" justifyContent="end" gap="12px">
-        <Button sx={buttonUpdateStateSx} variant="outlined">
+        <Button
+          sx={buttonUpdateStateSx}
+          onClick={handleClose}
+          variant="outlined"
+        >
           Cerrar
         </Button>
-        <Button sx={buttonUpdateStateSecondarySx} variant="contained">
+        <Button
+          sx={buttonUpdateStateSecondarySx}
+          onClick={handleChange}
+          variant="contained"
+        >
           Actualizar Estado
         </Button>
       </Box>

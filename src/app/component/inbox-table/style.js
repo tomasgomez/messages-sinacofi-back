@@ -4,10 +4,11 @@ import Chip from "@mui/material/Chip";
 
 // TODO: fix mix and max width props
 export const StyledTabCell = styled(TableCell)`
-  // max-width: ${(props) => props?.maxwidth}px; 
+  // max-width: ${(props) => props?.maxwidth}px;
   // min-width: ${(props) => props?.minwidth}px;
   // font-size: ${(props) => props?.fontSize}px;
   font-weight: ${(props) => (props?.isBlod ? "bold" : "normal")};
+  background: ${(props) => (props?.highlightRow ? "#EFFCFF" : "")};
   text-wrap: nowrap;
 `;
 
@@ -37,7 +38,22 @@ export const StyledTableCellHeader = styled(TableCell)`
   padding-left: 16px;
 `;
 
-export const StyledCapitalizedSpan=styled('span')`
+export const StyledCapitalizedSpan = styled("span")`
   text-transform: capitalize;
-`
+`;
 
+export const StyledhighlightLastRow = styled("div")`
+  color: #565656;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px;
+`;
+
+export const StyledCircle = styled("div")`
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #00b2e2;
+  margin-right: 5px;
+`;
