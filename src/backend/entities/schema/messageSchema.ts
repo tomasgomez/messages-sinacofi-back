@@ -30,7 +30,7 @@ export interface Parameter {
     messageCode: string;
     label: string;
     type: string;
-    defaultValue: string;
+    defaultValue: string | any;
     priority: number;
     description: string;
     placeholder: string;
@@ -39,7 +39,7 @@ export interface Parameter {
 }
 
 export interface Properties {
-    [key: string]: string;
+    [key: string]: string | boolean;
 }
 
 export interface Validations {

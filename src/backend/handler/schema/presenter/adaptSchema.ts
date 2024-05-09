@@ -1,7 +1,7 @@
 import { MessageSchemaFront, Parameter, Validations } from "@/backend/entities/schema/messageSchema";
 
 // Function to adapt data to Schema type
-export function adaptSchema(dataToAdapt: any): MessageSchemaFront {
+export function adaptSchema(dataToAdapt: any, userData: any): MessageSchemaFront {
     const schema: MessageSchemaFront = new MessageSchemaFront();
     
     if (dataToAdapt) {
@@ -13,7 +13,7 @@ export function adaptSchema(dataToAdapt: any): MessageSchemaFront {
         schema.updatedAt = dataToAdapt.updatedAt;
     }
     
-    const newParameters: Parameter[] = extractParameters(dataToAdapt);
+    const newParameters: Parameter[] = extractParameters(dataToAdapt, userData);
     
     schema.parameters = newParameters;
     
@@ -21,11 +21,11 @@ export function adaptSchema(dataToAdapt: any): MessageSchemaFront {
 }
 
 // Extract parameters from dataToAdapt
-function extractParameters(dataToAdapt: any): Parameter[] {
+function extractParameters(dataToAdapt: any, userData: any): Parameter[] {
     const parameters: any[] = dataToAdapt?.parameters || [];
     const sortedParameters = sortParametersByPriority(parameters);
 
-    return sortedParameters.map((parameter: any) => adaptParameter(parameter));
+    return sortedParameters.map((parameter: any) => adaptParameter(parameter, userData));
 }
 
 // Sort parameters by priority in ascending order
@@ -33,8 +33,21 @@ function sortParametersByPriority(parameters: any[]): any[] {
     return parameters.sort((a: any, b: any) => (a.priority || 0) - (b.priority || 0));
 }
 
+function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiverId?: any, sender?: any } = {}) {
+    if (defaultValue === "Current Date") {
+        return new Date();
+    }
+    if (defaultValue === "userInstitution") {
+        return userData?.sender?.name;
+    }
+    if (defaultValue === "receiverId") {
+        return userData?.receiverId;
+    }
+    return defaultValue;
+}
+
 // Adapt parameter object
-function adaptParameter(parameter: any): Parameter {
+function adaptParameter(parameter: any, userData: any): Parameter {
     const { name, messageCode, label, type, placeholder, priority, rules, optionValues, row, column, defaultValue } = parameter;
     const multiple = optionValues && optionValues.length > 0;
     const validations: Validations = extractValidations(rules);
@@ -44,15 +57,15 @@ function adaptParameter(parameter: any): Parameter {
         messageCode,
         label,
         type,
-        defaultValue,
+        defaultValue: getDefaultValue(defaultValue, userData),
         priority,
         description: "",
         placeholder,
         properties: {
-            "multiple": multiple,
             "rows": row,
             "columns": column,
-            "options": optionValues
+            ...(type === "select" ? { "multiple": multiple,"options": optionValues } : {}),
+            ...(validations?.disabled ? { disabled: true } : {})
         },
         validations
     };

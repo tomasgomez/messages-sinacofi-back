@@ -28,8 +28,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Change after add users "selectedInsitution"
-  const [selectedInsitution, setSelectedInsitution] = useState("0027");
+  // Change after add users "selectedInstitution"
+  const [selectedInstitution, setSelectedInsitution] = useState("0027");
   const [modalState, setModalState] = useState<{
     type: "success" | "error" | "decision" | "none";
     title: string;
@@ -56,7 +56,7 @@ export default function RootLayout({
               <MyContexLayout.Provider
                 value={{
                   setModalState,
-                  selectedInsitution,
+                  selectedInstitution,
                   setSelectedInsitution,
                 }}
               >
