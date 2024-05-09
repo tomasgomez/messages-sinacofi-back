@@ -70,6 +70,7 @@ const CreateMessage = () => {
         console.log({ data });
         getMessageSchema(messageCode, selectedInstitution, institutionId)
           .then((schema: any) => {
+            console.log({ schema });
             setMessageSchema({
               ...schema,
               actions: { saveDraftDisabled: true, sendButtonDisabled: false },
@@ -81,7 +82,7 @@ const CreateMessage = () => {
                   defaultValue: institutionId,
                   disabled: true
                 } 
-                : parameter.id === "cukCode" 
+                : parameter.id === "CUK" 
                 ? {
                   ...parameter,
                   defaultValue: data[0]?.cukCode,
@@ -96,7 +97,8 @@ const CreateMessage = () => {
                 : parameter.id === "priority"
                   ? {
                     ...parameter,
-                    defaultValue: data[0]?.priority,
+                    // defaultValue: data[0]?.priority,
+                    defaultValue: "priorityNormal",
                     disabled: true
                   } 
                   // : { ...parameter, disabled: true }
@@ -104,16 +106,16 @@ const CreateMessage = () => {
                     ? {
                       ...parameter,
                       type: "password",
-                      defaultValue: initializarField(parameter.name, data[0]?.parameters),
+                      defaultValue: initializarField(parameter.id, data[0]?.parameters),
                       disabled: false
                     }
                     : {
                       ...parameter,
-                      defaultValue: initializarField(parameter.name, data[0]?.parameters),
-                      ...(parameter.type === "select" ? { selected: initializarField(parameter.name, data[0]?.parameters) }: {}),
+                      defaultValue: initializarField(parameter.id, data[0]?.parameters),
+                      ...(parameter.type === "select" ? { selected: initializarField(parameter.id, data[0]?.parameters) }: {}),
                       disabled: true
                     }
-              )).filter((parameter: any) => parameter.id !== "cuk")
+              ))
             });
           })
           .catch((error) => {

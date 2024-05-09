@@ -17,6 +17,7 @@ export function TableHeader(props: EnhancedTableProps) {
     onRequestSort,
     withCheckboxAll,
     columns = [],
+    noExtraColumn,
   } = props;
   const createSortHandler =
     (property: KeyOfData) => (event: React.MouseEvent<unknown>) => {
@@ -67,7 +68,7 @@ export function TableHeader(props: EnhancedTableProps) {
             </StyledTableCellHeader>
           )
         )}
-        {!withActions && <TableCell />}
+        {!withActions && !noExtraColumn && <TableCell />}
       </TableRow>
     </TableHead>
   );

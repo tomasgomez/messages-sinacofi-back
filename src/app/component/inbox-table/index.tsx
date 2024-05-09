@@ -9,12 +9,13 @@ import { TableHeader } from "./components/table-header-inbox";
 import TableContentRows from "./components/table-rows-inbox";
 import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
-import { StyledTabCell } from "./style";
+import { StyledCircle, StyledhighlightLastRow, StyledTabCell } from "./style";
 import { Columns, Message, KeyOfData, Order, SentData } from "./type";
 import { getComparator, stableSort } from "./utils";
 
 import { TableContentLoader } from "./components/table-content-loader";
 import { MessageExportContext } from "../MessageExportProvider";
+import { Typography } from "@mui/material";
 
 export default function EnhancedTable(props: {
   rows: Message[] | SentData[] | any[];
@@ -25,6 +26,9 @@ export default function EnhancedTable(props: {
   maxHeight?: number | string;
   defaultOrderBy?: keyof Message;
   defaultOrder?: Order;
+  highlightLastRow?: boolean;
+  highlightLastRowText?: string;
+  noExtraColumn?: boolean;
 }) {
   const {
     rows,
@@ -35,6 +39,9 @@ export default function EnhancedTable(props: {
     maxHeight = 500,
     defaultOrder,
     defaultOrderBy,
+    highlightLastRow,
+    highlightLastRowText,
+    noExtraColumn,
   } = props;
 
   const [order, setOrder] = React.useState<Order>(defaultOrder || "asc");
@@ -122,6 +129,7 @@ export default function EnhancedTable(props: {
             onRequestSort={handleRequestSort}
             rowCount={rows?.length}
             columns={columns}
+            noExtraColumn={noExtraColumn}
           />
           <TableBody>
             {loading ? (
@@ -139,6 +147,9 @@ export default function EnhancedTable(props: {
                     isItemSelected={isItemSelected}
                     handleClick={handleClick}
                     columns={columns}
+                    highlightLastRow={highlightLastRow}
+                    isLastRow={!index}
+                    noExtraColumn={noExtraColumn}
                   />
                 );
               })
@@ -155,15 +166,29 @@ export default function EnhancedTable(props: {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 7, 10, 25]}
-        component="div"
-        count={rows?.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: highlightLastRow ? "space-between" : "flex-end",
+        }}
+      >
+        {highlightLastRow && (
+          <StyledhighlightLastRow>
+            <StyledCircle />
+            <Typography fontSize={12}>{highlightLastRowText}</Typography>
+          </StyledhighlightLastRow>
+        )}
+        <TablePagination
+          rowsPerPageOptions={[5, 7, 10, 25]}
+          component="div"
+          count={rows?.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </div>
     </Paper>
   );
 }
