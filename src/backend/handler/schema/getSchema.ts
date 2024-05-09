@@ -11,10 +11,11 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         /* Validate the query params and get the Schema */
         let filter = validateGetSchema(req.query);
 
-        const userData: { senderId: any, receiverId: any, sender: any } = {
+        const userData: { senderId: any, receiverId: any, sender: any, cuk: any } = {
           senderId: req.query.senderId,
           receiverId: req.query.receiverId,
-          sender: null
+          sender: null,
+          cuk: req.query.cuk
         };
 
         if (filter instanceof Error) {
@@ -28,7 +29,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         }
 
         /* Use the PrismaAreaAdapter to get the Schema from the database */
-        let schemaResponse = await schemaUseCase.getSchema(filter.messageCode[0]) //TODO: Change this to getSchema
+        let schemaResponse = await schemaUseCase.getSchema(filter.messageCode[0], userData.cuk) //TODO: Change this to getSchema
 
         /* If the Schema is not found, return a 204 error */
         if (schemaResponse instanceof Error) {

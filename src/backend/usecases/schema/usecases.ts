@@ -12,8 +12,8 @@ export class SchemaUsecase implements SchemaUsecases {
         getSchemaTypes(filter)
 
     // get Schema
-    getSchema = async (messageCode: string): Promise<MessageSchema[] | Error> => 
-        getSchema(messageCode)
+    getSchema = async (messageCode: string, cuk?: string): Promise<MessageSchema[] | Error> => 
+        getSchema(messageCode, cuk)
 
 }
 
