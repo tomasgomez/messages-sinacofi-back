@@ -54,12 +54,8 @@ async function find(message: Partial < Message > , detail: boolean, count: strin
             messages = await prismaClient.message.findMany({
                 where: {
                     ...where,
-                    documents: {
-                        some: {}
-                    },
-                    parameters: {
-                        some: {}
-                    }
+                    documents: {},
+                    parameters: {}
                 },
                 select,
                 orderBy: {
@@ -73,12 +69,8 @@ async function find(message: Partial < Message > , detail: boolean, count: strin
             messages = await prismaClient.message.findMany({
                 where: {
                     ...where,
-                    documents: {
-                        some: {}
-                    },
-                    parameters: {
-                        some: {}
-                    }
+                    documents: {},
+                    parameters: {}
                 },
                 select,
                 orderBy: {
