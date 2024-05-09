@@ -26,20 +26,20 @@ export interface IMessage {
 
 export interface Parameter {
     id: string ; 
-    name: string;
-    messageCode?: string;
-    label?: string;
-    type?: string;
-    placeholder?: string;
-    description?: string;
-    defaultValue?: string;
-    priority?: number;
-    value?: string;
-    properties?: any;
-    validations?: any;
-    createdAt?: Date;
-    updatedAt?: Date;
-    messageId?:string;
+    name: string | null;
+    messageCode?: string | null;
+    label?: string | null;
+    type?: string | null;
+    placeholder?: string | null;
+    description?: string | null;
+    defaultValue?: string | null;
+    priority?: number | null;
+    value?: string | null;
+    properties?: any | null;
+    validations?: any | null;
+    createdAt?: Date ;
+    updatedAt?: Date ;
+    messageId?:string | null;
 }
 
 export interface Documents {

@@ -19,10 +19,13 @@ export function isValidMessage(message: Message): boolean {
 }
 
 export function processMessageParameters(parameters: any[] | undefined, cuk: CUK): void {
+    console.log("parameters", parameters)
+    console.log("cuk", cuk)
     if (!parameters) {
         return;
     }
     for (const parameter of parameters) {
+        console.log("parameter.name", parameter.name)
         const paramConfig = getParameterConfig(parameter.name);
         if (!paramConfig || !parameter.name || !parameter.value || parameter.value === '' || parameter.name === '') {
             continue;

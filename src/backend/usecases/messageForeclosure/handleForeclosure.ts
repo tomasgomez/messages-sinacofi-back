@@ -30,8 +30,6 @@ export async function handleForeclosure(cukRepository: CUKRepository, cuk: CUK, 
       throw new Error('Invalid message');
     }
 
-    console.log('Creating foreclosure:', message);
-
     switch (message.messageCode) {
 
       /* ALZAMIENTO HIPOTECARIO */

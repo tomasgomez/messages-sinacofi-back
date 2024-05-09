@@ -45,7 +45,7 @@ export function validateCreateMessage(data: any): Message | Error {
         placeholder: element.placeholder ?? '',
         description: element.description ?? '',
         defaultValue: element.defaultValue ?? '',
-        priority: element.defaultValue ?? 0,
+        priority: element.priority ?? 0,
         value: element.value ?? '',
         properties: element.properties ?? '',
         validations: element.validations ?? '',
@@ -55,8 +55,9 @@ export function validateCreateMessage(data: any): Message | Error {
       }
       parametersMessage.push(parameter)
      });
+
+    message.parameters = parametersMessage;
   }
-  
 
   return message;
 }

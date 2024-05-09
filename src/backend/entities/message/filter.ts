@@ -4,6 +4,7 @@ export interface MessageFilter {
     status?: string[];
     startDate?: string[];
     endDate?: string[];
+    sender?: string[];
     receiver?: string[];
     clientDni?: string[];
     sellerDni?: string[];
