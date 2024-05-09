@@ -35,12 +35,7 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
     path = `${path}/${messageCode}`;
 
 
-    console.log('path', path);
-    console.log('url', url);
-
-
     let schemas = await get(url, path, {},{})
-    console.log('schemas', messageCode);
     const messageAH = ["671", "672", "673"].find((element) => element === messageCode);
     if (messageAH && cuk) {
       let message = new Message();
@@ -50,13 +45,20 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
       if (response instanceof Error) {
         return response;
       }
+      const schemaUpdated = schemas.parameters.map((schema: any) => {
+        const params = response[0].parameters?.find((param:any) => param.name === schema.name);
+        if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.name != 'cukCode' && params.type != "label") {
+          const value = params.value;
+          schema.defaultValue = value;
+          
+        }
 
-      console.log("response", response[0]);
-      console.log("---");
-      console.log("response", schemas);
+        return schema;
+        
+      });
 
-
-    
+      schemas.paremeters = schemaUpdated; 
+          
     }
 
     return schemas;
