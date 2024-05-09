@@ -19,15 +19,15 @@ export function isValidMessage(message: Message): boolean {
 }
 
 export function processMessageParameters(parameters: any[] | undefined, cuk: CUK): void {
-    console.log("parameters", parameters)
-    console.log("cuk", cuk)
+
     if (!parameters) {
         return;
     }
     for (const parameter of parameters) {
-        console.log("parameter.name", parameter.name)
+
         const paramConfig = getParameterConfig(parameter.name);
         if (!paramConfig || !parameter.name || !parameter.value || parameter.value === '' || parameter.name === '') {
+            console.log('Invalid parameter:', parameter.name);
             continue;
         }
         cuk[paramConfig.key as keyof CUK] = parameter.value;
@@ -37,10 +37,8 @@ export function processMessageParameters(parameters: any[] | undefined, cuk: CUK
     }
 }
 
-export function getParameterConfig(parameterName: string): {
-    key: string;name ? : string
-} | undefined {
-    return parameters[parameterName];
+export function getParameterConfig(parameterName: string): {key: string ; name ? : string} | undefined {
+    return parametersToAdd[parameterName];
 }
 
 export function setInstitutionCode(cuk: CUK, institutionCode: string | undefined | null): void {
@@ -64,25 +62,43 @@ export function setCukStatus(cuk: CUK, status: string | null | undefined): void 
     }
 }
 
-const parameters: {
+const parametersToAdd: {
     [key: string]: {
         key: string;name ? : string
     }
 } = {
-    'descriptionTypeMessage': {
-        key: 'description',
-        name: 'name'
+    "messageDescription": {
+        "key": "description",
+        "name": "name"
     },
-    'emissionDate': {
-        key: 'foreclosureDate'
+    "issuedDate": {
+        "key": "issuedDate"
     },
-    'channel': {
-        key: 'channel'
+    "channel": {
+        "key": "channel"
     },
-    'buyer': {
-        key: 'clientName'
+    "region": {
+        "key": "region"
     },
-    'rutBuyer': {
-        key: 'clientDni'
-    }
+    // COMPRADOR
+    "buyer": {
+        "key": "buyer"
+    },
+    "buyerDni": {
+        "key": "buyerDni"
+    },
+    // DEUDOR
+    "borrowerDni" : {    
+        "key": "borrowerDni"
+    },
+    "E32_2": {
+        "key": "borrower"
+    },
+    // VENDEDOR
+    "ownerDni": {
+        "key": "ownerDni"
+    },
+    "owner": {
+        "key": "owner"
+    },
 };

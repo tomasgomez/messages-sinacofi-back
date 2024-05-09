@@ -50,26 +50,33 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
                 status: {
                     in: filter.status
                 },
-                clientDni: {
-                    in: filter.clientDni
-                },
-                clientName: {
-                    in: filter.clientName
-                },
+
                 institutionCode: {
                     in: filter.institutionCode
                 },
                 institutionDestination: {
                     in: filter.institutionDestination
                 },
-                rutSeller: {
-                    in: filter.rutSeller
-                },
                 region: {
                     in: filter.region
                 },
-                debtorRut: {
-                    in: filter.debtorRut
+                buyerDni: {
+                    in: filter.buyerDni
+                },
+                buyer: {
+                    in: filter.buyer
+                },
+                ownerDni: {
+                    in: filter.ownerDni
+                },
+                owner: {
+                    in: filter.owner
+                },
+                borrowerDni: {
+                    in: filter.borrowerDni
+                },
+                borrower: {
+                    in: filter.borrower
                 },
                 ...dateRangeFilter
             },

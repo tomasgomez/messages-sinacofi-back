@@ -37,8 +37,6 @@ export interface Parameter {
     value?: string | null;
     properties?: any | null;
     validations?: any | null;
-    createdAt?: Date ;
-    updatedAt?: Date ;
     messageId?:string | null;
 }
 
@@ -47,6 +45,5 @@ export interface Documents {
     documentName?: string | null;
     content?: string | null;
     url?: string | null;
-    createdAt?: Date;
     messageId?: string | null;
 }

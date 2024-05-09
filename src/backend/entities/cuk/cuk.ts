@@ -1,6 +1,5 @@
 import { ICUK } from './interface';
 import { getChileanTime } from '../../utils/functions';
-
 export class CUK implements ICUK {
     id?: string;
     name?: string | null;
@@ -8,22 +7,23 @@ export class CUK implements ICUK {
     creationDate?: string | null;
     
     cukCode?: string | null;
-    foreclosureDate?: string | null;
+    issuedDate?: string | null;
     channel?: string | null;
     status?: string | null;
-    clientDni?: string | null;
-    clientName?: string | null;
     institutionCode?: string | null;
     institutionDestination?: string | null;
-    rutSeller?: string | null;
-    seller?: string | null;
     region?: string | null;
-    debtorRut?: string | null;
-    rutBuyer?: string | null;
+
+    buyerDni?: string | null;
     buyer?: string | null;
-    debsName?: string | null;
+    ownerDni?: string | null;
+    owner?: string | null;
+    borrowerDni?: string | null;
+    borrower?: string | null;
 
     messages?: any[];
+
+    history?: any | null;
 
 
     constructor() {

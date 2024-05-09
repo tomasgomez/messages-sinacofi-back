@@ -9,11 +9,14 @@ export interface Filter {
   endDate ? : Date;
   channel ? : string[];
   status ? : string[];
-  clientDni ? : string[];
-  clientName ? : string[];
-  rutSeller ? : string[] | null;
   region ? : string[] | null;
-  debtorRut ? : string[] | null;
+
+  buyerDni ? : string[];
+  buyer ? : string[];
+  ownerDni ? : string[];
+  owner ? : string[];
+  borrowerDni ? : string[];
+  borrower ? : string[];
 
   institutionCode ? : string[];
   institutionDestination ? : string[];

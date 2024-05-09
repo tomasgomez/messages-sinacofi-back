@@ -27,17 +27,22 @@ async function findBy(filter: MessageFilter): Promise<CUK[] | Error> {
         for (const cuk of cuks) {
             let cukNew = new CUK();
 
-            //TODO: do it dynamiclly
             cukNew.id = cuk.id;
             cukNew.name = cuk.name;
             cukNew.description = cuk.description;
             cukNew.creationDate = cuk.creationDate;
             cukNew.cukCode = cuk.cukCode;
-            cukNew.foreclosureDate = cuk.foreclosureDate;
+            cukNew.issuedDate = cuk.issuedDate;
             cukNew.channel = cuk.channel;
             cukNew.status = cuk.status;
-            cukNew.clientDni = cuk.clientDni;
-            cukNew.clientName = cuk.clientName;
+            cukNew.buyer = cuk.buyer;
+            cukNew.buyerDni = cuk.buyerDni;
+            cukNew.owner = cuk.owner;
+            cukNew.ownerDni = cuk.ownerDni;
+            cukNew.borrower = cuk.borrower;
+            cukNew.borrowerDni = cuk.borrowerDni;
+            cukNew.region = cuk.region;
+            cukNew.institutionCode = cuk.institutionCode;
             cukNew.institutionDestination = cuk.institutionDestination;
 
             const messagesForCUK = await prismaClient.message.findMany({

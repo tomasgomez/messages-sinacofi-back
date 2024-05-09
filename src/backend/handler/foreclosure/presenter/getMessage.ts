@@ -1,5 +1,10 @@
-import { Filter } from '@/backend/entities/global/filter';
-import { processDateField, processStringArrayField } from '@/backend/utils/functions';
+import {
+  Filter
+} from '@/backend/entities/global/filter';
+import {
+  processDateField,
+  processStringArrayField
+} from '@/backend/utils/functions';
 
 export function validateGetMessageForeclosure(data: any): Filter | Error {
   const filter: Filter = {};
@@ -13,13 +18,14 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
     endDate,
     channel,
     status,
-    clientDni,
-    clientName,
     institutionDestination,
     institutionCode,
-    rutSeller,
-    region,
-    debtorRut,
+    buyerDni,
+    buyer,
+    ownerDni,
+    owner,
+    borrowerDni,
+    borrower,
     count,
     offset
   } = data;
@@ -33,13 +39,15 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   processDateField('endDate', endDate, filter);
   processStringArrayField('channel', channel, filter);
   processStringArrayField('status', status, filter);
-  processStringArrayField('clientDni', clientDni, filter);
-  processStringArrayField('clientName', clientName, filter);
   processStringArrayField('institutionCode', institutionCode, filter);
   processStringArrayField('institutionDestination', institutionDestination, filter);
-  processStringArrayField('rutSeller', rutSeller, filter);
-  processStringArrayField('region', region, filter);
-  processStringArrayField('debtorRut', debtorRut, filter);
+  processStringArrayField('buyerDni', buyerDni, filter);
+  processStringArrayField('buyer', buyer, filter);
+  processStringArrayField('ownerDni', ownerDni, filter);
+  processStringArrayField('owner', owner, filter);
+  processStringArrayField('borrowerDni', borrowerDni, filter);
+  processStringArrayField('borrower', borrower, filter);
+
   processStringArrayField('count', count, filter);
   processStringArrayField('offset', offset, filter);
 

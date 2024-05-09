@@ -62,7 +62,19 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
 
             /* Create a duplicate message based on the fetched message with modifications */
             const duplicatedMessage = await tx.message.create({
-                data: newMessage
+                data: {
+                    ...newMessage,
+                    documents: {
+                        createMany: {
+                            data: newMessage.documents || []
+                        }
+                    },
+                    parameters: {
+                        createMany: {
+                            data: newMessage.parameters || []
+                        }
+                    },
+                }
             });
 
             return duplicatedMessage;

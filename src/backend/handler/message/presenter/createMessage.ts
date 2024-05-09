@@ -36,6 +36,12 @@ export function validateCreateMessage(data: any): Message | Error {
 
   if (parameters && typeof parameters === 'object') {
      parameters.forEach((element: any) => {
+      let value: string = '';
+
+      if (element && typeof element !== 'string' && 'value' in element) {
+        value = String(element.value);
+    }
+
       let parameter: Parameter =  {
         id: element.id ?? '',
         name: element.name ?? '',
@@ -46,12 +52,9 @@ export function validateCreateMessage(data: any): Message | Error {
         description: element.description ?? '',
         defaultValue: element.defaultValue ?? '',
         priority: element.priority ?? 0,
-        value: element.value ?? '',
+        value: value,
         properties: element.properties ?? '',
         validations: element.validations ?? '',
-        createdAt: element.createdAt ?? Date(),
-        updatedAt: element.updatedAt ?? Date(),
-        messageId: element.messageId ?? '',
       }
       parametersMessage.push(parameter)
      });

@@ -16,19 +16,19 @@ model CUK {
   description            String?
   status                 String?
   creationDate           String?
-  foreclosureDate        String?
+  issuedDate             String?
   channel                String?
-  clientDni              String?
-  clientName             String?
   institutionCode        String?
   institutionDestination String?
-  rutSeller              String?
   region                 String?
-  debtorRut              String?
-  rutBuyer               String?
-  debsName               String?
+  buyerDni               String?
   buyer                  String?
-  seller                 String?
+  ownerDni               String?
+  owner                  String?
+  borrowerDni            String?
+  borrower               String?
+
+  history Json? // [ {cukCode:'AH0000270000' status: '022 EN PROCESO', date: '2021-01-01 16:40:00' }, {cukCode:'AH0000270000' status: '023 ACEPTADO', date: '2021-01-02 16:40:00' } ]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -64,7 +64,7 @@ model Message {
 }
 
 model Parameters {
-  id           String   @id @default(uuid())
+  id           String
   name         String?
   messageCode  String?
   label        String?
@@ -73,7 +73,7 @@ model Parameters {
   description  String?
   defaultValue String?
   priority     Int?
-  value        String?
+  value        String? //string or number
   properties   Json?
   validations  Json?
   createdAt    DateTime @default(now())
@@ -82,6 +82,7 @@ model Parameters {
   messageId String
   Message   Message @relation(fields: [messageId], references: [id])
 
+  @@id([messageId, id])
   @@unique([messageId, name])
   @@index([messageId, name])
 }

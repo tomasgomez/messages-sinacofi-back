@@ -8,11 +8,9 @@ export interface ICUK {
     creationDate?: string | null;
 
     cukCode?: string | null;
-    foreclosureDate?: string | null;
+    issuedDate?: string | null;
     channel?: string | null;
     status?: string | null;
-    clientDni?: string | null;
-    clientName?: string | null;
     institutionDestination?: string | null;
 
     setTime?(): void;
