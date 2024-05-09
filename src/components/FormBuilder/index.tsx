@@ -122,7 +122,7 @@ const PasswordField = (props: any) => {
 const FieldTypes = {
   textField: Field,
   date: (props: any) => {
-    console.log("DATEPICKER: ", { props });
+    // console.log("DATEPICKER: ", { props });
     return (
       <DatePickerInput {...props} />
     );
@@ -136,8 +136,13 @@ const FieldTypes = {
     // />
   },
   select: Dropdrown,
-  textArea: Field,
-  rut: ({ ...other }: any) => (
+  textArea: (props: any) => (
+    <Field
+      {...props}
+      multiline
+    />
+  ),
+  dni: ({ ...other }: any) => (
     <RutField
       {...other}
       // mask="9{1,2}.9{3}.9{3}-(9|k|K)"
@@ -202,7 +207,7 @@ const LabelTypes = {
   ),
   label: (props: any) => (
     <Box>
-      {props.label.split("\n").map((label: any) => (
+      {props.label.split("\\n").map((label: any) => (
         <Typography variant={props?.properties?.variant || "body2"} key={label}>
           {label}<br/>
         </Typography>
@@ -213,9 +218,7 @@ const LabelTypes = {
 
 const FieldSelector = ({ type, props }: { type: any, props: any }) => {
   const FieldGotten = FieldTypes[type as keyof typeof FieldTypes] || FieldTypes.textField;
-  if ("password" === type) {
-    console.log({ password: type });
-  }
+
   if (type === "linebreak" || type === "label") {
     const Label = LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.label;
     return (
@@ -223,19 +226,24 @@ const FieldSelector = ({ type, props }: { type: any, props: any }) => {
     );
   };
 
+  const { validations: { disabled, ...rules }, ...inputProps } = props; 
+
+  console.log({ props, disabled, inputProps, rules });
+
   return (
     <Controller
-      name={props.name}
-      control={props.control}
-      defaultValue={props.defaultValue}
-      rules={{ ...props?.validations, required: !(props.validations?.required === false) }}
-      render={({ field, ...rest }) => {
+      name={inputProps.id}
+      control={inputProps.control}
+      defaultValue={inputProps.defaultValue}
+      rules={{ ...rules, /* required: !(props.validations?.required === false) */ }}
+      render={({ field, }) => {
         return (
           <FieldGotten
-            error={!!props.errors?.[props.name]}
-            {...props}
+            error={!!props.errors?.[inputProps.id]}
+            {...inputProps}
             {...field}
-            label={props.validations?.required === false ? props.label : `* ${props.label}`}
+            // {...validations}
+            label={rules?.required ? `* ${inputProps.label}` : inputProps.label }
           />
         )
       }}
@@ -251,21 +259,26 @@ const FormBuilder = ({ /* children, */ schema, register, control, errors }: { /*
   //   // }
   // });
   // const onSubmit: SubmitHandler<{}> = (data: any) => console.log(data)
-  console.log({ errors });
+  // console.log({ errors, schema });
   return (
     // <Form>
     // <form onSubmit={handleSubmit(onSubmit)}> 
     <>
       <Grid container spacing={2}>
         {schema?.parameters?.map((field: any) => {
+          console.log({ field });
             return (
-              <Grid item xs={field.properties.columns} key={field.name}>
-                <FieldSelector type={field.type} props={{
-                  ...field.properties,
-                  ...field,
-                  control,
-                  ...(field.type !== "label" || field.type !== "linebreak") ? register(field.name) : {},
-                  errors }}/>
+              <Grid item xs={field.properties.columns} key={field.id}>
+                <FieldSelector
+                  type={field.type}
+                  props={{
+                    ...field.properties,
+                    control,
+                    ...(field.type !== "label" && field.type !== "linebreak") ? register(field.id) : {},
+                    ...field,
+                    errors
+                  }}
+                />
                 {/* <Field
                   {...field.properties}
                   label={field.label}

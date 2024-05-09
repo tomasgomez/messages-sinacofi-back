@@ -1,21 +1,12 @@
 "use client"
 import AddFileModal from "@/app/component/modal-add-file";
-import { MyContexLayout } from "@/app/context";
+import { useAppContext } from "@/app/context";
 import { createMessage, getMessageDetails, /* getMessageDetails, */ getMessageSchema, updateMessage } from "@/app/services/common";
-import Dropdrown from "@/components/Dropdown";
-import Field from "@/components/Field";
 import Form from "@/components/Form";
-import FormBuilder from "@/components/FormBuilder";
-import Loader from "@/components/Loader";
 import { useModalManager } from "@/components/Modal";
-import { CloseRounded, DeleteOutlineOutlined, Remove, RemoveOutlined } from "@mui/icons-material";
-import { Box, Button, Card, CardContent, Container, Grid, IconButton, Stack, Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-const defaultPayload = {
-
-}
+import { useEffect, useState } from "react";
 const statusCodes = ["01", "05", "pending"];
 const payloadDefault: string[] = [
   "messageCode",
@@ -26,14 +17,14 @@ const payloadDefault: string[] = [
   "parameters"
 ];
 
-const getCreateMessagePayload = (data: any, schema: any) => {
+const getCreateMessagePayload = (data: any, schema: any, sender: any) => {
   const payload: { [key: string]: any } = {};
    
   payloadDefault.forEach((param: string) => {
     payload[param] = data[param];
   });
-  payload.sender = "CORP BANCA"
-  // const filteredData = Object.entries(data).filter((el: any) => el.name === )
+  payload.sender = sender;
+  payload.receiver = data.beneficiaryBank
   payload.parameters = Object.entries(data)
     .filter((el: any) => payload[el[0]] === undefined)
     .map((el) => {
@@ -48,6 +39,7 @@ const getCreateMessagePayload = (data: any, schema: any) => {
     });
   return payload;
 }
+
 const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
   const currentField = fieldList?.find((field: any) => fieldName === field.name);
   if (fieldName === "sign" && currentField?.value === "-"){
@@ -57,7 +49,7 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
 
 }
 const CreateMessage = () => {
-  const { setModalState } = useContext(MyContexLayout) as any;
+  const { setModalState, selectedInstitution } = useAppContext();
   const { onOpen: onSignOpen, onClose } = useModalManager({
     component: AddFileModal
   });
@@ -76,7 +68,7 @@ const CreateMessage = () => {
     if(cloneId || signMessageId) {
       getMessageDetails(cloneId || signMessageId).then((data) => {
         console.log({ data });
-        getMessageSchema(messageCode, institutionId)
+        getMessageSchema(messageCode, selectedInstitution, institutionId)
           .then((schema: any) => {
             setMessageSchema({
               ...schema,
@@ -133,17 +125,13 @@ const CreateMessage = () => {
           });
       });
     } else {
-      getMessageSchema(messageCode, institutionId)
+      console.log({ selectedInstitution });
+      getMessageSchema(messageCode, selectedInstitution, institutionId)
         .then((schema: any) => {
           setMessageSchema({
             ...schema,
-            parameters: schema?.parameters.map((parameter: any) => (
-              parameter.id === "receiver" 
-              ? { ...parameter, selected: institutionId, defaultValue: institutionId } 
-              : parameter.id === "messageCode"
-                ? { ...parameter, defaultValue: messageCode } 
-                : parameter
-            ))
+            actions: { saveDraftDisabled: false, sendButtonDisabled: false },
+            parameters: schema?.parameters
           });
         })
         .catch((error) => {
@@ -154,10 +142,11 @@ const CreateMessage = () => {
           setLoading(false);
         });
     }
-  }, [messageCode, institutionId, cloneId, signMessageId]);
+  }, [messageCode, institutionId, cloneId, signMessageId, selectedInstitution]);
 
   const onSubmit = (data: any) => {
-    const payload = getCreateMessagePayload(data, messageSchema);
+    const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution);
+
     if (signMessageId) {
       onSignOpen({
         onConfirm: (document: any) => {
@@ -214,8 +203,8 @@ const CreateMessage = () => {
       });
   };
   const onPrepare = (data: any) => {
-    setLoading(true);
-    const payload = getCreateMessagePayload(data, messageSchema);
+    // setLoading(true);
+    const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution);
     createMessage(payload, "01")
       .then((response: any) => {
         setLoading(false);
@@ -260,11 +249,11 @@ const CreateMessage = () => {
         actions={{
           submit: {
             onClick: onSubmit,
-            disabled: messageSchema.actions?.sendButtonDisabled,
+            disabled: messageSchema?.actions?.sendButtonDisabled,
           },
           prepared: {
             onClick: onPrepare,
-            disabled: messageSchema.actions?.saveDraftDisabled,
+            disabled: messageSchema?.actions?.saveDraftDisabled,
           }
         }}
       />

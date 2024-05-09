@@ -20,8 +20,8 @@ export default function InProcessScreen() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [page, setPage] = React.useState(0);
 
-  // Change after add users "selectedInsitution"
-  const { selectedInsitution } = React.useContext(MyContexLayout) as any;
+  // Change after add users "selectedInstitution"
+  const { selectedInstitution } = React.useContext(MyContexLayout) as any;
 
   const [filters, setFilters] = React.useState<any[]>([
     { label: "channel", value: "Personas" },
@@ -44,12 +44,12 @@ export default function InProcessScreen() {
     const auxFilter = [
       ...filters,
       // institutionDestination is a code so not need the funtion intitutionCodeToLabel
-      { label: "institutionCode", value: selectedInsitution },
+      { label: "institutionCode", value: selectedInstitution },
       { label: "count", value: rowsPerPage },
       { label: "offset", value: `${page * rowsPerPage}` },
     ];
     getDataList(auxFilter);
-  }, [filters, selectedInsitution, rowsPerPage, page]);
+  }, [filters, selectedInstitution, rowsPerPage, page]);
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

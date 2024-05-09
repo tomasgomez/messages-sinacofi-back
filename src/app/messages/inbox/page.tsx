@@ -13,16 +13,16 @@ export default function InboxScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<Message[]>([]);
 
-  // Change after add users "selectedInsitution"
-  const { selectedInsitution } = useContext(MyContexLayout) as any;
+  // Change after add users "selectedInstitution"
+  const { selectedInstitution } = useContext(MyContexLayout) as any;
 
   const fetchData = async () => {
     try {
       // after backend change yo have to this change to this
-      // selectedInsitution = await intitutionCodeToLabel(selectedInsitution)
+      // selectedInstitution = await intitutionCodeToLabel(selectedInstitution)
       // because we have to filter by label
       setIsLoading(true);
-      await fetch(`/api/message?status=06&receiver=${selectedInsitution}`)
+      await fetch(`/api/message?status=06&receiver=${selectedInstitution}`)
         .then((res) => res.json())
         .then((res) => {
           setData(res);
@@ -36,7 +36,7 @@ export default function InboxScreen() {
 
   useEffect(() => {
     fetchData();
-  }, [selectedInsitution]);
+  }, [selectedInstitution]);
 
   const tableTitle = (
     <Grid container p={2}>

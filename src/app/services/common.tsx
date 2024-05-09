@@ -1,6 +1,6 @@
 import institutions from "./mock-instititutions.json";
 import { messagesTypes } from "../../utils/messagesSchemaTypes";
-import { messageSchemas } from "@/utils/messagesSchema";
+// import { messageSchemas } from "@/utils/messagesSchema";
 
 export const getInstitutions = async () => {
   return new Promise((resolve) => {
@@ -21,24 +21,25 @@ export const getMessageDescriptions = async () => {
   return fetch("/api/rule").then((response) => response.json());
 };
 
-export const getMessageSchema = async (messageCode: string, institutionId: any) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const schema = messageSchemas.find((messageSchema) => messageSchema.messageCode === messageCode);
-      if (!schema) {
-        reject("Couln't find the form schema");
-      }
-      resolve({
-        ...schema,
-        parameters: schema?.parameters.map((parameter) => (
-          parameter.id === "institutionDestination" 
-          ? { ...parameter, defaultValue: institutionId } 
-          : parameter
-        ))
-      } as unknown as []);
-    }, 1000);
-  });
-  // return fetch(`/api/rule/schema?messageCode=${messageCode}`)
+export const getMessageSchema = async (messageCode: string, senderId: any, receiverId: any) => {
+  // return new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     const schema = messageSchemas.find((messageSchema) => messageSchema.messageCode === messageCode);
+  //     if (!schema) {
+  //       reject("Couln't find the form schema");
+  //     }
+  //     resolve({
+  //       ...schema,
+  //       parameters: schema?.parameters.map((parameter) => (
+  //         parameter.id === "institutionDestination" 
+  //         ? { ...parameter, defaultValue: institutionId } 
+  //         : parameter
+  //       ))
+  //     } as unknown as []);
+  //   }, 1000);
+  // });
+  return fetch(`/api/rule/schema?messageCode=${messageCode}&senderId=${senderId}&receiverId=${receiverId}`)
+    .then((response: any) => response.json())
   //   .then((response) => response.json())
   //   .then((schemas) => {
   //     console.log({ schemas });

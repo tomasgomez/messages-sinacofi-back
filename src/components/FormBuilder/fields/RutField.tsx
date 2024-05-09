@@ -96,7 +96,7 @@ const RutMask = (props: any) => {
   //   return rutMask;
   // }, []);
 
-  console.log({ value })
+  // console.log({ value })
 
   const rutMask = useMemo(() => generateMask(value), [value]);
 

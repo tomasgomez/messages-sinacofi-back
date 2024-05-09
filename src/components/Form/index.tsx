@@ -8,9 +8,10 @@ import { useEffect } from "react";
 
 const getDefaultValues = (schema: any) => {
   const defaultValues: { [key: string]: any } = {};
-  schema?.parameters.forEach((parameter: { defaultValue: any, name: string }) => {
-    defaultValues[parameter.name] = parameter.defaultValue;
-  });
+  schema?.parameters?.filter((parameter: any) => parameter.type !== "label" && parameter.type !== "linebreak")
+    .forEach((parameter: { defaultValue: any, id: string }) => {
+      defaultValues[parameter.id] = parameter.defaultValue;
+    });
   console.log({ defaultValues });
   return defaultValues;
 };

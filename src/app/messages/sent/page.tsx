@@ -16,17 +16,17 @@ export default function SentScreen() {
   const [data, setData] = React.useState<SentData[]>([]);
   const [selected, setSelected] = React.useState<number[]>([]);
 
-  // Change after add users "selectedInsitution"
-  const { selectedInsitution } = useContext(MyContexLayout) as any;
+  // Change after add users "selectedInstitution"
+  const { selectedInstitution } = useContext(MyContexLayout) as any;
 
   const fetchData = async () => {
     try {
       setIsLoading(true);
       // Backend have the sender like a label not a code
-      const selectedInsitutionLabel = await intitutionCodeToLabel(
-        selectedInsitution
+      const selectedInstitutionLabel = await intitutionCodeToLabel(
+        selectedInstitution
       );
-      await fetch(`/api/message?status=05&sender=${selectedInsitutionLabel}`)
+      await fetch(`/api/message?status=05&sender=${selectedInstitutionLabel}`)
         .then((res) => res.json())
         .then((res) => {
           setData(res);
@@ -40,7 +40,7 @@ export default function SentScreen() {
 
   useEffect(() => {
     fetchData();
-  }, [selectedInsitution]);
+  }, [selectedInstitution]);
 
   const actions = useMemo(
     () => ({

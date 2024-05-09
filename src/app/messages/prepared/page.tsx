@@ -15,8 +15,8 @@ export default function PreparedScreen() {
   const [data, setData] = React.useState<SentData[]>([]);
   const [selected, setSelected] = React.useState<number[]>([]);
   
-  // Change after add users "selectedInsitution"
-  const { setModalState, selectedInsitution } = React.useContext(
+  // Change after add users "selectedInstitution"
+  const { setModalState, selectedInstitution } = React.useContext(
     MyContexLayout
   ) as any;
 
@@ -24,10 +24,10 @@ export default function PreparedScreen() {
     try {
       setIsLoading(true);
       // Backend have the sender like a label not a code
-      const selectedInsitutionLabel = await intitutionCodeToLabel(
-        selectedInsitution
+      const selectedInstitutionLabel = await intitutionCodeToLabel(
+        selectedInstitution
       );
-      await fetch(`/api/message?status=01&sender=${selectedInsitutionLabel}`)
+      await fetch(`/api/message?status=01&sender=${selectedInstitutionLabel}`)
         .then((res) => res.json())
         .then((res) => {
           setData(res);
@@ -41,7 +41,7 @@ export default function PreparedScreen() {
 
   useEffect(() => {
     fetchData();
-  }, [selectedInsitution]);
+  }, [selectedInstitution]);
 
   const updateMessage = useCallback(async (id: string) => {
     try {

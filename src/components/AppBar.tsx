@@ -75,7 +75,7 @@ const MenuOptions = () => {
 
 const AppBar = () => {
   // Delete after add users
-  const { selectedInsitution, setSelectedInsitution } = useContext(
+  const { selectedInstitution, setSelectedInsitution } = useContext(
     MyContexLayout
   ) as any;
 
@@ -143,8 +143,8 @@ const AppBar = () => {
               {/* // Delete after add users */}
               <InstitutionDropdown
                 label="Nombre de Institución"
-                defaultValue={selectedInsitution}
-                selected={selectedInsitution}
+                defaultValue={selectedInstitution}
+                selected={selectedInstitution}
                 width={200}
                 onChange={setSelectedInsitution}
                 placeholder="Seleccione una Institución"
