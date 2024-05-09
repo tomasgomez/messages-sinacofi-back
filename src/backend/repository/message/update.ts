@@ -21,6 +21,12 @@ export async function update(message: Message): Promise<Message | Error> {
 
         console.log('Data to update:', dataToUpdate);
 
+        const parameters = dataToUpdate.parameters;
+
+        delete dataToUpdate.parameters;
+
+
+
         /* Update the message */
         const updatedMessage = await prismaClient.message.update({
             where: {
@@ -28,6 +34,21 @@ export async function update(message: Message): Promise<Message | Error> {
             },
             data: {
                 ...dataToUpdate,
+                parameters: {
+                    updateMany: parameters.map((parameter:any) => ({
+                        where: {
+                            
+                                messageId: message.id,
+                                name: parameter.name
+                            
+                        },
+                            data: {
+                                value: parameter.value
+                            }
+                        
+                        }
+                    ))
+                },
                 documents: {
                     createMany: {
                         data: message.documents ?? []
