@@ -14,6 +14,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     switch (method) {
       case Methods.GET: await messageForeclosureCalls.GET(req, res);
         return;
+      case Methods.PUT: await messageForeclosureCalls.PUT(req, res);
+        return;
       default:
         res.status(405).end(`Method ${method} Not Allowed`);
         return;
