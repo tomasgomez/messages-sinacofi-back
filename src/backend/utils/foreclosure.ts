@@ -27,7 +27,6 @@ export function processMessageParameters(parameters: any[] | undefined, cuk: CUK
 
         const paramConfig = getParameterConfig(parameter.name);
         if (!paramConfig || !parameter.name || !parameter.value || parameter.value === '' || parameter.name === '') {
-            console.log('Invalid parameter:', parameter.name);
             continue;
         }
         cuk[paramConfig.key as keyof CUK] = parameter.value;
