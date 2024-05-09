@@ -12,6 +12,17 @@ const foreclosureMessageCodes = [
     "679",
  ]
 
+export enum foreclosureStatus {
+    IN_PROCESS = "021",
+    APPROVED = "022",
+    REJECTED = "023",
+    START_NORMALIZATION = "XX",
+    END_NORMALIZATION = "YY",
+    SIGN_IN_PROGRESS = "041",
+    SIGNED = "042",
+  }
+  
+
  export function isForeclosureMessageCode(code?: string ): boolean {
 
    if (!code) {

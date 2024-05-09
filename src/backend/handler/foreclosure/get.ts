@@ -32,6 +32,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
 
       } catch (error) {
         console.error('Error fetching message:', error);
-        res.status(500).json(new Error('Internal server error'));
+        res.status(400).json(new Error('Internal server error'));
       }
 }

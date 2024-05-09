@@ -32,5 +32,9 @@ export function validateGetMessage(data: any): [Message, string, string] | Error
     offsetResponse = offset;
   }
 
+  if (institutionCode && typeof institutionCode === 'string' && institutionCode.trim() !== '') {
+    message.sender = institutionCode;
+  }
+
   return [message, countResponse, offsetResponse];
 }

@@ -8,10 +8,16 @@ export async function update(message: Message): Promise<Message | Error> {
 
         const prismaClient = prisma.getClient();
 
+        let includeDocument = false;
+
         /* Filter out empty values from the message object */
         const dataToUpdate = Object.fromEntries(
             Object.entries(message).filter(([_, value]) => value !== '')
         );
+
+        if (message.documents && message.documents.length > 0) {
+            includeDocument = true;
+        }
 
         console.log('Data to update:', dataToUpdate);
 
@@ -20,7 +26,17 @@ export async function update(message: Message): Promise<Message | Error> {
             where: {
                 id: message.id
             },
-            data: dataToUpdate
+            data: {
+                ...dataToUpdate,
+                documents: {
+                    createMany: {
+                        data: message.documents ?? []
+                    }
+                }
+            },
+            include: {
+                documents: includeDocument
+            }
         });
 
         return updatedMessage;

@@ -11,4 +11,5 @@ import {
 export interface CUKRepository {
   find(filter: Filter): Promise < CUK[] | Error >
   create(cuk: ICUK): Promise < ICUK | Error >
+  update(cuk: ICUK): Promise < ICUK | Error >
 }

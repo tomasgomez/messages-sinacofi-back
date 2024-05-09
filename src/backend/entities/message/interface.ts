@@ -41,3 +41,12 @@ export interface Parameter {
     updatedAt?: Date;
     messageId?:string;
 }
+
+export interface Documents {
+    id?: string;
+    documentName?: string | null;
+    content?: string | null;
+    url?: string | null;
+    createdAt?: Date;
+    messageId?: string | null;
+}

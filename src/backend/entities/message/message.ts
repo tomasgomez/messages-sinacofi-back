@@ -5,6 +5,9 @@ import {
 import {
     getChileanTime
 } from '../../utils/functions';
+import {
+    Documents
+} from '@/backend/entities/message/interface';
 
 
 export class Message implements IMessage {
@@ -25,7 +28,7 @@ export class Message implements IMessage {
     receiver ? : string | null;
     receivedDate ? : string | null;
     receivedTime ? : string | null;
-    documents ? : any; //TODO: Define the type of this property and every any
+    documents ? : Documents[];
     actions ? : any;
     parameters? : Parameter[] ;
     cukCode ? : string | null;
