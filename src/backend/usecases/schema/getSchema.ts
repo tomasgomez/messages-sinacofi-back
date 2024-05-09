@@ -40,26 +40,24 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
 
 
     let schemas = await get(url, path, {},{})
+    console.log('schemas', messageCode);
+    const messageAH = ["671", "672", "673"].find((element) => element === messageCode);
+    if (messageAH && cuk) {
+      let message = new Message();
+      message.messageCode = "670";
+      message.cukCode = cuk;
+      let response = await messageRepository.find(message, true, "0","0");
+      if (response instanceof Error) {
+        return response;
+      }
 
-    // const messageAH = ["671", "672", "673"].find((element) => element === messageCode);
-    // console.log("messageAH", messageAH);
-    // if (messageAH && cuk) {
-    //   console.log("messageAH", messageAH);
-    //   let message = new Message();
-    //   message.messageCode = messageCode;
-    //   message.cukCode = cuk;
-    //   let response = await messageRepository.find(message, true, "0","0");
-    //   if (response instanceof Error) {
-    //     return response;
-    //   }
-
-    //   console.log("response", response[0]);
-    //   console.log("---");
-    //   console.log("response", schemas);
+      console.log("response", response[0]);
+      console.log("---");
+      console.log("response", schemas);
 
 
     
-    // }
+    }
 
     return schemas;
   } catch (error: any) {

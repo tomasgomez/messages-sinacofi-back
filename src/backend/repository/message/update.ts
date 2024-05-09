@@ -1,5 +1,6 @@
 import { Message } from "@/backend/entities/message/message";
 import { PrismaClientWrapper } from '../prismaWrapper';
+import { updateMessage } from "@/backend/usecases/message/updateMessage";
 
 
 export async function update(message: Message): Promise<Message | Error> {
@@ -21,11 +22,14 @@ export async function update(message: Message): Promise<Message | Error> {
 
         console.log('Data to update:', dataToUpdate);
 
-        const parameters = dataToUpdate.parameters;
+        
 
-        delete dataToUpdate.parameters;
-
-
+        const filteredKeys = Object.keys(dataToUpdate).filter(key => {
+            return key !== 'paramters' && key !== 'documents' && key !== 'id'; 
+        });
+        
+        const { parameters, ...dataWithOutParemters } = dataToUpdate;
+        
 
         /* Update the message */
         const updatedMessage = await prismaClient.message.update({
@@ -33,22 +37,7 @@ export async function update(message: Message): Promise<Message | Error> {
                 id: message.id
             },
             data: {
-                ...dataToUpdate,
-                parameters: {
-                    updateMany: parameters.map((parameter:any) => ({
-                        where: {
-                            
-                                messageId: message.id,
-                                name: parameter.name
-                            
-                        },
-                            data: {
-                                value: parameter.value
-                            }
-                        
-                        }
-                    ))
-                },
+                ...dataWithOutParemters,
                 documents: {
                     createMany: {
                         data: message.documents ?? []
@@ -56,9 +45,26 @@ export async function update(message: Message): Promise<Message | Error> {
                 }
             },
             include: {
-                documents: includeDocument
+                documents: includeDocument,
+                parameters: true
             }
         });
+        // update parameters
+        if (parameters) {
+            const paremtersTobeUpdated = updatedMessage.parameters;
+
+            for (const parameter of paremtersTobeUpdated) {
+                const x = parameters.find((p: any) => p.name === parameter.name);
+                const pupdated = prismaClient.parameters.update({
+                    where: {
+                        internalId: parameter.internalId
+                    },
+                    data: {
+                        value: x.value
+                    }
+                });
+            }
+        }
 
         return updatedMessage;
     } catch (error: any) {
