@@ -12,9 +12,13 @@ import Loader from "@/components/Loader";
 import { formatCardData } from "@/utils/mortgage-discharge";
 import { IsEmptyObject } from "@/utils/functions";
 import { MyContexLayout } from "@/app/context";
+import { ModalTrackingData } from "@/types/mortgage-discharge";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = React.useState(false);
+  const [modalTrackingData, setModalTrackingData] =
+    React.useState<ModalTrackingData>();
+
   const [loading, setLoading] = React.useState(true);
   const [data, setData] = React.useState<any>([]);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -27,28 +31,31 @@ export default function InProcessScreen() {
     { label: "channel", value: "Personas" },
   ]);
 
-  const getDataList = async (filters?: any) => {
+  const handleGetDataList = async () => {
     setLoading(true);
-    const result = await getForeClosureDataCards(filters);
+
+    // Add the institution destination to the filters after changing it
+    const auxFilters = [
+      ...filters,
+      { label: "institutionCode", value: selectedInstitution },
+      { label: "count", value: rowsPerPage },
+      { label: "offset", value: `${page * rowsPerPage}` },
+    ];
+
+    const result = await getForeClosureDataCards(auxFilters);
+
     if (!IsEmptyObject(result)) {
       const dataFormated = formatCardData(result);
       setData(dataFormated);
     } else {
       setData([]);
     }
+
     setLoading(false);
   };
 
   useEffect(() => {
-    // Add the institution destination to the filters after changing it
-    const auxFilter = [
-      ...filters,
-      // institutionDestination is a code so not need the funtion intitutionCodeToLabel
-      { label: "institutionCode", value: selectedInstitution },
-      { label: "count", value: rowsPerPage },
-      { label: "offset", value: `${page * rowsPerPage}` },
-    ];
-    getDataList(auxFilter);
+    handleGetDataList();
   }, [filters, selectedInstitution, rowsPerPage, page]);
 
   const handleChangeRowsPerPage = (
@@ -63,6 +70,11 @@ export default function InProcessScreen() {
     newPage: number
   ) => {
     setPage(newPage);
+  };
+
+  const handlerTrackingModal = (data: ModalTrackingData) => {
+    setIsOpenTrackingModal(true);
+    setModalTrackingData(data);
   };
 
   const maxHeight = 470;
@@ -99,7 +111,7 @@ export default function InProcessScreen() {
                 <CarDischarge
                   key={`key-card-${i}`}
                   data={elemCard}
-                  handlerTrackingModal={setIsOpenTrackingModal}
+                  handlerTrackingModal={handlerTrackingModal}
                 />
               ))}
               <div
@@ -114,6 +126,8 @@ export default function InProcessScreen() {
         <TrackingModal
           open={isOpenTrackingModal}
           onClose={setIsOpenTrackingModal}
+          data={modalTrackingData}
+          handleGetDataList={handleGetDataList}
         />
         <InfoModal />
         <TablePagination

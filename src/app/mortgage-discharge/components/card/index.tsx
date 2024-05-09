@@ -18,6 +18,7 @@ import ProgressBar from "./progress-bar";
 import {
   CodeCardMortgageDischarge,
   InforCardMortgageDischarge,
+  ModalTrackingData,
 } from "@/types/mortgage-discharge";
 import { Message } from "@/app/component/inbox-table/type";
 import { reverseArray } from "@/utils/functions";
@@ -27,7 +28,7 @@ const CarDischarge = ({
   handlerTrackingModal,
 }: {
   data: any;
-  handlerTrackingModal: (state: boolean) => void;
+  handlerTrackingModal: (data: ModalTrackingData) => void;
 }) => {
   const [selectedMessage, setSelectorMessage] = React.useState<string | null>(
     null
@@ -36,21 +37,19 @@ const CarDischarge = ({
 
   const {
     codeData,
-    InfoData,
+    infoData,
     messages,
     buttonDisabled,
+    modalTrackingData,
   }: {
     codeData: CodeCardMortgageDischarge;
-    InfoData: InforCardMortgageDischarge;
+    infoData: InforCardMortgageDischarge;
     messages: Message[];
     buttonDisabled: boolean;
+    modalTrackingData: ModalTrackingData;
   } = data;
 
   const { cukCode, foreclosureDate, cukStatus } = codeData;
-
-  const handlerOpenModal = () => {
-    handlerTrackingModal(true);
-  };
 
   const handlerColapseCard = () => {
     setIsOpen(!isOpen);
@@ -94,8 +93,11 @@ const CarDischarge = ({
               date={foreclosureDate}
               status={cukStatus}
             />
-            <InfoColumn data={InfoData} />
-            <StyledButton onClick={handlerOpenModal} disabled={buttonDisabled}>
+            <InfoColumn data={infoData} />
+            <StyledButton
+              onClick={() => handlerTrackingModal(modalTrackingData)}
+              disabled={buttonDisabled}
+            >
               Base de Seguimiento
             </StyledButton>
           </StyledCard>

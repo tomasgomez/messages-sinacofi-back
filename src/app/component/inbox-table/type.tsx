@@ -49,22 +49,29 @@ export interface SentData {
 }
 
 export interface MortgageDischargeData {
-  description: string;
-  status: string;
   id: string;
   name: string;
   cukCode: string;
+  description: string;
+  status: string;
   creationDate: string;
   foreclosureDate: string;
   channel: string;
   clientDni: string;
   clientName: string;
   institutionDestination: string;
-  rutSeller?: null;
-  region?: null;
-  debtorRut?: null;
+  region?: string;
   createdAt: string;
   updatedAt: string;
+  institutionCode: string;
+  ownerDni: string;
+  owner: string;
+  buyerDni: string;
+  buyer: string;
+  borrowerDni: string;
+  borrower: string;
+  history: any[];
+  messages: Message[];
 }
 
 export type KeyOfData =
@@ -112,6 +119,7 @@ export interface EnhancedTableProps {
   rowCount: number;
   withCheckboxAll?: boolean;
   columns?: Columns[];
+  noExtraColumn?: boolean;
 }
 
 export interface TableProps {
@@ -121,6 +129,9 @@ export interface TableProps {
   isItemSelected: boolean;
   handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
   columns: Columns[];
+  highlightLastRow?: boolean;
+  isLastRow?: boolean;
+  noExtraColumn?: boolean;
 }
 
 export interface MSDetail {
