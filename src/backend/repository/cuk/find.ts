@@ -56,6 +56,9 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
                 clientName: {
                     in: filter.clientName
                 },
+                institutionCode: {
+                    in: filter.institutionCode
+                },
                 institutionDestination: {
                     in: filter.institutionDestination
                 },

@@ -20,7 +20,8 @@ import {
   isValidMessage,
   processMessageParameters,
   setCukDestination,
-  setCukStatus
+  setCukStatus,
+  setInstitutionCode
 } from '@/backend/utils/foreclosure';
 
 export async function handleForeclosure(cukRepository: CUKRepository, cuk: CUK, message: Message): Promise < ICUK | Error > {
@@ -36,6 +37,7 @@ export async function handleForeclosure(cukRepository: CUKRepository, cuk: CUK, 
       /* ALZAMIENTO HIPOTECARIO */
       case (MessageTypes.ALZAMIENTO_HIPOTECARIO): {
         processMessageParameters(message.parameters, cuk);
+        setInstitutionCode(cuk, message.sender);
         setCukDestination(cuk, message.receiver);
         setCukStatus(cuk, message.status);
 

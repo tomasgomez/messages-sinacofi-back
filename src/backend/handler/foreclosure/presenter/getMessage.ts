@@ -16,6 +16,7 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
     clientDni,
     clientName,
     institutionDestination,
+    institutionCode,
     rutSeller,
     region,
     debtorRut,
@@ -34,6 +35,7 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   processStringArrayField('status', status, filter);
   processStringArrayField('clientDni', clientDni, filter);
   processStringArrayField('clientName', clientName, filter);
+  processStringArrayField('institutionCode', institutionCode, filter);
   processStringArrayField('institutionDestination', institutionDestination, filter);
   processStringArrayField('rutSeller', rutSeller, filter);
   processStringArrayField('region', region, filter);

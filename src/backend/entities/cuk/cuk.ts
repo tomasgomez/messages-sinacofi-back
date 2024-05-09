@@ -13,6 +13,7 @@ export class CUK implements ICUK {
     status?: string | null;
     clientDni?: string | null;
     clientName?: string | null;
+    institutionCode?: string | null;
     institutionDestination?: string | null;
     rutSeller?: string | null;
     seller?: string | null;

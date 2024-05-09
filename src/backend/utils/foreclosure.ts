@@ -40,6 +40,12 @@ export function getParameterConfig(parameterName: string): {
     return parameters[parameterName];
 }
 
+export function setInstitutionCode(cuk: CUK, institutionCode: string | undefined | null): void {
+    if (institutionCode) {
+        cuk.institutionCode = institutionCode;
+    }
+}
+
 export function setCukDestination(cuk: CUK, receiver: string | undefined | null): void {
     if (receiver) {
         cuk.institutionDestination = receiver;

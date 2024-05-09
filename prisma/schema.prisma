@@ -20,6 +20,7 @@ model CUK {
   channel                String?
   clientDni              String?
   clientName             String?
+  institutionCode        String?
   institutionDestination String?
   rutSeller              String?
   region                 String?

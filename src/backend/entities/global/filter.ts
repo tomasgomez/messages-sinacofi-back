@@ -15,6 +15,7 @@ export interface Filter {
   region ? : string[] | null;
   debtorRut ? : string[] | null;
 
+  institutionCode ? : string[];
   institutionDestination ? : string[];
 
 
