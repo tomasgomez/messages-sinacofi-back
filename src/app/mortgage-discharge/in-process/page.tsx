@@ -44,8 +44,7 @@ export default function InProcessScreen() {
     const auxFilter = [
       ...filters,
       // institutionDestination is a code so not need the funtion intitutionCodeToLabel
-      { label: "institutionDestination", value: selectedInsitution },
-      { label: "institutionOrigin", value: selectedInsitution },
+      { label: "institutionCode", value: selectedInsitution },
       { label: "count", value: rowsPerPage },
       { label: "offset", value: `${page * rowsPerPage}` },
     ];
@@ -76,7 +75,7 @@ export default function InProcessScreen() {
     if (espaceByRow < maxHeight) return maxHeight - espaceByRow;
     return 0;
   }, [data.length]);
-  
+
   return (
     <CardContextProvider filters={filters} setFilters={setFilters}>
       <Paper sx={{ width: "calc(100% - 270px)" }}>
