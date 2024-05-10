@@ -29,6 +29,11 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
 
         console.log('Date range filter:', dateRangeFilter);
 
+        // handling if message code is not provided
+        if (filter.messageCode == undefined || filter.messageCode == null) {
+            filter.mesageCode = [MessageTypes.ALZAMIENTO_HIPOTECARIO]
+        }
+
         // Find all messages if count is not provided or is 0
         cuks = await prismaClient.cUK.findMany({
             where: {
@@ -50,7 +55,6 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
                 status: {
                     in: filter.status
                 },
-
                 institutionCode: {
                     in: filter.institutionCode
                 },
@@ -112,13 +116,15 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
                         OR: [
                           {
                             messageCode: {
-                              not: MessageTypes.ALZAMIENTO_HIPOTECARIO
+                              notIn: filter.mesageCode
                             }
                           },
                           {
                             AND: [
                               {
-                                messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO,
+                                messageCode: {
+                                    in: filter.mesageCode
+                                },
                               },
                               {
                                 OR: [
