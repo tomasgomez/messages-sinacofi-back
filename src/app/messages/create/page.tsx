@@ -132,7 +132,7 @@ const CreateMessage = () => {
         .then((schema: any) => {
           setMessageSchema({
             ...schema,
-            actions: { saveDraftDisabled: false, sendButtonDisabled: messageCode === "670" },
+            actions: { saveDraftDisabled: ["671", "672", "673"].includes(messageCode), sendButtonDisabled: messageCode === "670" },
             parameters: schema?.parameters
           });
         })
