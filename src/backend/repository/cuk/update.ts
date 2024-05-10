@@ -55,11 +55,12 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
 
                 let updatedHistoryArray: any[] = [];
 
+                console.log('cuk.history:', fetchedCuk.history)
                 // Check if history exists
-                if (cuk.history && typeof cuk.history === 'string' && cuk.history.trim() !== '') {
+                if (fetchedCuk.history && typeof fetchedCuk.history === 'string' && fetchedCuk.history.trim() !== '') {
 
                     // Parse Json
-                    let historyArray = JSON.parse(cuk.history);
+                    let historyArray = JSON.parse(fetchedCuk.history);
 
                     // Check if historyArray is an array
                     if (Array.isArray(historyArray)) {
