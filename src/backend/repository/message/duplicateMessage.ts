@@ -16,7 +16,7 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
                 where: { id: message.id }
             });
 
-            if (!existingMessage || existingMessage !instanceof Message) {
+            if (!existingMessage) {
                 throw new Error("Message not found");
             }
 
@@ -73,7 +73,7 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
                         createMany: {
                             data: newMessage.parameters || []
                         }
-                    },
+                    }
                 }
             });
 
