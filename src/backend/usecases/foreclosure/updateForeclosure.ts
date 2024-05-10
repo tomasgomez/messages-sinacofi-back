@@ -103,7 +103,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
 
       /* Set the message status and cukCode */
       newMessage.cukCode = cuk.cukCode;
-      newMessage.status = '-';
+      newMessage.status = '';
       newMessage.messageCode = messageType;
       newMessage.description = messageDescription;
 
