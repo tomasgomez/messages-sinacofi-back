@@ -19,9 +19,6 @@ export async function update(message: Message): Promise<Message | Error> {
         if (message.documents && message.documents.length > 0) {
             includeDocument = true;
         }
-
-        console.log('Data to update:', dataToUpdate);
-
         
 
         const filteredKeys = Object.keys(dataToUpdate).filter(key => {

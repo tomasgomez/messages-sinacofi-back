@@ -4,8 +4,11 @@ import {
 import {
     PrismaClientWrapper
 } from '../prismaWrapper';
+import {
+    CUK
+} from '@/backend/entities/cuk/cuk';
 
-async function create(cuk: ICUK): Promise < ICUK | Error > {
+async function create(cuk: CUK): Promise < CUK | Error > {
     try {
         const prisma = new PrismaClientWrapper();
 
@@ -39,7 +42,7 @@ async function create(cuk: ICUK): Promise < ICUK | Error > {
             return new Error('Error creating CUK');
         }
 
-        return newCUK as ICUK;
+        return newCUK as CUK;
 
     } catch (error: any) {
         console.error('Error creating CUK:', error);

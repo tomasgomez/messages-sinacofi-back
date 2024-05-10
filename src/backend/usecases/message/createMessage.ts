@@ -13,36 +13,11 @@ import {
 import {
     MessageStatus
 } from "@/backend/entities/message/status";
-import {
-    CUK
-} from "@/backend/entities/cuk/cuk";
-import {
-    messageForeclosureUseCase
-} from "../messageForeclosure/usecases";
-import {
-    isForeclosureMessageCode
-} from "@/backend/entities/cuk/codes";
 
 
 // Create message function
 export async function createMessage(repository: MessageRepository, message: Message, ): Promise < Message | Error > {
     try {
-
-        /* Check if is a foreclosure message, then create the foreclosure */
-        if (isForeclosureMessageCode(message.messageCode ?? '')) {
-
-            let cuk = await messageForeclosureUseCase.handleForeclosure(new CUK, message);
-
-            if (cuk instanceof Error) {
-                return cuk;
-            }
-
-            if (cuk.cukCode === undefined) {
-                return new Error('No cuk code returned');
-            }
-
-            message.cukCode = cuk.cukCode;
-        }
 
         /* Get the schema types */
         let schemaTypes = await getSchemaTypes({});

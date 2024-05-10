@@ -2,7 +2,7 @@ import { Parameter } from '@/backend/entities/message/interface';
 import { Message } from '@/backend/entities/message/message';
 
 export function validateCreateMessage(data: any): Message | Error {
-  const { messageCode, status, receiver, sender, parameters, cukCode } = data;
+  const { messageCode, status, receiver, sender, parameters, cukCode, priority } = data;
 
   if (!messageCode || typeof messageCode !== 'string' || messageCode.trim() === '') {
     return new Error('Invalid messageCode');
@@ -30,8 +30,8 @@ export function validateCreateMessage(data: any): Message | Error {
     message.cukCode = cukCode.trim();
   }
 
-  if (cukCode && typeof cukCode === 'string' && cukCode.trim() !== '') {
-    message.cukCode = cukCode.trim();
+  if (priority && typeof priority === 'number') {
+    message.priority = priority.toString();
   }
 
   if (parameters && typeof parameters === 'object') {

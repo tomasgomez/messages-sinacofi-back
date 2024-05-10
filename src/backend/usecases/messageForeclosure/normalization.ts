@@ -4,7 +4,7 @@ import { Message } from '../../entities/message/message';
 import { ICUK } from '@/backend/entities/cuk/interface';
 import { isValidMessage, processMessageParameters, setCukDestination, setCukStatus } from '@/backend/utils/foreclosure';
 
-export async function normalization(cukRepository: CUKRepository, cuk: CUK, message: Message): Promise<ICUK | Error> {
+export async function normalization(cukRepository: CUKRepository, cuk: CUK, message: Message): Promise<CUK | Error> {
   try {
     if (!isValidMessage(message)) {
       throw new Error('Invalid message');

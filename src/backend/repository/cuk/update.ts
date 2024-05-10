@@ -1,8 +1,8 @@
 import { PrismaClientWrapper } from '../prismaWrapper';
-import { ICUK } from '@/backend/entities/cuk/interface';
+import { CUK } from '@/backend/entities/cuk/cuk';
 
 
-export async function update(cuk: ICUK): Promise < ICUK | Error > {
+export async function update(cuk: CUK): Promise < CUK | Error > {
     try {
         const prisma = new PrismaClientWrapper();
 
@@ -12,8 +12,6 @@ export async function update(cuk: ICUK): Promise < ICUK | Error > {
         const dataToUpdate = Object.fromEntries(
             Object.entries(cuk).filter(([_, value]) => value !== '')
         );
-
-        console.log('Data to update:', dataToUpdate);
 
         /* Update the cuk */
         let updatedCuk = await prismaClient.cUK.update({

@@ -50,7 +50,6 @@ async function find(message: Partial < Message > , detail: boolean, count: strin
 
         // If count is not present then find all message
         if (count === '0' || count === '' || offset === '' || offset === '0') {
-            console.log("where1", where);
             messages = await prismaClient.message.findMany({
                 where: {
                     ...where,
@@ -65,7 +64,6 @@ async function find(message: Partial < Message > , detail: boolean, count: strin
                 skip: parseInt("0")
             });
         } else {
-            console.log("where2", where);
             messages = await prismaClient.message.findMany({
                 where: {
                     ...where,

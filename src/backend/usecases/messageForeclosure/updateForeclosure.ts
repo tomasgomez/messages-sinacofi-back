@@ -5,7 +5,7 @@ import { ICUK } from '@/backend/entities/cuk/interface';
 import { isValidMessage, processMessageParameters, setCukDestination } from '@/backend/utils/foreclosure';
 import { foreclosureStatus } from '@/backend/entities/cuk/codes';
 
-export async function updateForclosure(cukRepository: CUKRepository, cuk: CUK, message: Message): Promise<ICUK | Error> {
+export async function updateForclosure(cukRepository: CUKRepository, cuk: CUK, message: Message): Promise<CUK | Error> {
   try {
     if (!isValidMessage(message)) {
       throw new Error('Invalid message');

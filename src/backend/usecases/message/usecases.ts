@@ -5,6 +5,7 @@ import { MessageUsecases } from '@/backend/usecases/message/interface';
 import { getMessage } from './getMessage';
 import { createMessage } from './createMessage';
 import { updateMessage } from './updateMessage';
+import { handleMessage } from './handleMessage';
 
 
 /*
@@ -20,6 +21,10 @@ export class MessageUscase implements MessageUsecases  {
     // create message
     createMessage = async (message: Message): Promise<Message | Error> => 
         createMessage(this.messageRepository, message);
+    
+    // handle message
+    handleMessage = async (message: Message): Promise<Message | Error> => 
+        handleMessage(this.messageRepository, message);
 
     // update message
     updateMessage = async (message: Message): Promise<Message | Error> => 

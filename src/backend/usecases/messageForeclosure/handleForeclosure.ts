@@ -8,54 +8,48 @@ import {
   Message
 } from '../../entities/message/message';
 import {
-  ICUK
-} from '@/backend/entities/cuk/interface';
-import {
   MessageTypes
 } from '@/backend/entities/message/types';
 import {
-  normalization
-} from './normalization';
-import {
   isValidMessage,
-  processMessageParameters,
-  setCukDestination,
-  setCukStatus,
-  setInstitutionCode
 } from '@/backend/utils/foreclosure';
+import { MessageRepository } from '@/backend/repository/messageRepository';
+import { handle670 } from './foreclosureMessages/handle670';
+import { handle671 } from './foreclosureMessages/handle671';
+import { handle672 } from './foreclosureMessages/handle672';
+import { handle673 } from './foreclosureMessages/handle673';
 
-export async function handleForeclosure(cukRepository: CUKRepository, cuk: CUK, message: Message): Promise < ICUK | Error > {
+export async function handleForeclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message): Promise < CUK | Message | Error > {
   try {
+
+    /* Check if is a valid message for foreclosure */
     if (!isValidMessage(message)) {
       throw new Error('Invalid message');
     }
 
+    /* Depending on the message code, process the message */
     switch (message.messageCode) {
 
       /* ALZAMIENTO HIPOTECARIO */
       case (MessageTypes.ALZAMIENTO_HIPOTECARIO): {
-        processMessageParameters(message.parameters, cuk);
-        setInstitutionCode(cuk, message.sender);
-        setCukDestination(cuk, message.receiver);
-        setCukStatus(cuk, message.status);
-
-        const createdCuk = await cukRepository.create(cuk);
-        if (createdCuk instanceof Error) {
-          throw createdCuk;
-        }
-
-        return createdCuk;
+        return handle670(cuk, message, cukRepository, messageRepository);
       }
 
-      /* ACEPTACION DE ALZAMIENTO HIPOTECARIO */
+      /* ACEPTACION DE AH */
       case (MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO): {
-
+        return handle671(cuk, message, cukRepository, messageRepository);
       }
 
-      /* AVISO DE CLIENTE EN NORMALIZACION */
+      /* RECHAZO DE AH */
+      case (MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO): {
+        return handle672(cuk, message, cukRepository, messageRepository);
+      }
+
+      /* NORMALIZACION */
       case (MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION): {
-        normalization(cukRepository, cuk, message);
+        return handle673(cuk, message, cukRepository, messageRepository);
       }
+
       default: {
         throw new Error('Invalid message code');
       }

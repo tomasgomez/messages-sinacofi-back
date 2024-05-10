@@ -9,8 +9,8 @@ import { getMessageForeclosure } from './getMessageForeclosure';
 import { createForeclosure } from './createForeclosure';
 import { handleForeclosure } from './handleForeclosure';
 import { CUK } from '../../entities/cuk/cuk';
-import { ICUK } from '../../entities/cuk/interface';
 import { updateForclosure } from "./updateForeclosure";
+import { normalization } from "./normalization";
 
 // Message Detail usecases
 export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
@@ -23,14 +23,17 @@ export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
         getMessageForeclosure(this.messageRepository, this.cukRepository, filter)
 
     // create foreclosure
-    createForeclosure = async (cuk: CUK, message: Message): Promise < ICUK | Error > => 
+    createForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 
         createForeclosure(this.cukRepository, cuk, message)
 
-    handleForeclosure = async (cuk: CUK, message: Message): Promise < ICUK | Error > =>
-        handleForeclosure(this.cukRepository, cuk, message)
+    handleForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > =>
+        handleForeclosure(this.cukRepository,this.messageRepository , cuk, message)
 
-    updateForeclosure = async (cuk: CUK, message: Message): Promise < ICUK | Error > => 
+    updateForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 
         updateForclosure(this.cukRepository, cuk, message)
+
+    normalization = async (cuk: CUK, message: Message): Promise < CUK | Error > =>
+        normalization(this.cukRepository, cuk, message)
 }
 
 const messageRepository: MessageRepository = new PrismaAdapter();

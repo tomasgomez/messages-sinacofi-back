@@ -77,8 +77,6 @@ function extractValidations(rules: any[]): Validations {
 
     if (rules) {
         rules.forEach((rule: any) => {
-            console.log(rule.condition);
-            console.log(rule.value);
             if (rule.condition && rule.value) {
                 const ruleCondition = rule.condition.replace(/\d+$/, ''); // Remove numbers from the end of the rule name
 

@@ -27,7 +27,6 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
 
         let dateRangeFilter = createDateRangeFilter(filter.startDate, filter.endDate);
 
-        console.log('Date range filter:', dateRangeFilter);
 
         // handling if message code is not provided
         if (filter.messageCode == undefined || filter.messageCode == null) {
