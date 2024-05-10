@@ -55,7 +55,6 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
 
                 let updatedHistoryArray: any[] = [];
 
-                console.log('cuk.history:', fetchedCuk.history)
                 // Check if history exists
                 if (fetchedCuk.history && typeof fetchedCuk.history === 'string' && fetchedCuk.history.trim() !== '') {
 
