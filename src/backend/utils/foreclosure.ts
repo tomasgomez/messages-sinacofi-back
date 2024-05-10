@@ -2,6 +2,12 @@ import {
     Message
 } from '@/backend/entities/message/message';
 import {
+    MessageSchema
+} from '@/backend/entities/schema/messageSchema';
+import {
+    Parameter
+} from '@/backend/entities/message/interface';
+import {
     CUK
 } from '@/backend/entities/cuk/cuk';
 import {
@@ -60,6 +66,42 @@ export function setCukStatus(cuk: CUK, status: string | null | undefined): void 
         cuk.status = status;
     }
 }
+
+export function matchSchemaWithMessage(schema: MessageSchema, cuk: CUK): Message | Error {
+    if (!schema.parameters) {
+      return new Error('Invalid schema');
+    }
+  
+    let newMessage = new Message();
+  
+    const parametersUpdated = schema.parameters.map((params: any) => {
+        let parameter: Parameter = {
+          id: params.id,
+          name: params.name,
+        };
+  
+        if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.type != "label") {
+          const value = params.value;
+          parameter.name = params.name;
+          parameter.defaultValue = value;
+          
+        }
+  
+        if (schema && schema.name == 'CUK'){
+          parameter.defaultValue = cuk.cukCode ;
+        }
+  
+        if (params?.label)
+        parameter.label = params.label;
+        
+  
+        return parameter;
+    });
+  
+    newMessage.parameters = parametersUpdated; 
+  
+    return newMessage;
+  }
 
 const parametersToAdd: {
     [key: string]: {

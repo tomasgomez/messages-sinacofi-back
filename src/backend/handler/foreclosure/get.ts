@@ -4,7 +4,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export async function get(req: NextApiRequest, res: NextApiResponse < any >, detail: boolean = false){
     try {
-
         /* Validate the query params and get the Message */
         let filter = validateGetMessageForeclosure(req.query);
 

@@ -1,20 +1,24 @@
 import { CUKRepository } from '../../repository/cukRepository';
 import { CUK } from '../../entities/cuk/cuk';
 import { Message } from '../../entities/message/message';
-import { isValidMessage, processMessageParameters, setCukDestination } from '@/backend/utils/foreclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 import { createMessage } from '../message/createMessage';
-import { handleForeclosure } from './handleForeclosure';
 import { MessageTypes } from '@/backend/entities/message/types';
 import { getSchema } from '../schema/getSchema';
 import { MessageRepository } from '@/backend/repository/messageRepository';
 import { MessageStatus } from '@/backend/entities/message/status';
+import { MessageSchema } from '@/backend/entities/schema/messageSchema';
+import { matchSchemaWithMessage } from '@/backend/utils/foreclosure';
 
 export async function updateForclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message): Promise<CUK | Error> {
   try {
-    if (!cuk) {
+    if (!cuk?.cukCode) {
       throw new Error('Invalid CUK');
     }
+
+    let schema: MessageSchema[] | Error;
+    let newMessage: Message | Error;
+    let createdMessage: Message | Error;
 
     switch (cuk.status) {
       case ForeclosureStatus.IN_PROCESS:
@@ -24,17 +28,27 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       /* 672 */
       case ForeclosureStatus.APPROVED:
         cuk.status = ForeclosureStatus.APPROVED;
+        
+        /* Get the schema for the message */
+        schema = await getSchema(MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO, cuk.cukCode);
+        if (schema instanceof Error || !schema || schema.length == 0) {
+          throw new Error('Schema not found');
+        }
 
-        let messageStatus = MessageStatus.PREPARADO;
+        /* Match the schema with the message */
+        newMessage = matchSchemaWithMessage(schema[0], cuk);
+        if (newMessage instanceof Error) {
+          throw message;
+        }
 
-        // let schema = await getSchema(MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO, cuk.cukCode ?? '');
+        /* Set the message status and cukCode */
+        newMessage.cukCode = cuk.cukCode;
+        newMessage.status = MessageStatus.PREPARADO;
 
-        // if (schema instanceof Error) {
-        //   throw schema;
-        // }
+        /* Create the message */
+        createdMessage = await createMessage(messageRepository, newMessage);
 
-        // const message = await createMessage(messageRepository, schema);
-
+        console.log('Created message:', createdMessage);
 
         break;
 
