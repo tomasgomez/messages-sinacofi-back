@@ -2,9 +2,6 @@ import {
     Message
 } from '@/backend/entities/message/message';
 import {
-    MessageSchema
-} from '@/backend/entities/schema/messageSchema';
-import {
     Parameter
 } from '@/backend/entities/message/interface';
 import {
@@ -13,7 +10,11 @@ import {
 import {
     isForeclosureMessageCode
   } from '@/backend/entities/cuk/codes';
+import {
+    History
+} from '@/backend/entities/cuk/history';
 
+/* Function to validate if a message is a foreclosure flow message */
 export function isValidMessage(message: Message): boolean {
     let isForeclosure = isForeclosureMessageCode(message.messageCode ?? '');
 
@@ -24,11 +25,13 @@ export function isValidMessage(message: Message): boolean {
     return true;
 }
 
+/* Function to add parameters to CUK */
 export function processMessageParameters(parameters: any[] | undefined, cuk: CUK): void {
 
     if (!parameters) {
         return;
     }
+    /* Iterate over the parameters and add them to the CUK */
     for (const parameter of parameters) {
 
         const paramConfig = getParameterConfig(parameter.name);
@@ -42,31 +45,7 @@ export function processMessageParameters(parameters: any[] | undefined, cuk: CUK
     }
 }
 
-export function getParameterConfig(parameterName: string): {key: string ; name ? : string} | undefined {
-    return parametersToAdd[parameterName];
-}
-
-export function setInstitutionCode(cuk: CUK, institutionCode: string | undefined | null): void {
-    if (institutionCode) {
-        cuk.institutionCode = institutionCode;
-    }
-}
-
-export function setCukDestination(cuk: CUK, receiver: string | undefined | null): void {
-    if (receiver) {
-        cuk.institutionDestination = receiver;
-        if (cuk.setCukCode) {
-            cuk.setCukCode(receiver);
-        }
-    }
-}
-
-export function setCukStatus(cuk: CUK, status: string | null | undefined): void {
-    if (status) {
-        cuk.status = status;
-    }
-}
-
+/* Function to create a message from a schema values */
 export function matchSchemaWithMessage(schema: any, cuk: CUK): Message | Error {
     if (!schema.parameters) {
       return new Error('Invalid schema');
@@ -93,6 +72,61 @@ export function matchSchemaWithMessage(schema: any, cuk: CUK): Message | Error {
   
     return newMessage;
   }
+
+/* Function to add history to CUK if status changes */
+export function addHistory(status: string, cuk: CUK): string {
+    let history: History = {
+        cukCode: cuk.cukCode ?? '',
+        status: status ?? '',
+        date: new Date().toISOString()
+    };
+
+    let updatedHistoryArray: any[] = [];
+
+    // Check if history exists
+    if (cuk.history && typeof cuk.history === 'string' && cuk.history.trim() !== '') {
+
+        // Parse Json
+        let historyArray = JSON.parse(cuk.history);
+
+        // Check if historyArray is an array
+        if (Array.isArray(historyArray)) {
+            updatedHistoryArray = historyArray;
+        }
+    } 
+
+    updatedHistoryArray.push(history);
+
+    // Stringify the modified history array
+    return JSON.stringify(updatedHistoryArray);
+}
+
+
+export function getParameterConfig(parameterName: string): {key: string ; name ? : string} | undefined {
+    return parametersToAdd[parameterName];
+}
+
+export function setInstitutionCode(cuk: CUK, institutionCode: string | undefined | null): void {
+    if (institutionCode) {
+        cuk.institutionCode = institutionCode;
+    }
+}
+
+export function setCukDestination(cuk: CUK, receiver: string | undefined | null): void {
+    if (receiver) {
+        cuk.institutionDestination = receiver;
+        if (cuk.setCukCode) {
+            cuk.setCukCode(receiver);
+        }
+    }
+}
+
+export function setCukStatus(cuk: CUK, status: string | null | undefined): void {
+    if (status) {
+        cuk.status = status;
+    }
+}
+
 
 const parametersToAdd: {
     [key: string]: {

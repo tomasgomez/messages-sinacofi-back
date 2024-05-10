@@ -5,9 +5,8 @@ import {
     CUK
 } from '@/backend/entities/cuk/cuk';
 import {
-    History
-} from '@/backend/entities/cuk/history';
-
+    addHistory
+} from '@/backend/utils/foreclosure';
 
 export async function update(cuk: CUK): Promise < CUK | Error > {
     try {
@@ -47,31 +46,8 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
                     return fetchedCuk;
                 }
 
-                let history: History = {
-                    cukCode: fetchedCuk.cukCode ?? '',
-                    status: cuk.status ?? '',
-                    date: new Date().toISOString()
-                };
-
-                let updatedHistoryArray: any[] = [];
-
-                // Check if history exists
-                if (fetchedCuk.history && typeof fetchedCuk.history === 'string' && fetchedCuk.history.trim() !== '') {
-
-                    // Parse Json
-                    let historyArray = JSON.parse(fetchedCuk.history);
-
-                    // Check if historyArray is an array
-                    if (Array.isArray(historyArray)) {
-                        updatedHistoryArray = historyArray;
-                    }
-                } 
-
-                updatedHistoryArray.push(history);
-
-                // Stringify the modified history array
-                const updatedHistory = JSON.stringify(updatedHistoryArray);
-
+                // Add the new history object to the history array
+                const updatedHistory = addHistory(cuk.status ?? '', fetchedCuk);
 
                 // Update the object with the new history array
                 return await prisma.cUK.update({
@@ -93,4 +69,3 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
         return error;
     }
 }
-
