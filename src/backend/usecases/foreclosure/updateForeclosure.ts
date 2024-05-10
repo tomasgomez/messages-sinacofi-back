@@ -35,8 +35,9 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
           throw new Error('Schema not found');
         }
 
+
         /* Match the schema with the message */
-        newMessage = matchSchemaWithMessage(schema[0], cuk);
+        newMessage = matchSchemaWithMessage(schema, cuk);
         if (newMessage instanceof Error) {
           throw message;
         }

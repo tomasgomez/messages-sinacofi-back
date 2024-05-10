@@ -36,11 +36,8 @@ export function validateCreateMessage(data: any): Message | Error {
 
   if (parameters && typeof parameters === 'object') {
      parameters.forEach((element: any) => {
-      let value: string = '';
 
-      if (element && typeof element !== 'string' && 'value' in element) {
-        value = String(element.value);
-    }
+      let value = (typeof element.value === 'string') ? element.value : element.value?.toString() ?? '';
 
       let parameter: Parameter =  {
         id: element.id ?? '',

@@ -50,13 +50,13 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
         if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.type != "label") {
           const value = params.value;
           schema.defaultValue = value;
-          
         }
-        if (params?.name == "priority") {
-          console.log("priority", params.value);     
-        }
+        
+
+        schema.value = params?.value;
 
         if (schema && schema.name == 'CUK'){
+          console.log("cuk", cuk);
           schema.defaultValue = cuk;
         }
 

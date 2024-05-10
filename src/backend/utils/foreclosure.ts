@@ -67,7 +67,7 @@ export function setCukStatus(cuk: CUK, status: string | null | undefined): void 
     }
 }
 
-export function matchSchemaWithMessage(schema: MessageSchema, cuk: CUK): Message | Error {
+export function matchSchemaWithMessage(schema: any, cuk: CUK): Message | Error {
     if (!schema.parameters) {
       return new Error('Invalid schema');
     }
@@ -76,24 +76,15 @@ export function matchSchemaWithMessage(schema: MessageSchema, cuk: CUK): Message
   
     const parametersUpdated = schema.parameters.map((params: any) => {
         let parameter: Parameter = {
-          id: params.id,
+          id: params.name,
           name: params.name,
+          value: params.value,
+          label: params.label,
         };
-  
-        if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.type != "label") {
-          const value = params.value;
-          parameter.name = params.name;
-          parameter.defaultValue = value;
-          
-        }
   
         if (schema && schema.name == 'CUK'){
           parameter.defaultValue = cuk.cukCode ;
         }
-  
-        if (params?.label)
-        parameter.label = params.label;
-        
   
         return parameter;
     });
