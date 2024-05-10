@@ -6,26 +6,11 @@ import React from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export const MortgageStatusDropdown = (props: {
+  options: any[];
   onChange: (value: string) => void;
   value: string;
 }) => {
-  const { onChange, value } = props;
-
-  const options = [
-    {
-      label: "021 - Evaluación Alzamiento Hipotecario En Proceso",
-      value: "021",
-    },
-    { label: "022 - Evaluación Alzamiento Hipotecario Aceptada", value: "022" },
-    {
-      label: "023 - Evaluación Alzamiento Hipotecario Rechazada",
-      value: "023",
-    },
-    { label: "XXX - Inicio de Cliente en Normalización", value: "XXX" },
-    { label: "YYY - Fin de Cliente en Normalización", value: "YYY" },
-    { label: "041 - Firma de Escritura en Proceso", value: "041" },
-    { label: "042 - Escritura Firmada", value: "042" },
-  ];
+  const { onChange, value, options } = props;
 
   const handleChange = (event: SelectChangeEvent) => {
     onChange(event.target.value as string);
@@ -63,7 +48,11 @@ export const MortgageStatusDropdown = (props: {
           }}
         >
           {options.map((option, index) => (
-            <MenuItem key={`${option.label}-${index}`} value={option.value}>
+            <MenuItem
+              key={`${option.label}-${index}`}
+              value={option.value}
+              disabled={option?.disabled}
+            >
               {option.label}
             </MenuItem>
           ))}

@@ -11,9 +11,10 @@ import {
   buttonUpdateStateSx,
 } from "./components/styles";
 import { ModalTrackingData } from "@/types/mortgage-discharge";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { updateForeClosureMessage } from "../../api-calls";
-import Loader from "@/components/Loader";
+import { options, extraOptions } from "./constants";
+import { EnabledExtraOptions } from "@/utils/tracking-modal";
 
 export const TrackingModal = (props: {
   open: boolean;
@@ -89,6 +90,10 @@ export const TrackingModal = (props: {
           <MortgageStatusDropdown
             value={statusSelected}
             onChange={setStatusSelected}
+            options={[
+              ...options,
+              ...EnabledExtraOptions(extraOptions, history),
+            ]}
           />
         </Box>
       </Box>
