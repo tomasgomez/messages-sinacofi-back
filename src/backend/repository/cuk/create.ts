@@ -25,11 +25,11 @@ async function create(cuk: CUK): Promise < CUK | Error > {
         }
 
         /* Set the history for the CUK */
-        let history: History = {
+        let history: History[] = [{
             status: cuk.status ?? '',
             cukCode: cuk.cukCode ?? '',
             date: new Date().toString(),
-        };
+        }];
 
         let historyAsString = JSON.stringify(history);
 

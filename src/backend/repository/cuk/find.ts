@@ -26,6 +26,8 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
         let countAsInt = parseInt(filter.count || '0', 10);
         let offsetAsInt = parseInt(filter.offset || '0', 10);
 
+        let history = []
+
         let dateRangeFilter = createDateRangeFilter(filter.startDate, filter.endDate);
 
 
@@ -158,6 +160,7 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
                     handleNullValues(message, false);
                 }
             }
+
             // Check if history exists
             if (cuk.history && typeof cuk.history === 'string' && cuk.history.trim() !== '') {
 
