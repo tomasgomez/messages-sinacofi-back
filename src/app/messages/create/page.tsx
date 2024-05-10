@@ -62,12 +62,13 @@ const CreateMessage = () => {
   const institutionId = searchParams?.get("institutionId") || "";
   const cloneId = searchParams?.get("cloneId") || "";
   const messageId = searchParams?.get("messageId") || "";
+  const cukCode = searchParams?.get("cukCode") || "";
 
   useEffect(() => {
     setLoading(true);
     if(cloneId || messageId) {
       getMessageDetails(cloneId || messageId).then((data) => {
-        console.log({ data });
+        // console.log({ data });
         getMessageSchema(messageCode, selectedInstitution, institutionId)
           .then((schema: any) => {
             console.log({ schema });
@@ -128,11 +129,11 @@ const CreateMessage = () => {
       });
     } else {
       console.log({ selectedInstitution });
-      getMessageSchema(messageCode, selectedInstitution, institutionId)
+      getMessageSchema(messageCode, selectedInstitution, institutionId, cukCode)
         .then((schema: any) => {
           setMessageSchema({
             ...schema,
-            actions: { saveDraftDisabled: false, sendButtonDisabled: false },
+            actions: { saveDraftDisabled: false, sendButtonDisabled: messageCode === "670" },
             parameters: schema?.parameters
           });
         })
@@ -144,7 +145,7 @@ const CreateMessage = () => {
           setLoading(false);
         });
     }
-  }, [messageCode, institutionId, cloneId, messageId, selectedInstitution]);
+  }, [messageCode, institutionId, cloneId, messageId, selectedInstitution, cukCode]);
 
   const onSubmit = (data: any) => {
     const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution);

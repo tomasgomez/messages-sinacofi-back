@@ -21,7 +21,7 @@ export const getMessageDescriptions = async () => {
   return fetch("/api/rule").then((response) => response.json());
 };
 
-export const getMessageSchema = async (messageCode: string, senderId: any, receiverId: any) => {
+export const getMessageSchema = async (messageCode: string, senderId: any, receiverId: any, cukCode?: any) => {
   // return new Promise((resolve, reject) => {
   //   setTimeout(() => {
   //     const schema = messageSchemas.find((messageSchema) => messageSchema.messageCode === messageCode);
@@ -38,7 +38,7 @@ export const getMessageSchema = async (messageCode: string, senderId: any, recei
   //     } as unknown as []);
   //   }, 1000);
   // });
-  return fetch(`/api/rule/schema?messageCode=${messageCode}&senderId=${senderId}&receiverId=${receiverId}`)
+  return fetch(`/api/rule/schema?messageCode=${messageCode}&senderId=${senderId}&receiverId=${receiverId}&cuk=${cukCode}`)
     .then((response: any) => response.json())
   //   .then((response) => response.json())
   //   .then((schemas) => {
