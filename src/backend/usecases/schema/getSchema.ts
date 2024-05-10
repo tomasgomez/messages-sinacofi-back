@@ -47,10 +47,18 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
       }
       const schemaUpdated = schemas.parameters.map((schema: any) => {
         const params = response[0].parameters?.find((param:any) => param.name === schema.name);
-        if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.name != 'cukCode' && params.type != "label") {
+        if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.type != "label") {
           const value = params.value;
           schema.defaultValue = value;
           
+        }
+        if (params?.name == "priority") {
+          console.log("priority", params.value);     
+        }
+        console.log("schema", schema.name);
+        if (schema && schema.name == 'CUK'){
+          console.log("cuk", cuk);
+          schema.defaultValue = cuk;
         }
 
         return schema;

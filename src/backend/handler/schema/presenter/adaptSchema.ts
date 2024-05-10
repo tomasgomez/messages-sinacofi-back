@@ -64,7 +64,7 @@ function adaptParameter(parameter: any, userData: any): Parameter {
         properties: {
             "rows": row,
             "columns": column,
-            ...(type === "select" ? { "multiple": multiple,"options": optionValues } : {}),
+            ...((type === "select" || type == 'checkbox' ) ? { "multiple": multiple,"options": optionValues } : {}),
             ...(validations?.disabled ? { disabled: true } : {})
         },
         validations
