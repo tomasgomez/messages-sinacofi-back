@@ -49,7 +49,7 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
 
                 let history: History = {
                     cukCode: fetchedCuk.cukCode ?? '',
-                    status: fetchedCuk.status ?? '',
+                    status: cuk.status ?? '',
                     date: new Date().toISOString()
                 };
 
