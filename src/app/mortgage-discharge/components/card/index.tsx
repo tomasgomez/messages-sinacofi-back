@@ -107,7 +107,7 @@ const CarDischarge = ({
             rows={handleFilterMessages(reverseArray(messages))}
             columns={columnsCard}
             withCheckbox={false}
-            defaultOrderBy="id"
+            defaultOrderBy="creationDate"
             defaultOrder="desc"
           />
         </Collapse>

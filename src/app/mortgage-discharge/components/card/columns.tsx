@@ -35,14 +35,13 @@ const AccionesColumn = ({ row }: { row: any }) => {
           aria-label="DriveFileRenameOutlineIcon"
           style={{ padding: 0, color: "#00B2E2" }}
           onClick={() =>
-            messageCode === "670" ?
-            router.push(
-              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
-            ) : (
-              router.push(
-                `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
-              )
-            )
+            messageCode === "670"
+              ? router.push(
+                  `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+                )
+              : router.push(
+                  `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
+                )
           }
         >
           {messageCode === "670" ? (
@@ -52,17 +51,31 @@ const AccionesColumn = ({ row }: { row: any }) => {
           )}
         </IconButton>
       )}
-      {/* Detail Icon */}
-      {status !== "01" && (
+      {(!status || status === "-") && (
         <IconButton
-          key={`detail-icon-${row.id}`}
-          aria-label="DetailOutlineIcon"
-          style={{ padding: 0, color: "#565656" }}
-          onClick={() => handlerOpenModal(row)}
+          key={`sent-icon-${row.id}`}
+          style={{ padding: 0, color: "#00B2E2" }}
+          onClick={() =>
+            router.push(
+              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
+            )
+          }
         >
-          <InfoOutlinedIcon />
+          <SendOutlinedIcon />
         </IconButton>
       )}
+      {/* Detail Icon */}
+      {status === "05" ||
+        (status === "06" && (
+          <IconButton
+            key={`detail-icon-${row.id}`}
+            aria-label="DetailOutlineIcon"
+            style={{ padding: 0, color: "#565656" }}
+            onClick={() => handlerOpenModal(row)}
+          >
+            <InfoOutlinedIcon />
+          </IconButton>
+        ))}
       {/* TODO ADD Sent Icon */}
     </Box>
   );
@@ -88,11 +101,13 @@ const documents: Columns = {
       const handleClick = () => {
         row?.documents.forEach((file: any) => {
           const blob = base64ToBlob(file.content);
-          downloadFile(blob, file.documentName )
-        })
+          downloadFile(blob, file.documentName);
+        });
       };
       return (
-        <Link href="#" onClick={handleClick}>{row?.documents?.length}</Link>
+        <Link href="#" onClick={handleClick}>
+          {row?.documents?.length}
+        </Link>
       );
     }
     return "-";

@@ -13,7 +13,7 @@ import {
 import { ModalTrackingData } from "@/types/mortgage-discharge";
 import { useState } from "react";
 import { updateForeClosureMessage } from "../../api-calls";
-import { options } from "./constants";
+// import { options } from "./constants";
 import { EnabledExtraOptions } from "@/utils/tracking-modal";
 
 export const TrackingModal = (props: {
@@ -23,7 +23,7 @@ export const TrackingModal = (props: {
   handleGetDataList: () => void;
   setLoading: (state: boolean) => void;
 }) => {
-  const [statusSelected, setStatusSelected] = useState("021");
+  const [statusSelected, setStatusSelected] = useState("");
   const { open, onClose, data, handleGetDataList, setLoading } = props;
 
   const handleClose = () => {
@@ -38,6 +38,55 @@ export const TrackingModal = (props: {
     await updateForeClosureMessage(cukCode, statusSelected);
     await handleGetDataList();
   };
+
+  // TODO: MOVE THE OBJECT TO A CONST, WHEN THE OPTIONS IS A CONST IS NOT WORKING
+  const newOptions = EnabledExtraOptions(
+    [
+      {
+        label: "021 - Evaluación Alzamiento Hipotecario En Proceso",
+        value: "021",
+        dependOf: "01",
+        disabled: true,
+      },
+      {
+        label: "022 - Evaluación Alzamiento Hipotecario Aceptada",
+        value: "022",
+        dependOf: "01",
+        disabled: true,
+      },
+      {
+        label: "023 - Evaluación Alzamiento Hipotecario Rechazada",
+        value: "023",
+        dependOf: "01",
+        disabled: true,
+      },
+      {
+        label: "XXX - Inicio de Cliente en Normalización",
+        value: "XXX",
+        dependOf: "01",
+        disabled: true,
+      },
+      {
+        label: "041 - Firma de Escritura en Proceso",
+        value: "041",
+        dependOf: "022",
+        disabled: true,
+      },
+      {
+        label: "042 - Escritura Firmada",
+        value: "042",
+        dependOf: "041",
+        disabled: true,
+      },
+      {
+        label: "YYY - Fin de Cliente en Normalización",
+        value: "YYY",
+        dependOf: "XXX",
+        disabled: true,
+      },
+    ],
+    history
+  );
 
   return (
     <Modal
@@ -90,7 +139,7 @@ export const TrackingModal = (props: {
           <MortgageStatusDropdown
             value={statusSelected}
             onChange={setStatusSelected}
-            options={EnabledExtraOptions(options, history)}
+            options={newOptions}
           />
         </Box>
       </Box>

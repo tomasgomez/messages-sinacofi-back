@@ -3,9 +3,7 @@ import * as React from "react";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import { rowOptions } from "../constants";
-import {
-  StyledTabCell,
-} from "../style";
+import { StyledTabCell } from "../style";
 import { TableProps } from "../type";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
