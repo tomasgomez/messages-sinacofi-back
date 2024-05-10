@@ -9,6 +9,7 @@ import { CardContext } from "../../in-process/store/ModalStore";
 import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import { base64ToBlob, downloadFile } from "./utils";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const { status, messageCode } = row;
@@ -84,7 +85,15 @@ const documents: Columns = {
   sortable: false,
   render: ({ row }: { row: any }) => {
     if (row?.documents?.length > 0) {
-      return <Link href="#">{row?.documents?.length}</Link>;
+      const handleClick = () => {
+        row?.documents.forEach((file: any) => {
+          const blob = base64ToBlob(file.content);
+          downloadFile(blob, file.documentName )
+        })
+      };
+      return (
+        <Link href="#" onClick={handleClick}>{row?.documents?.length}</Link>
+      );
     }
     return "-";
   },

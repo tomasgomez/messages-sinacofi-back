@@ -154,7 +154,7 @@ const CreateMessage = () => {
         onConfirm: (document: any) => {
           onClose?.();
           setLoading(true);
-          updateMessage(messageId, "05", { ...payload, documents: [document] })
+          updateMessage(messageId, statusCodes[1], { ...payload, documents: document })
             .then((response) => {
               console.log("Mensaje actualizados!");
               setModalState({
