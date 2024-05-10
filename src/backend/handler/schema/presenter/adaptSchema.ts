@@ -34,7 +34,7 @@ function sortParametersByPriority(parameters: any[]): any[] {
 }
 
 function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiverId?: any, sender?: any } = {}) {
-    if (defaultValue === "Current Date") {
+    if (defaultValue === "Current Date" || defaultValue === "currentDate") {
         return new Date();
     }
     if (defaultValue === "userInstitution") {

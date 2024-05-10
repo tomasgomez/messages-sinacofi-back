@@ -128,7 +128,6 @@ const CreateMessage = () => {
           });
       });
     } else {
-      console.log({ selectedInstitution });
       getMessageSchema(messageCode, selectedInstitution, institutionId, cukCode)
         .then((schema: any) => {
           setMessageSchema({
@@ -206,7 +205,7 @@ const CreateMessage = () => {
       });
   };
   const onPrepare = (data: any) => {
-    // setLoading(true);
+    setLoading(true);
     const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution);
     createMessage(payload, "01")
       .then((response: any) => {
