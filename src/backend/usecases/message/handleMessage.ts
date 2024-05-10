@@ -6,7 +6,7 @@ import {
 } from "@/backend/repository/messageRepository";
 import {
     messageForeclosureUseCase
-} from "../messageForeclosure/usecases";
+} from "../foreclosure/usecases";
 import {
     isForeclosureMessageCode
 } from "@/backend/entities/cuk/codes";

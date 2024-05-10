@@ -1,59 +1,38 @@
-import {
-  Filter
-} from '@/backend/entities/global/filter';
-import {
-  processDateField,
-  processStringArrayField
-} from '@/backend/utils/functions';
+import { CUK } from '@/backend/entities/cuk/cuk';
+import { Message } from '@/backend/entities/message/message';
 
-export function validateUpdateMessageForeclosure(data: any): Filter | Error {
-  const filter: Filter = {};
+export function validateUpdateMessageForeclosure(data: any): [CUK, Message] | Error {
+  let cuk: CUK = new CUK();
 
   const {
     cukCode,
     id,
-    name,
-    description,
-    startDate,
-    endDate,
-    channel,
     status,
-    institutionDestination,
-    institutionCode,
-    buyerDni,
-    buyer,
-    ownerDni,
-    owner,
-    borrowerDni,
-    borrower,
-    count,
-    offset
+    messageId
   } = data;
 
-  /* Set all the possible filters */
-  processStringArrayField('cukCode', cukCode, filter);
-  processStringArrayField('id', id, filter);
-  processStringArrayField('name', name, filter);
-  processStringArrayField('description', description, filter);
-  processDateField('startDate', startDate, filter);
-  processDateField('endDate', endDate, filter);
-  processStringArrayField('channel', channel, filter);
-  processStringArrayField('status', status, filter);
-  processStringArrayField('institutionCode', institutionCode, filter);
-  processStringArrayField('institutionDestination', institutionDestination, filter);
-  processStringArrayField('buyerDni', buyerDni, filter);
-  processStringArrayField('buyer', buyer, filter);
-  processStringArrayField('ownerDni', ownerDni, filter);
-  processStringArrayField('owner', owner, filter);
-  processStringArrayField('borrowerDni', borrowerDni, filter);
-  processStringArrayField('borrower', borrower, filter);
-
-  processStringArrayField('count', count, filter);
-  processStringArrayField('offset', offset, filter);
-
-  if (startDate && endDate && startDate > endDate) {
-    return new Error('Invalid date range');
+  if (cukCode && typeof cukCode === 'string' && cukCode.trim() !== '') {
+    cuk.cukCode = cukCode.trim();
   }
 
-  return filter;
+  if (id && typeof id === 'string' && id.trim() !== '') {
+    cuk.id = id.trim();
+  }
+
+  if (status && typeof status === 'string' && status.trim() !== '') {
+    cuk.status = status.trim();
+  }
+
+  let message: Message = new Message();
+
+  if (messageId && typeof messageId === 'string' && messageId.trim() !== '') {
+    message.id = messageId.trim();
+  }
+
+  if (Object.keys(cuk).length === 0) {
+    return new Error('Invalid CUK');
+  }
+
+
+  return [cuk, message];
 }

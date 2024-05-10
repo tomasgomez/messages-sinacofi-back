@@ -1,5 +1,5 @@
 import { validateGetMessageForeclosure } from "@/backend/handler/foreclosure/presenter/getMessage";
-import { messageForeclosureUseCase } from "@/backend/usecases/messageForeclosure/usecases";
+import { messageForeclosureUseCase } from "@/backend/usecases/foreclosure/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export async function get(req: NextApiRequest, res: NextApiResponse < any >, detail: boolean = false){
