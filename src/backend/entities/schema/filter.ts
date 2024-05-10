@@ -3,4 +3,6 @@ export interface Filter {
 
   count ? : string;
   offset ? : string;
+
+  cuk ? : string;
 }

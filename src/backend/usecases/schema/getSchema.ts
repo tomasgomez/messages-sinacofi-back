@@ -1,3 +1,4 @@
+import { MessageRepository } from '@/backend/repository/messageRepository';
 import {
   MessageSchema
 } from '../../entities/schema/messageSchema';
@@ -12,8 +13,13 @@ import {
 } from "@/backend/adapters/rule/get";
 
 
+import { PrismaMessageAdapter as PrismaAdapter } from '../../repository/message/message';
+import { Message } from '@/backend/entities/message/message';
+
+const messageRepository: MessageRepository = new PrismaAdapter();
+
 // Get message function
-export async function getSchema(messageCode: string): Promise < MessageSchema[] | Error > {
+export async function getSchema(messageCode: string, cuk?: string): Promise < MessageSchema[] | Error > {
   try {
 
     let url = getEnvVariable(envVariables.RULE_CLIENT_URL);
@@ -28,11 +34,40 @@ export async function getSchema(messageCode: string): Promise < MessageSchema[] 
 
     path = `${path}/${messageCode}`;
 
-    console.log('path', path);
-    console.log('url', url);
-
 
     let schemas = await get(url, path, {},{})
+    const messageAH = ["671", "672", "673"].find((element) => element === messageCode);
+    if (messageAH && cuk) {
+      let message = new Message();
+      message.messageCode = "670";
+      message.cukCode = cuk;
+      let response = await messageRepository.find(message, true, "0","0");
+      if (response instanceof Error) {
+        return response;
+      }
+      const schemaUpdated = schemas.parameters.map((schema: any) => {
+        const params = response[0].parameters?.find((param:any) => param.name === schema.name);
+        if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.type != "label") {
+          const value = params.value;
+          schema.defaultValue = value;
+          
+        }
+        if (params?.name == "priority") {
+          console.log("priority", params.value);     
+        }
+        console.log("schema", schema.name);
+        if (schema && schema.name == 'CUK'){
+          console.log("cuk", cuk);
+          schema.defaultValue = cuk;
+        }
+
+        return schema;
+        
+      });
+
+      schemas.paremeters = schemaUpdated; 
+          
+    }
 
     return schemas;
   } catch (error: any) {

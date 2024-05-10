@@ -11,6 +11,7 @@ import {
   Filter,
   SmallMsDetailInfoModal,
   SmallMsInfoModalMortgageDischarge,
+  ModalTrackingData,
 } from "@/types/mortgage-discharge";
 import { sortMessagesOldToNew } from "./messagesFuntions";
 
@@ -21,7 +22,7 @@ export const formatCardData = (
     let { messages: unSortedMessages } = elem;
 
     const messages = sortMessagesOldToNew(unSortedMessages);
-    
+
     // To Mock Data
 
     // const mewMessages2: Message[] = [
@@ -78,7 +79,7 @@ export const formatCardData = (
       cukStatus: messages.length ? messages[messages.length - 1].status : "01",
     };
 
-    const InfoData = {
+    const infoData = {
       channel: elem.channel,
       operationStatus: elem.status,
       clientName: elem.clientName,
@@ -87,7 +88,17 @@ export const formatCardData = (
       cukStatus: codeData.cukStatus,
     };
 
-    return { codeData, InfoData, messages, buttonDisabled };
+    const modalTrackingData: ModalTrackingData = {
+      cukCode: elem.cukCode,
+      seller: `${elem?.ownerDni || ""} ${elem?.owner || ""}`,
+      buyer: `${elem?.buyerDni || ""} ${elem?.buyer || ""}`,
+      debtor: `${elem?.borrowerDni || ""} ${elem?.borrower || ""}`,
+      region: elem.region || "",
+      institutionDestination: elem.institutionDestination || "",
+      history: elem?.history || [],
+    };
+
+    return { codeData, infoData, messages, buttonDisabled, modalTrackingData };
   });
 
   return formattedData;
@@ -243,7 +254,7 @@ const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
     creationTime,
     priority,
     aunthetication: parameters?.find(
-      (elem: any) => elem.name === "authetication"
+      (elem: any) => elem.name === "auth"
     ).value as string,
   };
 

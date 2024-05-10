@@ -11,6 +11,8 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
 
   const {
     cukCode,
+    messageCode,
+    messageStatus,
     id,
     name,
     description,
@@ -47,9 +49,10 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   processStringArrayField('owner', owner, filter);
   processStringArrayField('borrowerDni', borrowerDni, filter);
   processStringArrayField('borrower', borrower, filter);
-
+  processStringArrayField('messageCode', messageCode, filter);
   processStringArrayField('count', count, filter);
   processStringArrayField('offset', offset, filter);
+  processStringArrayField('messageStatus', messageStatus, filter);
 
   if (startDate && endDate && startDate > endDate) {
     return new Error('Invalid date range');
