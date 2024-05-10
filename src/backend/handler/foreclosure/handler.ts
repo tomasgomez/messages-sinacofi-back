@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Handler } from "@/backend/entities/calls/handler";
 
 import { get } from '@/backend/handler/foreclosure/get';
+import { update } from '@/backend/handler/foreclosure/update';
 import { APICalls } from "@/backend/entities/calls/calls";
 
 /*
@@ -12,9 +13,7 @@ class MesasageForeclosureHandler extends Handler implements APICalls {
     GET = async (req: NextApiRequest, res: NextApiResponse < any > ) => get(req, res);
 
     // Put message
-    PUT = async (req: NextApiRequest, res: NextApiResponse < any > ) => {
-        res.status(405).end(`Method ${req.method} Not Allowed`);
-    }
+    PUT = async (req: NextApiRequest, res: NextApiResponse < any > ) => update(req, res);
 }
 
 // export Message Foreclosure calls
