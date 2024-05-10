@@ -115,33 +115,8 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
                         documents: true,
                     },
                     where: {
-                        OR: [
-                          {
-                            messageCode: {
-                              notIn: filter.mesageCode
-                            }
-                          },
-                          {
-                            AND: [
-                              {
-                                messageCode: {
-                                    in: filter.mesageCode
-                                },
-                              },
-                              {
-                                OR: [
-                                    {
-                                        status: MessageStatus.ENVIADO
-                                    },
-                                    {
-                                        status: MessageStatus.PREPARADO
-                                    }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      },
+                        cukCode: { in: filter.cukCode },
+                    },
                     orderBy: {
                         creationDate: 'desc'
                     },

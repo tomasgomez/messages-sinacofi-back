@@ -45,6 +45,8 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         /* Set the message status and cukCode */
         newMessage.cukCode = cuk.cukCode;
         newMessage.status = MessageStatus.PREPARADO;
+        newMessage.messageCode = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO;
+        newMessage.description = 'ACEPTACION DE ALZAMIENTO HIPOTECARIO';
 
         /* Create the message */
         createdMessage = await createMessage(messageRepository, newMessage);
