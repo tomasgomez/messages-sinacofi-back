@@ -239,7 +239,7 @@ const getColorIcon = (iconColor?: string): string => {
     case "01":
       return "black";
     default:
-      return "black";
+      return "#00B2E2";
   }
 };
 

@@ -15,6 +15,17 @@ import {
 } from "@/types/mortgage-discharge";
 import { sortMessagesOldToNew } from "./messagesFuntions";
 
+const parseDateTimeMessages = (obj: any): Date => {
+  return new Date(obj.date);
+};
+
+const sortHistoryList = (obj: any[]): any[] => {
+  return obj.sort(
+    (a, b) =>
+      parseDateTimeMessages(b).getTime() - parseDateTimeMessages(a).getTime()
+  );
+};
+
 export const formatCardData = (
   data: MortgageDischargeCard[]
 ): DataMortgageDischarge[] => {
@@ -73,10 +84,21 @@ export const formatCardData = (
 
     const buttonDisabled = mostRecent670?.status === "01";
 
+    let cukCode = "01";
+    let messageCode = "";
+    for (let i = messages?.length - 1; i >= 0; i--) {
+      if (messages[i].status && messages[i].status !== "-") {
+        cukCode = messages[i].status;
+        messageCode = messages[i].messageCode;
+        break;
+      }
+    }
+
     const codeData = {
       cukCode: elem.cukCode,
-      foreclosureDate: elem.foreclosureDate,
-      cukStatus: messages.length ? messages[messages.length - 1].status : "01",
+      foreclosureDate: elem?.creationDate?.split(" ")[0],
+      cukStatus: cukCode,
+      lastMessageCode: messageCode,
     };
 
     const infoData = {
@@ -95,7 +117,7 @@ export const formatCardData = (
       debtor: `${elem?.borrowerDni || ""} ${elem?.borrower || ""}`,
       region: elem.region || "",
       institutionDestination: elem.institutionDestination || "",
-      history: elem?.history || [],
+      history: sortHistoryList(elem?.history || []),
     };
 
     return { codeData, infoData, messages, buttonDisabled, modalTrackingData };
@@ -302,7 +324,10 @@ export function findPreviousMessage670(
   return previousMessage || originalArray[currentIndex]; // Retorna el mensaje previo si se encuentra, de lo contrario retorna null
 }
 
-export const getStatusText = (status?: string): string => {
+export const getStatusText = (
+  status?: string,
+  messageCode?: string
+): string => {
   switch (status) {
     // Recibido
     case "06":
@@ -312,7 +337,10 @@ export const getStatusText = (status?: string): string => {
       return "Enviado";
     // Pendiente de Firma
     case "01":
-      return "Pendiente de Firma";
+      if (messageCode === "670") {
+        return "Pendiente de Firma";
+      }
+      return "Pendiente de Envío";
     // Default
     default:
       return "Pendiente de Envio";
@@ -320,7 +348,7 @@ export const getStatusText = (status?: string): string => {
 };
 
 export const getIsPendingStatus = (status: string | undefined) => {
-  if (!status || status === "01") {
+  if (!status || status === "01" || status === "-") {
     return true;
   }
   return false;
