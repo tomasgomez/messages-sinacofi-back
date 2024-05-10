@@ -128,7 +128,6 @@ const CreateMessage = () => {
           });
       });
     } else {
-      console.log({ selectedInstitution });
       getMessageSchema(messageCode, selectedInstitution, institutionId, cukCode)
         .then((schema: any) => {
           setMessageSchema({
@@ -155,7 +154,7 @@ const CreateMessage = () => {
         onConfirm: (document: any) => {
           onClose?.();
           setLoading(true);
-          updateMessage(messageId, "05", { ...payload, documents: [document] })
+          updateMessage(messageId, statusCodes[1], { ...payload, documents: document })
             .then((response) => {
               console.log("Mensaje actualizados!");
               setModalState({
@@ -206,7 +205,7 @@ const CreateMessage = () => {
       });
   };
   const onPrepare = (data: any) => {
-    // setLoading(true);
+    setLoading(true);
     const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution);
     createMessage(payload, "01")
       .then((response: any) => {

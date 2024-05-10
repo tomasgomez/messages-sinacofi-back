@@ -227,7 +227,6 @@ export const formatModalDetailSmall = (
     },
     auxiliarSmallMsDetail[0],
   ];
-
   return { dataHeader, smallMsDetail };
 };
 
@@ -253,9 +252,8 @@ const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
     creationDate,
     creationTime,
     priority,
-    aunthetication: parameters?.find(
-      (elem: any) => elem.name === "auth"
-    ).value as string,
+    aunthetication: parameters?.find((elem: any) => elem.name === "auth")
+      ?.value as string,
   };
 
   return dataHeader;

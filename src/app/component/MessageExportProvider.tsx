@@ -3,7 +3,7 @@ import { ModalPrint } from "./inbox-header/ModalPrint";
 import { pdf, usePDF } from "@react-pdf/renderer";
 import { PDFTemplate } from "./PDFTemplate";
 import { MSDetail } from "./inbox-table/type";
-// import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 // import { PDFTemplate } from "./PDFTemplate";
 
 type initialinitialMessageExportType = {

@@ -40,6 +40,7 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
     if (messageAH && cuk) {
       let message = new Message();
       message.messageCode = "670";
+      message.status = "05";
       message.cukCode = cuk;
       let response = await messageRepository.find(message, true, "0","0");
       if (response instanceof Error) {
@@ -51,17 +52,20 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
           const value = params.value;
           schema.defaultValue = value;
         }
-        
         schema.value = params?.value;
-
         if (schema && schema.name == 'CUK'){
-          console.log("cuk", cuk);
           schema.defaultValue = cuk;
+        }
+
+        if (schema && schema.defaultValue == '') {
+          const rules = schema.rules.filter((rule:any) => rule.name !== 'disabled');
+          schema.rules = rules;
         }
 
         return schema;
         
       });
+
 
       schemas.paremeters = schemaUpdated; 
           
