@@ -254,7 +254,7 @@ const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
     creationTime,
     priority,
     aunthetication: parameters?.find(
-      (elem: any) => elem.name === "authetication"
+      (elem: any) => elem.name === "auth"
     ).value as string,
   };
 
