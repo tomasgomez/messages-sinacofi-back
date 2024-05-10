@@ -16,7 +16,7 @@ const sortDataNewToOld = (obj: any[]): any[] => {
 };
 
 export const CardStatusUpdate = (props: { data?: any[] }) => {
-  const dataSorted = sortDataNewToOld(props.data || []);
+  const dataSorted = sortDataNewToOld(props?.data || []);
 
   return (
     <Card sx={{ width: "100%" }}>
