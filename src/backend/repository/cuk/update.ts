@@ -32,8 +32,6 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
             };
         }
 
-        console.log('cuk:', cuk);
-
         if (cuk.status) {
             updatedCuk = await prismaClient.$transaction(async (prisma) => {
                 // Fetch the object from the database within the transaction

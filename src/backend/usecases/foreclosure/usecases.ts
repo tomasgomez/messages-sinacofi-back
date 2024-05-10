@@ -30,7 +30,7 @@ export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
         handleForeclosure(this.cukRepository,this.messageRepository , cuk, message)
 
     updateForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 
-        updateForclosure(this.cukRepository, cuk, message)
+        updateForclosure(this.cukRepository, this.messageRepository, cuk, message)
 
     normalization = async (cuk: CUK, message: Message): Promise < CUK | Error > =>
         normalization(this.cukRepository, cuk, message)

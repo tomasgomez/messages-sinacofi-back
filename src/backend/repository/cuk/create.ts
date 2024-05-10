@@ -7,6 +7,9 @@ import {
 import {
     CUK
 } from '@/backend/entities/cuk/cuk';
+import {
+    History
+} from '@/backend/entities/cuk/history';
 
 async function create(cuk: CUK): Promise < CUK | Error > {
     try {
@@ -20,6 +23,17 @@ async function create(cuk: CUK): Promise < CUK | Error > {
         if (cuk.setTime) {
             cuk.setTime();
         }
+
+        /* Set the history for the CUK */
+        let history: History = {
+            status: cuk.status ?? '',
+            cukCode: cuk.cukCode ?? '',
+            date: new Date().toString(),
+        };
+
+        let historyAsString = JSON.stringify(history);
+
+        cukData.history = historyAsString;
 
         /* Add all the attributes to the new CUK */
         if (Object.keys(cuk).length > 0) {

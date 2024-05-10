@@ -13,6 +13,8 @@ export interface ICUK {
     status?: string | null;
     institutionDestination?: string | null;
 
+    history?: any;
+
     setTime?(): void;
     setCukCode?(institutionCode: string): void;
 
