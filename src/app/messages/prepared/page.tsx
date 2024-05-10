@@ -24,10 +24,10 @@ export default function PreparedScreen() {
     try {
       setIsLoading(true);
       // Backend have the sender like a label not a code
-      const selectedInstitutionLabel = await intitutionCodeToLabel(
-        selectedInstitution
-      );
-      await fetch(`/api/message?status=01&sender=${selectedInstitutionLabel}`)
+      // const selectedInstitutionLabel = await intitutionCodeToLabel(
+      //   selectedInstitution
+      // );
+      await fetch(`/api/message?status=01&sender=${selectedInstitution}`)
         .then((res) => res.json())
         .then((res) => {
           setData(res);

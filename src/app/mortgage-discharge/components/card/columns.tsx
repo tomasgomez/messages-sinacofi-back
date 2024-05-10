@@ -34,8 +34,13 @@ const AccionesColumn = ({ row }: { row: any }) => {
           aria-label="DriveFileRenameOutlineIcon"
           style={{ padding: 0, color: "#00B2E2" }}
           onClick={() =>
+            messageCode === 670 ?
             router.push(
-              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
+            ) : (
+              router.push(
+                `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+              )
             )
           }
         >
