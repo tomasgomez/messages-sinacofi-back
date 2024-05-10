@@ -30,7 +30,7 @@ export function validateCreateMessage(data: any): Message | Error {
     message.cukCode = cukCode.trim();
   }
 
-  if (priority && typeof priority === 'number') {
+  if (priority && typeof priority === 'number' || typeof priority === 'string') {
     message.priority = priority.toString();
   }
 
