@@ -40,6 +40,7 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
     if (messageAH && cuk) {
       let message = new Message();
       message.messageCode = "670";
+      message.status = "05";
       message.cukCode = cuk;
       let response = await messageRepository.find(message, true, "0","0");
       if (response instanceof Error) {
@@ -59,7 +60,6 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
           console.log("cuk", cuk);
           schema.defaultValue = cuk;
         }
-
         return schema;
         
       });
