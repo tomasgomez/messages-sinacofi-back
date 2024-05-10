@@ -13,6 +13,7 @@ import {
 } from '@/backend/utils/functions';
 import { MessageStatus } from '@/utils/messagesStatus';
 import { MessageTypes } from '@/backend/entities/message/types';
+import { History } from '@/backend/entities/cuk/history';
 
 async function find(filter: Filter): Promise < CUK[] | Error > {
     try {
@@ -157,6 +158,23 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
                     handleNullValues(message, false);
                 }
             }
+            // Check if history exists
+            if (cuk.history && typeof cuk.history === 'string' && cuk.history.trim() !== '') {
+
+                // Parse Json
+                let historyArray = JSON.parse(cuk.history);
+
+                // Check if historyArray is an array
+                if (Array.isArray(historyArray)) {
+                    cuk.history = historyArray.map((history: History) => {
+                        return {
+                            cukCode: history.cukCode,
+                            status: history.status,
+                            date: history.date
+                        }
+                    });
+                }
+            } 
         }
         return cuks;
 
