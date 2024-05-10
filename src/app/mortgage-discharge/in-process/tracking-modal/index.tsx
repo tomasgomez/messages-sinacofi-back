@@ -13,15 +13,17 @@ import {
 import { ModalTrackingData } from "@/types/mortgage-discharge";
 import { useCallback, useEffect, useState } from "react";
 import { updateForeClosureMessage } from "../../api-calls";
+import Loader from "@/components/Loader";
 
 export const TrackingModal = (props: {
   open: boolean;
   onClose: (state: boolean) => void;
   data: ModalTrackingData | undefined;
   handleGetDataList: () => void;
+  setLoading: (state: boolean) => void;
 }) => {
   const [statusSelected, setStatusSelected] = useState("021");
-  const { open, onClose, data, handleGetDataList } = props;
+  const { open, onClose, data, handleGetDataList, setLoading } = props;
 
   const handleClose = () => {
     onClose(false);
@@ -30,8 +32,9 @@ export const TrackingModal = (props: {
   const { cukCode, history, ...restOfData } = data || {};
 
   const handleChange = async () => {
-    await updateForeClosureMessage(cukCode, statusSelected);
+    setLoading(true);
     handleClose();
+    await updateForeClosureMessage(cukCode, statusSelected);
     await handleGetDataList();
   };
 

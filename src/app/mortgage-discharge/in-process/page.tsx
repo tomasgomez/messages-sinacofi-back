@@ -128,6 +128,7 @@ export default function InProcessScreen() {
           onClose={setIsOpenTrackingModal}
           data={modalTrackingData}
           handleGetDataList={handleGetDataList}
+          setLoading={setLoading}
         />
         <InfoModal />
         <TablePagination
