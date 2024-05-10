@@ -61,7 +61,7 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
       actions.push(MessageActions.SIGN);
       actions.push(MessageActions.CANCEL);
 
-      message.actions = actions;
+      message.actions = actions.join(',');
     }
     case MessageStatus.ENVIADO: {
       // Create message 671

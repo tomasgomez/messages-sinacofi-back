@@ -8,6 +8,7 @@ import { handleForeclosure } from './handleForeclosure';
 import { MessageTypes } from '@/backend/entities/message/types';
 import { getSchema } from '../schema/getSchema';
 import { MessageRepository } from '@/backend/repository/messageRepository';
+import { MessageStatus } from '@/backend/entities/message/status';
 
 export async function updateForclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message): Promise<CUK | Error> {
   try {
@@ -23,6 +24,8 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       /* 672 */
       case ForeclosureStatus.APPROVED:
         cuk.status = ForeclosureStatus.APPROVED;
+
+        let messageStatus = MessageStatus.PREPARADO;
 
         // let schema = await getSchema(MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO, cuk.cukCode ?? '');
 
