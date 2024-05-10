@@ -13,7 +13,7 @@ import {
 import { ModalTrackingData } from "@/types/mortgage-discharge";
 import { useState } from "react";
 import { updateForeClosureMessage } from "../../api-calls";
-import { options, extraOptions } from "./constants";
+import { options } from "./constants";
 import { EnabledExtraOptions } from "@/utils/tracking-modal";
 
 export const TrackingModal = (props: {
@@ -90,10 +90,7 @@ export const TrackingModal = (props: {
           <MortgageStatusDropdown
             value={statusSelected}
             onChange={setStatusSelected}
-            options={[
-              ...options,
-              ...EnabledExtraOptions(extraOptions, history),
-            ]}
+            options={EnabledExtraOptions(options, history)}
           />
         </Box>
       </Box>

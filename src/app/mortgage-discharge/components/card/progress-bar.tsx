@@ -76,7 +76,7 @@ const ProgressBar = ({
                 MS {firstElement?.messageCode}
               </StyledTypographyCode>
               <StyledTypographyStatus>
-                {getStatusText(firstElement?.status)}
+                {getStatusText(firstElement?.status, firstElement?.messageCode)}
               </StyledTypographyStatus>
             </StyledContainerBlockStatus>
           )}
@@ -115,7 +115,7 @@ const ProgressBar = ({
                     MS {element?.messageCode}
                   </StyledTypographyCode>
                   <StyledTypographyStatus>
-                    {getStatusText(element?.status)}
+                    {getStatusText(element?.status, element?.messageCode)}
                   </StyledTypographyStatus>
                 </StyledContainerBlockStatus>
               )}
@@ -148,7 +148,7 @@ const ProgressBar = ({
                 MS {lastElement?.messageCode}
               </StyledTypographyCode>
               <StyledTypographyStatus>
-                {getStatusText(lastElement?.status)}
+                {getStatusText(lastElement?.status, lastElement?.messageCode)}
               </StyledTypographyStatus>
             </StyledContainerBlockStatus>
           )}

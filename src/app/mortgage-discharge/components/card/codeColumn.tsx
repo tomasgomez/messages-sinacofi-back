@@ -4,15 +4,8 @@ import { montserrat } from "@/utils/fonts";
 import { StyledCode } from "./styled";
 import StatusChip from "./statusChip";
 
-const CodeColumn = ({
-  code,
-  date,
-  status,
-}: {
-  code: string;
-  date: string;
-  status: string;
-}) => {
+const CodeColumn = ({ data }: { data: any }) => {
+  const { cukCode, foreclosureDate, cukStatus, lastMessageCode } = data;
   return (
     <StyledCode>
       <Typography
@@ -21,7 +14,7 @@ const CodeColumn = ({
         fontWeight="600"
         lineHeight={1.5}
       >
-        {code}
+        {cukCode}
       </Typography>
       <Typography
         fontSize={12}
@@ -29,9 +22,9 @@ const CodeColumn = ({
         lineHeight={1.33}
         color="#49454F"
       >
-        Fecha de Alzamiento: {date}
+        Fecha de Alzamiento: {foreclosureDate}
       </Typography>
-      <StatusChip status={status} />
+      <StatusChip status={cukStatus} messageCode={lastMessageCode} />
     </StyledCode>
   );
 };

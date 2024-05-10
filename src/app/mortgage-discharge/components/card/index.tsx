@@ -49,8 +49,6 @@ const CarDischarge = ({
     modalTrackingData: ModalTrackingData;
   } = data;
 
-  const { cukCode, foreclosureDate, cukStatus } = codeData;
-
   const handlerColapseCard = () => {
     setIsOpen(!isOpen);
   };
@@ -88,11 +86,7 @@ const CarDischarge = ({
                 <KeyboardArrowRightIcon />
               </IconButton>
             )}
-            <CodeColumn
-              code={cukCode}
-              date={foreclosureDate}
-              status={cukStatus}
-            />
+            <CodeColumn data={codeData} />
             <InfoColumn data={infoData} />
             <StyledButton
               onClick={() => handlerTrackingModal(modalTrackingData)}
