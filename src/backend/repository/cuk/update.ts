@@ -13,6 +13,8 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
             Object.entries(cuk).filter(([_, value]) => value !== '')
         );
 
+        delete dataToUpdate.id;
+
         /* Update the cuk */
         let updatedCuk = await prismaClient.cUK.update({
             where: {

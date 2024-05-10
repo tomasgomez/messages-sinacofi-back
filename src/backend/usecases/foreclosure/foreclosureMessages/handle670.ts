@@ -19,28 +19,55 @@ import {
 import {
   CUK
 } from '@/backend/entities/cuk/cuk';
+import {
+  ForeclosureStatus
+} from '@/backend/entities/cuk/codes';
+import {
+  MessageStatus
+} from '@/backend/entities/message/status';
+import { MessageActions } from '@/backend/entities/message/actions';
 
 
 export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
-  processMessageParameters(message.parameters, cuk);
-  setInstitutionCode(cuk, message.sender);
-  setCukDestination(cuk, message.receiver);
-  setCukStatus(cuk, message.status);
 
-  const createdCuk = await cukRepository.create(cuk);
-  if (createdCuk instanceof Error) {
-    throw createdCuk;
+  let actions = [];
+
+  switch (message.status) {
+    case MessageStatus.PREPARADO: {
+      if (!cuk.cukCode) {
+        processMessageParameters(message.parameters, cuk);
+        setInstitutionCode(cuk, message.sender);
+        setCukDestination(cuk, message.receiver);
+        setCukStatus(cuk, message.status);
+
+        const createdCuk = await cukRepository.create(cuk);
+        if (createdCuk instanceof Error) {
+          throw createdCuk;
+        }
+
+        if (cuk instanceof Error) {
+          return cuk;
+        }
+
+        if (cuk.cukCode === undefined) {
+          return new Error('No cuk code returned');
+        }
+
+        message.cukCode = cuk.cukCode;
+      } else {
+        message.cukCode = cuk.cukCode;
+      }
+
+      actions.push(MessageActions.SIGN);
+      actions.push(MessageActions.CANCEL);
+
+      message.actions = actions;
+    }
+    case MessageStatus.ENVIADO: {
+      // Create message 671
+    }
+
   }
-
-  if (cuk instanceof Error) {
-    return cuk;
-  }
-
-  if (cuk.cukCode === undefined) {
-    return new Error('No cuk code returned');
-  }
-
-  message.cukCode = cuk.cukCode;
 
   return await createMessage(messageRepository, message);
 }

@@ -12,12 +12,12 @@ const foreclosureMessageCodes = [
     "679",
  ]
 
-export enum foreclosureStatus {
+export enum ForeclosureStatus {
     IN_PROCESS = "021",
     APPROVED = "022",
     REJECTED = "023",
-    START_NORMALIZATION = "XX",
-    END_NORMALIZATION = "YY",
+    START_NORMALIZATION = "XXX",
+    END_NORMALIZATION = "YYY",
     SIGN_IN_PROGRESS = "041",
     SIGNED = "042",
   }
