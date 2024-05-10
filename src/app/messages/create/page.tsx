@@ -61,12 +61,12 @@ const CreateMessage = () => {
   const messageCode = searchParams?.get("messageCode") || "";
   const institutionId = searchParams?.get("institutionId") || "";
   const cloneId = searchParams?.get("cloneId") || "";
-  const signMessageId = searchParams?.get("signMessageId") || "";
+  const messageId = searchParams?.get("messageId") || "";
 
   useEffect(() => {
     setLoading(true);
-    if(cloneId || signMessageId) {
-      getMessageDetails(cloneId || signMessageId).then((data) => {
+    if(cloneId || messageId) {
+      getMessageDetails(cloneId || messageId).then((data) => {
         console.log({ data });
         getMessageSchema(messageCode, selectedInstitution, institutionId)
           .then((schema: any) => {
@@ -144,17 +144,17 @@ const CreateMessage = () => {
           setLoading(false);
         });
     }
-  }, [messageCode, institutionId, cloneId, signMessageId, selectedInstitution]);
+  }, [messageCode, institutionId, cloneId, messageId, selectedInstitution]);
 
   const onSubmit = (data: any) => {
     const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution);
 
-    if (signMessageId) {
+    if (messageId) {
       onSignOpen({
         onConfirm: (document: any) => {
           onClose?.();
           setLoading(true);
-          updateMessage(signMessageId, "05", { ...payload, documents: [document] })
+          updateMessage(messageId, "05", { ...payload, documents: [document] })
             .then((response) => {
               console.log("Mensaje actualizados!");
               setModalState({

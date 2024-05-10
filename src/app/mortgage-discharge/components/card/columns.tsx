@@ -8,9 +8,10 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { CardContext } from "../../in-process/store/ModalStore";
 import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 
 const AccionesColumn = ({ row }: { row: any }) => {
-  const { status } = row;
+  const { status, messageCode } = row;
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
   const router = useRouter();
 
@@ -34,11 +35,15 @@ const AccionesColumn = ({ row }: { row: any }) => {
           style={{ padding: 0, color: "#00B2E2" }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&signMessageId=${row.id}`
+              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
             )
           }
         >
-          <DriveFileRenameOutlineIcon />
+          {messageCode === "670" ? (
+            <DriveFileRenameOutlineIcon />
+          ) : (
+            <SendOutlinedIcon />
+          )}
         </IconButton>
       )}
       {/* Detail Icon */}
