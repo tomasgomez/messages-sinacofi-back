@@ -112,9 +112,9 @@ export const FilterSelector = (props: { onClose: Function }) => {
       />
       <RutInput
         handleChange={handleAuxFilter}
-        keyLabel="clientDni"
+        keyLabel="buyerDni"
         label="RUT Comprador"
-        value={getValue("clientDni")}
+        value={getValue("buyerDni")}
       />
       <RutInput
         handleChange={handleAuxFilter}

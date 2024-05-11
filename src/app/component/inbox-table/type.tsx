@@ -57,8 +57,6 @@ export interface MortgageDischargeData {
   creationDate: string;
   foreclosureDate: string;
   channel: string;
-  clientDni: string;
-  clientName: string;
   institutionDestination: string;
   region?: string;
   createdAt: string;

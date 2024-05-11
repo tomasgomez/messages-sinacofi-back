@@ -15,9 +15,9 @@ export interface CodeCardMortgageDischarge {
 export interface InforCardMortgageDischarge {
   channel: string;
   operationStatus: string;
-  clientName: string;
+  buyer: string;
   institutionDestination: string;
-  clientDni: string;
+  buyerDni: string;
   cukStatus: string;
 }
 

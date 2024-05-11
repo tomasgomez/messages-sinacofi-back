@@ -6,7 +6,7 @@ export interface MessageFilter {
     endDate?: string[];
     sender?: string[];
     receiver?: string[];
-    clientDni?: string[];
+    buyerDni?: string[];
     sellerDni?: string[];
     payerDni?: string[];
     region?: string[];

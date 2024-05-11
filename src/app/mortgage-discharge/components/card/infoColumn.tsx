@@ -11,18 +11,20 @@ const InfoColumn = ({ data }: { data: any }) => {
   const {
     channel,
     operationStatus,
-    clientName,
+    buyer,
     institutionDestination,
-    clientDni,
+    buyerDni,
     cukStatus,
   }: {
     channel: string;
     operationStatus: string;
-    clientName: string;
+    buyer: string;
     institutionDestination: string;
-    clientDni: string;
+    buyerDni: string;
     cukStatus: string;
   } = data;
+
+  console.log(data);
 
   const getInstitutionText = (cukStatus: string) => {
     switch (cukStatus) {
@@ -48,7 +50,7 @@ const InfoColumn = ({ data }: { data: any }) => {
       <Box width={170}>
         <StyledTypographyText>Comprador</StyledTypographyText>
         <StyledTypographyData>
-          {clientDni}/{clientName}
+          {buyerDni}/{buyer}
         </StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />

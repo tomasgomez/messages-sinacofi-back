@@ -104,9 +104,9 @@ export const formatCardData = (
     const infoData = {
       channel: elem.channel,
       operationStatus: elem.status,
-      clientName: elem.clientName,
+      buyer: elem.buyer,
       institutionDestination: elem.institutionDestination,
-      clientDni: elem.clientDni,
+      buyerDni: elem.buyerDni,
       cukStatus: codeData.cukStatus,
     };
 
