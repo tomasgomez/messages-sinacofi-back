@@ -67,12 +67,12 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     let query: Prisma.CUKFindManyArgs = {
         take: count > 0 ? count : 5, 
         skip: offset,
+        orderBy: { createdAt: 'desc' },
     }
 
     // defune MessageArgs
     let messageArgs: Prisma.CUK$messagesArgs = {
         select: createSelectFromFilter(),
-        orderBy: { createdAt: 'desc' },
     };
 
     const dateRangeFilter =  createDateRangeFilter(filter.startDate, filter.endDate);
