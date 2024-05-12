@@ -19,7 +19,6 @@ export const MortgageStatusDropdown = (props: {
   useEffect(() => {
     onChange(options.find((option) => !option?.disabled)?.value || "");
   }, []);
-
   return (
     <Box sx={{ width: 480 }}>
       <FormControl fullWidth>
@@ -35,8 +34,8 @@ export const MortgageStatusDropdown = (props: {
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={value}
-          defaultValue={options.find((option) => !option?.disabled).value}
-          disabled={!options.find((option) => !option?.disabled)}
+          // defaultValue={options.find((option) => !option?.disabled)?.value}
+          // disabled={!options.find((option) => !option?.disabled)}
           label="Mensajes por Familia"
           onChange={handleChange}
           MenuProps={{
@@ -56,7 +55,7 @@ export const MortgageStatusDropdown = (props: {
             <MenuItem
               key={`${option.label}-${index}`}
               value={option.value}
-              disabled={option?.disabled}
+              disabled={!option?.disabled}
             >
               {option.label}
             </MenuItem>
