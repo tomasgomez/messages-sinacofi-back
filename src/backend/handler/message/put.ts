@@ -13,7 +13,6 @@ export async function put(req: NextApiRequest, res: NextApiResponse < any > ) {
             res.status(400).json(message);
             return;
         }
-
         let messageResponse = await messageUseCase.updateMessage(message);
         res.status(200).json(messageResponse);
         return;

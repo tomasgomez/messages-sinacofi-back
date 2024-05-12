@@ -3,13 +3,13 @@ import { PrismaClientWrapper } from '../prismaWrapper';
 import { MessageStatus } from "@/backend/entities/message/status";
 import { getChileanTime } from "@/backend/utils/functions";
 import { Prisma } from "@prisma/client";
+import { Parameter } from "@/backend/entities/message/interface";
 
 export async function duplicateMessage(message: Message): Promise<Message | Error> {
     const prisma = new PrismaClientWrapper();
 
     try {
         const prismaClient = prisma.getClient();
-
         // Start transaction
         const updatedMessage = await prismaClient.$transaction(async (tx) => {
             /* Fetch the existing message to duplicate */
@@ -65,24 +65,59 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
             newMessage.receivedDate = message.receivedDate;
             newMessage.receivedTime = message.receivedTime;
 
-            // const parameters: Prisma.Messa
+            const parameters: Prisma.ParametersCreateManyMessageInput[] = newMessage.parameters? newMessage.parameters.map((parameter: Parameter) => ({
+                id: parameter.id,
+                name: parameter.name,
+                label: parameter.label,
+                type: parameter.type,
+                placeholder: parameter.placeholder,
+                description: parameter.description,
+                defaultValue: parameter.defaultValue,
+                priority: parameter.priority,
+                value: parameter.value,
+                properties: parameter.properties,
+                validations: parameter.validations
+            })) : [];
 
-            /* Create a duplicate message based on the fetched message with modifications */
-            const duplicatedMessage = await tx.message.create({
+            const parameterArgs: Prisma.ParametersCreateManyMessageInputEnvelope = { data: parameters };
+            const createManyParams: Prisma.ParametersUncheckedCreateNestedManyWithoutMessageInput = { createMany: parameterArgs }
+
+            const documents: Prisma.DocumentsCreateManyMessageInput[] = newMessage.documents? newMessage.documents.map((document) => ({
+                id: document.id,
+                documentName: document.documentName,
+                content: document.content,
+                url: document.url
+            })) : [];
+
+            const docArgs: Prisma.DocumentsCreateManyMessageInputEnvelope = { data: documents }
+            const createManyDocs: Prisma.DocumentsUncheckedCreateNestedManyWithoutMessageInput = { createMany: docArgs }
+
+            const createArgs: Prisma.MessageCreateArgs = {
                 data: {
                     ...newMessage,
-                    documents: {
-                        createMany: {
-                            data: newMessage.documents || []
-                        }
-                    },
-                    parameters: {
-                        createMany: {
-                            data: newMessage.parameters || []
-                        }
-                    }
+                    parameters: createManyParams,
+                    documents: createManyDocs
                 }
-            });
+            }
+
+            console.log(createArgs)
+
+
+            /* Create a duplicate message based on the fetched message with modifications */
+            const duplicatedMessage = await tx.message.create(createArgs);
+            // const duplicatedMessage = await tx.message.create({
+            //     data: {
+            //         ...newMessage,
+            //         documents: {
+            //             createMany: a
+            //         },
+            //         parameters: {
+            //             createMany: {
+            //                 data: parameters
+            //             }
+            //         }
+            //     }
+            // });
 
             return duplicatedMessage;
         });
