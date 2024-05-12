@@ -25,7 +25,7 @@ export async function update(req: NextApiRequest, res: NextApiResponse < any >, 
         }
 
         if (messageResponse instanceof Error) {
-          res.status(500).json([]);
+          res.status(400).json([]);
           return;
         }
 

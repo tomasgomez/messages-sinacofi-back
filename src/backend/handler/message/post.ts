@@ -13,6 +13,7 @@ export async function post(req: NextApiRequest, res: NextApiResponse < any > ) {
         }
 
         let messageResponse = await messageUseCase.handleMessage(validatedMessage);
+        
         res.status(201).json(messageResponse);
         return;
       } catch (error: any) {

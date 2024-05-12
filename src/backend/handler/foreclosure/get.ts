@@ -22,7 +22,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
         }
 
         if (messageResponse instanceof Error) {
-          res.status(500).json([]);
+          res.status(400).json([]);
           return;
         }
 
