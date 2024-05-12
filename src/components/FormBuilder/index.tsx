@@ -266,7 +266,6 @@ const FormBuilder = ({ /* children, */ schema, register, control, errors }: { /*
     <>
       <Grid container spacing={2}>
         {schema?.parameters?.map((field: any) => {
-          console.log({ field });
             return (
               <Grid item xs={field.properties.columns} key={field.id}>
                 <FieldSelector

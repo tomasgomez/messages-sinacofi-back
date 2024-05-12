@@ -31,8 +31,6 @@ export function FirstMessageSection({
 
   const { dataHeader, channelDetailsMS, propertyDetailsMS, bankDetailsMS } =
   formatModalDetailsCompleted(dataMessage);
-  console.log("----");
-  console.log(dataMessage);
   const handleShowContent = () => {
     setShowContent(!showContent);
   };

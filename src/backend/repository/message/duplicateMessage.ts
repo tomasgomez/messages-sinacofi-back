@@ -3,7 +3,7 @@ import { PrismaClientWrapper } from '../prismaWrapper';
 import { MessageStatus } from "@/backend/entities/message/status";
 import { getChileanTime } from "@/backend/utils/functions";
 import { Prisma } from "@prisma/client";
-import { Parameter } from "@/backend/entities/message/interface";
+import { Documents, Parameter } from "@/backend/entities/message/interface";
 
 export async function duplicateMessage(message: Message): Promise<Message | Error> {
     const prisma = new PrismaClientWrapper();
@@ -16,7 +16,6 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
             const existingMessage = await tx.message.findUnique({
                 where: { id: message.id },
                 include: {
-                    documents: true,
                     parameters: true
                 }
             });
@@ -24,7 +23,6 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
             if (!existingMessage) {
                 throw new Error("Message not found");
             }
-
             let newMessage: Partial<Message> = { ...existingMessage };
 
             interface PartialMessage extends Partial<Message> {
@@ -80,9 +78,9 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
             })) : [];
 
             const parameterArgs: Prisma.ParametersCreateManyMessageInputEnvelope = { data: parameters };
-            const createManyParams: Prisma.ParametersUncheckedCreateNestedManyWithoutMessageInput = { createMany: parameterArgs }
 
-            const documents: Prisma.DocumentsCreateManyMessageInput[] = newMessage.documents? newMessage.documents.map((document) => ({
+            const createManyParams: Prisma.ParametersUncheckedCreateNestedManyWithoutMessageInput = { createMany: parameterArgs }
+            const documents: Prisma.DocumentsCreateManyMessageInput[] = message.documents? message.documents.map((document:Documents) => ({
                 id: document.id,
                 documentName: document.documentName,
                 content: document.content,
@@ -99,9 +97,6 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
                     documents: createManyDocs
                 }
             }
-
-            console.log(createArgs)
-
 
             /* Create a duplicate message based on the fetched message with modifications */
             const duplicatedMessage = await tx.message.create(createArgs);

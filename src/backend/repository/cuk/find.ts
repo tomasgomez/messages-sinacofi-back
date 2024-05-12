@@ -132,7 +132,6 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
             }
         }
     }
-    console.log('select', messageArgs.select)
     // set values to query
     query.where = where;
     // define include
