@@ -14,6 +14,7 @@ import {
 import {
     setCukHistory
 } from '@/backend/utils/foreclosure/history';
+import { send } from 'process';
 
 
 async function find(filter: Filter): Promise < CUK[] | Error > {
@@ -31,6 +32,10 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
         let select = createSelectFromFilter();
 
 
+        console.log("select", select)
+
+        console.log("where", where)
+
         // Find all messages if count is not provided or is 0
         cuks = await prismaClient.cUK.findMany({
             where,
@@ -43,7 +48,7 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
                 messages: {
                     select,
                     where: {
-                        cukCode: { in: filter.cukCode },
+                        OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, {status: "06"}]}]
                     },
                     orderBy: {
                         creationDate: 'desc'
@@ -100,12 +105,6 @@ function createWhereFromFilter(filter: Filter): any {
     where.status = {
         in: filter.status
     };
-    where.institutionCode = {
-        in: filter.institutionCode
-    };
-    where.institutionDestination = {
-        in: filter.institutionDestination
-    };
     where.region = {
         in: filter.region
     };
@@ -127,6 +126,20 @@ function createWhereFromFilter(filter: Filter): any {
     where.borrower = {
         in: filter.borrower
     };
+
+    where.messages = {
+        some: {
+                OR: [{
+                sender: {
+                    in: filter.institutionCode
+                }},
+                {receiver: {
+                    in: filter.institutionCode
+                }
+            }]
+            }
+        }
+    
 
     let dateRangeFilter = createDateRangeFilter(filter.startDate, filter.endDate);
 
