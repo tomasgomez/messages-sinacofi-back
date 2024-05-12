@@ -14,7 +14,6 @@ import {
 import {
     setCukHistory
 } from '@/backend/utils/foreclosure/history';
-import { send } from 'process';
 import { Prisma } from '@prisma/client';
 
 
@@ -73,7 +72,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // defune MessageArgs
     let messageArgs: Prisma.CUK$messagesArgs = {
         select: createSelectFromFilter(),
-        orderBy: { creationDate: 'desc' },
+        orderBy: { createdAt: 'desc' },
     };
 
     const dateRangeFilter =  createDateRangeFilter(filter.startDate, filter.endDate);
