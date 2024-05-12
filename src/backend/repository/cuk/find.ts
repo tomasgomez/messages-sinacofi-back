@@ -15,6 +15,7 @@ import {
     setCukHistory
 } from '@/backend/utils/foreclosure/history';
 import { send } from 'process';
+import { Prisma } from '@prisma/client';
 
 
 async function find(filter: Filter): Promise < CUK[] | Error > {
@@ -28,34 +29,9 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
         let countAsInt = parseInt(filter.count ?? '0', 10);
         let offsetAsInt = parseInt(filter.offset ?? '0', 10);
 
-        let where = createWhereFromFilter(filter);
-        let select = createSelectFromFilter();
-
-
-        console.log("select", select)
-
-        console.log("where", where)
-
+        const query = cukFindManyQuery(filter, countAsInt, offsetAsInt);
         // Find all messages if count is not provided or is 0
-        cuks = await prismaClient.cUK.findMany({
-            where,
-            orderBy: {
-                creationDate: 'desc'
-            },
-            take: countAsInt > 0 ? countAsInt : 5, 
-            skip: offsetAsInt,
-            include: {
-                messages: {
-                    select,
-                    where: {
-                        OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, {status: "06"}]}]
-                    },
-                    orderBy: {
-                        creationDate: 'desc'
-                    },
-                }
-            }
-        });
+        cuks = await prismaClient.cUK.findMany(query);
 
         // If the messages are not found, return an error
         if (cuks.length === 0) {
@@ -83,6 +59,87 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
 export {
     find
 };
+
+
+const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma.CUKFindManyArgs => {
+
+    // Create the response object
+    let query: Prisma.CUKFindManyArgs = {
+        take: count > 0 ? count : 5, 
+        skip: offset,
+    }
+
+    // defune MessageArgs
+    let messageArgs: Prisma.CUK$messagesArgs = {
+        select: createSelectFromFilter(),
+        orderBy: { creationDate: 'desc' }
+    };
+
+    // create where from filter
+    let where: Prisma.CUKWhereInput = {};
+    where.id = {
+        in: filter.id
+    };
+    where.name = {
+        in: filter.name
+    };
+    where.cukCode = {
+        in: filter.cukCode
+    };
+    where.description = {
+        in: filter.description
+    };
+    where.channel = {
+        in: filter.channel
+    };
+    where.status = {
+        in: filter.status
+    };
+    where.region = {
+        in: filter.region
+    };
+    where.buyerDni = {
+        in: filter.buyerDni
+    };
+    where.buyer = {
+        in: filter.buyer
+    };
+    where.ownerDni = {
+        in: filter.ownerDni
+    };
+    where.owner = {
+        in: filter.owner
+    };
+    where.borrowerDni = {
+        in: filter.borrowerDni
+    };
+    where.borrower = {
+        in: filter.borrower
+    };
+
+    // check if filter has institutionCode
+    if (filter.institutionCode) {
+        messageArgs.where = {
+            OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, {status: "06"}]}]
+        }
+
+        where.messages = {
+            some: {
+                OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, {status: "06"}]}]
+            }
+        }
+    }
+
+    // set values to query
+    query.where = where;
+    // define include
+    let include: Prisma.CUKInclude = { messages: messageArgs };
+    // set include to query
+    query.include = include;
+
+    return query;
+}
+
 
 function createWhereFromFilter(filter: Filter): any {
     let where: any = {};
