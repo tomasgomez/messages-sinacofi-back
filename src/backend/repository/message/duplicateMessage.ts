@@ -2,6 +2,7 @@ import { Message } from "@/backend/entities/message/message";
 import { PrismaClientWrapper } from '../prismaWrapper';
 import { MessageStatus } from "@/backend/entities/message/status";
 import { getChileanTime } from "@/backend/utils/functions";
+import { Prisma } from "@prisma/client";
 
 export async function duplicateMessage(message: Message): Promise<Message | Error> {
     const prisma = new PrismaClientWrapper();
@@ -13,7 +14,11 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
         const updatedMessage = await prismaClient.$transaction(async (tx) => {
             /* Fetch the existing message to duplicate */
             const existingMessage = await tx.message.findUnique({
-                where: { id: message.id }
+                where: { id: message.id },
+                include: {
+                    documents: true,
+                    parameters: true
+                }
             });
 
             if (!existingMessage) {
@@ -59,6 +64,8 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
 
             newMessage.receivedDate = message.receivedDate;
             newMessage.receivedTime = message.receivedTime;
+
+            // const parameters: Prisma.Messa
 
             /* Create a duplicate message based on the fetched message with modifications */
             const duplicatedMessage = await tx.message.create({

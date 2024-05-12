@@ -33,6 +33,7 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
         // Find all messages if count is not provided or is 0
         cuks = await prismaClient.cUK.findMany(query);
 
+
         // If the messages are not found, return an error
         if (cuks.length === 0) {
             return new Error('Message not found');
@@ -72,11 +73,14 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // defune MessageArgs
     let messageArgs: Prisma.CUK$messagesArgs = {
         select: createSelectFromFilter(),
-        orderBy: { creationDate: 'desc' }
+        orderBy: { creationDate: 'desc' },
     };
 
+    const dateRangeFilter =  createDateRangeFilter(filter.startDate, filter.endDate);
     // create where from filter
-    let where: Prisma.CUKWhereInput = {};
+    let where: Prisma.CUKWhereInput = {
+        ...dateRangeFilter
+    };
     where.id = {
         in: filter.id
     };
@@ -122,14 +126,13 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         messageArgs.where = {
             OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, {status: "06"}]}]
         }
-
         where.messages = {
             some: {
                 OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, {status: "06"}]}]
             }
         }
     }
-
+    console.log('select', messageArgs.select)
     // set values to query
     query.where = where;
     // define include
@@ -208,8 +211,8 @@ function createWhereFromFilter(filter: Filter): any {
     return where;
 }
 
-function createSelectFromFilter(): any {
-    let select: any = {
+function createSelectFromFilter(): Prisma.MessageSelect {
+    let select: Prisma.MessageSelect = {
         id: true,
         TSN: true,
         OSN: true,
@@ -229,6 +232,7 @@ function createSelectFromFilter(): any {
         cukCode: true,
         actions: true,
         documents: true,
+        parameters: true
     }
 
     return select;
