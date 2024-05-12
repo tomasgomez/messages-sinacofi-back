@@ -26,7 +26,7 @@ const getCreateMessagePayload = (data: any, schema: any, sender: any) => {
   payload.sender = sender;
   payload.receiver = data.beneficiaryBank
   payload.parameters = Object.entries(data)
-    .filter((el: any) => payload[el[0]] === undefined)
+    // .filter((el: any) => payload[el[0]] === undefined)
     .map((el) => {
       console.log({ el })
       return {
