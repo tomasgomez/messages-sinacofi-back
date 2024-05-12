@@ -12,20 +12,5 @@ export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRe
         setCukDestination(cuk, message.receiver);
         setCukStatus(cuk, message.status);
 
-        const createdCuk = await cukRepository.create(cuk);
-        if (createdCuk instanceof Error) {
-          throw createdCuk;
-        }
-
-        if (cuk instanceof Error) {
-          return cuk;
-      }
-
-        if (cuk.cukCode === undefined) {
-            return new Error('No cuk code returned');
-        }
-
-        message.cukCode = cuk.cukCode;
-
         return await createMessage(messageRepository, message);
 }
