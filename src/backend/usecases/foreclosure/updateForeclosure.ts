@@ -113,8 +113,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       if (createdMessage instanceof Error) {
         throw createdMessage;
       }
-
-      console.log('Message created:', createdMessage);
+      
     }
 
     const createdCuk = await cukRepository.update(cuk);
