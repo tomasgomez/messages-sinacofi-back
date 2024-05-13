@@ -50,9 +50,13 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
 
         // split schema name with _ and get the first one
         const name = schema.name.split('_')[0];
+
+        if (name === 'sign'){
+          return schema;
+        }
         
         const params = response[0].parameters?.find((param:any) => param.name === name);
-        if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.type != "label") {
+        if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.type != "label" && params.type != "sign") {
           const value = params.value;
           schema.defaultValue = value;
         }
