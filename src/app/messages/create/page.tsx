@@ -66,7 +66,7 @@ const CreateMessage = () => {
 
   useEffect(() => {
     setLoading(true);
-    if(cloneId || messageId) {
+    if(((cloneId || messageId) && !cukCode )) {
       getMessageDetails(cloneId || messageId).then((data) => {
         // console.log({ data });
         getMessageSchema(messageCode, selectedInstitution, institutionId)
