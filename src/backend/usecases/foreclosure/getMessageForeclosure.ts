@@ -19,11 +19,11 @@ export async function getMessageForeclosure(messageRepository: MessageRepository
     const cuks = await cukRepository.find(filter);
 
     if (cuks instanceof Error) {
-      throw cuks;
+      return cuks;
     }
 
     if (cuks.length === 0) {
-      throw new Error('No message found');
+      return new Error('No message found');
     }
 
     return cuks;

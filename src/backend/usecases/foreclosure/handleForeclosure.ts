@@ -24,7 +24,7 @@ export async function handleForeclosure(cukRepository: CUKRepository, messageRep
 
     /* Check if is a valid message for foreclosure */
     if (!isValidMessage(message)) {
-      throw new Error('Invalid message');
+      return new Error('Invalid message');
     }
 
     /* Depending on the message code, process the message */
@@ -51,7 +51,7 @@ export async function handleForeclosure(cukRepository: CUKRepository, messageRep
       }
 
       default: {
-        throw new Error('Invalid message code');
+        return new Error('Invalid message code');
       }
     }
   } catch (error: any) {

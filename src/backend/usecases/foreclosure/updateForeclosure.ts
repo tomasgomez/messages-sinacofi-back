@@ -14,60 +14,59 @@ import {
   createMessage
 } from '../message/createMessage';
 import {
-  MessageTypes
-} from '@/backend/entities/message/types';
-import {
-  getSchema
-} from '../schema/getSchema';
-import {
-  MessageRepository
-} from '@/backend/repository/messageRepository';
-import {
-  MessageStatus
-} from '@/backend/entities/message/status';
-import {
-  MessageSchema
-} from '@/backend/entities/schema/messageSchema';
-import {
+  MessageTypes,
   MessageDescriptions
 } from '@/backend/entities/message/types';
 import {
-  matchSchemaWithMessage
-} from '@/backend/utils/foreclosure';
+  MessageRepository
+} from '@/backend/repository/messageRepository';
 
 export async function updateForclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message): Promise < CUK | Error > {
   try {
 
     if (!cuk?.cukCode) {
-      throw new Error('Invalid CUK');
+      return new Error('Invalid CUK');
     }
 
-    let schema: MessageSchema[] | Error;
-    let newMessage: Message | Error;
-    let createdMessage: Message | Error;
-
+    /* Set variables */
+    let hasToUpdateMessage = false;
+    let newMessage: Message;
     let messageType = '';
     let messageDescription = '';
 
-    switch (cuk.status) {
-      case ForeclosureStatus.IN_PROCESS:
-        cuk.status = ForeclosureStatus.IN_PROCESS;
-        break;
+    if (!cuk.cukCode || cuk.cukCode === '') {
+      return new Error('Invalid CUK');
+    }
 
-      case ForeclosureStatus.APPROVED:
-        cuk.status = ForeclosureStatus.APPROVED;
+    /* Check if is updating cuk status and set the new status with new message values */
+    switch (cuk.status) {
+      case ForeclosureStatus.SIGNED: // 671
+        messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
+        messageDescription = MessageDescriptions.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
+        cuk.status = ForeclosureStatus.SIGNED;
+        hasToUpdateMessage = true;
         break;
 
       case ForeclosureStatus.REJECTED: // 672
         messageType = MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO
         messageDescription = MessageDescriptions.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.REJECTED;
+        hasToUpdateMessage = true;
         break;
 
       case ForeclosureStatus.START_NORMALIZATION: // 673
         messageType = MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION
         messageDescription = MessageDescriptions.AVISO_DE_CLIENTE_EN_NORMALIZACION
         cuk.status = ForeclosureStatus.START_NORMALIZATION;
+        hasToUpdateMessage = true;
+        break;
+
+      case ForeclosureStatus.IN_PROCESS:
+        cuk.status = ForeclosureStatus.IN_PROCESS;
+        break;
+
+      case ForeclosureStatus.APPROVED:
+        cuk.status = ForeclosureStatus.APPROVED;
         break;
 
       case ForeclosureStatus.END_NORMALIZATION:
@@ -78,53 +77,89 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         cuk.status = ForeclosureStatus.SIGN_IN_PROGRESS;
         break;
 
-      case ForeclosureStatus.SIGNED: // 671
-        messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
-        messageDescription = MessageDescriptions.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
-        cuk.status = ForeclosureStatus.SIGNED;
-        break;
-
       default:
-        throw new Error('Invalid status');
+        return new Error('Invalid status');
     }
 
-    if (messageType != '') {
-      /* Get the schema for the message */
-      schema = await getSchema(messageType, cuk.cukCode);
-      if (schema instanceof Error || !schema || schema.length == 0) {
-        throw new Error('Schema not found');
-      }
-
-      /* Match the schema with the message */
-      newMessage = matchSchemaWithMessage(schema, cuk);
-      if (newMessage instanceof Error) {
-        throw message;
-      }
-
-      /* Set the message status and cukCode */
+    /* When the cuk status is being updated, a message is created or updated the last message */
+    if (hasToUpdateMessage) {
+      newMessage = new Message();
       newMessage.cukCode = cuk.cukCode;
       newMessage.status = '';
       newMessage.messageCode = messageType;
       newMessage.description = messageDescription;
 
-      /* Create the message */
-      createdMessage = await createMessage(messageRepository, newMessage);
-
-      if (createdMessage instanceof Error) {
-        throw createdMessage;
-      }
-      
+      await updateLastMessage(newMessage, messageRepository, cukRepository);
     }
 
     const createdCuk = await cukRepository.update(cuk);
 
     if (createdCuk instanceof Error) {
-      throw createdCuk;
+      return createdCuk;
     }
 
     return createdCuk;
   } catch (error: any) {
     console.error('Error creating foreclosure:', error);
     return error;
+  }
+}
+
+/* When the cuk status is being updated, an empty message is created or updated the last empty message */
+async function updateLastMessage(message: Message, messageRepository: MessageRepository, cukRepository: CUKRepository) {
+  
+  if (!message.cukCode) {
+    return;
+  }
+  
+  /* Get Cuk */
+  let fetchedCuk = await cukRepository.find({
+    cukCode: [message.cukCode]
+  });  
+  
+  /* Check last message attached to the CUK */
+  if (fetchedCuk instanceof Error || fetchedCuk.length === 0) {
+    return;
+  }
+
+  /* Set the receiver of the message */
+  message.receiver = fetchedCuk[0].institutionDestination;
+
+  let fetchedMessages = fetchedCuk[0].messages;
+
+  if (!fetchedMessages) {
+    fetchedMessages = [];
+  }
+
+  /* Sorts from newest to oldest */
+  fetchedMessages = fetchedMessages.sort((a, b) => {
+    if (!a.createdAt || !b.createdAt) {
+      return 0;
+    } else if (a.createdAt === b.createdAt) {
+      return 0;
+    } else if (a.createdAt > b.createdAt) {
+      return -1; 
+    } else {
+      return 1;
+    }
+  });
+
+
+  /* If the last message is not empty, create a new empty one */
+  if (fetchedMessages.length === 0 || fetchedMessages[0].status !== '') {
+    createMessage(messageRepository, message);
+
+    /* If the last message is empty, update the last message */
+  } else {
+
+    let messageToUpdate = fetchedMessages[0];
+
+    messageToUpdate.status = '';
+    messageToUpdate.messageCode = message.messageCode;
+    messageToUpdate.receiver = message.receiver;
+    messageToUpdate.description = message.description;
+    messageToUpdate.actions = '';
+
+    messageRepository.update(messageToUpdate);
   }
 }

@@ -32,9 +32,6 @@ async function create(message: Message): Promise < Message | Error > {
             return new Error('No message data provided');
         }
 
-        // print al params values
-        console.log('Message parameters:', messageData.parameters);
-
         /* Create a new message */
         const newMessage = await prismaClient.message.create({
             data: {

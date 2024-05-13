@@ -54,8 +54,6 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   processStringArrayField('offset', offset, filter);
   processStringArrayField('messageStatus', messageStatus, filter);
 
-  console.log('data', filter);
-
 
   if (startDate && endDate && startDate > endDate) {
     return new Error('Invalid date range');

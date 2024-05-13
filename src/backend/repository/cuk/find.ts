@@ -123,11 +123,11 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // check if filter has institutionCode
     if (filter.institutionCode) {
         messageArgs.where = {
-            OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, {status: "06"}]}]
+            OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06", ""] } }, { status: null }]}]}]
         }
         where.messages = {
             some: {
-                OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, {status: "06"}]}]
+                OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05"]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06", ""] } }, { status: null }]}]}]
             }
         }
     }
@@ -229,6 +229,7 @@ function createSelectFromFilter(): Prisma.MessageSelect {
         receivedTime: true,
         cukCode: true,
         actions: true,
+        createdAt: true,
         documents: true,
         parameters: true
     }

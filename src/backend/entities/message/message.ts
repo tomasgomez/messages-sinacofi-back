@@ -33,6 +33,7 @@ export class Message implements IMessage {
     parameters? : Parameter[] ;
     cukCode ? : string | null;
     cuk ? : any;
+    createdAt ? : Date;
 
     constructor() {}
 

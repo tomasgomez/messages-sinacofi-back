@@ -7,7 +7,7 @@ import { isValidMessage, processMessageParameters, setCukDestination, setCukStat
 export async function normalization(cukRepository: CUKRepository, cuk: CUK, message: Message): Promise<CUK | Error> {
   try {
     if (!isValidMessage(message)) {
-      throw new Error('Invalid message');
+      return new Error('Invalid message');
     }
 
     processMessageParameters(message.parameters, cuk);
@@ -21,7 +21,7 @@ export async function normalization(cukRepository: CUKRepository, cuk: CUK, mess
     const createdCuk = await cukRepository.create(cuk);
 
     if (createdCuk instanceof Error) {
-      throw createdCuk;
+      return createdCuk;
     }
 
     return createdCuk;

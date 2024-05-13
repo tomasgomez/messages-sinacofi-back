@@ -10,6 +10,9 @@ import {
 import {
     History
 } from '@/backend/entities/cuk/history';
+import {
+    getDescriptionByStatus
+} from '@/backend/entities/cuk/codes';
 
 async function create(cuk: CUK): Promise < CUK | Error > {
     try {
@@ -26,9 +29,9 @@ async function create(cuk: CUK): Promise < CUK | Error > {
 
         /* Set the history for the CUK */
         let history: History[] = [{
-            status: cuk.status ?? '',
+            status: cuk.status ?? '' +' '+ getDescriptionByStatus(cuk.status ?? ''),
             cukCode: cuk.cukCode ?? '',
-            date: new Date().toString(),
+            date: cuk.creationDate ?? '',
         }];
 
         let historyAsString = JSON.stringify(history);
