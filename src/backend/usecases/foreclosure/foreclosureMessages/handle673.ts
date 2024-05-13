@@ -1,16 +1,34 @@
 import { Message } from '@/backend/entities/message/message';
 import { CUKRepository } from '@/backend/repository/cukRepository';
 import { MessageRepository } from '@/backend/repository/messageRepository';
-import { processMessageParameters, setCukDestination, setCukStatus, setInstitutionCode } from '@/backend/utils/foreclosure';
-import { createMessage } from '@/backend/usecases/message/createMessage';
+import { MessageStatus } from '@/backend/entities/message/status';
+import { updateLastMessage } from '@/backend/usecases/foreclosure/updateForeclosureLastMessage';
 import { CUK } from '@/backend/entities/cuk/cuk';
 
 
 export async function handle673(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
-    processMessageParameters(message.parameters, cuk);
-        setInstitutionCode(cuk, message.sender);
-        setCukDestination(cuk, message.receiver);
-        setCukStatus(cuk, message.status);
+    let updatedMessage: Message | Error;
 
-        return await createMessage(messageRepository, message);
+    /* Update the last message */
+    updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
+
+    if (updatedMessage instanceof Error) {
+        return updatedMessage;
+    }
+
+    /* If the message status is 05, create a new message with status 06 */
+    if (updatedMessage.status && updatedMessage.status === MessageStatus.ENVIADO ) {
+        if (updatedMessage.setReceivedTime) {
+            updatedMessage.setReceivedTime();
+        }
+
+        let duplicatedMessage = await messageRepository.duplicateMessage(updatedMessage);
+
+        if (duplicatedMessage instanceof Error) {
+            return duplicatedMessage;
+        }
+    }
+    
+    return updatedMessage;
 }
+

@@ -35,8 +35,13 @@ export function validateCreateMessage(data: any): Message | Error {
   }
 
   if (parameters && typeof parameters === 'object') {
+    let counter = 0;
      parameters.forEach((element: any) => {
       let value = (typeof element.value === 'string') ? element.value : element.value?.toString() ?? '';
+
+      if (element.name === 'CUK') {
+        message.cukCode = value;
+      }
 
       let parameter: Parameter =  {
         id: element.id ?? '',
@@ -47,12 +52,13 @@ export function validateCreateMessage(data: any): Message | Error {
         placeholder: element.placeholder ?? '',
         description: element.description ?? '',
         defaultValue: element.defaultValue ?? '',
-        priority: element.priority ?? 0,
+        priority: counter,
         value: value,
         properties: element.properties ?? '',
         validations: element.validations ?? '',
       }
       parametersMessage.push(parameter)
+      counter++;
      });
 
     message.parameters = parametersMessage;

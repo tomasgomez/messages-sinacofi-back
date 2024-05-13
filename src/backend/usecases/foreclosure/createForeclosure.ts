@@ -1,7 +1,6 @@
 import { CUKRepository } from '../../repository/cukRepository';
 import { CUK } from '../../entities/cuk/cuk';
 import { Message } from '../../entities/message/message';
-import { ICUK } from '@/backend/entities/cuk/interface';
 import { isValidMessage, processMessageParameters, setCukDestination, setCukStatus } from '@/backend/utils/foreclosure';
 
 export async function createForeclosure(cukRepository: CUKRepository, cuk: CUK, message: Message): Promise<CUK | Error> {

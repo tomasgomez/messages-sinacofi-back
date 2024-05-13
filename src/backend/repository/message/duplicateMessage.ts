@@ -47,6 +47,8 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
             /* Set the status of the new message to ENVIADO */
             newMessage.status = MessageStatus.BANDEJA_DE_ENTRADA;
 
+            newMessage.priority = message.priority;
+
             /* Get the Chilean time */
             let chileanTime = getChileanTime()
 
@@ -100,19 +102,6 @@ export async function duplicateMessage(message: Message): Promise<Message | Erro
 
             /* Create a duplicate message based on the fetched message with modifications */
             const duplicatedMessage = await tx.message.create(createArgs);
-            // const duplicatedMessage = await tx.message.create({
-            //     data: {
-            //         ...newMessage,
-            //         documents: {
-            //             createMany: a
-            //         },
-            //         parameters: {
-            //             createMany: {
-            //                 data: parameters
-            //             }
-            //         }
-            //     }
-            // });
 
             return duplicatedMessage;
         });

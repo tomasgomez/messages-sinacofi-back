@@ -1,6 +1,5 @@
 import { Message } from "@/backend/entities/message/message";
 import { PrismaClientWrapper } from '../prismaWrapper';
-import { updateMessage } from "@/backend/usecases/message/updateMessage";
 
 
 export async function update(message: Message): Promise<Message | Error> {
@@ -19,12 +18,7 @@ export async function update(message: Message): Promise<Message | Error> {
         if (message.documents && message.documents.length > 0) {
             includeDocument = true;
         }
-        
-
-        const filteredKeys = Object.keys(dataToUpdate).filter(key => {
-            return key !== 'paramters' && key !== 'documents' && key !== 'id'; 
-        });
-        
+                
         const { parameters, ...dataWithOutParemters } = dataToUpdate;
         
 
@@ -50,16 +44,27 @@ export async function update(message: Message): Promise<Message | Error> {
         if (parameters) {
             const paremtersTobeUpdated = updatedMessage.parameters;
 
+            let counting = 0;
             for (const parameter of paremtersTobeUpdated) {
-                const x = parameters.find((p: any) => p.name === parameter.name);
-                const pupdated = prismaClient.parameters.update({
+                const toUpdate = parameters.find((p: any) => p.name === parameter.name);
+                const toCreate = parameters.find((p: any) => p.name !== parameter.name);
+
+                await prismaClient.parameters.upsert({
                     where: {
                         internalId: parameter.internalId
                     },
-                    data: {
-                        value: x.value
+                    update: {
+                        value: toUpdate.value
+                    },
+                    create: {
+                        id: toCreate.name,
+                        name: toCreate.name,
+                        value: toCreate.value,
+                        messageId: updatedMessage.id,
+                        priority: counting,
                     }
                 });
+                counting++;
             }
         }
 

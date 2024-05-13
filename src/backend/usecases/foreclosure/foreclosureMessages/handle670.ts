@@ -20,12 +20,10 @@ import {
   CUK
 } from '@/backend/entities/cuk/cuk';
 import {
-  ForeclosureStatus
-} from '@/backend/entities/cuk/codes';
-import {
   MessageStatus
 } from '@/backend/entities/message/status';
 import { MessageActions } from '@/backend/entities/message/actions';
+import { updateMessage } from '../../message/updateMessage';
 
 
 export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
@@ -64,10 +62,8 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
       message.actions = actions.join(',');
     }
     case MessageStatus.ENVIADO: {
-      // Create message 671
+      updateMessage(messageRepository, message);
     }
-
   }
-
   return await createMessage(messageRepository, message);
 }

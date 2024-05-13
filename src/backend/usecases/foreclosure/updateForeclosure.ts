@@ -123,7 +123,8 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
   }
 
   /* Set the receiver of the message */
-  message.receiver = fetchedCuk[0].institutionDestination;
+  message.receiver = fetchedCuk[0].institutionCode;
+  message.sender = fetchedCuk[0].institutionDestination;
 
   let fetchedMessages = fetchedCuk[0].messages;
 
