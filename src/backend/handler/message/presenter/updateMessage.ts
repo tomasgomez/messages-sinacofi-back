@@ -8,6 +8,7 @@ export function validateUpdateMessage(data: any): Message | Error {
     return new Error('Missing required fields');
   }
 
+  console.log('Data:', data)
   message.id = data.id;
 
   if (data.messageCode) {

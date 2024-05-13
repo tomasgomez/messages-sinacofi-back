@@ -102,5 +102,7 @@ async function completeParameters(message: Message): Promise<Message> {
         }
     });
 
+    console.log("parameters: ", message.parameters);
+
     return message;
 }
