@@ -145,7 +145,6 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
     }
   });
 
-
   /* If the last message is not empty, create a new empty one */
   if (fetchedMessages.length === 0 || fetchedMessages[0].status !== '') {
     createMessage(messageRepository, message);
