@@ -57,7 +57,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           style={{ padding: 0, color: "#00B2E2" }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
+              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
             )
           }
         >
