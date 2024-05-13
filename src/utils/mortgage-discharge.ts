@@ -19,7 +19,7 @@ const parseDateTimeMessages = (obj: any): Date => {
   return new Date(obj.date);
 };
 
-const sortHistoryList = (obj: any[]): any[] => {
+export const sortHistoryList = (obj: any[]): any[] => {
   return obj.sort(
     (a, b) =>
       parseDateTimeMessages(b).getTime() - parseDateTimeMessages(a).getTime()

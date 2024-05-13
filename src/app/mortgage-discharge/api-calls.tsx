@@ -17,7 +17,7 @@ export async function updateForeClosureMessage(
 ) {
   try {
     const baseUrl = window.location.origin;
-    (
+    return (
       await fetch(`${baseUrl}/api/message/foreclosure`, {
         method: "PUT",
         headers: {

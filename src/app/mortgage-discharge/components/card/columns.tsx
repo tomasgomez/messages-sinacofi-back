@@ -65,17 +65,16 @@ const AccionesColumn = ({ row }: { row: any }) => {
         </IconButton>
       )}
       {/* Detail Icon */}
-      {status === "05" ||
-        (status === "06" && (
-          <IconButton
-            key={`detail-icon-${row.id}`}
-            aria-label="DetailOutlineIcon"
-            style={{ padding: 0, color: "#565656" }}
-            onClick={() => handlerOpenModal(row)}
-          >
-            <InfoOutlinedIcon />
-          </IconButton>
-        ))}
+      {(status === "05" || status === "06") && (
+        <IconButton
+          key={`detail-icon-${row.id}`}
+          aria-label="DetailOutlineIcon"
+          style={{ padding: 0, color: "#565656" }}
+          onClick={() => handlerOpenModal(row)}
+        >
+          <InfoOutlinedIcon />
+        </IconButton>
+      )}
       {/* TODO ADD Sent Icon */}
     </Box>
   );

@@ -12,6 +12,8 @@ export const EnabledExtraOptions = (extraOptions: any, history?: any[]) => {
     disabledOptions.forEach((option, index) => {
       if (getOnlyTheValue(lastHistoryElem?.status) === option?.dependOf) {
         disabledOptions[index].disabled = false;
+      } else {
+        disabledOptions[index].disabled = true;
       }
     });
     return disabledOptions;

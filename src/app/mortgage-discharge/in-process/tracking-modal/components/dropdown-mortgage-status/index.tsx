@@ -8,7 +8,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 export const MortgageStatusDropdown = (props: {
   options: any[];
   onChange: (value: string) => void;
-  value: string;
+  value?: string;
 }) => {
   const { onChange, value, options } = props;
 
@@ -17,8 +17,9 @@ export const MortgageStatusDropdown = (props: {
   };
 
   useEffect(() => {
-    onChange(options.find((option) => !option?.disabled)?.value || "");
-  }, []);
+    onChange(options.find((option) => !option?.disabled)?.value);
+  }, [options]);
+
   return (
     <Box sx={{ width: 480 }}>
       <FormControl fullWidth>
@@ -33,8 +34,10 @@ export const MortgageStatusDropdown = (props: {
           sx={{ height: "48px" }}
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={value}
-          defaultValue={options.find((option) => !option?.disabled)?.value}
+          value={value || "021"}
+          defaultValue={
+            options.find((option) => !option?.disabled)?.value || "021"
+          }
           disabled={!options.find((option) => !option?.disabled)}
           label="Mensajes por Familia"
           onChange={handleChange}
@@ -55,7 +58,7 @@ export const MortgageStatusDropdown = (props: {
             <MenuItem
               key={`${option.label}-${index}`}
               value={option.value}
-              disabled={!option?.disabled}
+              disabled={option?.disabled}
             >
               {option.label}
             </MenuItem>

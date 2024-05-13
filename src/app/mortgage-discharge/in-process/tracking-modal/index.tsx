@@ -11,10 +11,11 @@ import {
   buttonUpdateStateSx,
 } from "./components/styles";
 import { ModalTrackingData } from "@/types/mortgage-discharge";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateForeClosureMessage } from "../../api-calls";
-// import { options } from "./constants";
+import { options } from "./constants";
 import { EnabledExtraOptions } from "@/utils/tracking-modal";
+import { sortHistoryList } from "@/utils/mortgage-discharge";
 
 export const TrackingModal = (props: {
   open: boolean;
@@ -23,70 +24,36 @@ export const TrackingModal = (props: {
   handleGetDataList: () => void;
   setLoading: (state: boolean) => void;
 }) => {
-  const [statusSelected, setStatusSelected] = useState("");
-  const { open, onClose, data, handleGetDataList, setLoading } = props;
+  const [statusSelected, setStatusSelected] = useState<string | undefined>(
+    undefined
+  );
+  const [loading, setLoading] = useState<boolean>(false);
+  const [historyList, setHistoryList] = useState<any[]>([]);
+  const [dataOptions, setDataOptions] = useState<any[]>([]);
+
+  const { open, onClose, data, handleGetDataList } = props;
+  const { cukCode, history, ...restOfData } = data || {};
 
   const handleClose = () => {
     onClose(false);
+    handleGetDataList();
   };
 
-  const { cukCode, history, ...restOfData } = data || {};
+  useEffect(() => {
+    if (history) {
+      setHistoryList(history || []);
+      setDataOptions(EnabledExtraOptions(options, history || []));
+    }
+  }, [history]);
 
   const handleChange = async () => {
     setLoading(true);
-    handleClose();
-    await updateForeClosureMessage(cukCode, statusSelected);
-    await handleGetDataList();
+    const newCuk = await updateForeClosureMessage(cukCode, statusSelected);
+    const newHistory = sortHistoryList(JSON.parse(newCuk?.history));
+    setDataOptions(EnabledExtraOptions(options, newHistory));
+    setHistoryList(newHistory);
+    setLoading(false);
   };
-
-  // TODO: MOVE THE OBJECT TO A CONST, WHEN THE OPTIONS IS A CONST IS NOT WORKING
-  const newOptions = EnabledExtraOptions(
-    [
-      {
-        label: "021 - Evaluación Alzamiento Hipotecario En Proceso",
-        value: "021",
-        dependOf: "01",
-        disabled: true,
-      },
-      {
-        label: "022 - Evaluación Alzamiento Hipotecario Aceptada",
-        value: "022",
-        dependOf: "01",
-        disabled: true,
-      },
-      {
-        label: "023 - Evaluación Alzamiento Hipotecario Rechazada",
-        value: "023",
-        dependOf: "01",
-        disabled: true,
-      },
-      {
-        label: "XXX - Inicio de Cliente en Normalización",
-        value: "XXX",
-        dependOf: "01",
-        disabled: true,
-      },
-      {
-        label: "041 - Firma de Escritura en Proceso",
-        value: "041",
-        dependOf: "022",
-        disabled: true,
-      },
-      {
-        label: "042 - Escritura Firmada",
-        value: "042",
-        dependOf: "041",
-        disabled: true,
-      },
-      {
-        label: "YYY - Fin de Cliente en Normalización",
-        value: "YYY",
-        dependOf: "XXX",
-        disabled: true,
-      },
-    ],
-    history
-  );
 
   return (
     <Modal
@@ -114,7 +81,7 @@ export const TrackingModal = (props: {
       </Typography>
       <Box display="flex" gap="20px">
         <CardDetails data={restOfData} />
-        <CardStatusUpdate data={history} />
+        <CardStatusUpdate data={historyList} loading={loading} />
       </Box>
       <Box display="flex" my="28px">
         <Box flex={1}>
@@ -139,7 +106,7 @@ export const TrackingModal = (props: {
           <MortgageStatusDropdown
             value={statusSelected}
             onChange={setStatusSelected}
-            options={newOptions}
+            options={dataOptions}
           />
         </Box>
       </Box>
@@ -155,6 +122,7 @@ export const TrackingModal = (props: {
           sx={buttonUpdateStateSecondarySx}
           onClick={handleChange}
           variant="contained"
+          disabled={loading || !statusSelected}
         >
           Actualizar Estado
         </Button>
