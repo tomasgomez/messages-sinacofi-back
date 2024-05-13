@@ -47,11 +47,25 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
         return response;
       }
       const schemaUpdated = schemas.parameters.map((schema: any) => {
-        const params = response[0].parameters?.find((param:any) => param.name === schema.name);
+
+        // split schema name with _ and get the first one
+        const name = schema.name.split('_')[0];
+        
+        const params = response[0].parameters?.find((param:any) => param.name === name);
         if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.type != "label") {
           const value = params.value;
           schema.defaultValue = value;
         }
+        if (schema && schema.type == 'select') {
+          // find options
+          const selected = schema.optionValues.find((option:any) => option.label === params?.value);
+          if (selected) {
+            schema.defaultValue = selected.value;
+          }
+        }
+
+        
+
         schema.value = params?.value;
         if (schema && schema.name == 'CUK'){
           schema.defaultValue = cuk;

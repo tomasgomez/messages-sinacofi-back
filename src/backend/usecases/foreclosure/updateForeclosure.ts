@@ -107,6 +107,8 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       newMessage.messageCode = messageType;
       newMessage.description = messageDescription;
 
+      console.log('newMessage:', newMessage);
+
       /* Create the message */
       createdMessage = await createMessage(messageRepository, newMessage);
 
