@@ -42,13 +42,12 @@ export const MortgageStatusDropdown = (props: {
           label="Mensajes por Familia"
           onChange={handleChange}
           MenuProps={{
-            // anchorOrigin: {
-            //   vertical: "bottom",
-            //   horizontal: "center",
-            // },
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "center",
+            },
             PaperProps: {
               style: {
-                maxHeight: 100,
                 maxWidth: 480, // Ajusta este valor según tus necesidades
               },
             },
