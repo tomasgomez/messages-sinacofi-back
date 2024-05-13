@@ -8,6 +8,7 @@ import { DatePickerInput } from "@/app/mortgage-discharge/in-process/header/comp
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import RutField from "./fields/RutField";
+import Checkbox from "./fields/Checkbox";
 
 interface IFormInputs {
   TextField: string
@@ -119,8 +120,16 @@ const PasswordField = (props: any) => {
     />
   )
 }
+
+
 const FieldTypes = {
   textField: Field,
+  checkbox: (props: any) => {
+    console.log("CHECKBOX", { props })
+    return (
+      <Checkbox {...props} options={props.properties.options} />
+    )
+  },
   date: (props: any) => {
     // console.log("DATEPICKER: ", { props });
     return (
