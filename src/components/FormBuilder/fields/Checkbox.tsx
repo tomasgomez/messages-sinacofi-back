@@ -15,7 +15,7 @@ console.log({ "CHECKBOX": value, options, rest });
         </Box>
         {/* <Typography variant="body2">{label}</Typography> */}
         {options.map((option: any) => (
-          <div style={{ display: "flex", alignItems: "center"}}>
+          <div style={{ display: "flex", alignItems: "center"}} key={option.value}>
             <Checkbox checked={option.value === value} onChange={() => onChange(option.value)} />
             <Typography variant="body2" sx={{ color: "#565656" }}>{option.label}</Typography>
           </div>
