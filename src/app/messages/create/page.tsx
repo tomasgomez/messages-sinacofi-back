@@ -149,7 +149,7 @@ const CreateMessage = () => {
   const onSubmit = (data: any) => {
     const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution);
 
-    if (messageId) {
+    if (messageCode === "670" || messageCode === "672") {
       onSignOpen({
         onConfirm: (document: any) => {
           onClose?.();
