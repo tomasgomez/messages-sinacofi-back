@@ -2,12 +2,12 @@
 
 import {
   HomeWorkOutlined,
-  CloudDownloadOutlined,
+  // CloudDownloadOutlined,
   EmailOutlined,
-  ForwardToInboxOutlined,
-  NotificationsNoneOutlined,
-  StackedBarChart,
-  HomeMaxOutlined,
+  // ForwardToInboxOutlined,
+  // NotificationsNoneOutlined,
+  // StackedBarChart,
+  // HomeMaxOutlined,
 } from "@mui/icons-material";
 import { Collapse, Container, List } from "@mui/material";
 import Link from "next/link";
@@ -16,29 +16,6 @@ import { useEffect, useState } from "react";
 import NavegationItem from "../List";
 import { montserrat } from "@/utils/fonts";
 import NewMessageButton from "./NewMessageButton";
-
-const Badge = ({ children }: { children: any }) => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        width: "16px",
-        height: "16px",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "10px",
-        backgroundColor: "#00B2E2",
-        borderRadius: 50,
-        color: "#ffffff",
-        fontSize: 10,
-        textAlign: "center",
-        fontWeight: 600,
-      }}
-    >
-      {children}
-    </div>
-  );
-};
 
 const navList = [
   {
@@ -93,24 +70,24 @@ const navList = [
       },
     ],
   },
-  {
-    key: "fti-messaging",
-    label: "Mensajería FTI",
-    icon: <ForwardToInboxOutlined />,
-    childrenKeys: ["monitoring", "pams-tams-configuration"],
-    children: [
-      {
-        key: "monitoring",
-        label: "Monitoreo",
-        url: "/fti-messaging/monitoring",
-      },
-      {
-        key: "pams-tams-configuration",
-        label: "Configuración PAMS/TAMS",
-        url: "/fti-messaging/pams-tams-configuration",
-      },
-    ],
-  },
+  // {
+  //   key: "fti-messaging",
+  //   label: "Mensajería FTI",
+  //   icon: <ForwardToInboxOutlined />,
+  //   childrenKeys: ["monitoring", "pams-tams-configuration"],
+  //   children: [
+  //     {
+  //       key: "monitoring",
+  //       label: "Monitoreo",
+  //       url: "/fti-messaging/monitoring",
+  //     },
+  //     {
+  //       key: "pams-tams-configuration",
+  //       label: "Configuración PAMS/TAMS",
+  //       url: "/fti-messaging/pams-tams-configuration",
+  //     },
+  //   ],
+  // },
   {
     key: "mortgage-discharge",
     label: "Alzamiento Hipotecario",
@@ -151,54 +128,54 @@ const navList = [
       },
     ],
   },
-  {
-    key: "statistics-reports",
-    label: "Estadísticas y Reportes",
-    icon: <StackedBarChart />,
-    childrenKeys: ["its-institutions", "its-messages", "its-traffic"],
-    children: [
-      {
-        key: "its-institutions",
-        label: "Institución (ITS01)",
-        url: "/statistics-reports/its-institutions",
-      },
-      {
-        key: "its-messages",
-        label: "Mensajes (ITS02)",
-        url: "/statistics-reports/its-messages",
-      },
-      {
-        key: "its-traffic",
-        label: "Tráfico (ITS03)",
-        url: "/statistics-reports/its-traffic",
-      },
-    ],
-  },
-  {
-    key: "recovery",
-    label: "Recuperación",
-    icon: <CloudDownloadOutlined />,
-    childrenKeys: ["per-nse", "per-osn"],
-    children: [
-      {
-        key: "per-nse",
-        label: "Por NSE",
-        url: "/recovery/per-nse",
-      },
-      {
-        key: "per-osn",
-        label: "Por OSN",
-        url: "/recovery/per-osn",
-      },
-    ],
-  },
-  {
-    key: "notifications",
-    label: "Notificaciones",
-    icon: <NotificationsNoneOutlined />,
-    url: "/notifications",
-    children: [],
-  },
+  // {
+  //   key: "statistics-reports",
+  //   label: "Estadísticas y Reportes",
+  //   icon: <StackedBarChart />,
+  //   childrenKeys: ["its-institutions", "its-messages", "its-traffic"],
+  //   children: [
+  //     {
+  //       key: "its-institutions",
+  //       label: "Institución (ITS01)",
+  //       url: "/statistics-reports/its-institutions",
+  //     },
+  //     {
+  //       key: "its-messages",
+  //       label: "Mensajes (ITS02)",
+  //       url: "/statistics-reports/its-messages",
+  //     },
+  //     {
+  //       key: "its-traffic",
+  //       label: "Tráfico (ITS03)",
+  //       url: "/statistics-reports/its-traffic",
+  //     },
+  //   ],
+  // },
+  // {
+  //   key: "recovery",
+  //   label: "Recuperación",
+  //   icon: <CloudDownloadOutlined />,
+  //   childrenKeys: ["per-nse", "per-osn"],
+  //   children: [
+  //     {
+  //       key: "per-nse",
+  //       label: "Por NSE",
+  //       url: "/recovery/per-nse",
+  //     },
+  //     {
+  //       key: "per-osn",
+  //       label: "Por OSN",
+  //       url: "/recovery/per-osn",
+  //     },
+  //   ],
+  // },
+  // {
+  //   key: "notifications",
+  //   label: "Notificaciones",
+  //   icon: <NotificationsNoneOutlined />,
+  //   url: "/notifications",
+  //   children: [],
+  // },
 ];
 
 const SideBar = () => {
@@ -251,16 +228,17 @@ const SideBar = () => {
     >
       <NewMessageButton />
       <List component="nav">
-        {navList.map((nav) =>
-          nav.url ? (
-            <Link href={nav.url} key={nav.key}>
-              <NavegationItem
-                nav={nav}
-                open={open === nav.key}
-                handleClick={handleClick}
-              />
-            </Link>
-          ) : (
+        {navList.map(
+          (nav) => (
+            // nav?.url ? (
+            //   <Link href={nav?.url} key={nav.key}>
+            //     <NavegationItem
+            //       nav={nav}
+            //       open={open === nav.key}
+            //       handleClick={handleClick}
+            //     />
+            //   </Link>
+            // ) : (
             <>
               <NavegationItem
                 key={nav.key}
@@ -299,6 +277,7 @@ const SideBar = () => {
               )}
             </>
           )
+          // )
         )}
       </List>
     </Container>

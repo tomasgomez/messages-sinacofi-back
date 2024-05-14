@@ -30,53 +30,53 @@ const blobToBase64 = (blob: Blob): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
-    reader.onload = function() {
+    reader.onload = function () {
       const result = reader.result;
 
-      if (typeof result === 'string') {
-        const base64String = result.split(',')[1];
+      if (typeof result === "string") {
+        const base64String = result.split(",")[1];
         resolve(base64String);
       } else {
-        reject(new Error('Unexpected result type'));
+        reject(new Error("Unexpected result type"));
       }
     };
 
-    reader.onerror = function() {
+    reader.onerror = function () {
       reject(reader.error);
     };
 
     reader.readAsDataURL(blob);
   });
-}
+};
 
 const AddFileModal = ({
-  open = true,
+  open = false,
   onClose = () => null,
   onConfirm = () => null,
+  isRejected = false,
 }: {
   open: boolean;
   onClose: any;
   onConfirm: any;
+  isRejected?: boolean;
 }) => {
-
   const [step, setStep] = useState<number>(0);
   const [tempFile, setTempFile] = useState<any>(null);
   const [cmFile, setCmFile] = useState<any>(null);
   const [gpFile, setGpFile] = useState<any>(null);
 
   const fileOrder = [
-    {file: 'Copia Maestra', type: 'CM'},
-    {file: 'GP', type: 'GP'}
+    { file: "Copia Maestra", type: "CM" },
+    { file: "GP", type: "GP" },
   ];
-  console.log("#", cmFile);
 
   const handleFileChange = async (event: any) => {
     if (event.target.files) {
       const selectedFile = event.target.files[0];
       setTempFile(selectedFile);
       const base64 = await blobToBase64(selectedFile);
-      const document = { content: base64, documentName: selectedFile.name}
-      if(step === 0 ){
+      const document = { content: base64, documentName: selectedFile.name };
+      if (step === 0) {
         setCmFile(document);
       } else {
         setGpFile(document);
@@ -91,7 +91,7 @@ const AddFileModal = ({
   const handleDrop = (event: any) => {
     event.preventDefault();
     const selectedFile = event.dataTransfer.files[0];
-    if( step === 0 ){
+    if (step === 0) {
       setTempFile(selectedFile);
       setCmFile(selectedFile);
     } else {
@@ -101,47 +101,51 @@ const AddFileModal = ({
   };
 
   const handleNextStep = () => {
-    setStep(1)
+    setStep(1);
     setTempFile(null);
   };
 
   return (
     <Box>
       <Modal maxWidth={698} open={open} onClose={onClose}>
-      <StyledContentHeader>
-        <Typography
-          fontFamily={montserrat.style.fontFamily}
-          fontSize={20}
-          fontWeight="bold"
-          style={{ padding: "16px 16px 32px 0px"}}
-        >
-          Carga de Reparo Escritura AH
-        </Typography>
-        <StepStatusContainer>
-          <FileStatusStepContainer>
-            {step ?
-              <StyledContainerIcon status="#00BC701A">
-                <StyledCheckIcon />
-              </StyledContainerIcon>
-              : 
-              <StyledContainerIcon status="#fff" border="#00B2E2">
-                <StyledUploadIcon />
-              </StyledContainerIcon>
-            }
-            <FileStatusStep>Cargar CM</FileStatusStep>
-          </FileStatusStepContainer>
-          - - -
-          <FileStatusStepContainer>
-            {step ? 
-              <StyledContainerIcon status="#fff" border="#00B2E2">
-                <StyledUploadIcon />
-              </StyledContainerIcon> 
-              :
-              <StyledNextStep />
-            }
-            <FileStatusStep>Cargar GP</FileStatusStep>
-          </FileStatusStepContainer>
-        </StepStatusContainer>
+        <StyledContentHeader>
+          <Typography
+            fontFamily={montserrat.style.fontFamily}
+            fontSize={20}
+            fontWeight="bold"
+            style={{ padding: "16px 16px 32px 0px" }}
+          >
+            {isRejected
+              ? "Carga de Reparo Escritura AH"
+              : `Carga de ${fileOrder[step].file}`}
+          </Typography>
+          {!isRejected && (
+            <StepStatusContainer>
+              <FileStatusStepContainer>
+                {step ? (
+                  <StyledContainerIcon status="#00BC701A">
+                    <StyledCheckIcon />
+                  </StyledContainerIcon>
+                ) : (
+                  <StyledContainerIcon status="#fff" border="#00B2E2">
+                    <StyledUploadIcon />
+                  </StyledContainerIcon>
+                )}
+                <FileStatusStep>Cargar CM</FileStatusStep>
+              </FileStatusStepContainer>
+              - - -
+              <FileStatusStepContainer>
+                {step ? (
+                  <StyledContainerIcon status="#fff" border="#00B2E2">
+                    <StyledUploadIcon />
+                  </StyledContainerIcon>
+                ) : (
+                  <StyledNextStep />
+                )}
+                <FileStatusStep>Cargar GP</FileStatusStep>
+              </FileStatusStepContainer>
+            </StepStatusContainer>
+          )}
         </StyledContentHeader>
         <StyledContentBody>
           <Box>
@@ -216,15 +220,25 @@ const AddFileModal = ({
             <StyledCancelButton variant="outlined" onClick={onClose}>
               Cancelar
             </StyledCancelButton>
-            {step === 0 ?
-              <StyledConfirmButton variant="contained" disabled={!tempFile} onClick={handleNextStep}>
+            {step === 0 && !isRejected ? (
+              <StyledConfirmButton
+                variant="contained"
+                disabled={!tempFile}
+                onClick={handleNextStep}
+              >
                 Siguiente
               </StyledConfirmButton>
-            :
-              <StyledConfirmButton variant="contained" disabled={!tempFile} onClick={() => onConfirm([cmFile, gpFile])}>
+            ) : (
+              <StyledConfirmButton
+                variant="contained"
+                disabled={!tempFile}
+                onClick={() =>
+                  isRejected ? onConfirm([cmFile]) : onConfirm([cmFile, gpFile])
+                }
+              >
                 Cargar y Finalizar
               </StyledConfirmButton>
-            }
+            )}
           </StyledContainerButtons>
         </StyledContentBody>
       </Modal>
