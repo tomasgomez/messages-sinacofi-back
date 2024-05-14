@@ -6,18 +6,18 @@ CREATE TABLE "CUK" (
     "description" TEXT,
     "status" TEXT,
     "creationDate" TEXT,
-    "foreclosureDate" TEXT,
+    "issuedDate" TEXT,
     "channel" TEXT,
-    "clientDni" TEXT,
-    "clientName" TEXT,
+    "institutionCode" TEXT,
     "institutionDestination" TEXT,
-    "rutSeller" TEXT,
     "region" TEXT,
-    "debtorRut" TEXT,
-    "rutBuyer" TEXT,
-    "debsName" TEXT,
+    "buyerDni" TEXT,
     "buyer" TEXT,
-    "seller" TEXT,
+    "ownerDni" TEXT,
+    "owner" TEXT,
+    "borrowerDni" TEXT,
+    "borrower" TEXT,
+    "history" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -52,6 +52,7 @@ CREATE TABLE "Message" (
 
 -- CreateTable
 CREATE TABLE "Parameters" (
+    "internalId" SERIAL NOT NULL,
     "id" TEXT NOT NULL,
     "name" TEXT,
     "messageCode" TEXT,
@@ -68,7 +69,7 @@ CREATE TABLE "Parameters" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "messageId" TEXT NOT NULL,
 
-    CONSTRAINT "Parameters_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Parameters_pkey" PRIMARY KEY ("internalId")
 );
 
 -- CreateTable
