@@ -3,12 +3,12 @@ import React, { useContext, useEffect, useMemo } from "react";
 import { Box, Grid, IconButton, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
-import { columnsSent } from "@/app/component/inbox-table/constants";
+import { columnsSent, rowOptions } from "./columns";
 import { Columns, SentData } from "@/app/component/inbox-table/type";
 import { CopyAll, SendOutlined } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { MyContexLayout } from "@/app/context";
-import { intitutionCodeToLabel } from "@/utils/intitutions";
+// import { intitutionCodeToLabel } from "@/utils/intitutions";
 
 export default function SentScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -42,52 +42,6 @@ export default function SentScreen() {
     fetchData();
   }, [selectedInstitution]);
 
-  const actions = useMemo(
-    () => ({
-      id: "actions",
-      label: "Acciones",
-      align: "center",
-      render: ({ row }: { row: any }) => {
-        return (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <IconButton
-              key={`expand-icon-${row.id}`}
-              aria-label="expand row"
-              style={{ padding: 0 }}
-              onClick={() =>
-                router.push(
-                  `/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&cloneId=${row.id}`
-                )
-              }
-            >
-              <CopyAll />
-            </IconButton>
-            {row.status !== "05" && (
-              <IconButton
-                key={`expand-icon-${row.id}`}
-                aria-label="expand row"
-                style={{ padding: 0 }}
-              >
-                <SendOutlined />
-              </IconButton>
-            )}
-          </Box>
-        );
-      },
-    }),
-    [router]
-  );
-
-  const newColumns = useMemo(() => {
-    return [...columnsSent, actions];
-  }, [actions]);
-
   const tableTitle = (
     <Grid container p={2}>
       <Grid pl={6} item xs={8}>
@@ -105,9 +59,10 @@ export default function SentScreen() {
         <InboxHeader amountMessages={data.length} title={"Mensajes Enviados"} />
         <DataTable
           rows={data}
-          columns={newColumns as Columns[]}
+          columns={columnsSent}
           loading={isLoading}
           tableTitle={tableTitle}
+          rowOptions={rowOptions}
         />
       </Box>
     </Paper>

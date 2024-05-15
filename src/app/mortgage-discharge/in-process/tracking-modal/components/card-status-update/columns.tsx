@@ -1,15 +1,33 @@
-export const columnData: any[] = [
+import {
+  Columns,
+  Alignment,
+  RowOptions,
+} from "@/app/component/inbox-table/type";
+
+export const columnData: Columns[] = [
   {
     id: "status",
     label: "Estado",
+    align: Alignment.LEFT,
     sortable: false,
   },
   {
     id: "date",
+    align: Alignment.LEFT,
     label: "Fecha de Estado",
     sortable: false,
+    style: { width: 270 },
   },
 ];
+
+export const rowOptions: RowOptions = {
+  status: {
+    align: Alignment.LEFT,
+  },
+  date: {
+    align: Alignment.LEFT,
+  },
+};
 
 export const rowData = [
   {

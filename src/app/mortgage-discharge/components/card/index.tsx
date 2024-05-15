@@ -5,8 +5,10 @@ import {
   StyledCard,
   StyledButton,
   StyledBoxShadow,
+  StyledFooterComponent,
+  StyledInfoIcon,
 } from "./styled";
-import { Collapse } from "@mui/material";
+import { Collapse, Typography } from "@mui/material";
 import CodeColumn from "./codeColumn";
 import InfoColumn from "./infoColumn";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
@@ -22,6 +24,7 @@ import {
 } from "@/types/mortgage-discharge";
 import { Message } from "@/app/component/inbox-table/type";
 import { reverseArray } from "@/utils/functions";
+import { MyContexLayout } from "@/app/context";
 
 const CarDischarge = ({
   data,
@@ -34,6 +37,9 @@ const CarDischarge = ({
     null
   );
   const [isOpen, setIsOpen] = React.useState(false);
+
+  // Change after add users "selectedInstitution"
+  const { selectedInstitution } = React.useContext(MyContexLayout) as any;
 
   const {
     codeData,
@@ -65,6 +71,30 @@ const CarDischarge = ({
     },
     [selectedMessage]
   );
+
+  const footerComponent = (text: string, fontSize?: number) => (
+    <StyledFooterComponent>
+      <StyledInfoIcon />
+      <Typography fontSize={fontSize || 14}>{text}</Typography>
+    </StyledFooterComponent>
+  );
+
+  const getFooterComponent = () => {
+    // Si sos el que recibio el 670 mostras siempre el footer
+    if (selectedInstitution === infoData?.institutionDestination) {
+      return footerComponent(
+        "Para continuar el flujo de mensajes es necesario actualizar el estado en la Base de Seguimiento"
+      );
+    } else {
+      // Si sos el que envio el 670 y recibiste un 672 mostras el footer
+      if (codeData.lastMessageCode === "672") {
+        return footerComponent(
+          "Operación Rechazada. Puedes editar el mensaje 670 para reenviar esta solicitud. Motivo del Rechazo: Reparo Legal, Cláusula de Escritura",
+          12
+        );
+      }
+    }
+  };
 
   return (
     <StyledContentCard>
@@ -107,8 +137,7 @@ const CarDischarge = ({
             rows={handleFilterMessages(reverseArray(messages))}
             columns={columnsCard}
             withCheckbox={false}
-            defaultOrderBy="creationDate"
-            defaultOrder="desc"
+            footerComponent={getFooterComponent()}
           />
         </Collapse>
       </StyledCardContent>

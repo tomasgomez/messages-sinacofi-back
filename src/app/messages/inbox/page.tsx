@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from "react";
 
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import InboxHeader from "@/app/component/inbox-header";
-import { columnsInbox } from "@/app/component/inbox-table/constants";
+import { columnsInbox, rowOptions } from "./columns";
 import { Message } from "@/app/component/inbox-table/type";
 import DataTable from "../../component/inbox-table";
 import { MyContexLayout } from "@/app/context";
@@ -61,6 +61,9 @@ export default function InboxScreen() {
           loading={isLoading}
           columns={columnsInbox}
           tableTitle={tableTitle}
+          rowOptions={rowOptions}
+          isExpansible
+          withCheckbox
         />
       </Box>
     </Paper>

@@ -115,8 +115,8 @@ export const formatCardData = (
       seller: `${elem?.ownerDni || ""} ${elem?.owner || ""}`,
       buyer: `${elem?.buyerDni || ""} ${elem?.buyer || ""}`,
       debtor: `${elem?.borrowerDni || ""} ${elem?.borrower || ""}`,
-      region: elem.region || "",
-      institutionDestination: elem.institutionDestination || "",
+      region: elem?.region || "",
+      institutionDestination: elem?.institutionDestination || "",
       history: sortHistoryList(elem?.history || []),
     };
 

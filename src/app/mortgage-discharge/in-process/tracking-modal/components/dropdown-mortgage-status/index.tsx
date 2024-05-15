@@ -9,8 +9,9 @@ export const MortgageStatusDropdown = (props: {
   options: any[];
   onChange: (value: string) => void;
   value?: string;
+  disabled?: boolean;
 }) => {
-  const { onChange, value, options } = props;
+  const { onChange, value, options, disabled } = props;
 
   const handleChange = (event: SelectChangeEvent) => {
     onChange(event.target.value as string);
@@ -38,7 +39,7 @@ export const MortgageStatusDropdown = (props: {
           defaultValue={
             options.find((option) => !option?.disabled)?.value || "021"
           }
-          disabled={!options.find((option) => !option?.disabled)}
+          disabled={disabled || !options.find((option) => !option?.disabled)}
           label="Mensajes por Familia"
           onChange={handleChange}
           MenuProps={{
