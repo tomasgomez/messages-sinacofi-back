@@ -5,7 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { StyledTabCell, StyledTableCellHeader } from "../../style";
-import { rowExpandableTable } from "@/app/messages/inbox/mock";
+import { rowExpandableTable } from "./mock";
 import { columnsExpandableTable, rowOptionExpand } from "./constants";
 import Collapse from "@mui/material/Collapse";
 import { LabelLink, getItem, getState } from "./utils";

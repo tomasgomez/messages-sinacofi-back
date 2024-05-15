@@ -1,6 +1,6 @@
 "use client";
 
-import { Columns, Alignment } from "@/app/component/inbox-table/type";
+import { Columns, Alignment, RowOptions } from "@/app/component/inbox-table/type";
 import React, { useContext } from "react";
 import { IconButton, Box } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
@@ -83,7 +83,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
 const acciones: Columns = {
   id: "actions",
   label: "Acciones",
-  align: Alignment.CENTER,
+  align: Alignment.LEFT,
   sortable: false,
   render: ({ row }: { row: any }) => {
     return <AccionesColumn row={row} />;
@@ -159,3 +159,34 @@ export const columnsCard: Columns[] = [
   documents,
   acciones,
 ];
+
+
+export const rowOptions: RowOptions = {
+  NSR: {
+    align: Alignment.CENTER,
+  },
+  messageCode: {
+    align: Alignment.LEFT,
+  },
+  description: {
+    align: Alignment.LEFT,
+  },
+  LSN: {
+    align: Alignment.CENTER,
+  },
+  creationDate: {
+    align: Alignment.LEFT,
+  },
+  creationTime: {
+    align: Alignment.LEFT,
+  },
+  status: {
+    align: Alignment.LEFT,
+  },
+  documents: {
+    align: Alignment.LEFT,
+  },
+  actions: {
+    align: Alignment.CENTER,
+  },
+};

@@ -4,17 +4,18 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { Box, Grid, IconButton, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
-import { columnsPrepared } from "@/app/component/inbox-table/constants";
+import { columnsPrepared, rowOptions } from "./columns";
 import { Columns, SentData } from "@/app/component/inbox-table/type";
 import { SendOutlined } from "@mui/icons-material";
 import { MyContexLayout } from "@/app/context";
-import { intitutionCodeToLabel } from "@/utils/intitutions";
+import { updateMessage } from "../api-calls";
+// import { intitutionCodeToLabel } from "@/utils/intitutions";
 
 export default function PreparedScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<SentData[]>([]);
   const [selected, setSelected] = React.useState<number[]>([]);
-  
+
   // Change after add users "selectedInstitution"
   const { setModalState, selectedInstitution } = React.useContext(
     MyContexLayout
@@ -43,28 +44,6 @@ export default function PreparedScreen() {
     fetchData();
   }, [selectedInstitution]);
 
-  const updateMessage = useCallback(async (id: string) => {
-    try {
-      await fetch(
-        `/api/message?id=null&family=null&areaCode=null&institutionCode=null&type=null&date=null`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id: id, status: "05" }),
-        }
-      )
-        .then((res) => res.json())
-        .then((res) => {
-          console.log("Mensaje actualizado");
-          fetchData();
-        });
-    } catch (error) {
-      console.error("Error al enviar el mensajes", error);
-    }
-  }, []);
-
   const tableTitle = (
     <Grid container p={2}>
       <Grid pl={6} item xs={8}>
@@ -80,7 +59,6 @@ export default function PreparedScreen() {
     () => ({
       id: "actions",
       label: "Acciones",
-      align: "center",
       render: ({ row }: { row: any }) => {
         return (
           <Box
@@ -108,7 +86,6 @@ export default function PreparedScreen() {
                     </Typography>
                   ),
                   isOpen: true,
-
                   onConfirm: async () => {
                     updateMessage(row.id);
                   },
@@ -140,6 +117,7 @@ export default function PreparedScreen() {
           columns={newColumns as Columns[]}
           loading={isLoading}
           tableTitle={tableTitle}
+          rowOptions={rowOptions}
         />
       </Box>
     </Paper>

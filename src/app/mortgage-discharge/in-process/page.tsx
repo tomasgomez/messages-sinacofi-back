@@ -77,7 +77,7 @@ export default function InProcessScreen() {
     setModalTrackingData(data);
   };
 
-  const maxHeight = 470;
+  const maxHeight = 474;
   const margin = 32;
   const cardHeight = 88;
 
@@ -90,7 +90,11 @@ export default function InProcessScreen() {
 
   return (
     <CardContextProvider filters={filters} setFilters={setFilters}>
-      <Paper sx={{ width: "calc(100% - 270px)" }}>
+      <Paper
+        sx={{
+          width: "calc(100% - 270px)",
+        }}
+      >
         <Box sx={{ m: 2 }}>
           <Header
             dataCodeList={
@@ -99,7 +103,13 @@ export default function InProcessScreen() {
             title={"Alzamientos Hipotecarios en Proceso"}
           />
         </Box>
-        <Box style={{ maxHeight: maxHeight, overflow: "scroll" }}>
+        <Box
+          style={{
+            maxHeight: maxHeight,
+            overflow: "scroll",
+            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           {loading ? (
             <Loader
               label="Cargando Alzamientos Hipotecarios..."
@@ -129,6 +139,7 @@ export default function InProcessScreen() {
           data={modalTrackingData}
           handleGetDataList={handleGetDataList}
           setLoading={setLoading}
+          selectedInstitution={selectedInstitution}
         />
         <InfoModal />
         <TablePagination
@@ -139,7 +150,10 @@ export default function InProcessScreen() {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          style={{ marginRight: 36 }}
+          style={{
+            marginTop: 16,
+            marginRight: 16,
+          }}
           labelRowsPerPage="Registros por página:"
           labelDisplayedRows={({ from, to, count }) => (
             <span>

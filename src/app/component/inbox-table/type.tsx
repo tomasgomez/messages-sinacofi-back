@@ -72,20 +72,27 @@ export interface MortgageDischargeData {
   messages: Message[];
 }
 
+export interface TrackingModalData {
+  status: string;
+  date: string;
+}
+
 export type KeyOfData =
   | keyof Message
   | keyof SentData
-  | keyof MortgageDischargeData;
+  | keyof MortgageDischargeData
+  | keyof TrackingModalData;
 
 export type Order = "asc" | "desc";
 
 export interface Columns {
   id: KeyOfData;
   label: string;
-  align: Alignment;
+  align?: Alignment;
   render?: any;
   sortable?: boolean;
   withCheckboxAll?: boolean;
+  style?: any;
 }
 
 export interface RowOptions {
@@ -93,11 +100,8 @@ export interface RowOptions {
 }
 
 interface Options {
-  maxwidth?: number;
-  minwidth?: number;
-  isBlod?: boolean;
   align?: Alignment;
-  fontSize?: number;
+  style?: any;
 }
 
 export enum Alignment {
@@ -113,11 +117,12 @@ export interface EnhancedTableProps {
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
-  orderBy: string;
+  orderBy?: string;
   rowCount: number;
   withCheckboxAll?: boolean;
   columns?: Columns[];
   noExtraColumn?: boolean;
+  isExpansible?: boolean;
 }
 
 export interface TableProps {
@@ -128,8 +133,10 @@ export interface TableProps {
   handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
   columns: Columns[];
   highlightLastRow?: boolean;
+  highlightWithBorderLeft?: boolean;
   isLastRow?: boolean;
-  noExtraColumn?: boolean;
+  isExpansible?: boolean;
+  rowOptions?: RowOptions;
 }
 
 export interface MSDetail {

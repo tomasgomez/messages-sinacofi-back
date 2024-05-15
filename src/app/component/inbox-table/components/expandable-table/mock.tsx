@@ -1,9 +1,9 @@
-import { Message } from "../../component/inbox-table/type";
+import { Message } from "../../type";
 import {
   DataExpandable,
   linkAndLabel,
   StatusMessage,
-} from "../../component/inbox-table/components/expandable-table/type";
+} from "./type";
 
 export function createData(
   id: string,

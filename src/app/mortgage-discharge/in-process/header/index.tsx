@@ -33,8 +33,10 @@ export default function InboxHeader(props: {
     event: React.MouseEvent<HTMLElement>,
     newAlignment: string
   ) => {
-    handleChangeAddFilter("channel", newAlignment || "");
-    setAlignment(newAlignment);
+    if (newAlignment !== null) {
+      setAlignment(newAlignment);
+      handleChangeAddFilter("channel", newAlignment || "");
+    }
   };
 
   return (
@@ -42,6 +44,9 @@ export default function InboxHeader(props: {
       <HeaderContent>
         <Typography variant="h5">{title}</Typography>
         <ToggleButtonGroup value={alignment} exclusive onChange={handleChange}>
+          <ToggleButton sx={toggleButtonSx} value="">
+            Todos
+          </ToggleButton>
           <ToggleButton sx={toggleButtonSx} value="Personas">
             Personas
           </ToggleButton>

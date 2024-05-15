@@ -9,7 +9,7 @@ import { MortgageStatusDropdown } from "./components/dropdown-mortgage-status";
 import {
   buttonUpdateStateSecondarySx,
   buttonUpdateStateSx,
-} from "./components/styles";
+} from "./styles";
 import { ModalTrackingData } from "@/types/mortgage-discharge";
 import { useEffect, useState } from "react";
 import { updateForeClosureMessage } from "../../api-calls";
@@ -23,6 +23,7 @@ export const TrackingModal = (props: {
   data: ModalTrackingData | undefined;
   handleGetDataList: () => void;
   setLoading: (state: boolean) => void;
+  selectedInstitution: string;
 }) => {
   const [statusSelected, setStatusSelected] = useState<string | undefined>(
     undefined
@@ -31,8 +32,9 @@ export const TrackingModal = (props: {
   const [historyList, setHistoryList] = useState<any[]>([]);
   const [dataOptions, setDataOptions] = useState<any[]>([]);
 
-  const { open, onClose, data, handleGetDataList } = props;
-  const { cukCode, history, ...restOfData } = data || {};
+  const { open, onClose, data, handleGetDataList, selectedInstitution } = props;
+  const { cukCode, history, institutionDestination, ...restOfData } =
+    data || {};
 
   const handleClose = () => {
     onClose(false);
@@ -107,6 +109,7 @@ export const TrackingModal = (props: {
             value={statusSelected}
             onChange={setStatusSelected}
             options={dataOptions}
+            disabled={selectedInstitution !== institutionDestination}
           />
         </Box>
       </Box>
@@ -122,7 +125,12 @@ export const TrackingModal = (props: {
           sx={buttonUpdateStateSecondarySx}
           onClick={handleChange}
           variant="contained"
-          disabled={loading || !statusSelected}
+          disabled={
+            loading ||
+            !statusSelected ||
+            // if you aren't the institution Destination you can change the status
+            selectedInstitution !== institutionDestination
+          }
         >
           Actualizar Estado
         </Button>

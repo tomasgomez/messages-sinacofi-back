@@ -17,14 +17,13 @@ export function TableHeader(props: EnhancedTableProps) {
     onRequestSort,
     withCheckboxAll,
     columns = [],
-    noExtraColumn,
+    isExpansible,
   } = props;
+
   const createSortHandler =
     (property: KeyOfData) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
-
-  const withActions = columns.some((elem) => elem.id === "actions");
 
   return (
     <TableHead>
@@ -46,8 +45,9 @@ export function TableHeader(props: EnhancedTableProps) {
           columnsData.sortable ? (
             <StyledTableCellHeader
               key={columnsData.id}
-              align={columnsData.align}
               padding="none"
+              align={columnsData.align}
+              style={columnsData.style}
               sortDirection={orderBy === columnsData.id ? order : false}
             >
               <TableSortLabel
@@ -60,15 +60,16 @@ export function TableHeader(props: EnhancedTableProps) {
             </StyledTableCellHeader>
           ) : (
             <StyledTableCellHeader
-              key={columnsData.id}
               align={columnsData.align}
+              key={columnsData.id}
+              style={columnsData.style}
               padding="normal"
             >
               {columnsData.label}
             </StyledTableCellHeader>
           )
         )}
-        {!withActions && !noExtraColumn && <TableCell />}
+        {isExpansible && <TableCell />}
       </TableRow>
     </TableHead>
   );

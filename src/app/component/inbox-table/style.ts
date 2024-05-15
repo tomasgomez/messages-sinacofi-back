@@ -4,14 +4,22 @@ import Chip from "@mui/material/Chip";
 
 // TODO: fix mix and max width props
 export const StyledTabCell = styled(TableCell)`
-  // max-width: ${(props) => props?.maxwidth}px;
-  // min-width: ${(props) => props?.minwidth}px;
-  // font-size: ${(props) => props?.fontSize}px;
-  font-weight: ${(props) => (props?.isBlod ? "bold" : "normal")};
-  background: ${(props) => (props?.highlightRow ? "#EFFCFF" : "")};
-  text-wrap: nowrap;
+  background: ${(props: {
+    highlightRow?: boolean;
+    highlightRowRejected?: boolean;
+    withBorderLeft?: boolean;
+  }) =>
+    props?.highlightRowRejected
+      ? "#fcebeb66"
+      : props?.highlightRow
+      ? "#EFFCFF"
+      : ""};
+  border-left: ${(props: {
+    highlightRow?: boolean;
+    withBorderLeft?: boolean;
+  }) => (props?.withBorderLeft ? "4px solid #00b2e2" : "")};
+  white-space: nowrap;
 `;
-
 export const StyledChip = styled(Chip)`
   height: 24px;
   color: white;
@@ -40,20 +48,4 @@ export const StyledTableCellHeader = styled(TableCell)`
 
 export const StyledCapitalizedSpan = styled("span")`
   text-transform: capitalize;
-`;
-
-export const StyledhighlightLastRow = styled("div")`
-  color: #565656;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 16px;
-`;
-
-export const StyledCircle = styled("div")`
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #00b2e2;
-  margin-right: 5px;
 `;

@@ -2,7 +2,6 @@
 import * as React from "react";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
-import { rowOptions } from "../constants";
 import { StyledTabCell } from "../style";
 import { TableProps } from "../type";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -17,6 +16,7 @@ type CustomCellType = {
   rowOptions?: any;
   highlightLastRow?: boolean;
   isLastRow?: boolean;
+  isFirstColumn?: boolean;
 };
 
 const CustomCell = ({
@@ -26,13 +26,19 @@ const CustomCell = ({
   rowOptions,
   highlightLastRow,
   isLastRow,
+  isFirstColumn,
 }: CustomCellType) => {
   return (
     <StyledTabCell
       component="th"
-      highlightRow={highlightLastRow && isLastRow}
+      highlightRow={
+        (highlightLastRow && isLastRow) || row.status === "01" || !row.status
+      }
+      highlightRowRejected={row.status === "05" && row.messageCode === "672"}
+      withBorderLeft={highlightLastRow && isLastRow && isFirstColumn}
       scope="row"
-      {...rowOptions}
+      style={rowOptions?.style}
+      align={rowOptions?.align}
     >
       {Component ? <Component value={value} row={row} /> : value}
     </StyledTabCell>
@@ -49,10 +55,12 @@ export function TableContentRows(props: TableProps) {
     columns,
     highlightLastRow,
     isLastRow,
-    noExtraColumn,
+    isExpansible,
+    rowOptions = {},
   } = props;
+
   const [isOpen, setIsOpen] = React.useState(false);
-  const withActions = columns.some((elem) => elem.id === "actions");
+
   return (
     <>
       <TableRow
@@ -83,13 +91,14 @@ export function TableContentRows(props: TableProps) {
             value={row[column?.id] || "-"}
             row={row}
             render={column.render}
+            isFirstColumn={!idx}
             rowOptions={rowOptions[column?.id]}
             highlightLastRow={highlightLastRow}
             isLastRow={isLastRow}
           />
         ))}
         {/* ////////////////// Expandable table Icon /////////////////////// */}
-        {!withActions && !noExtraColumn && (
+        {isExpansible && (
           <StyledTabCell>
             {row.stateProgress && (
               <IconButton
@@ -105,7 +114,7 @@ export function TableContentRows(props: TableProps) {
         )}
       </TableRow>
       {/* ////////////////// Expandable table /////////////////////// */}
-      <ExpandableTable isOpen={isOpen} />
+      {isExpansible && <ExpandableTable isOpen={isOpen} />}
     </>
   );
 }

@@ -102,7 +102,7 @@ export default function RootLayout({
                     setModalState(clearObjet);
                   }}
                   onConfirm={async () => {
-                    modalState?.onConfirm && (modalState.onConfirm());
+                    modalState?.onConfirm && modalState.onConfirm();
                     setModalState(clearObjet);
                   }}
                   title={modalState?.title}

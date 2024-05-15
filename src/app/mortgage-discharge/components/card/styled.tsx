@@ -6,6 +6,7 @@ import Button from "@mui/material/Button/Button";
 import Divider from "@mui/material/Divider";
 import CheckIcon from "@mui/icons-material/Check";
 import LinearProgress from "@mui/material/LinearProgress";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 interface StyledContentCardProps {
   height?: number;
@@ -307,3 +308,17 @@ export const StyledLinearProgress = styled(
     },
   })
 );
+
+export const StyledFooterComponent = styled("div")`
+  color: #565656;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px;
+`;
+
+export const StyledInfoIcon = styled(InfoOutlinedIcon)`
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+`;
