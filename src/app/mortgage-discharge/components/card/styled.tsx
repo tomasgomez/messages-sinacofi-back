@@ -164,7 +164,7 @@ export const StyledTitleProgressBar = styled(Typography)`
 `;
 
 export const StyledContainerBar = styled(Box)`
-  width: 1023px;
+  width: 100%;
   display: flex;
   overflow-x: scroll;
 `;
