@@ -1,6 +1,10 @@
 "use client";
 
-import { Columns, Alignment, RowOptions } from "@/app/component/inbox-table/type";
+import {
+  Columns,
+  Alignment,
+  RowOptions,
+} from "@/app/component/inbox-table/type";
 import React, { useContext } from "react";
 import { IconButton, Box } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
@@ -10,12 +14,13 @@ import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { base64ToBlob, downloadFile } from "./utils";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const AccionesColumn = ({ row }: { row: any }) => {
-  const { status, messageCode } = row;
+  const { actions, messageCode } = row;
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
   const router = useRouter();
-
+  console.log(actions, "actions");
   const handlerOpenModal = (row: any) => {
     setSelectedMessage(row);
     setModalIsOpen(true);
@@ -29,29 +34,25 @@ const AccionesColumn = ({ row }: { row: any }) => {
         alignItems: "center",
       }}
     >
-      {status === "01" && (
+      {actions.includes("sing") && (
         <IconButton
           key={`drive-icon-${row.id}`}
-          aria-label="DriveFileRenameOutlineIcon"
           style={{ padding: 0, color: "#00B2E2" }}
-          onClick={() =>
-            messageCode === "670"
-              ? router.push(
-                  `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
-                )
-              : router.push(
-                  `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
-                )
+          onClick={
+            () =>
+              router.push(
+                `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+              )
+            // case sent to the messagecode 670
+            // router.push(
+            //     `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
+            //   )
           }
         >
-          {messageCode === "670" ? (
-            <DriveFileRenameOutlineIcon />
-          ) : (
-            <SendOutlinedIcon />
-          )}
+          <DriveFileRenameOutlineIcon />
         </IconButton>
       )}
-      {(!status || status === "-") && (
+      {actions.includes("sent") && (
         <IconButton
           key={`sent-icon-${row.id}`}
           style={{ padding: 0, color: "#00B2E2" }}
@@ -64,18 +65,24 @@ const AccionesColumn = ({ row }: { row: any }) => {
           <SendOutlinedIcon />
         </IconButton>
       )}
-      {/* Detail Icon */}
-      {(status === "05" || status === "06") && (
+      {actions.includes("details") && (
         <IconButton
           key={`detail-icon-${row.id}`}
-          aria-label="DetailOutlineIcon"
           style={{ padding: 0, color: "#565656" }}
           onClick={() => handlerOpenModal(row)}
         >
           <InfoOutlinedIcon />
         </IconButton>
       )}
-      {/* TODO ADD Sent Icon */}
+      {actions.includes("edit") && (
+        <IconButton
+          key={`edit-icon-${row.id}`}
+          style={{ padding: 0, color: "#565656" }}
+          onClick={() => null}
+        >
+          <EditOutlinedIcon />
+        </IconButton>
+      )}
     </Box>
   );
 };
@@ -159,7 +166,6 @@ export const columnsCard: Columns[] = [
   documents,
   acciones,
 ];
-
 
 export const rowOptions: RowOptions = {
   NSR: {

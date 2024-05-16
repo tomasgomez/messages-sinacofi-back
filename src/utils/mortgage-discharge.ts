@@ -14,6 +14,7 @@ import {
   ModalTrackingData,
 } from "@/types/mortgage-discharge";
 import { sortMessagesOldToNew } from "./messagesFuntions";
+import { getOnlyTheValue } from "./tracking-modal";
 
 const parseDateTimeMessages = (obj: any): Date => {
   return new Date(obj.date);
@@ -24,6 +25,31 @@ export const sortHistoryList = (obj: any[]): any[] => {
     (a, b) =>
       parseDateTimeMessages(b).getTime() - parseDateTimeMessages(a).getTime()
   );
+};
+
+// Use the getActions until backend sent the actions array
+const getActions = (
+  messageCode: string,
+  statusMessage: string,
+  statusCuk: string
+) => {
+  if (statusMessage === "01") {
+    if (messageCode === "670") {
+      if (getOnlyTheValue(statusCuk) === "023") return ["details", "edit"];
+      return ["sing"];
+    }
+    return ["sent"];
+  }
+  if (!statusMessage || statusMessage === "-") {
+    return ["sent"];
+  }
+  // if to test
+  // if (messageCode === "670" && getOnlyTheValue(statusCuk) === "023") {
+  //   return ["details", "edit"];
+  // }
+  if (statusMessage === "06" || statusMessage === "05") {
+    return ["details"];
+  }
 };
 
 export const formatCardData = (
@@ -79,17 +105,18 @@ export const formatCardData = (
     const ListMessages670 = messages.filter(
       (message) => message?.messageCode === "670"
     );
+
     // The order of the messages is oldest to newest, (1,2,3,4) with respect to creation identifiers
     const mostRecent670 = ListMessages670[ListMessages670.length - 1];
 
     const buttonDisabled = mostRecent670?.status === "01";
 
-    let cukCode = "01";
-    let messageCode = "";
+    let lastMessageStatusWithStatus = "01";
+    let lastMessageCodeWithStatus = "";
     for (let i = messages?.length - 1; i >= 0; i--) {
       if (messages[i].status && messages[i].status !== "-") {
-        cukCode = messages[i].status;
-        messageCode = messages[i].messageCode;
+        lastMessageStatusWithStatus = messages[i].status;
+        lastMessageCodeWithStatus = messages[i].messageCode;
         break;
       }
     }
@@ -97,8 +124,8 @@ export const formatCardData = (
     const codeData = {
       cukCode: elem.cukCode,
       foreclosureDate: elem?.creationDate?.split(" ")[0],
-      cukStatus: cukCode,
-      lastMessageCode: messageCode,
+      cukStatus: lastMessageStatusWithStatus,
+      lastMessageCode: lastMessageCodeWithStatus,
     };
 
     const infoData = {
@@ -120,7 +147,20 @@ export const formatCardData = (
       history: sortHistoryList(elem?.history || []),
     };
 
-    return { codeData, infoData, messages, buttonDisabled, modalTrackingData };
+    const newMessaje = messages.map((message) => {
+      return {
+        ...message,
+        actions: getActions(message.messageCode, message.status, elem.status),
+      };
+    });
+
+    return {
+      codeData,
+      infoData,
+      messages: newMessaje,
+      buttonDisabled,
+      modalTrackingData,
+    };
   });
 
   return formattedData;
