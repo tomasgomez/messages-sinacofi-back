@@ -1,9 +1,5 @@
 # Step 1: Build the Next.js application
-<<<<<<< HEAD
-FROM node:20-alpine AS builder
-=======
 FROM node:alpine AS builder
->>>>>>> feature/leniolabs
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
