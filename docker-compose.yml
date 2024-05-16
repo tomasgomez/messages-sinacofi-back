@@ -1,14 +1,5 @@
 version: "3.8"
 services:
-  postgres:
-    image: postgres:latest
-    environment:
-      POSTGRES_DB: sinacofi_database
-      POSTGRES_USER: sinacofi
-      POSTGRES_PASSWORD: sinacofi123
-    ports:
-      - "5432:5432"
-
   webapp:
     build: .
     image: admin-sinacofi
@@ -19,7 +10,8 @@ services:
     ports:
       - "8080:3000"
     volumes:
-      - ${LOG_PATH:-./logs/}:/var/log
+      # - ${LOG_PATH:-./logs/}:/var/log
+      # - /adjuntos:/adjuntos 
     depends_on:
       - postgres
     command: ["npm", "start"]
