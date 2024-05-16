@@ -1,5 +1,9 @@
 # Step 1: Build the Next.js application
+<<<<<<< HEAD
 FROM node:20-alpine AS builder
+=======
+FROM node:alpine AS builder
+>>>>>>> feature/leniolabs
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -8,21 +12,16 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
-RUN npm install -g ts-node
+RUN npm install && npm update && npm install -g ts-node
 
 # Copy the rest of your app's source code from your host to your image filesystem.
 COPY . .
 
-# Build your Prisma client during the build
-RUN npx prisma generate
-
-# Build your Next.js app using the environment variables from the file
-RUN source .env 
-RUN npm run build
+# Build your Prisma client and Next.js app
+RUN npx prisma generate && npm run build
 
 # Step 2: Serve the Next.js application
-FROM node:20-alpine AS runner
+FROM node:alpine AS runner
 
 WORKDIR /usr/src/app
 
@@ -33,12 +32,10 @@ COPY --from=builder /usr/src/app/package.json ./package.json
 COPY --from=builder /usr/src/app/prisma ./prisma
 COPY --from=builder /usr/src/app/assets ./assets
 COPY --from=builder /usr/src/app/.env ./.env
-COPY --from=builder /usr/src/app/src ./src
-# COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder /usr/src/app/tsconfig.json ./tsconfig.json
 
-# Your app binds to port 3000 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
+# Expose port 3000
 EXPOSE 3000
 
-# Here we will use the Next.js start script which starts the development server
+# Start the application
 CMD ["npm", "run", "start"]

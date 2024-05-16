@@ -1,15 +1,21 @@
 version: "3.8"
+
 services:
   webapp:
     build: .
-    image: admin-sinacofi
-    container_name: admin-sinacofi
+    image: messages:latest
+    container_name: messages
     restart: always
     env_file:
       - .env
     ports:
-      - "8080:3000"
+      - "3000:3000"
     volumes:
-      # - ${LOG_PATH:-./logs/}:/var/log
+      - /var/logs/containers:/logs
       - /adjuntos:/adjuntos 
     command: ["npm", "start"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
