@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://OPE_IMMSJ:fbdkSoJbT8qk5@3100.66.49.10:5432/DEV_IMMSJ"
+  url = env("DATABASE_URL")
 }
 
 model CUK {
