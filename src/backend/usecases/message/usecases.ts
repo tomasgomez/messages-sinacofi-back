@@ -6,6 +6,7 @@ import { getMessage } from './getMessage';
 import { createMessage } from './createMessage';
 import { updateMessage } from './updateMessage';
 import { handleMessage } from './handleMessage';
+import { findDocuments } from './findDocuments';
 
 
 /*
@@ -30,7 +31,13 @@ export class MessageUscase implements MessageUsecases  {
     updateMessage = async (message: Message): Promise<Message | Error> => 
         updateMessage(this.messageRepository, message);
 
+    // find documents
+    findDocuments = async (message: Message): Promise<Message | Error> =>
+        findDocuments(message);
+
   }
 
+// message repository
 const messageRepository: MessageRepository = new PrismaAdapter();
+
 export const messageUseCase: MessageUsecases = new MessageUscase(messageRepository); // Add it on the api layer

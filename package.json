@@ -31,6 +31,7 @@
     "react-number-format": "^5.3.4",
     "react-text-mask": "^5.5.0",
     "sharp": "^0.33.2",
+    "uuid": "^9.0.1",
     "winston": "^3.13.0"
   },
   "devDependencies": {
@@ -38,6 +39,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-text-mask": "^5.4.14",
+    "@types/uuid": "^9.0.8",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.1.3",

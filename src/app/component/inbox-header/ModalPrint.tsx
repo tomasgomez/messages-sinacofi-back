@@ -7,7 +7,6 @@ import { PDFTemplate } from "../PDFTemplate"
 import { useContext } from "react"
 import { MessageExportContext } from "../MessageExportProvider"
 import { montserrat } from "@/utils/fonts"
-import { mockMS199 } from "@/app/messages/inbox/mock-ms-199"
 import Loader from "@/components/Loader"
 
 

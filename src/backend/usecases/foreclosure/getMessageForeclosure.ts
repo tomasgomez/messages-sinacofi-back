@@ -10,6 +10,7 @@ import {
 import {
   Filter
 } from '../../entities/global/filter';
+import { messageUseCase } from '../message/usecases';
 
 // Get message function
 export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: Filter): Promise < CUK[] | Error > {
@@ -26,7 +27,31 @@ export async function getMessageForeclosure(messageRepository: MessageRepository
       return new Error('No message found');
     }
 
-    return cuks;
+    /* Get all messages with documents */
+    const cuksUpdated = cuks.map(async (cuk: CUK) => {
+      // get messages
+      if (!cuk.messages || cuk.messages.length == 0) {
+        return cuk;
+      }
+      // mapping messages
+      const messages = cuk.messages.map(async (message) => {
+        // get message
+        const messageResponse = await messageUseCase.findDocuments(message);
+        if (messageResponse instanceof Error) {
+          throw messageResponse;
+        }
+        return messageResponse;
+      });
+      const messagesUpdated = await Promise.all(messages);
+      // update messages
+      cuk.messages = messagesUpdated;
+      return cuk;
+    });
+
+    // wait for all messages to be updated
+    const cukResponse = await Promise.all(cuksUpdated)
+
+    return cukResponse;
   } catch (error: any) {
     console.error('Error updating message:', error);
     return error;

@@ -7,6 +7,8 @@ import {
 import {
     MessageStatus
 } from "@/backend/entities/message/status";
+import { docUseCase } from "../docs/usecases";
+import { Documents } from "@/backend/entities/message/interface";
 
 
 // Create message function
@@ -23,6 +25,24 @@ export async function updateMessage(repository: MessageRepository, message: Mess
             if (newMessage instanceof Error) {
                 return newMessage;
             }
+        }
+
+        /* Check if the message has documents */
+        if (message.documents && message.documents.length > 0) {
+
+            let docs: Documents[] = [];
+            /* Store the documents */
+            for (const doc of message.documents) {
+                const docResponse = await docUseCase.storeDoc(doc);
+                // check response
+                if (docResponse instanceof Error) {
+                    return docResponse;
+                }
+                // push doc
+                docs.push(docResponse);
+            }
+
+            message.documents = docs;
         }
 
         /* Update the message */

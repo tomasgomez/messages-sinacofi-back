@@ -6,4 +6,5 @@ export interface MessageUsecases {
     handleMessage(message: Message): Promise<Message | Error>;
     createMessage(message: Message): Promise<Message | Error>;
     updateMessage(message: Message): Promise<Message | Error>;
+    findDocuments(message: Message): Promise<Message | Error>;
 }
