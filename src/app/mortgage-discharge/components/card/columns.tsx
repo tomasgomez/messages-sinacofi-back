@@ -77,7 +77,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("edit") && (
         <IconButton
           key={`edit-icon-${row.id}`}
-          style={{ padding: 0, color: "#565656" }}
+          style={{ padding: 0, color: "#00B2E2" }}
           onClick={() => null}
         >
           <EditOutlinedIcon />
