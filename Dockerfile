@@ -34,6 +34,7 @@ COPY --from=builder /usr/src/app/assets ./assets
 COPY --from=builder /usr/src/app/.env ./.env
 COPY --from=builder /usr/src/app/tsconfig.json ./tsconfig.json
 
+
 # Expose port 3000
 EXPOSE 3000
 
