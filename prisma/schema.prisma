@@ -1,0 +1,116 @@
+// prisma/schema.prisma
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://sinacofi:hola123@34.135.68.241:5432/message"
+}
+
+model CUK {
+  id                     String  @id @default(uuid())
+  name                   String?
+  cukCode                String? @unique
+  description            String?
+  status                 String?
+  creationDate           String?
+  issuedDate             String?
+  channel                String?
+  institutionCode        String?
+  institutionDestination String?
+  region                 String?
+  buyerDni               String?
+  buyer                  String?
+  ownerDni               String?
+  owner                  String?
+  borrowerDni            String?
+  borrower               String?
+
+  history Json? // [ {cukCode:'AH0000270000' status: '022 EN PROCESO', date: '2021-01-01 16:40:00' }, {cukCode:'AH0000270000' status: '023 ACEPTADO', date: '2021-01-02 16:40:00' } ]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[] @relation(name: "CukMessages")
+}
+
+model Message {
+  id           String      @id @default(uuid())
+  TSN          Int?        @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
+  OSN          Int?        @unique @default(autoincrement())
+  NSE          Int?        @unique @default(autoincrement())
+  LSN          Int?        @unique @default(autoincrement())
+  NSR          Int?        @unique @default(autoincrement())
+  messageCode  String?
+  description  String?
+  priority     String?
+  status       String?
+  sender       String?
+  creationDate String?
+  creationTime String?
+  receiver     String?
+  receivedDate String?
+  receivedTime String?
+  documents    Documents[]
+  actions      String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  cukCode String?
+
+  parameters Parameters[]
+  cuk        CUK?         @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+}
+
+model Parameters {
+  internalId   Int      @id @default(autoincrement())
+  id           String
+  name         String?
+  messageCode  String?
+  label        String?
+  type         String?
+  placeholder  String?
+  description  String?
+  defaultValue String?
+  priority     Int?
+  value        String? //string or number
+  properties   Json?
+  validations  Json?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  messageId String
+  Message   Message @relation(fields: [messageId], references: [id])
+
+  @@unique([messageId, name])
+  @@index([messageId, name])
+}
+
+model Documents {
+  id           String   @id @default(uuid())
+  documentName String?
+  content      String?
+  url          String?
+  createdAt    DateTime @default(now())
+
+  messageId String
+  Message   Message @relation(fields: [messageId], references: [id])
+}
+
+model Family {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  institutions String[]
+}
+
+model MessageFamily {
+  messageId  Int
+  familyId   Int
+  createdAt  DateTime @default(now())
+  assignedAt DateTime @default(now())
+
+  @@id([messageId, familyId])
+}
