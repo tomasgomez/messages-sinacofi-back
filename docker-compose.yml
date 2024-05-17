@@ -26,8 +26,8 @@ services:
       - LOG_FILENAME=${LOG_FILENAME}
       - FILES_HOST=/files
       - PORT=${PORT}
-      - RULE_CLIENT_URL:${RULE_CLIENT_URL}
-      - ADMIN_CLIENT_URL:${ADMIN_CLIENT_URL}
+      - RULE_CLIENT_URL=${RULE_CLIENT_URL}
+      - ADMIN_CLIENT_URL=${ADMIN_CLIENT_URL}
     ports:
       - "${PORT}:${PORT}"
     volumes:
