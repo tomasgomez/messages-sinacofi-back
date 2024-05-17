@@ -15,9 +15,11 @@ export async function storeDoc(doc: Documents): Promise <Documents | Error> {
         return new Error('Name is required');
     }
 
+    const FILES_PATH = process.env["FILES_HOST"]|| '/files';
+
     // create a unique id
     const fileId = uuidv4();
-    const filePath = path.join('/adjuntos', fileId, doc.documentName);
+    const filePath = path.join(FILES_PATH, fileId, doc.documentName);
 
     console.log(filePath);
 
@@ -33,11 +35,13 @@ export async function storeDoc(doc: Documents): Promise <Documents | Error> {
     } catch (error) {
         return new Error('Error saving the file');
     }
+
+    const urlToBeStored = path.join(fileId, doc.documentName);
     
     // create the response
     const docResponse: Documents = {
         documentName: doc.documentName,
-        url: filePath,
+        url: urlToBeStored,
         messageId: doc.messageId
     }
 

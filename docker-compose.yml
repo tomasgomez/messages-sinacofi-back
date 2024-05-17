@@ -1,18 +1,32 @@
 version: "3.8"
 
 services:
-  webapp:
-    build: .
+  messages:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+        DB_HOST: ${DB_HOST}
+        DB_NAME: ${DB_NAME}
+        LOG_FILENAME: ${LOG_FILENAME}
+        FILES_PATH: ${FILES_PATH}
     image: messages:latest
     container_name: messages
     restart: always
     env_file:
       - .env
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}:5432/${DB_NAME}
+      - FILES_PATH=${FILES_PATH}
+      - LOG_FILENAME=${LOG_FILENAME}
+      - FILES_HOST=/files
     ports:
       - "3000:3000"
     volumes:
-      - /var/logs/containers:/logs
-      - /adjuntos:/adjuntos 
+      - ${LOG_FILENAME}:/logs
+      - ${FILES_PATH}:/files 
     command: ["npm", "start"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
