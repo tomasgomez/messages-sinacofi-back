@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install && npm update && npm install -g ts-node
+RUN npm install && npm install -g ts-node
 
 
 # Copy the rest of your app's source code from your host to your image filesystem.
