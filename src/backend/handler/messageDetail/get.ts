@@ -13,10 +13,12 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
           return;
         }
 
-        let [message, count, offset] = result;
+        let filter = result;
+
+        filter.detail = true;
 
         /* Use the PrismaAreaAdapter to get the Message from the database */
-        let messageResponse = await messageDetailUseCase.getMessageDetail(message, count, offset)
+        let messageResponse = await messageDetailUseCase.getMessageDetail(filter)
 
         /* If the message is not found, return a 204 error */
         if (!messageResponse) {

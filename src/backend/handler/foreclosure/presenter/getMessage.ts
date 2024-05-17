@@ -1,6 +1,6 @@
 import {
   Filter
-} from '@/backend/entities/global/filter';
+} from '@/backend/entities/cuk/filter';
 import {
   processDateField,
   processStringArrayField

@@ -157,7 +157,7 @@ model NSQ {
 }
 
 model Parameters {
-  id           String
+  id           String  @default(uuid())
   name         String
   messageCode  String?
   label        String?

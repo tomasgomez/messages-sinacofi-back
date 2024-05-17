@@ -1,5 +1,7 @@
+import { Parameter } from "./parameter";
+
 export interface FilterMessage {
-  [key: string]: string | string[] | Date | undefined | null;
+  [key: string]: unknown ;
 
   id ? : string[]
   messageCode ? : string[]
@@ -17,6 +19,19 @@ export interface FilterMessage {
   statusId ? : string[]
   cukCode ? : string[]
 
+  detail: boolean ;
+
+  parameters ? : Parameter[];
+
   count ? : string;
   offset ? : string;
+}
+
+export interface FilterParameter {
+  [key: string]: unknown;
+
+  id ? : string[]
+  name ? : string[]
+  messageCode ? : string[]
+  messageId ? : string[]
 }

@@ -3,25 +3,7 @@ import { History } from '@/backend/entities/cuk/history';
 
 /* Function to transform history from Json and set it to CUK */
 export function setCukHistory(cuk: CUK): History[] {
-
-    // Check if history exists
-    if (cuk.history && typeof cuk.history === 'string' && cuk.history.trim() !== '') {
-        
-        // Parse Json
-        let historyArray = JSON.parse(cuk.history);
-
-        // Check if historyArray is an array
-        if (Array.isArray(historyArray)) {
-            cuk.history = historyArray.map((history: History) => {
-                return {
-                    cukCode: history.cukCode,
-                    status: history.status,
-                    date: history.date
-                }
-            });
-        }
-    } 
-    return cuk.history ? cuk.history : [];
+    return [];
 }
 
 
@@ -35,17 +17,6 @@ export function addHistory(status: string, cuk: CUK): string {
 
     let updatedHistoryArray: any[] = [];
 
-    // Check if history exists
-    if (cuk.history && typeof cuk.history === 'string' && cuk.history.trim() !== '') {
-
-        // Parse Json
-        let historyArray = JSON.parse(cuk.history);
-
-        // Check if historyArray is an array
-        if (Array.isArray(historyArray)) {
-            updatedHistoryArray = historyArray;
-        }
-    } 
 
     updatedHistoryArray.push(history);
 

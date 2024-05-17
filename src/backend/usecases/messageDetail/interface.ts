@@ -1,6 +1,7 @@
 
 import { Message } from "@/backend/entities/message/message";
+import { FilterMessage } from "@/backend/entities/message/filter";
 
 export interface MessageDetailUsecases {
-    getMessageDetail(message: Message, count: string, offset: string): Promise<Message[] | Error>;
+    getMessageDetail(filter: FilterMessage): Promise<Message[] | Error>;
 }

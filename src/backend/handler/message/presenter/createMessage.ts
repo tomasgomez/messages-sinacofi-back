@@ -1,8 +1,8 @@
-import { Parameter } from '@/backend/entities/message/interface';
+import { Parameter } from '@/backend/entities/message/parameter';
 import { Message } from '@/backend/entities/message/message';
 
 export function validateCreateMessage(data: any): Message | Error {
-  const { messageCode, status, receiver, sender, parameters, cukCode, priority } = data;
+  const { messageCode, parameters, cukCode } = data;
 
   if (!messageCode || typeof messageCode !== 'string' || messageCode.trim() === '') {
     return new Error('Invalid messageCode');
@@ -13,25 +13,9 @@ export function validateCreateMessage(data: any): Message | Error {
 
   message.messageCode = messageCode.trim();
 
-  if (sender && typeof sender === 'string' && sender.trim() !== '') {
-    message.sender = sender.trim();
-  }
-
-  if (status && typeof status === 'string' && status.trim() !== '') {
-    message.status = status.trim();
-  }
-
-  if (receiver && typeof receiver === 'string' && receiver.trim() !== '') {
-    message.receiver = receiver.trim();
-  }
-
 
   if (cukCode && typeof cukCode === 'string' && cukCode.trim() !== '') {
     message.cukCode = cukCode.trim();
-  }
-
-  if (priority && typeof priority === 'number' || typeof priority === 'string') {
-    message.priority = priority.toString();
   }
 
   if (parameters && typeof parameters === 'object') {
@@ -44,6 +28,7 @@ export function validateCreateMessage(data: any): Message | Error {
       }
 
       let parameter: Parameter =  {
+        messageId: '',
         id: element.id ?? '',
         name: element.name ?? '',
         messageCode: element.messageCode ?? '',
@@ -54,7 +39,6 @@ export function validateCreateMessage(data: any): Message | Error {
         defaultValue: element.defaultValue ?? '',
         priority: counter,
         value: value,
-        properties: element.properties ?? '',
         validations: element.validations ?? '',
       }
       parametersMessage.push(parameter)

@@ -1,8 +1,12 @@
 import {
     getChileanTime
 } from '@/backend/utils/functions';
+import { Parameter } from './parameter';
+import { Document } from '@/backend/entities/global/document';
 
 export class Message {
+    [key: string]: unknown;
+
     id ? : string;
     messageCode ? : string | null;
     origin ? : string | null;
@@ -16,6 +20,9 @@ export class Message {
     actions ? : string | null;
     createdAt ? : Date;
     updatedAt ? : Date;
+
+    parameters ? : Parameter[] | null;
+    documents ? : Document[] | null;
 
     statusId ? : string | null;
     cukCode ? : string | null;

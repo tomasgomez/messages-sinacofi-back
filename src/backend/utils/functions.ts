@@ -6,7 +6,8 @@ import {
 } from '../entities/message/message';
 import {
     Filter
-} from '../entities/global/filter';
+} from '../entities/cuk/filter';
+import { FilterMessage } from '../entities/message/filter';
 
 export function getEnvVariable(name: string): string | Error {
     try {
@@ -44,26 +45,11 @@ export function getChileanTime(): [string, string] | Error {
 }
 
 // Function to handle null values and empty arrays based on detail flag and specific keys
-export function handleNullValues(message: Message, detail: boolean): void {
-    // If detail flag is false, set parameters to an empty array
-    if (!detail) {
-        message.parameters = [];
-    }
+export function handleNullValues(message: Message, filter?: FilterMessage): void {
 
     // Define keys that should be treated as arrays when null
-    const arrayKeys: Array < keyof Message > = ['actions', 'documents', 'parameters'];
+    const arrayKeys: Array < keyof Message > = ['actions'];
 
-    // Loop through each key-value pair in the message object
-    Object.entries(message).forEach(([key, value]) => {
-        // If the value is null and the key is one of the array keys, set it to an empty array
-        if (value === null && arrayKeys.includes(key as keyof Message)) {
-            message[key as keyof Message] = [];
-        }
-        // If the value is null and the key is not one of the array keys, set it to an empty string
-        else if (value === null) {
-            message[key as keyof Message] = '';
-        }
-    });
 }
 
 // Define a function to generate the date range filter
@@ -95,16 +81,7 @@ export function createDateRangeFilter(startDate: Date | undefined, endDate: Date
 }
 
 export function processStringArrayField(fieldName: string, fieldValue: string, filter: Filter) {
-    if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
-        filter[fieldName] = fieldValue.trim().split(',').map(value => value.trim());
-    }
 }
 
 export function processDateField(fieldName: string, fieldValue: string, filter: Filter) {
-    if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
-        const convertedToDate = new Date(fieldValue.trim());
-        if (!isNaN(convertedToDate.getTime())) {
-            filter[fieldName] = convertedToDate;
-        }
-    }
 }

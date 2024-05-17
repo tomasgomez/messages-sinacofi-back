@@ -1,3 +1,5 @@
+import { Properties } from "./properties";
+
 export type Parameter = {
     id: string;
     name: string;
@@ -13,6 +15,7 @@ export type Parameter = {
     validations ? : string | null;
 
     propertyId ? : string | null;
-    messageId ? : string | null;
+    messageId : string;
     cukCode ? : string | null;
+    properties ? : Properties | null;
 }

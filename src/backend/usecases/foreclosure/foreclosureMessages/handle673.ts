@@ -17,7 +17,7 @@ export async function handle673(cuk: CUK, message: Message, cukRepository: CUKRe
     }
 
     /* If the message status is 05, create a new message with status 06 */
-    if (updatedMessage.status && updatedMessage.status === MessageStatus.ENVIADO ) {
+    if (updatedMessage.statusId && updatedMessage.statusId === MessageStatus.ENVIADO ) {
         if (updatedMessage.setReceivedTime) {
             updatedMessage.setReceivedTime();
         }

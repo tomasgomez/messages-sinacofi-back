@@ -20,9 +20,8 @@ async function create(cuk: CUK): Promise < CUK | Error > {
         let cukData: Partial<CUK> = {};
 
         /* Set the time for the CUK */
-        if (cuk.setTime) {
+        if (cuk.setTime)
             cuk.setTime();
-        }
 
         /* Set the history for the CUK */
         let history: History = {
@@ -38,26 +37,31 @@ async function create(cuk: CUK): Promise < CUK | Error > {
                     cukData[key as keyof CUK] = value;
                 }
             }
-        } else {
-            console.error('No CUK data provided');
-            return new Error('No CUK data provided');
         }
 
         let newCUK = await prismaClient.cUK.create({
-            data: cukData
+            data: {
+                ...cukData,
+                history: {
+                    create: history
+                },
+                parameters: {
+                    createMany: {
+                        data: cukData.parameters || [],
+                    }
+                },
+                messages: {
+                    createMany: {
+                        data: cukData.messages || []
+                    }
+                }
+            },
+            include: {
+                history: true
+            }
         });
 
-        /* Add the history to the new CUK */
-        prismaClient.history.create({
-            data: history
-        });
-
-        if (newCUK === null) {
-            console.error('Error creating CUK');
-            return new Error('Error creating CUK');
-        }
-
-        return newCUK as CUK;
+        return newCUK;
 
     } catch (error: any) {
         console.error('Error creating CUK:', error);

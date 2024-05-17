@@ -26,14 +26,6 @@ export async function createMessage(repository: MessageRepository, message: Mess
             return schemaTypes;
         }
 
-        /* Loop through the schema types and get the description */
-        for (let schemaType of schemaTypes) {
-            if (message.messageCode === schemaType.messageCode) {
-                message.description = schemaType.description;
-                break;
-            }
-        }
-
         /* Get the Chilean time */
         let response = getChileanTime();
 
@@ -44,7 +36,7 @@ export async function createMessage(repository: MessageRepository, message: Mess
         let [dateString, time] = response;
 
         /* Set the received date and time */
-        if (message.status === MessageStatus.BANDEJA_DE_ENTRADA) {
+        if (message.statusId === MessageStatus.BANDEJA_DE_ENTRADA) {
             message.receivedDate = dateString;
             message.receivedTime = time;
         }

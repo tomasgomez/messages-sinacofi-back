@@ -1,10 +1,18 @@
 import { getChileanTime } from '@/backend/utils/functions'
+import { Parameter } from '@/backend/entities/message/parameter'
+import { History } from '@/backend/entities/cuk/history'
+import { Message } from '@/backend/entities/message/message'
 export class CUK {
     id?: string;    
     cukCode?: string | null;
     status?: string | null;
 
     creationDate?: string | null;
+
+    parameters?: Parameter[] | null;
+    history?: History[] | null;
+    messages?: Message[] | null;
+
     
     createdAt?: Date;
     updatedAt?: Date;
