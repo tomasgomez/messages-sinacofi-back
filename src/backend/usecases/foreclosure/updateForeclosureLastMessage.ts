@@ -1,9 +1,9 @@
 import {
   CUKRepository
-} from '../../repository/cukRepository';
+} from '@/backend/repository/cukRepository';
 import {
   Message
-} from '../../entities/message/message';
+} from '@/backend/entities/message/message';
 import {
   MessageRepository
 } from '@/backend/repository/messageRepository';
