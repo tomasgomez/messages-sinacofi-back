@@ -45,7 +45,7 @@ export async function getSchemaTypes(filter: Filter): Promise < MessageSchema[] 
 
     
     let schemas = await get(url, path, {},{})
-  
+
 
     if (schemas instanceof Error) {
       throw schemas;
