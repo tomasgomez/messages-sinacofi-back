@@ -1,6 +1,6 @@
 import {
     Filter
-} from '@/backend/entities/global/filter';
+} from '@/backend/entities/cuk/filter';
 import {
     PrismaClientWrapper
 } from '../prismaWrapper';
@@ -38,16 +38,17 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
             return new Error('Message not found');
         }
 
-        for (let cuk of cuks) {
-            if (cuk.messages !== undefined && cuk.messages.length > 0) {
-                for (let message of cuk.messages) {
-                    handleNullValues(message, false);
-                }
-            }
+        // TODO: Crear un CUK que sea para el front que extienda el CUK para bd y que tenga los metodos para convertirse y ademas agregar otras clases (ex history)
+        // for (let cuk of cuks) {
+        //     if (cuk.messages !== undefined && cuk.messages.length > 0) {
+        //         for (let message of cuk.messages) {
+        //             handleNullValues(message, false);
+        //         }
+        //     }
 
-            cuk.history = setCukHistory(cuk);
+        //     cuk.history = setCukHistory(cuk);
             
-        }
+        // }
         return cuks;
 
     } catch (error: any) {
@@ -83,51 +84,21 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     where.id = {
         in: filter.id
     };
-    where.name = {
-        in: filter.name
-    };
     where.cukCode = {
         in: filter.cukCode
     };
-    where.description = {
-        in: filter.description
-    };
-    where.channel = {
-        in: filter.channel
-    };
     where.status = {
         in: filter.status
-    };
-    where.region = {
-        in: filter.region
-    };
-    where.buyerDni = {
-        in: filter.buyerDni
-    };
-    where.buyer = {
-        in: filter.buyer
-    };
-    where.ownerDni = {
-        in: filter.ownerDni
-    };
-    where.owner = {
-        in: filter.owner
-    };
-    where.borrowerDni = {
-        in: filter.borrowerDni
-    };
-    where.borrower = {
-        in: filter.borrower
     };
 
     // check if filter has institutionCode
     if (filter.institutionCode) {
         messageArgs.where = {
-            OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
+            OR: [{AND: [{origin: {in: filter.institutionCode}}, {statusId: {in: ["01", "05",""]}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ statusId: { in: ["06"] } }, { statusId: null }]}]}]
         }
         where.messages = {
             some: {
-                OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
+                OR: [{AND: [{origin: {in: filter.institutionCode}}, {statusId: {in: ["01", "05",""]}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ statusId: { in: ["06"] } }, { statusId: null }]}]}]
             }
         }
     }
@@ -142,73 +113,6 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
 }
 
 
-function createWhereFromFilter(filter: Filter): any {
-    let where: any = {};
-
-    where.id = {
-        in: filter.id
-    };
-    where.name = {
-        in: filter.name
-    };
-    where.cukCode = {
-        in: filter.cukCode
-    };
-    where.description = {
-        in: filter.description
-    };
-    where.channel = {
-        in: filter.channel
-    };
-    where.status = {
-        in: filter.status
-    };
-    where.region = {
-        in: filter.region
-    };
-    where.buyerDni = {
-        in: filter.buyerDni
-    };
-    where.buyer = {
-        in: filter.buyer
-    };
-    where.ownerDni = {
-        in: filter.ownerDni
-    };
-    where.owner = {
-        in: filter.owner
-    };
-    where.borrowerDni = {
-        in: filter.borrowerDni
-    };
-    where.borrower = {
-        in: filter.borrower
-    };
-
-    where.messages = {
-        some: {
-                OR: [{
-                sender: {
-                    in: filter.institutionCode
-                }},
-                {receiver: {
-                    in: filter.institutionCode
-                }
-            }]
-            }
-        }
-    
-
-    let dateRangeFilter = createDateRangeFilter(filter.startDate, filter.endDate);
-
-    where = {
-        ...where,
-        ...dateRangeFilter
-    };
-
-    return where;
-}
-
 function createSelectFromFilter(): Prisma.MessageSelect {
     let select: Prisma.MessageSelect = {
         id: true,
@@ -218,13 +122,13 @@ function createSelectFromFilter(): Prisma.MessageSelect {
         LSN: true,
         NSR: true,
         messageCode: true,
-        description: true,
-        priority: true,
-        status: true,
-        sender: true,
+        statusId: true,
+        origin: true,
+        destination: true,
+        originArea: true,
+        destinationArea: true,
         creationDate: true,
         creationTime: true,
-        receiver: true,
         receivedDate: true,
         receivedTime: true,
         cukCode: true,

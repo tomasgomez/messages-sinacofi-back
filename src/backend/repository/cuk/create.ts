@@ -1,7 +1,4 @@
 import {
-    ICUK
-} from '@/backend/entities/cuk/interface';
-import {
     PrismaClientWrapper
 } from '../prismaWrapper';
 import {
@@ -20,7 +17,7 @@ async function create(cuk: CUK): Promise < CUK | Error > {
 
         const prismaClient = prisma.getClient();
 
-        let cukData: Partial<ICUK> = {};
+        let cukData: Partial<CUK> = {};
 
         /* Set the time for the CUK */
         if (cuk.setTime) {
@@ -28,21 +25,17 @@ async function create(cuk: CUK): Promise < CUK | Error > {
         }
 
         /* Set the history for the CUK */
-        let history: History[] = [{
+        let history: History = {
             status: cuk.status ?? '' +' '+ getDescriptionByStatus(cuk.status ?? ''),
             cukCode: cuk.cukCode ?? '',
             date: cuk.creationDate ?? '',
-        }];
-
-        let historyAsString = JSON.stringify(history);
-
-        cukData.history = historyAsString;
+        }
 
         /* Add all the attributes to the new CUK */
         if (Object.keys(cuk).length > 0) {
             for (const [key, value] of Object.entries(cuk)) {
                 if (value !== undefined && key in cuk) {
-                    cukData[key as keyof ICUK] = value;
+                    cukData[key as keyof CUK] = value;
                 }
             }
         } else {
@@ -52,6 +45,11 @@ async function create(cuk: CUK): Promise < CUK | Error > {
 
         let newCUK = await prismaClient.cUK.create({
             data: cukData
+        });
+
+        /* Add the history to the new CUK */
+        prismaClient.history.create({
+            data: history
         });
 
         if (newCUK === null) {

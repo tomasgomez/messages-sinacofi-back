@@ -1,9 +1,8 @@
-export interface FilterCUK {
-  [key: string]: string | string[] | Date | undefined | null;
-
+export interface Filter{
+  cukCode ? : string[];
+  
   id ? : string[];
   name ? : string[];
-  cukCode ? : string[];
   description ? : string[];
   startDate ? : Date;
   endDate ? : Date;

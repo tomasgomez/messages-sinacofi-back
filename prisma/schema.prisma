@@ -12,17 +12,18 @@ datasource db {
 model CUK {
   id      String  @id @default(uuid())
   cukCode String? @unique
+  status  String?
 
-  history History[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  history    History[]
   messages   Message[]    @relation(name: "CukMessages")
   parameters Parameters[]
 }
 
 model History {
-  id      String @id
+  id      String @id @default(uuid())
   cukCode String
   status  String
   date    String
@@ -31,32 +32,43 @@ model History {
 }
 
 model Message {
-  id           String   @id @default(uuid())
-  messageCode  String?
-  status       String?
-  sender       String?
-  creationDate String?
-  creationTime String?
-  receiver     String?
-  receivedDate String?
-  receivedTime String?
-  actions      String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id              String   @id @default(uuid())
+  messageCode     String?
+  origin          String?
+  destination     String?
+  originArea      String?
+  destinationArea String?
+  creationDate    String?
+  creationTime    String?
+  receivedDate    String?
+  receivedTime    String?
+  actions         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  documents Documents[]
+  statusId String?
+  Status   Status? @relation(fields: [statusId], references: [id])
 
-  // Correlatives
-  TSN TSN[]
-  OSN OSN[]
-  NSE NSE[]
-  NSR NSR[]
-  NSQ NSQ[]
-
+  documents  Documents[]
   parameters Parameters[]
 
   cukCode String?
   cuk     CUK?    @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+
+  // Correlatives
+  TSN TSN[]
+  LSN LSN[]
+  OSN OSN[]
+  NSE NSE[]
+  NSR NSR[]
+  NSQ NSQ[]
+}
+
+model Status {
+  id        String    @id @unique // 01,05,06,042 
+  name      String    @unique
+  messages  Message[]
+  createdAt DateTime  @default(now())
 }
 
 // Creado por el usuario cuando esta en estado de PREPARADO 
@@ -64,9 +76,23 @@ model TSN {
   id Int @default(autoincrement()) // TODO: setear algunos para la migracion
 
   institutionCode String
-  areaCode        String
+  areaCode        String @default("05")
 
   createdAt DateTime @default(now())
+
+  messageId String
+  message   Message @relation(fields: [messageId], references: [id])
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model LSN {
+  id        Int      @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  institutionCode String
+  areaCode        String
 
   messageId String
   message   Message @relation(fields: [messageId], references: [id])
@@ -121,7 +147,7 @@ model NSQ {
   createdAt DateTime @default(now())
 
   institutionCode String
-  areaCode        String
+  areaCode        String @default("05")
 
   messageId String
   message   Message @relation(fields: [messageId], references: [id])
@@ -140,7 +166,7 @@ model Parameters {
   description  String?
   defaultValue String?
   priority     Int
-  value        String? //string or number
+  value        String?
 
   validations String?
   createdAt   DateTime @default(now())

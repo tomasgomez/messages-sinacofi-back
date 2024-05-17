@@ -1,15 +1,22 @@
-export interface MessageFilter {
-    cukCode?: string[];
-    messageCode?: string[];
-    status?: string[];
-    startDate?: string[];
-    endDate?: string[];
-    sender?: string[];
-    receiver?: string[];
-    buyerDni?: string[];
-    sellerDni?: string[];
-    payerDni?: string[];
-    region?: string[];
-    count?: string;
-    offset?: string;
+export interface FilterMessage {
+  [key: string]: string | string[] | Date | undefined | null;
+
+  id ? : string[]
+  messageCode ? : string[]
+  origin ? : string[]
+  destination ? : string[]
+  originArea ? : string[]
+  destinationArea ? : string[]
+  creationDate ? : string[]
+  creationTime ? : string[]
+  receivedDate ? : string[]
+  receivedTime ? : string[]
+  actions ? : string[]
+  createdAt ? : Date
+  updatedAt ? : Date
+  statusId ? : string[]
+  cukCode ? : string[]
+
+  count ? : string;
+  offset ? : string;
 }

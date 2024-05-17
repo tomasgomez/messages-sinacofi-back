@@ -7,8 +7,10 @@ import {
 import {
     handleNullValues
 } from "@/backend/utils/functions";
+import { Parameter } from "@/backend/entities/message/parameter";
+import { Document } from "@/backend/entities/global/document";
 
-async function create(message: Message): Promise < Message | Error > {
+async function create(message: Message, parameters: Parameter, documents: Document[]): Promise < Message | Error > {
     try {
         const prisma = new PrismaClientWrapper();
 
@@ -38,12 +40,12 @@ async function create(message: Message): Promise < Message | Error > {
               ...messageData,
               parameters: {
                 createMany: {
-                  data: messageData.parameters ?? [],
+                  data: parameters ?? [],
                 }
               },
               documents: {
                 createMany: {
-                    data: messageData.documents ?? []
+                    data: documents ?? []
                 }
               }
             },

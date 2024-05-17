@@ -3,7 +3,7 @@ import {
 } from '../entities/cuk/cuk';
 import {
   Filter
-} from '../entities/global/filter';
+} from '../entities/cuk/filter';
 
 export interface CUKRepository {
   find(filter: Filter): Promise < CUK[] | Error >

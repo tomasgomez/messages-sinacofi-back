@@ -7,8 +7,11 @@ import {
 import {
     handleNullValues
 } from "@/backend/utils/functions";
+import {
+    FilterMessage
+} from "@/backend/entities/message/filter";
 
-async function find(message: Partial < Message > , detail: boolean, count: string, offset: string): Promise < Message[] | Error > {
+async function find(filter: FilterMessage, detail: boolean): Promise < Message[] | Error > {
     try {
         let messages: Message[];
 
@@ -18,10 +21,19 @@ async function find(message: Partial < Message > , detail: boolean, count: strin
         // Initialize the where object with the provided attributes to search with
         const where: Partial < Message > = {};
 
+        // Parse count and offset from filter
+        let countAsInt = parseInt(filter.count ?? '0', 10);
+        let offsetAsInt = parseInt(filter.offset ?? '0', 10);
+
+
         // Loop through the provided attributes and add them to the where object
-        for (const key in message) {
-            if (message[key as keyof Message] !== undefined) {
-                where[key as keyof Message] = message[key as keyof Message];
+        for (const key in filter) {
+            if (Object.prototype.hasOwnProperty.call(filter, key) === false) {
+                continue;
+            }
+
+            if (filter[key] !== undefined) {
+                where[key as keyof Message] = filter[key] as any;
             }
         }
 
@@ -46,38 +58,21 @@ async function find(message: Partial < Message > , detail: boolean, count: strin
             actions: true,
             documents: true,
             parameters: detail
-        }
+        };
 
-        // If count is not present then find all message
-        if (count === '0' || count === '' || offset === '' || offset === '0') {
-            messages = await prismaClient.message.findMany({
-                where: {
-                    ...where,
-                    documents: {},
-                    parameters: {}
-                },
-                select,
-                orderBy: {
-                    creationDate: 'desc'
-                },
-                take: parseInt("5"),
-                skip: parseInt("0")
-            });
-        } else {
-            messages = await prismaClient.message.findMany({
-                where: {
-                    ...where,
-                    documents: {},
-                    parameters: {}
-                },
-                select,
-                orderBy: {
-                    creationDate: 'desc'
-                },
-                take: parseInt(count),
-                skip: parseInt(offset)
-            });
-        }
+        messages = await prismaClient.message.findMany({
+            where: {
+                ...where,
+                documents: {},
+                parameters: {}
+            },
+            select,
+            orderBy: {
+                creationDate: 'desc'
+            },
+            take: countAsInt > 0 ? countAsInt : 5,
+            skip: offsetAsInt > 0 ? offsetAsInt : 0
+        });
 
         // If the messages are not found, return an error
         if (messages.length === 0) {

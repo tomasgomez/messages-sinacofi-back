@@ -2,7 +2,7 @@ import { CUKRepository } from '../cukRepository';
 import { find } from './find';
 import { create } from './create';
 import { CUK } from '@/backend/entities/cuk/cuk';
-import { Filter } from '@/backend/entities/global/filter';
+import { Filter } from '@/backend/entities/cuk/filter';
 import { update } from './update';
 
 export class PrismaCukAdapter implements CUKRepository{

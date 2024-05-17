@@ -1,41 +1,24 @@
 import {
-    IMessage,
-    Parameter
-} from './interface';
-import {
     getChileanTime
-} from '../../utils/functions';
-import {
-    Documents
-} from '@/backend/entities/message/interface';
+} from '@/backend/utils/functions';
 
-
-export class Message implements IMessage {
+export class Message {
     id ? : string;
-    TSN ? : number | null;
-    OSN ? : number | null;
-    NSE ? : number | null;
-    LSN ? : number | null;
-    NSR ? : number | null;
-    NSQ ? : number | null;
     messageCode ? : string | null;
-    description ? : string | null;
-    priority ? : string | null;
-    status ? : string | null;
-    sender ? : string | null;
+    origin ? : string | null;
+    destination ? : string | null;
+    originArea ? : string | null;
+    destinationArea ? : string | null;
     creationDate ? : string | null;
     creationTime ? : string | null;
-    receiver ? : string | null;
     receivedDate ? : string | null;
     receivedTime ? : string | null;
-    documents ? : Documents[];
-    actions ? : any;
-    parameters? : Parameter[] ;
-    cukCode ? : string | null;
-    cuk ? : any;
+    actions ? : string | null;
     createdAt ? : Date;
+    updatedAt ? : Date;
 
-    constructor() {}
+    statusId ? : string | null;
+    cukCode ? : string | null;
 
     setTime ? () {
 
