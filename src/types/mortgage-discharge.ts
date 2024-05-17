@@ -45,7 +45,7 @@ export interface DataHeaderInfoModal {
   messageCode: string;
   description: string;
   LSN?: number;
-  sender: string;
+  receiver?: string;
   creationDate: string;
   creationTime: string;
   priority?: string;
@@ -60,34 +60,34 @@ interface ObjectInfoModal {
 
 export interface ChannelDetailsMSInfoModal extends ObjectInfoModal {
   accessor:
-    | "emissionDate"
+    | "issuedDate"
     | "channel"
-    | "operationType"
-    | "notaryRepertoire"
-    | "repertoireDate"
-    | "repertoireNumber"
-    | "gentlemenInstitution"
-    | "donDonaSociety"
-    | "rutSeller"
+    | "operationtype"
+    | "notary"
+    | "registrationDate"
+    | "registrationNumber"
+    | "beneficiaryBank"
+    | "owner"
+    | "ownerDni"
     | "buyer"
-    | "rutBuyer";
+    | "buyerDni";
 }
 
 export interface PropertyDetailsMSInfoModal extends ObjectInfoModal {
   accessor:
-    | "correspondingProperty"
-    | "propertyDescription"
+    | "propertyInfo"
+    | "E32"
     | "commune"
     | "region"
     | "bank"
     | "buyer"
-    | "mutualForUF"
-    | "payableWithin"
-    | "complementaryMutualForUF"
-    | "cukCode"
-    | "debsName"
-    | "debtorRut"
-    | "amountUF";
+    | "loan"
+    | "loanTerm"
+    | "addLoan"
+    | "CUK"
+    | "borrower"
+    | "borrowerDni"
+    | "ufAmount";
 }
 
 export interface BankDetailsMSInfoModal {

@@ -30,7 +30,7 @@ export function FirstMessageSection({
   const [showContent, setShowContent] = React.useState(false);
 
   const { dataHeader, channelDetailsMS, propertyDetailsMS, bankDetailsMS } =
-  formatModalDetailsCompleted(dataMessage);
+    formatModalDetailsCompleted(dataMessage);
   const handleShowContent = () => {
     setShowContent(!showContent);
   };
@@ -87,7 +87,7 @@ export function FirstMessageSection({
               <Grid item xs={2}>
                 <Typography fontSize={"12px"}>Institución Destino</Typography>
                 <StyledModalItem noWrap>
-                  {dataHeader?.sender || "-"}
+                  {dataHeader?.receiver || "-"}
                 </StyledModalItem>
               </Grid>
               <Grid item xs={2}>

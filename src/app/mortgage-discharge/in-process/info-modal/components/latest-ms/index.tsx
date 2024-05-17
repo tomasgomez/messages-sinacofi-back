@@ -45,7 +45,7 @@ export function LatestMessageSection({
             <Grid item xs={2}>
               <Typography fontSize={"12px"}>Institución Destino</Typography>
               <StyledModalItem noWrap>
-                {dataHeader?.sender || "-"}
+                {dataHeader?.receiver || "-"}
               </StyledModalItem>
             </Grid>
             <Grid item xs={2}>

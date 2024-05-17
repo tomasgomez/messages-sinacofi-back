@@ -17,7 +17,7 @@ import { base64ToBlob, downloadFile } from "./utils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const AccionesColumn = ({ row }: { row: any }) => {
-  const { actions, messageCode } = row;
+  const { actions, messageCode, status } = row;
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
   const router = useRouter();
   const handlerOpenModal = (row: any) => {
@@ -36,7 +36,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("sing") && (
         <IconButton
           key={`drive-icon-${row.id}`}
-          style={{ padding: 0, color: "#00B2E2" }}
+          style={{ padding: 0, color: "#00B2E2", margin: 2 }}
           onClick={
             () =>
               router.push(
@@ -54,7 +54,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("sent") && (
         <IconButton
           key={`sent-icon-${row.id}`}
-          style={{ padding: 0, color: "#00B2E2" }}
+          style={{ padding: 0, color: "#00B2E2", margin: 2 }}
           onClick={() =>
             router.push(
               `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
@@ -67,17 +67,25 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("details") && (
         <IconButton
           key={`detail-icon-${row.id}`}
-          style={{ padding: 0, color: "#565656" }}
+          style={{ padding: 0, color: "#565656", margin: 2 }}
           onClick={() => handlerOpenModal(row)}
         >
           <InfoOutlinedIcon />
         </IconButton>
       )}
-      {actions.includes("edit") && (
+      {messageCode === "670" && status === "01" && (
         <IconButton
           key={`edit-icon-${row.id}`}
-          style={{ padding: 0, color: "#00B2E2" }}
-          onClick={() => null}
+          style={{
+            padding: 0,
+            color: actions.includes("edit") ? "#00B2E2" : "#565656",
+            margin: 2,
+          }}
+          onClick={() =>
+            router.push(
+              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+            )
+          }
         >
           <EditOutlinedIcon />
         </IconButton>
@@ -89,7 +97,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
 const acciones: Columns = {
   id: "actions",
   label: "Acciones",
-  align: Alignment.LEFT,
+  align: Alignment.CENTER,
   sortable: false,
   render: ({ row }: { row: any }) => {
     return <AccionesColumn row={row} />;

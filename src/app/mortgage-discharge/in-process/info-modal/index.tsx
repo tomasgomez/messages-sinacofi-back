@@ -137,13 +137,13 @@ export const InfoModal = () => {
             </Grid>
             {!showOnlyOneMessage && (
               <Box borderBottom="1px dashed #898989">
-                <LatestMessageSection dataMessage={details[1]} />
+                <LatestMessageSection dataMessage={details[0]} />
               </Box>
             )}
             <Box>
               <FirstMessageSection
                 showOnlyOneMessage={showOnlyOneMessage}
-                dataMessage={details[0]}
+                dataMessage={showOnlyOneMessage ? details[0] : details[1]}
               />
             </Box>
             <Box display={"flex"} justifyContent={"flex-end"} mt={3}>

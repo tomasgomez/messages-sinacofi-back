@@ -58,17 +58,15 @@ export const formatCardData = (
   const formattedData = data.map((elem) => {
     let { messages: unSortedMessages } = elem;
 
-    const messages = sortMessagesOldToNew(unSortedMessages);
+    let messages = sortMessagesOldToNew(unSortedMessages);
 
-    // To Mock Data
+    // // To Mock Data
 
     // const mewMessages2: Message[] = [
-    //   ...messages,
-    //   ...messages,
-    //   ...messages,
-    //   ...messages,
-    //   ...messages,
-    //   ...messages,
+    //   messages[0],
+    //   messages[0],
+    //   messages[0],
+    //   messages[0],
     // ];
 
     // // Mock different status to test
@@ -76,32 +74,38 @@ export const formatCardData = (
     //   const updatedMessage: Message = { ...message };
 
     //   if (i === 0) updatedMessage.messageCode = "670";
-    //   if (i === 1) updatedMessage.messageCode = "672";
-    //   if (i === 2) updatedMessage.messageCode = "670";
-    //   if (i === 3) updatedMessage.messageCode = "672";
-    //   if (i === 4) updatedMessage.messageCode = "670";
-    //   if (i === 5) updatedMessage.messageCode = "671";
-    //   if (i === 6) updatedMessage.messageCode = "674";
+    //   if (i === 1) updatedMessage.messageCode = "671";
+    //   if (i === 2) updatedMessage.messageCode = "674";
+    //   if (i === 3) updatedMessage.messageCode = "675";
+    //   // if (i === 4) updatedMessage.messageCode = "670";
+    //   // if (i === 5) updatedMessage.messageCode = "671";
+    //   // if (i === 6) updatedMessage.messageCode = "674";
 
-    //   if (i === 0) updatedMessage.status = "05";
-    //   if (i === 1) updatedMessage.status = "06";
-    //   if (i === 2) updatedMessage.status = "05";
-    //   if (i === 3) updatedMessage.status = "06";
-    //   if (i === 4) updatedMessage.status = "05";
-    //   if (i === 5) updatedMessage.status = "06";
-    //   if (i === 6) updatedMessage.status = "05";
+    //   if (i === 0) updatedMessage.status = "06";
+    //   if (i === 1) updatedMessage.status = "05";
+    //   if (i === 2) updatedMessage.status = "06";
+    //   if (i === 3) updatedMessage.status = "05";
+
+    //   if (i === 0) updatedMessage.actions = ["details"];
+    //   if (i === 1) updatedMessage.actions = ["details"];
+    //   if (i === 2) updatedMessage.actions = ["sent"];
+    //   if (i === 3) updatedMessage.actions = ["sent"];
+    //   // if (i === 4) updatedMessage.status = "05";
+    //   // if (i === 5) updatedMessage.status = "06";
+    //   // if (i === 6) updatedMessage.status = "05";
 
     //   if (i === 0) updatedMessage.creationDate = "3/20/2024";
     //   if (i === 1) updatedMessage.creationDate = "4/1/2024";
     //   if (i === 2) updatedMessage.creationDate = "4/5/2024";
     //   if (i === 3) updatedMessage.creationDate = "4/15/2024";
-    //   if (i === 4) updatedMessage.creationDate = "4/16/2024";
-    //   if (i === 5) updatedMessage.creationDate = "4/17/2024";
+    //   // if (i === 4) updatedMessage.creationDate = "4/16/2024";
+    //   // if (i === 5) updatedMessage.creationDate = "4/17/2024";
 
     //   return updatedMessage;
     // });
 
     // messages = newMessages;
+
     const ListMessages670 = messages.filter(
       (message) => message?.messageCode === "670"
     );
@@ -174,39 +178,38 @@ export const formatModalDetailsCompleted = (
   const dataHeader = formatModalInfoHeader(message);
 
   const channelDetailsMS: ChannelDetailsMSInfoModal[] = [
-    { accessor: "emissionDate", label: "Fecha de Alzamiento" },
+    { accessor: "issuedDate", label: "Fecha de Alzamiento" },
     { accessor: "channel", label: "Canal" },
-    { accessor: "operationType", label: "Tipo de Operacion" },
-    { accessor: "notaryRepertoire", label: "Notaria Repertorio" },
-    { accessor: "repertoireDate", label: "Fecha Repertorio" },
-    { accessor: "repertoireNumber", label: "Número Repertorio" },
-    { accessor: "gentlemenInstitution", label: "Institución" },
-    { accessor: "donDonaSociety", label: "Vendedor:" },
-    { accessor: "rutSeller", label: "RUT de Vendedor" },
+    { accessor: "operationtype", label: "Tipo de Operacion" },
+    { accessor: "notary", label: "Notaria Repertorio" },
+    { accessor: "registrationDate", label: "Fecha Repertorio" },
+    { accessor: "registrationNumber", label: "Número Repertorio" },
+    { accessor: "beneficiaryBank", label: "Institución" },
+    { accessor: "owner", label: "Vendedor:" },
+    { accessor: "ownerDni", label: "RUT de Vendedor" },
     { accessor: "buyer", label: "Comprador" },
-    { accessor: "rutBuyer", label: "RUT de Comprador" },
+    { accessor: "buyerDni", label: "RUT de Comprador" },
   ];
 
   const propertyDetailsMS: PropertyDetailsMSInfoModal[] = [
-    { accessor: "correspondingProperty", label: "Tipo de Inmueble" },
+    { accessor: "propertyInfo", label: "Tipo de Inmueble" },
     {
-      accessor: "propertyDescription",
+      accessor: "E32",
       label: "Descripción del Inmueble",
     },
     { accessor: "commune", label: "Comuna" },
     { accessor: "region", label: "Region" },
     { accessor: "bank", label: "Institución" },
-    { accessor: "buyer", label: "Comprador" },
-    { accessor: "mutualForUF", label: "Monto del Mutuo" },
-    { accessor: "payableWithin", label: "Plazo (años)" },
+    { accessor: "loan", label: "Monto del Mutuo" },
+    { accessor: "loanTerm", label: "Plazo (años)" },
     {
-      accessor: "complementaryMutualForUF",
+      accessor: "addLoan",
       label: "Monto del Mutuo Complementario",
     },
-    { accessor: "cukCode", label: "Código Interno" },
-    { accessor: "debsName", label: "Deudor" },
-    { accessor: "debtorRut", label: "RUT del Deudor" },
-    { accessor: "amountUF", label: "Monto UF" },
+    { accessor: "CUK", label: "Código Interno" },
+    { accessor: "borrower", label: "Deudor" },
+    { accessor: "borrowerDni", label: "RUT del Deudor" },
+    { accessor: "ufAmount", label: "Monto UF" },
   ];
 
   const bankDetailsMS: BankDetailsMSInfoModal = {
@@ -298,7 +301,7 @@ const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
     messageCode,
     description,
     LSN,
-    sender,
+    receiver,
     creationDate,
     creationTime,
     priority,
@@ -310,7 +313,7 @@ const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
     messageCode,
     description,
     LSN,
-    sender,
+    receiver,
     creationDate,
     creationTime,
     priority,
