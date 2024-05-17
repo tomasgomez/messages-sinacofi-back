@@ -12,6 +12,9 @@ services:
         DB_NAME: ${DB_NAME}
         LOG_FILENAME: ${LOG_FILENAME}
         FILES_PATH: ${FILES_PATH}
+        PORT: ${PORT}
+        RULE_CLIENT_URL: ${RULE_CLIENT_URL}
+        ADMIN_CLIENT_URL: ${ADMIN_CLIENT_URL}
     image: messages:latest
     container_name: messages
     restart: always
@@ -22,14 +25,17 @@ services:
       - FILES_PATH=${FILES_PATH}
       - LOG_FILENAME=${LOG_FILENAME}
       - FILES_HOST=/files
+      - PORT=${PORT}
+      - RULE_CLIENT_URL:${RULE_CLIENT_URL}
+      - ADMIN_CLIENT_URL:${ADMIN_CLIENT_URL}
     ports:
-      - "3000:3000"
+      - "${PORT}:${PORT}"
     volumes:
       - ${LOG_FILENAME}:/logs
       - ${FILES_PATH}:/files 
     command: ["npm", "start"]
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT}"]
       interval: 1m30s
       timeout: 10s
       retries: 3

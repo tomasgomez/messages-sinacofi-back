@@ -8,6 +8,9 @@ ARG DB_HOST
 ARG DB_NAME
 ARG FILES_PATH
 ARG LOG_FILENAME
+ARG PORT
+ARG ADMIN_CLIENT_URL
+ARG RULE_CLIENT_URL
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
@@ -44,10 +47,15 @@ ENV DATABASE_URL=postgresql://$DB_USER:$DB_PASS@$DB_HOST:5432/$DB_NAME
 ENV FILES_PATH=$FILES_PATH
 # Set LOGS_PATH environment variable
 ENV LOG_FILENAME=$LOG_FILENAME
+# Set PORT enviroment variable
+ENV PORT=$PORT
+# Set RULE_CLIENT enviroment variable
+ENV RULE_CLIENT_URL=$RULE_CLIENT_URL
+# Set ADMIN_CLIENT_URL enviroment variable
+ENV ADMIN_CLIENT_URL=$ADMIN_CLIENT_URL
 
-
-# Expose port 3000
-EXPOSE 3000
+# Expose port
+EXPOSE $PORT
 
 # Start the application
 CMD ["npm", "run", "start"]
