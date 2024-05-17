@@ -20,7 +20,6 @@ const AccionesColumn = ({ row }: { row: any }) => {
   const { actions, messageCode } = row;
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
   const router = useRouter();
-  console.log(actions, "actions");
   const handlerOpenModal = (row: any) => {
     setSelectedMessage(row);
     setModalIsOpen(true);
