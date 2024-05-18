@@ -33,7 +33,7 @@ services:
     volumes:
       - ${LOG_FILENAME}:/logs
       - ${FILES_PATH}:/files 
-    command: ["npm", "start"]
+    command: ["node", "server.js"]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${PORT}"]
       interval: 1m30s

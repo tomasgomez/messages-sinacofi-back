@@ -19,8 +19,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install && npm install -g ts-node
-
+RUN npm ci --ignore-scripts && npm install -g ts-node && npm cache clean --force
 
 # Copy the rest of your app's source code from your host to your image filesystem.
 COPY . .
@@ -33,14 +32,12 @@ FROM node:alpine AS runner
 
 WORKDIR /usr/src/app
 
-# Copy the built assets from the builder stage
-COPY --from=builder /usr/src/app/.next ./.next
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/package.json ./package.json
-COPY --from=builder /usr/src/app/prisma ./prisma
-COPY --from=builder /usr/src/app/assets ./assets
-COPY --from=builder /usr/src/app/.env ./.env
-COPY --from=builder /usr/src/app/tsconfig.json ./tsconfig.json
+
+# Copy the standalone output and necessary files
+COPY --from=builder /usr/src/app/.next/standalone ./
+COPY --from=builder /usr/src/app/.next/static ./.next/static
+COPY --from=builder /usr/src/app/public ./public
+
 
 # Set the DATABASE_URL environment variable
 ENV DATABASE_URL=postgresql://$DB_USER:$DB_PASS@$DB_HOST:5432/$DB_NAME
@@ -59,4 +56,4 @@ ENV ADMIN_CLIENT_URL=$ADMIN_CLIENT_URL
 EXPOSE $PORT
 
 # Start the application
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]
