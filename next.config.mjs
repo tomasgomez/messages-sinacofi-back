@@ -9,7 +9,12 @@ const nextConfig = {
         destination: "/messages/inbox",
         permanent: true,
       },
-    ];
+      // {
+      //   source: '/callback',
+      //   destination: '/api/auth',
+      //   permanent: true,
+      // },
+    ]
   },
 };
 
