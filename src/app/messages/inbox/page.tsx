@@ -8,11 +8,13 @@ import { columnsInbox, rowOptions } from "./columns";
 import { Message } from "@/app/component/inbox-table/type";
 import DataTable from "../../component/inbox-table";
 import { MyContexLayout } from "@/app/context";
+import { useSession } from 'next-auth/react';
 
 export default function InboxScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<Message[]>([]);
-
+  const {data: session} = useSession(); 
+  console.log( '#', session );
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
 

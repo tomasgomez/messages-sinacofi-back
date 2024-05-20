@@ -11,7 +11,7 @@ import { MyContexLayout } from "./context";
 import { useState, Suspense, useEffect } from "react";
 import ModalManagerProvider from "@/components/Modal/ModalManager";
 import { MessageExportProvider } from "./component/MessageExportProvider";
-
+import { SessionProvider } from 'next-auth/react'
 const clearObjet = {
   type: "none" as "none",
   title: "",
@@ -50,69 +50,71 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ background: "#fffffff !important" }}>
-        <ModalManagerProvider>
-          <MessageExportProvider>
-            <ThemeProvider theme={theme}>
-              <MyContexLayout.Provider
-                value={{
-                  setModalState,
-                  selectedInstitution,
-                  setSelectedInsitution,
-                }}
-              >
-                <AppBar />
-                <Box style={{ display: "flex", maxWidth: "100vw" }}>
-                  <SideBar />
-                  <Suspense>{children}</Suspense>
-                </Box>
-                {/* ///////////////////////Modal Error///////////////////////// */}
-                <ErrorModal
-                  title={modalState?.title}
-                  body={modalState?.body}
-                  withoutClose
-                  onClose={() => {
-                    modalState?.onClose && modalState.onClose();
-                    setModalState(clearObjet);
+        <SessionProvider>
+          <ModalManagerProvider>
+            <MessageExportProvider>
+              <ThemeProvider theme={theme}>
+                <MyContexLayout.Provider
+                  value={{
+                    setModalState,
+                    selectedInstitution,
+                    setSelectedInsitution,
                   }}
-                  onRetry={() => {
-                    modalState?.onRetry && modalState.onRetry();
-                    setModalState(clearObjet);
-                  }}
-                  open={modalState?.isOpen && modalState.type === "error"}
-                />
-                {/* /////////////////////////////////////////////////////////// */}
+                >
+                  <AppBar />
+                  <Box style={{ display: "flex", maxWidth: "100vw" }}>
+                    <SideBar />
+                    <Suspense>{children}</Suspense>
+                  </Box>
+                  {/* ///////////////////////Modal Error///////////////////////// */}
+                  <ErrorModal
+                    title={modalState?.title}
+                    body={modalState?.body}
+                    withoutClose
+                    onClose={() => {
+                      modalState?.onClose && modalState.onClose();
+                      setModalState(clearObjet);
+                    }}
+                    onRetry={() => {
+                      modalState?.onRetry && modalState.onRetry();
+                      setModalState(clearObjet);
+                    }}
+                    open={modalState?.isOpen && modalState.type === "error"}
+                  />
+                  {/* /////////////////////////////////////////////////////////// */}
 
-                {/* ///////////////////////Modal Success///////////////////////// */}
-                <SuccessModal
-                  isOpen={modalState?.isOpen && modalState.type === "success"}
-                  onClose={() => {
-                    modalState?.onConfirm && modalState.onConfirm();
-                    setModalState(clearObjet);
-                  }}
-                  title={modalState?.title}
-                  body={modalState?.body}
-                />
-                {/* /////////////////////////////////////////////////////////// */}
+                  {/* ///////////////////////Modal Success///////////////////////// */}
+                  <SuccessModal
+                    isOpen={modalState?.isOpen && modalState.type === "success"}
+                    onClose={() => {
+                      modalState?.onConfirm && modalState.onConfirm();
+                      setModalState(clearObjet);
+                    }}
+                    title={modalState?.title}
+                    body={modalState?.body}
+                  />
+                  {/* /////////////////////////////////////////////////////////// */}
 
-                {/* ///////////////////////Modal Decision///////////////////////// */}
-                <DecisionModal
-                  isOpen={modalState?.isOpen && modalState.type === "decision"}
-                  onClose={() => {
-                    modalState?.onClose && modalState.onClose();
-                    setModalState(clearObjet);
-                  }}
-                  onConfirm={async () => {
-                    modalState?.onConfirm && modalState.onConfirm();
-                    setModalState(clearObjet);
-                  }}
-                  title={modalState?.title}
-                  body={modalState?.body}
-                />
-                {/* /////////////////////////////////////////////////////////// */}
-              </MyContexLayout.Provider>
-            </ThemeProvider>
-          </MessageExportProvider>
-        </ModalManagerProvider>
+                  {/* ///////////////////////Modal Decision///////////////////////// */}
+                  <DecisionModal
+                    isOpen={modalState?.isOpen && modalState.type === "decision"}
+                    onClose={() => {
+                      modalState?.onClose && modalState.onClose();
+                      setModalState(clearObjet);
+                    }}
+                    onConfirm={async () => {
+                      modalState?.onConfirm && modalState.onConfirm();
+                      setModalState(clearObjet);
+                    }}
+                    title={modalState?.title}
+                    body={modalState?.body}
+                  />
+                  {/* /////////////////////////////////////////////////////////// */}
+                </MyContexLayout.Provider>
+              </ThemeProvider>
+            </MessageExportProvider>
+          </ModalManagerProvider>
+        </SessionProvider>
       </body>
     </html>
   );
