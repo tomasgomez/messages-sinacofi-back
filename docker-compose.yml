@@ -34,8 +34,14 @@ services:
       - ${LOG_FILENAME}:/logs
       - ${FILES_PATH}:/files 
     command: ["node", "server.js"]
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${PORT}"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:${PORT}"]
+    #   interval: 1m30s
+    #   timeout: 10s
+    #   retries: 3
+    networks:
+      - messages-rules
+
+networks:
+  messages-rules:
+    external: true
