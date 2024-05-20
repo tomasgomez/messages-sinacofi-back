@@ -10,9 +10,7 @@ import {
 } from '@/backend/utils/errorHandler';
 
 // import calls
-import {
-   schemaCalls
-} from '@/backend/handler/schemaTypes/handler';
+import { schemaCalls } from '@/backend/handler/schemaTypes/handler';
 
 /*
 Message API 
