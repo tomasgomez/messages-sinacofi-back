@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest, res: NextResponse) {
   const code = searchParams.get('code')
 
   if(code) {
-    return NextResponse.next()
+    return NextResponse.redirect('api/auth');
   }
     // const codeVerifier ='codeVerifier';
     // const codeChallenge = 'codeChallenge';
