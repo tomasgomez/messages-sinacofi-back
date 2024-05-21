@@ -6,7 +6,7 @@ import qs from "qs";
 export const refreshToken = async (idcs: Idcs,refreshToken: string): Promise<any | Error> => {
     try {
         // get the url
-        const url = getIDCSURL(idcs, false, 'userinfoEndpoint');
+        const url = getIDCSURL(idcs, false, 'tokenEndpoint');
         if (url instanceof Error){
             console.log(url);
             return url;

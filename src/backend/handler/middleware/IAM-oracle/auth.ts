@@ -3,7 +3,7 @@ import { cookies } from 'next/headers'
 import { iamOracleAPI } from '@/backend/iamOracle/handler/api';
 import { generateCodeChallenge, generateCodeVerifier, getIDCSURL, Idcs } from '@/backend/iamOracle/entities/idcs';
 import { createAuthURL } from '@/backend/handler/middleware/IAM-oracle/authUrl';
-
+import { redirect } from 'next/navigation'
 
 
 export const redirectToAuth = async (request: NextRequest, response: NextResponse) => {
@@ -22,8 +22,12 @@ export const redirectToAuth = async (request: NextRequest, response: NextRespons
     console.log(codeChallenge)
     // set cookies values
     const url = createAuthURL(idcs, codeChallenge);
+    const urlToBeRedirected = new URL(url);
+    console.log(urlToBeRedirected)
+
+
+    return NextResponse.redirect(urlToBeRedirected)
     
-    NextResponse.redirect(url).headers.set('codeChallenge', codeChallenge);
 }
 
 
