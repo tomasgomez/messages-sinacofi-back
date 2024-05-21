@@ -95,9 +95,6 @@ function base64urlencode(a: any) {
 async function generateCodeChallenge(v: any) {
   var hashed = await sha256(v);
   var base64encoded = base64urlencode(hashed);
-  console.log("*******");
-  console.log(base64encoded)
-  console.log("********");
   return base64encoded;
 }
 // const generateCodeVerifier = (): string => {

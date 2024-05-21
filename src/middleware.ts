@@ -2,10 +2,6 @@
 
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server'
-import { redirectToAuth } from './backend/handler/middleware/IAM-oracle/auth';
-import { refreshToken } from './backend/handler/middleware/IAM-oracle/refreshToken';
-import { validateToken } from './backend/handler/middleware/IAM-oracle/validateToken';
-import { checkCallback } from './backend/handler/middleware/IAM-oracle/checkCallback';
 import { iamOracleAPI } from './backend/iamOracle/handler/api';
 import { generateCodeChallenge, generateCodeVerifier } from './backend/iamOracle/entities/idcs';
 import { createAuthURL } from './backend/handler/middleware/IAM-oracle/authUrl';
@@ -14,18 +10,15 @@ import { createAuthURL } from './backend/handler/middleware/IAM-oracle/authUrl';
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
 
+
   // get the path and code on the url
   const path = request.nextUrl.pathname;
   const code = request.nextUrl.searchParams.get('code');
   const codeChallenge = cookies().get('codeChallenge')?.value 
   
   // check url and code to handling the code to token
-  console.log(path)
-  console.log(code)
   console.log(path == '/callback' && code)
   if (path == '/callback' && code) {
-    console.log(" **** PASO 1 ****");
-    debugger;
     const idcs = await iamOracleAPI.getWellKnown();
     if (idcs instanceof Error) {
       console.log(idcs)
@@ -33,7 +26,6 @@ export async function middleware(request: NextRequest) {
       // NextResponse.redirect('/');
       return NextResponse.redirect('/');
     }
-    console.log(idcs);
     // validate the token
     const tokenResponse = await iamOracleAPI.authCode(idcs, code, codeChallenge!);
     if (tokenResponse instanceof Error) {
@@ -45,7 +37,10 @@ export async function middleware(request: NextRequest) {
     }
 
     const { access_token, refresh_token } = tokenResponse;
-
+    console.log("----");
+    console.log("here1");
+    console.log(tokenResponse)
+    console.log("----");
     const tokenDecoded = await iamOracleAPI.validateToken(idcs, access_token);
     if (tokenDecoded instanceof Error) {
       console.log('error', tokenDecoded);
@@ -56,8 +51,9 @@ export async function middleware(request: NextRequest) {
     }
     let response = NextResponse.next();
     response.cookies.set('access_token', access_token);
-    response.cookies.set('refresh_token', refresh_token);
+    // response.cookies.set('refresh_token', refresh_token);
     response.cookies.set('user_info', tokenDecoded);
+    console.log("here1");
     console.log(tokenDecoded);
     return response;
   
@@ -66,10 +62,10 @@ export async function middleware(request: NextRequest) {
   // if the user has session
   // get cookies
   const access_token = cookies().get('access_token')?.value;
-  const refresh_token = cookies().get('refresh_token')?.value;
+  // const refresh_token = cookies().get('refresh_token')?.value;
 
   // check if tokens exist
-  if (!access_token || !refresh_token){
+  if (!access_token){
     // fetch config
     const idcs = await iamOracleAPI.getWellKnown();
     if (idcs instanceof Error) {
@@ -100,18 +96,17 @@ export async function middleware(request: NextRequest) {
       const response = NextResponse.redirect('/');
       return response;
   }
-  const tokenData = await iamOracleAPI.refreshToken(idcs, refresh_token!);
-  if (tokenData instanceof Error) {
-      console.log('error', tokenData);
-      // TODO: redirect to page error
-      // NextResponse.redirect('/');
-      const response = NextResponse.redirect('/');
-      return response;
-  }
+  // const tokenData = await iamOracleAPI.refreshToken(idcs, refresh_token!);
+  // if (tokenData instanceof Error) {
+  //     console.log('error', tokenData);
+  //     // TODO: redirect to page error
+  //     // NextResponse.redirect('/');
+  //     const response = NextResponse.redirect('/');
+  //     return response;
+  // }
   // validate token
-  const { access_token_updated, refresh_token_updated } = tokenData;
   // Validate the token (sub could be used to identify the user)
-  const tokenDecoded = await iamOracleAPI.validateToken(idcs, access_token_updated!);
+  const tokenDecoded = await iamOracleAPI.validateToken(idcs, access_token!);
   if (tokenDecoded instanceof Error) {
       console.log('error', tokenDecoded);
       // TODO: redirect to page error
@@ -124,8 +119,8 @@ export async function middleware(request: NextRequest) {
   console.log(tokenDecoded);
   console.log("-----");
   
-  response.cookies.set('access_token', access_token_updated);
-  response.cookies.set('refresh_token',refresh_token_updated);
+  response.cookies.set('access_token', access_token);
+  // response.cookies.set('refresh_token',refresh_token);
   response.cookies.set('user_info', tokenDecoded);
   return response;
   // NextResponse.next();
