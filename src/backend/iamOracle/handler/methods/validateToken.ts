@@ -36,7 +36,6 @@ export const validateToken = async (idcs: Idcs, token: string): Promise<JWTPaylo
         return payload;
 
     } catch (error) {
-        console.log("errorcito");
         return new Error(String(error));
     }
 };
