@@ -21,16 +21,17 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   // check if tokens exist
   if (!access_token || !refresh_token){
       await redirectToAuth(request, response);
+      return;
   }
 
-  // refresh token
-  await refreshToken(request, response);
+  // // refresh token
+  // await refreshToken(request, response);
 
-  // validate token
-  await validateToken(request, response);
+  // // validate token
+  // await validateToken(request, response);
 
 
-  NextResponse.next();
+  // NextResponse.next();
 
 }
 
