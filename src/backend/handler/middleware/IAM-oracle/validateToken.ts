@@ -13,7 +13,8 @@ export const validateToken = async (request: NextRequest, res: NextResponse) => 
             console.log(idcs)
             // TODO: redirect to page error
             // NextResponse.redirect('/');
-            NextResponse.next()
+            const response = NextResponse.json({path: '/'});
+      return response;
         }
         const access_token = cookies().get('access_token')?.value;
 
@@ -23,6 +24,8 @@ export const validateToken = async (request: NextRequest, res: NextResponse) => 
             console.log('error', tokenDecoded);
             // TODO: redirect to page error
             // NextResponse.redirect('/');
+            const response = NextResponse.json({path: '/'});
+            return response;
         }
         console.log("----");
         console.log(tokenDecoded);
