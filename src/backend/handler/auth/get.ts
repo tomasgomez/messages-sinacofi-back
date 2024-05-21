@@ -1,4 +1,3 @@
-import { fetchIDCSConfig } from "@/backend/utils/auth";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
