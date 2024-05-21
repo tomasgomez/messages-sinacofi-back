@@ -17,7 +17,8 @@ export const refreshToken = async (request: NextRequest, res: NextResponse) => {
         console.log(idcs)
         // TODO: redirect to page error
         // NextResponse.redirect('/');
-        NextResponse.next()
+        const response = NextResponse.json({path: '/'});
+        return response;
     }
 
     // Refresh token
