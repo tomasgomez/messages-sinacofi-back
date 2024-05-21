@@ -43,7 +43,7 @@ export const validateToken = async (idcs: Idcs, token: string, config: IdcsConfi
 
 function mapOracleResponseToJWK(response: any): JWK[] {
     return response.keys.map((key: any) => {
-      // Asegurar que key_ops sea compatible con el algoritmo
+      // RS256 just needs verify ops
       let keyOps = key.key_ops;
       if (key.alg === "RS256") {
         keyOps = ["verify"];
