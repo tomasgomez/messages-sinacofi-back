@@ -14,7 +14,7 @@ export const checkCallback = async (request: NextRequest, res: NextResponse) => 
     
     // redirect to login
     if (!codeChallenge){
-        redirectToAuth(request, res);
+        return redirectToAuth(request, res);
     } 
     // check path
     if (path.includes('/api/auth') && code) {
@@ -23,7 +23,7 @@ export const checkCallback = async (request: NextRequest, res: NextResponse) => 
             console.log(idcs)
             // TODO: redirect to page error
             // NextResponse.redirect('/');
-            NextResponse.next();
+            return NextResponse.next();
         }
         console.log(idcs);
         // validate the token
@@ -33,7 +33,7 @@ export const checkCallback = async (request: NextRequest, res: NextResponse) => 
             // TODO: redirect to page error
             // NextResponse.redirect('/');
 
-            NextResponse.next()
+            return NextResponse.next()
         }
 
         try {
@@ -44,17 +44,17 @@ export const checkCallback = async (request: NextRequest, res: NextResponse) => 
                 console.log('error', tokenDecoded);
                 // TODO: redirect to page error
                 // NextResponse.redirect('/');
-                NextResponse.next();
+                return NextResponse.next();
             }
             cookies().set('access_token', access_token);
             cookies().set('refresh_token',refresh_token);
         } catch(error){
             console.log("error", error)
             // NextResponse.redirect('/');
-            NextResponse.next();
+            return NextResponse.next();
         }
 
-        NextResponse.next();
+        return NextResponse.next();
     }
 
 }

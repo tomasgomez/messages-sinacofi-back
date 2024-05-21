@@ -12,7 +12,7 @@ import { checkCallback } from './backend/handler/middleware/IAM-oracle/checkCall
 export async function middleware(request: NextRequest, response: NextResponse) {
 
   // checkCallback
-  await checkCallback(request, response);
+  return checkCallback(request, response);
 
   // get cookies
   const access_token = cookies().get('access_token')?.value;
@@ -20,8 +20,7 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 
   // check if tokens exist
   if (!access_token || !refresh_token){
-      await redirectToAuth(request, response);
-      return;
+      return await redirectToAuth(request, response);
   }
 
   // // refresh token
