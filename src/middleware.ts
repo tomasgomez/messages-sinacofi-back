@@ -22,8 +22,10 @@ export async function middleware(request: NextRequest) {
   // check url and code to handling the code to token
   console.log(path)
   console.log(code)
-  console.log(path == '/api/auth' && code)
-  if (path == '/api/auth' && code) {
+  console.log(path == '/callback' && code)
+  if (path == '/callback' && code) {
+    console.log(" **** PASO 1 ****");
+    debugger;
     const idcs = await iamOracleAPI.getWellKnown();
     if (idcs instanceof Error) {
       console.log(idcs)
@@ -80,11 +82,11 @@ export async function middleware(request: NextRequest) {
     // create codeChallenge
     const code = generateCodeVerifier();
     const codeChallenge = await generateCodeChallenge(code);
-    console.log(codeChallenge)
+    console.log(code)
     const url = createAuthURL(idcs, codeChallenge);
     const urlToBeRedirected = new URL(url);
     let response = NextResponse.redirect(urlToBeRedirected);
-    response.cookies.set('codeChallenge', codeChallenge);
+    response.cookies.set('codeChallenge', code);
     return response;
   
   }

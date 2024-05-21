@@ -14,7 +14,7 @@ const nextConfig = {
       //   destination: '/api/auth',
       //   permanent: true,
       // },
-    ]
+    ];
   },
 };
 
