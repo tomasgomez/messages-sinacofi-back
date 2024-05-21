@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getIDCSURL, Idcs } from "../../entities/idcs";
-import { createRemoteJWKSet, jwtVerify, JWTPayload, createLocalJWKSet, JWK } from 'jose';
+import { jwtVerify, JWTPayload, createLocalJWKSet, JWK } from 'jose';
 
 interface IdcsConfig {
     IDCSHost: string;
@@ -8,7 +8,7 @@ interface IdcsConfig {
     TokenIssuer: string;
 }
 
-export const validateToken = async (idcs: Idcs, token: string, config: IdcsConfig): Promise<JWTPayload | Error> => {
+export const validateToken = async (idcs: Idcs, token: string): Promise<JWTPayload | Error> => {
     try {
         // Get URL
         const url = getIDCSURL(idcs, false, 'jwksUri');
