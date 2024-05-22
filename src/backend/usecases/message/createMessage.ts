@@ -1,0 +1,60 @@
+import {
+    Message
+} from "@/backend/entities/message/message";
+import {
+    MessageRepository
+} from "@/backend/repository/messageRepository";
+import {
+    getChileanTime
+} from "@/backend/utils/functions";
+import {
+    getSchemaTypes
+} from "@/backend/usecases/schema/getSchemaTypes";
+import {
+    MessageStatus
+} from "@/backend/entities/message/status";
+
+
+// Create message function
+export async function createMessage(repository: MessageRepository, message: Message, ): Promise < Message | Error > {
+    try {
+
+        /* Get the schema types */
+        let schemaTypes = await getSchemaTypes({});
+
+        if (schemaTypes instanceof Error) {
+            return schemaTypes;
+        }
+        
+        /* Set the received date and time */
+        if (message.status === MessageStatus.BANDEJA_DE_ENTRADA) {
+            /* Get the Chilean time */
+            let response = getChileanTime();
+    
+            if (response instanceof Error) {
+                return response;
+            }
+    
+            let [dateString, time] = response;
+            message.receivedDate = dateString;
+            message.receivedTime = time;
+        }
+
+        let messageResponse = await repository.create(message);
+
+        /* Check if the response is an error */
+        if (messageResponse instanceof Error) {
+            return messageResponse;
+        }
+
+        /* Check if the id is undefined */
+        if (messageResponse.id === undefined) {
+            return new Error('No id returned');
+        }
+
+        return messageResponse;
+    } catch (error: any) {
+        console.error('Error creating message:', error);
+        return error;
+    }
+}

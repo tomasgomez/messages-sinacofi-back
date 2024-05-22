@@ -1,0 +1,219 @@
+// prisma/schema.prisma
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://sinacofi:hola123@34.135.68.241:5432/message2"
+}
+
+model CUK {
+  id      String  @id @default(uuid())
+  cukCode String? @unique
+  status  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  history    History[]
+  messages   Message[]    @relation(name: "CukMessages")
+  parameters Parameters[]
+}
+
+model History {
+  id      String @id @default(uuid())
+  cukCode String
+  status  String
+  date    String
+
+  cuk CUK @relation(fields: [cukCode], references: [cukCode])
+}
+
+model Message {
+  id              String   @id @default(uuid())
+  messageCode     String?
+  origin          String?
+  destination     String?
+  originArea      String?
+  destinationArea String?
+  creationDate    String?
+  creationTime    String?
+  receivedDate    String?
+  receivedTime    String?
+  actions         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  status     Status[]
+  documents  Documents[]
+  parameters Parameters[]
+
+  cukCode String?
+  Cuk     CUK?    @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+
+  // Correlatives
+  TSN TSN?
+  LSN LSN?
+  OSN OSN?
+  NSE NSE?
+  NSR NSR?
+  NSQ NSQ?
+}
+
+model Status {
+  id        String   @id @unique
+  createdAt DateTime @default(now())
+
+  messageId String
+  message   Message @relation(fields: [messageId], references: [id])
+}
+
+model TSN {
+  id              Int      @default(autoincrement()) // TODO: setear algunos para la migracion
+  institutionCode String
+  areaCode        String   @default("05")
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model LSN {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  areaCode        String
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model OSN {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode])
+  @@index([id, institutionCode])
+}
+
+model NSE {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  areaCode        String
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model NSR {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  areaCode        String
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model NSQ {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  areaCode        String   @default("05")
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model Parameters {
+  id           String  @unique @default(uuid())
+  name         String
+  messageCode  String?
+  label        String?
+  type         String?
+  placeholder  String?
+  description  String?
+  defaultValue String?
+  priority     Int
+  value        String?
+
+  validations String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  messageId String
+  Message   Message @relation(fields: [messageId], references: [id])
+
+  cukCode    String?
+  CUK        CUK?        @relation(fields: [cukCode], references: [cukCode])
+  Properties Properties?
+
+  @@id([messageId, name, priority])
+  @@unique([messageId, name, priority])
+  @@index([messageId, name, priority])
+}
+
+model Documents {
+  id           String   @id @default(uuid())
+  documentName String?
+  content      String?
+  url          String?
+  createdAt    DateTime @default(now())
+
+  messageId String
+  Message   Message @relation(fields: [messageId], references: [id])
+}
+
+model Properties {
+  id        String   @id @default(uuid())
+  name      String?
+  value     String?
+  createdAt DateTime @default(now())
+
+  messageId String
+  paramName String
+  priority  Int
+
+  Parameter Parameters @relation(fields: [messageId, paramName, priority], references: [messageId, name, priority])
+
+  @@unique([messageId, paramName, priority])
+}
+
+model Family {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+
+  institutions String[]
+}
+
+model MessageFamily {
+  messageId  Int
+  familyId   Int
+  createdAt  DateTime @default(now())
+  assignedAt DateTime @default(now())
+
+  @@id([messageId, familyId])
+}
