@@ -58,65 +58,29 @@ interface ObjectInfoModal {
   value?: string;
 }
 
-export interface ChannelDetailsMSInfoModal extends ObjectInfoModal {
-  accessor:
-    | "issuedDate"
-    | "channel"
-    | "operationtype"
-    | "notary"
-    | "registrationDate"
-    | "registrationNumber"
-    | "beneficiaryBank"
-    | "owner"
-    | "ownerDni"
-    | "buyer"
-    | "buyerDni";
-}
-
-export interface PropertyDetailsMSInfoModal extends ObjectInfoModal {
-  accessor:
-    | "propertyInfo"
-    | "E32"
-    | "commune"
-    | "region"
-    | "bank"
-    | "buyer"
-    | "loan"
-    | "loanTerm"
-    | "addLoan"
-    | "CUK"
-    | "borrower"
-    | "borrowerDni"
-    | "ufAmount";
-}
+export interface DetailsMSInfoModal extends ObjectInfoModal {}
 
 export interface BankDetailsMSInfoModal {
   bank: string;
   amountHeldByTheBank: string;
-  debsName: string;
-  debtorRut: string;
+  sign_2: string;
 }
 export interface InfoModalMortgageDischarge {
   dataHeader: DataHeaderInfoModal;
-  channelDetailsMS: ChannelDetailsMSInfoModal[];
-  propertyDetailsMS: PropertyDetailsMSInfoModal[];
+  detailsMS: DetailsMSInfoModal[];
   bankDetailsMS: BankDetailsMSInfoModal;
+  documents: any[];
 }
 
-export interface SmallMsDetailInfoModal extends ObjectInfoModal {
-  accessor:
-    | "creationDate"
-    | "observations"
-    | "sign"
-    | "debsName"
-    | "debtorRut"
-    | "requiresPrepaidSettlement"
-    | "";
+export interface SmallMsDetailInfoModal {
+  title?: string;
+  data: ObjectInfoModal[][];
 }
 
 export interface SmallMsInfoModalMortgageDischarge {
   smallMsDetail: SmallMsDetailInfoModal[];
   dataHeader: DataHeaderInfoModal;
+  documents: any[];
 }
 
 export interface Filter {

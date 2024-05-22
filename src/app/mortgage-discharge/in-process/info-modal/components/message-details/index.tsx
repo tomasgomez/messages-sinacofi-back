@@ -8,14 +8,12 @@ import Typography from "@mui/material/Typography/Typography";
 import Stack from "@mui/material/Stack/Stack";
 import { montserrat } from "@/utils/fonts";
 import { formatModalDetailSmall } from "@/utils/mortgage-discharge";
-import { SmallMsDetailInfoModal } from "@/types/mortgage-discharge";
+import DocumentCard from "../document-card";
+// import { SmallMsDetailInfoModal } from "@/types/mortgage-discharge";
 
-export function LatestMessageSection({
-  dataMessage = [],
-}: {
-  dataMessage: any;
-}) {
-  const { dataHeader, smallMsDetail } = formatModalDetailSmall(dataMessage);
+export function MessageDetails({ dataMessage = [] }: { dataMessage: any }) {
+  const { dataHeader, smallMsDetail, documents } =
+    formatModalDetailSmall(dataMessage);
 
   return (
     <Box mb={0.75} pb={2}>
@@ -79,23 +77,59 @@ export function LatestMessageSection({
             <StyledMoalSection variant="h6">
               Contenido del Mensaje
             </StyledMoalSection>
-            {smallMsDetail?.map((field: SmallMsDetailInfoModal) => {
-              return (
-                <Stack
-                  display="flex"
-                  flexDirection="row"
-                  mb={1}
-                  key={field.value}
-                >
-                  <Typography fontSize={"12px"} color="#49454F" mr={1.5}>
-                    {field.label}:
+            {smallMsDetail?.map((row, rowIndex) => (
+              <>
+                {row.title && (
+                  <Typography fontSize="14px" color="#49454F" mr={1.5} mb={2}>
+                    {row.title}
                   </Typography>
-                  <StyledModalItem noWrap>{field.value || "-"}</StyledModalItem>
-                </Stack>
-              );
-            })}
+                )}
+                <Box
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                  key={rowIndex}
+                >
+                  {row.data.map((column: any, colIndex: number) => (
+                    <Box
+                      style={{ display: "flex", flexDirection: "column" }}
+                      borderLeft={colIndex ? "1px solid #E5E5E5" : "none"}
+                      key={colIndex}
+                      justifyContent="center"
+                    >
+                      {column.map((field: any, fieldIndex: number) => (
+                        <Stack
+                          display="flex"
+                          flexDirection="row"
+                          mb={1}
+                          key={`${colIndex}-${fieldIndex}`}
+                          ml={colIndex ? "24px" : "0px"}
+                          mr={"24px"}
+                        >
+                          <Typography fontSize="12px" color="#49454F" mr={1.5}>
+                            {field.label}:
+                          </Typography>
+                          <StyledModalItem noWrap>
+                            {field.value || "-"}
+                          </StyledModalItem>
+                        </Stack>
+                      ))}
+                    </Box>
+                  ))}
+                </Box>
+              </>
+            ))}
           </Box>
         </Stack>
+      </Stack>
+      <Stack display="flex" flexDirection="row" alignItems="center">
+        {documents.map((document: any, index: number) => (
+          <DocumentCard
+            document={document}
+            key={`${document.documentName}-${index}-document`}
+          />
+        ))}
       </Stack>
     </Box>
   );

@@ -2,9 +2,8 @@ import { Message } from "@/app/component/inbox-table/type";
 import { Dispatch, SetStateAction } from "react";
 import {
   BankDetailsMSInfoModal,
-  ChannelDetailsMSInfoModal,
+  DetailsMSInfoModal,
   DataHeaderInfoModal,
-  PropertyDetailsMSInfoModal,
   InfoModalMortgageDischarge,
   MortgageDischargeCard,
   DataMortgageDischarge,
@@ -15,6 +14,14 @@ import {
 } from "@/types/mortgage-discharge";
 import { sortMessagesOldToNew } from "./messagesFuntions";
 import { getOnlyTheValue } from "./tracking-modal";
+import {
+  paramsTo670,
+  paramsTo671,
+  paramsTo672,
+  paramsTo673,
+  paramsTo674,
+  paramsTo675,
+} from "./mortgage-discharge-constants";
 
 const parseDateTimeMessages = (obj: any): Date => {
   return new Date(obj.date);
@@ -50,6 +57,46 @@ const getActions = (
   if (statusMessage === "06" || statusMessage === "05") {
     return ["details"];
   }
+};
+
+const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
+  const {
+    NSR,
+    messageCode,
+    description,
+    LSN,
+    receiver,
+    creationDate,
+    creationTime,
+    priority,
+    parameters,
+  } = message;
+
+  const dataHeader: DataHeaderInfoModal = {
+    NSR,
+    messageCode,
+    description,
+    LSN,
+    receiver,
+    creationDate,
+    creationTime,
+    priority,
+    aunthetication: parameters?.find((elem: any) => elem.name === "auth")
+      ?.value as string,
+  };
+
+  return dataHeader;
+};
+
+const getDetailsObjetToMSCode = (messageCode: string) => {
+  if (messageCode === "670") return [];
+  if (messageCode === "671") return paramsTo671;
+  if (messageCode === "672") return paramsTo672;
+  if (messageCode === "673") return paramsTo673;
+  if (messageCode === "674") return paramsTo674;
+  if (messageCode === "675") return paramsTo675;
+
+  return [];
 };
 
 export const formatCardData = (
@@ -173,155 +220,61 @@ export const formatCardData = (
 export const formatModalDetailsCompleted = (
   message: Message
 ): InfoModalMortgageDischarge => {
-  const { parameters } = message;
-
+  const { parameters, documents } = message;
   const dataHeader = formatModalInfoHeader(message);
 
-  const channelDetailsMS: ChannelDetailsMSInfoModal[] = [
-    { accessor: "issuedDate", label: "Fecha de Alzamiento" },
-    { accessor: "channel", label: "Canal" },
-    { accessor: "operationtype", label: "Tipo de Operacion" },
-    { accessor: "notary", label: "Notaria Repertorio" },
-    { accessor: "registrationDate", label: "Fecha Repertorio" },
-    { accessor: "registrationNumber", label: "Número Repertorio" },
-    { accessor: "beneficiaryBank", label: "Institución" },
-    { accessor: "owner", label: "Vendedor:" },
-    { accessor: "ownerDni", label: "RUT de Vendedor" },
-    { accessor: "buyer", label: "Comprador" },
-    { accessor: "buyerDni", label: "RUT de Comprador" },
-  ];
-
-  const propertyDetailsMS: PropertyDetailsMSInfoModal[] = [
-    { accessor: "propertyInfo", label: "Tipo de Inmueble" },
-    {
-      accessor: "E32",
-      label: "Descripción del Inmueble",
-    },
-    { accessor: "commune", label: "Comuna" },
-    { accessor: "region", label: "Region" },
-    { accessor: "bank", label: "Institución" },
-    { accessor: "loan", label: "Monto del Mutuo" },
-    { accessor: "loanTerm", label: "Plazo (años)" },
-    {
-      accessor: "addLoan",
-      label: "Monto del Mutuo Complementario",
-    },
-    { accessor: "CUK", label: "Código Interno" },
-    { accessor: "borrower", label: "Deudor" },
-    { accessor: "borrowerDni", label: "RUT del Deudor" },
-    { accessor: "ufAmount", label: "Monto UF" },
-  ];
+  const detailsMS: DetailsMSInfoModal[] = paramsTo670;
 
   const bankDetailsMS: BankDetailsMSInfoModal = {
     bank: "",
     amountHeldByTheBank: "",
-    debsName: "",
-    debtorRut: "",
+    sign_2: "",
   };
 
   parameters?.forEach((parameter) => {
-    const channelIndex = channelDetailsMS.findIndex(
-      (detail) => detail.accessor === parameter.name
-    );
-    if (channelIndex !== -1) {
-      channelDetailsMS[channelIndex].value = parameter.value;
+    if (parameter.name in bankDetailsMS) {
+      (bankDetailsMS as any)[parameter.name] = parameter.value;
     }
-    // Only is the parameters is not part of the detailsMSCanal
-    else {
-      const propertyIndex = propertyDetailsMS.findIndex(
-        (detail) => detail.accessor === parameter.name
-      );
-      if (propertyIndex !== -1) {
-        propertyDetailsMS[propertyIndex].value = parameter.value;
+    detailsMS.forEach((detailElem: any) => {
+      if (detailElem.accessor === parameter.name) {
+        detailElem.value = parameter.value;
+        return;
       }
-      // Comparte datos con PropertyIndex por eso va en el else y no dentro de otro if
-      if (parameter.name in bankDetailsMS) {
-        (bankDetailsMS as any)[parameter.name] = parameter.value;
-      }
-    }
+    });
   });
 
-  return { dataHeader, channelDetailsMS, propertyDetailsMS, bankDetailsMS };
+  return { dataHeader, detailsMS, bankDetailsMS, documents: documents || [] };
 };
 
 export const formatModalDetailSmall = (
   message: Message
 ): SmallMsInfoModalMortgageDischarge => {
-  const { messageCode, creationDate, parameters } = message;
+  const { messageCode, parameters, documents } = message;
 
   const dataHeader = formatModalInfoHeader(message);
 
   // Get all data necessary of the parameters
-  const auxiliarSmallMsDetail: SmallMsDetailInfoModal[] = [
-    { accessor: "observations", label: "Observaciones" },
-    { accessor: "sign", label: "Firma Electrónica Receptor" },
-    {
-      accessor: "requiresPrepaidSettlement",
-      label: "Requiere Liquidación de Pre Pago",
-    },
-    {
-      accessor: "debsName",
-      label: "Apoderado Nombre",
-    },
-    {
-      accessor: "debtorRut",
-      label: "RUT",
-    },
-  ];
+  const smallMsDetail: any[] = getDetailsObjetToMSCode(messageCode);
 
-  parameters?.forEach((parameter) => {
-    const dataIndex = auxiliarSmallMsDetail.findIndex(
-      (detail) => detail.accessor === parameter.name
-    );
-    if (dataIndex !== -1) {
-      auxiliarSmallMsDetail[dataIndex].value = parameter.value;
-    }
+  // while by row
+  smallMsDetail.forEach((rowElement: any) => {
+    const data = rowElement.data;
+    // while by  columna
+    data.forEach((columnsElements: any) => {
+      // while by  element
+      columnsElements.forEach((column: any) => {
+        const parameter = parameters?.find(
+          (param) => param.name === column.accessor
+        );
+        if (parameter) {
+          column.value = parameter.value;
+        }
+      });
+    });
   });
 
   // Modify the array to the necessary format data
-  const smallMsDetail: SmallMsDetailInfoModal[] = [
-    { accessor: "", label: checkMessageDate(messageCode), value: creationDate },
-    auxiliarSmallMsDetail[2],
-    auxiliarSmallMsDetail[1],
-    {
-      accessor: "",
-      label: "Apoderado Nombre, RUT",
-      value: `${auxiliarSmallMsDetail[3]?.value || "N/A"} ${
-        auxiliarSmallMsDetail[4].value || "N/A"
-      }`,
-    },
-    auxiliarSmallMsDetail[0],
-  ];
-  return { dataHeader, smallMsDetail };
-};
-
-const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
-  const {
-    NSR,
-    messageCode,
-    description,
-    LSN,
-    receiver,
-    creationDate,
-    creationTime,
-    priority,
-    parameters,
-  } = message;
-
-  const dataHeader: DataHeaderInfoModal = {
-    NSR,
-    messageCode,
-    description,
-    LSN,
-    receiver,
-    creationDate,
-    creationTime,
-    priority,
-    aunthetication: parameters?.find((elem: any) => elem.name === "auth")
-      ?.value as string,
-  };
-
-  return dataHeader;
+  return { dataHeader, smallMsDetail, documents: documents || [] };
 };
 
 export const handleGenericChangeFilter = (
@@ -395,52 +348,4 @@ export const getIsPendingStatus = (status: string | undefined) => {
     return true;
   }
   return false;
-};
-
-const checkMessageDate = (messageCode: string) => {
-  switch (messageCode) {
-    // "Alzamiento Hipotecario"
-    case "670":
-      return "Fecha de Alzamiento";
-
-    // Aceptación AH
-    case "671":
-      return "Fecha de Aceptación";
-
-    // Rechazo AH
-    case "672":
-      return "Fecha de Rechazo";
-
-    // Aviso Cliente en Normalización
-    case "673":
-      return "Fecha de Normalización";
-
-    // Solicitud Liquidación Prepago
-    case "674":
-      return "Fecha de Solicitud de Liquidación Prepago";
-
-    // Liquidación Prepago
-    case "675":
-      return "Fecha de Liquidación Prepago";
-
-    // Datos para el Pago AH
-    case "676":
-      return "Fecha de Datos para el Pago";
-
-    // Aviso de Pago
-    case "677":
-      return "Fecha de Aviso de Pago";
-
-    // Rechazo de Pago
-    case "678":
-      return "Fecha de Rechazo de Pago";
-
-    // Aceptación de Pago
-    case "679":
-      return "Fecha de Aceptación de Pago";
-
-    // Otro caso
-    default:
-      return "";
-  }
 };

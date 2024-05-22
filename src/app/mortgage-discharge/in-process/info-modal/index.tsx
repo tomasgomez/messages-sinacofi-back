@@ -8,8 +8,8 @@ import Loader from "@/components/Loader";
 import { PDFViewer } from "@react-pdf/renderer";
 import { PDFTemplate } from "@/app/component/PDFTemplate";
 import React, { useContext, useEffect } from "react";
-import { LatestMessageSection } from "./components/latest-ms";
-import { FirstMessageSection } from "./components/first-ms";
+import { MessageDetails } from "./components/message-details";
+import { MessageDetails670 } from "./components/message-details-670";
 import { CardContext } from "../store/ModalStore";
 import { findPreviousMessage670 } from "@/utils/mortgage-discharge";
 import { sortMessagesOldToNew } from "@/utils/messagesFuntions";
@@ -66,10 +66,10 @@ export const InfoModal = () => {
 
           // Save the selected message and the previous 670 message
           setDetails([
-            ...messageSelectedDetails,
             ...(await fetch(
               `/api/message/detail?id=${previousMessage670?.id}`
             ).then((res) => res.json())),
+            ...messageSelectedDetails,
           ]);
 
           // Set the state to show 2 details in the modal
@@ -137,13 +137,20 @@ export const InfoModal = () => {
             </Grid>
             {!showOnlyOneMessage && (
               <Box borderBottom="1px dashed #898989">
-                <LatestMessageSection dataMessage={details[0]} />
+                {details[1].messageCode === "670" ? (
+                  <MessageDetails670
+                    showOnlyOneMessage
+                    dataMessage={details[1]}
+                  />
+                ) : (
+                  <MessageDetails dataMessage={details[1]} />
+                )}
               </Box>
             )}
             <Box>
-              <FirstMessageSection
+              <MessageDetails670
                 showOnlyOneMessage={showOnlyOneMessage}
-                dataMessage={showOnlyOneMessage ? details[0] : details[1]}
+                dataMessage={details[0]}
               />
             </Box>
             <Box display={"flex"} justifyContent={"flex-end"} mt={3}>

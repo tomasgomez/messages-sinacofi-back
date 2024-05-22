@@ -13,7 +13,7 @@ import { CardContext } from "../../in-process/store/ModalStore";
 import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-import { base64ToBlob, downloadFile } from "./utils";
+import { base64ToBlob, downloadFile } from "../../utils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const AccionesColumn = ({ row }: { row: any }) => {
