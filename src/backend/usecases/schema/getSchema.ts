@@ -11,6 +11,10 @@ import {
 import {
   get
 } from "@/backend/adapters/rule/get";
+import {
+  FilterMessage
+} from '@/backend/entities/message/filter';
+
 
 
 import { PrismaMessageAdapter as PrismaAdapter } from '../../repository/message/message';
@@ -40,9 +44,16 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
     if (messageAH && cuk) {
       let message = new Message();
       message.messageCode = "670";
-      message.status = "05";
+      // message.status = "05";
       message.cukCode = cuk;
-      let response = await messageRepository.find(message, true, "0","0");
+
+      let filterMessage: FilterMessage = {
+        messageCode: [message.messageCode],
+        cukCode: [message.cukCode],
+        detail: true,
+      };
+
+      let response = await messageRepository.find(filterMessage);
       if (response instanceof Error) {
         return response;
       }

@@ -1,4 +1,4 @@
-export const getOnlyTheValue = (status: string) => {
+const getOnlyTheValue = (status: string) => {
   let partes = status.split("-");
   return partes[0].trim();
 };

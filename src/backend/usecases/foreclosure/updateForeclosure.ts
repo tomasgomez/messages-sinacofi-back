@@ -85,9 +85,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     if (hasToUpdateMessage) {
       newMessage = new Message();
       newMessage.cukCode = cuk.cukCode;
-      newMessage.status = '';
       newMessage.messageCode = messageType;
-      newMessage.description = messageDescription;
 
       await updateLastMessage(newMessage, messageRepository, cukRepository);
     }
@@ -123,8 +121,8 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
   }
 
   /* Set the receiver of the message */
-  message.receiver = fetchedCuk[0].institutionCode;
-  message.sender = fetchedCuk[0].institutionDestination;
+  message.origin = "";
+  message.destination = "";
 
   let fetchedMessages = fetchedCuk[0].messages;
 
@@ -146,7 +144,7 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
   });
 
   /* If the last message is not empty, create a new empty one */
-  if (fetchedMessages.length === 0 || fetchedMessages[0].status !== '') {
+  if (fetchedMessages.length === 0 || fetchedMessages[0].getStatus || fetchedMessages[0].getStatus !== '') {
     createMessage(messageRepository, message);
 
     /* If the last message is empty, update the last message */
@@ -154,10 +152,8 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
 
     let messageToUpdate = fetchedMessages[0];
 
-    messageToUpdate.status = '';
     messageToUpdate.messageCode = message.messageCode;
-    messageToUpdate.receiver = message.receiver;
-    messageToUpdate.description = message.description;
+    messageToUpdate.origin = message.origin;
     messageToUpdate.actions = '';
 
     messageRepository.update(messageToUpdate);

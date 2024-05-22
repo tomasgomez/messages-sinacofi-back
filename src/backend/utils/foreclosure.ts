@@ -3,16 +3,13 @@ import {
 } from '@/backend/entities/message/message';
 import {
     Parameter
-} from '@/backend/entities/message/interface';
+} from '@/backend/entities/message/parameter';
 import {
     CUK
 } from '@/backend/entities/cuk/cuk';
 import {
     isForeclosureMessageCode
   } from '@/backend/entities/cuk/codes';
-import {
-    History
-} from '@/backend/entities/cuk/history';
 
 /* Function to validate if a message is a foreclosure flow message */
 export function isValidMessage(message: Message): boolean {
@@ -59,6 +56,8 @@ export function matchSchemaWithMessage(schema: any, cuk: CUK): Message | Error {
           name: params.name,
           value: params.value,
           label: params.label,
+          priority: params.priority,
+          messageId: '',
         };
   
         if (schema && schema.name == 'CUK'){
@@ -68,7 +67,6 @@ export function matchSchemaWithMessage(schema: any, cuk: CUK): Message | Error {
         return parameter;
     });
   
-    newMessage.parameters = parametersUpdated; 
   
     return newMessage;
 }
@@ -77,20 +75,6 @@ export function getParameterConfig(parameterName: string): {key: string ; name ?
     return parametersToAdd[parameterName];
 }
 
-export function setInstitutionCode(cuk: CUK, institutionCode: string | undefined | null): void {
-    if (institutionCode) {
-        cuk.institutionCode = institutionCode;
-    }
-}
-
-export function setCukDestination(cuk: CUK, receiver: string | undefined | null): void {
-    if (receiver) {
-        cuk.institutionDestination = receiver;
-        if (cuk.setCukCode) {
-            cuk.setCukCode(receiver);
-        }
-    }
-}
 
 export function setCukStatus(cuk: CUK, status: string | null | undefined): void {
     if (status) {

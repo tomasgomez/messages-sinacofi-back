@@ -17,17 +17,19 @@ export async function handle671(cuk: CUK, message: Message, cukRepository: CUKRe
         return updatedMessage;
     }
 
+    let status = '';
+
+    if (message.getStatus)
+        status = message.getStatus();
+
     /* If the message status is 05, create a new message with status 06 */
-    if (updatedMessage.status && updatedMessage.status === MessageStatus.ENVIADO ) {
+    if (status == MessageStatus.ENVIADO ) {
         if (updatedMessage.setReceivedTime) {
             updatedMessage.setReceivedTime();
         }
 
-        let duplicatedMessage = await messageRepository.duplicateMessage(updatedMessage);
-
-        if (duplicatedMessage instanceof Error) {
-            return duplicatedMessage;
-        }
+        //TODO: create new status 05 message
+        //TODO: create new status 06 message
     }
     
     return updatedMessage;

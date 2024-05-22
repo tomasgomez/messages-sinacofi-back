@@ -9,9 +9,7 @@ import {
 } from '@/backend/repository/messageRepository';
 import {
   processMessageParameters,
-  setCukDestination,
   setCukStatus,
-  setInstitutionCode
 } from '@/backend/utils/foreclosure';
 import {
   createMessage
@@ -29,14 +27,14 @@ import { updateMessage } from '../../message/updateMessage';
 export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
 
   let actions = [];
+  let status = '';
 
-  switch (message.status) {
+  if (message.getStatus)
+    status = message.getStatus();
+
+  switch (status) {
     case MessageStatus.PREPARADO: {
       if (!cuk.cukCode) {
-        processMessageParameters(message.parameters, cuk);
-        setInstitutionCode(cuk, message.sender);
-        setCukDestination(cuk, message.receiver);
-        setCukStatus(cuk, message.status);
 
         const createdCuk = await cukRepository.create(cuk);
         if (createdCuk instanceof Error) {
@@ -60,9 +58,11 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
       actions.push(MessageActions.CANCEL);
 
       message.actions = actions.join(',');
+      break;
     }
     case MessageStatus.ENVIADO: {
       updateMessage(messageRepository, message);
+      break;
     }
   }
   return await createMessage(messageRepository, message);

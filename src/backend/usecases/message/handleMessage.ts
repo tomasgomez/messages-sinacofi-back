@@ -18,7 +18,7 @@ import {
 } from "@/backend/entities/cuk/cuk";
 import {
     Parameter
-} from "@/backend/entities/message/interface";
+} from "@/backend/entities/message/parameter";
 import {
     getSchema
 } from "@/backend/usecases/schema/getSchema";

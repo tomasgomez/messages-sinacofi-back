@@ -1,9 +1,9 @@
 import {
   CUKRepository
-} from '../../repository/cukRepository';
+} from '@/backend/repository/cukRepository';
 import {
   Message
-} from '../../entities/message/message';
+} from '@/backend/entities/message/message';
 import {
   MessageRepository
 } from '@/backend/repository/messageRepository';
@@ -26,8 +26,8 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
   }
 
   /* Set the receiver of the message */
-  message.sender = fetchedCuk[0].institutionDestination;
-  message.receiver = fetchedCuk[0].institutionCode;
+  message.origin = "";
+  message.destination = "";
 
   let fetchedMessages = fetchedCuk[0].messages;
 
@@ -49,7 +49,7 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
   });
 
   /* If the last message is not empty, create a new empty one */
-  if (fetchedMessages.length === 0 || fetchedMessages[0].status !== '') {
+  if (fetchedMessages.length === 0 || fetchedMessages[0].getStatus || fetchedMessages[0].getStatus !== '') {
     return new Error('No empty message found');
 
     /* If the last message is empty, update the last message */
