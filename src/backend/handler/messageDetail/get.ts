@@ -1,6 +1,6 @@
 import { validateGetMessage } from "@/backend/handler/message/presenter/getMessage";
 import { messageDetailUseCase } from "@/backend/usecases/messageDetail/usecases";
-import { prepareMessages } from "@/backend/handler/message/adapter/getMessage";
+import { prepareMessages } from "@/backend/handler/message/adapter/prepareMessages";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
