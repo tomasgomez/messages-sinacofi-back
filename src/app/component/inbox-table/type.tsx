@@ -11,12 +11,13 @@ export interface Message {
   description: string;
   priority?: string;
   status: string;
-  sender: string;
+  origin: string;
   creationDate: string;
   creationTime: string;
-  receiver?: string;
   receivedDate: string;
   receivedTime: string;
+  destinationArea?: string;
+  originArea?: string;
   cukCode?: string;
   documents?: any[];
   actions?: any[];

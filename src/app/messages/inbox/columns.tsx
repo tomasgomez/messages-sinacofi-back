@@ -56,7 +56,7 @@ export const columnsInbox: Columns[] = [
   },
   descriptor,
   {
-    id: "sender",
+    id: "origin",
     label: "Origen",
     align: Alignment.LEFT,
     sortable: true,

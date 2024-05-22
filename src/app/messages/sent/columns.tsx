@@ -90,7 +90,7 @@ export const columnsSent: Columns[] = [
     sortable: true,
   },
   {
-    id: "receiver",
+    id: "destination",
     label: "Destino",
     align: Alignment.LEFT,
     sortable: true,
