@@ -77,6 +77,15 @@ export function createDateRangeFilter(startDate: Date | undefined, endDate: Date
 
 }
 
+export function processStringField(fieldValue: string): string {
+    if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
+        return fieldValue.trim()
+    }
+
+    return '';
+}
+
+
 export function processStringArrayField(fieldValue: string): string[] {
     if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
         return fieldValue.trim().split(',').map(value => value.trim());

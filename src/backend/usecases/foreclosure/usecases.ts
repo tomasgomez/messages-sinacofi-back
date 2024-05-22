@@ -26,7 +26,7 @@ export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
     createForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 
         createForeclosure(this.cukRepository, cuk, message)
 
-    handleForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > =>
+    handleForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Message | Error > =>
         handleForeclosure(this.cukRepository,this.messageRepository , cuk, message)
 
     updateForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 

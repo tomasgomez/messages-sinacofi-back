@@ -4,6 +4,7 @@ import {
 import { Parameter } from './parameter';
 import { Document } from '@/backend/entities/global/document';
 import { TSN, LSN, OSN, NSE, NSR, NSQ } from './correlatives';
+import { Status } from './status';
 
 export class Message {
     [key: string]: unknown;
@@ -32,7 +33,7 @@ export class Message {
     parameters ? : Parameter[];
     documents ? : Document[];
 
-    status ? : string | null;
+    status ? : Status[] ;
     cukCode ? : string | null;
 
     setTime ? () {
@@ -62,5 +63,11 @@ export class Message {
 
         this.receivedDate = dateString
         this.receivedTime = time;
+    }
+
+    getStatus ? () {
+        // get the first status
+        return this.status?.[0]?.id ?? '';
+
     }
 }

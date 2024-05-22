@@ -63,11 +63,13 @@ model Message {
 }
 
 model Status {
-  id        String   @id @unique
-  createdAt DateTime @default(now())
+  id        String
+  createdAt DateTime? @default(now())
 
   messageId String
   message   Message @relation(fields: [messageId], references: [id])
+
+  @@id([messageId, id])
 }
 
 model TSN {
@@ -148,7 +150,7 @@ model NSQ {
 }
 
 model Parameters {
-  id           String  @unique @default(uuid())
+  id           String  @default(uuid())
   name         String
   messageCode  String?
   label        String?

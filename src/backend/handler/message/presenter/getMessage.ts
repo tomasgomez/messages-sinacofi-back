@@ -1,7 +1,10 @@
 import { FilterMessage } from '@/backend/entities/message/filter';
 import { processStringArrayField, processDateField } from '@/backend/utils/functions';
 
-export function validateGetMessage(data: any): FilterMessage | Error {
+export function validateGetMessage(request: any): FilterMessage | Error {
+
+  let data = request.query;
+  
   let filter: FilterMessage = {
     detail: false,
   }

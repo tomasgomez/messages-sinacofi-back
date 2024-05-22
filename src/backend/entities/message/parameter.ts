@@ -15,7 +15,7 @@ export type Parameter = {
     validations ? : string | null;
 
     propertyId ? : string | null;
-    messageId : string;
+    messageId? : string;
     cukCode ? : string | null;
     properties ? : Properties | null;
 }

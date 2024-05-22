@@ -1,8 +1,5 @@
-import {
-    FilterMessage
-} from '@/backend/entities/message/filter';
 
-function findSelect(filter: FilterMessage): any {
+function createInclude(): any {
     const select: any = {
         id: true,
         messageCode: true,
@@ -18,7 +15,6 @@ function findSelect(filter: FilterMessage): any {
         createdAt: true,
         updatedAt: true,
         cukCode: true,
-        status: true,
         TSN: true,
         LSN: true,
         OSN: true,
@@ -26,14 +22,10 @@ function findSelect(filter: FilterMessage): any {
         NSR: true,
         NSQ: true
     };
-    
-    // Always include 'detail' related properties
-    select.documents = filter.detail;
-    select.parameters = filter.detail;
 
     return select;
 }
 
 export {
-    findSelect
+    createInclude
 };

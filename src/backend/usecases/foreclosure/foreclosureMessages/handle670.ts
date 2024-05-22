@@ -27,8 +27,12 @@ import { updateMessage } from '../../message/updateMessage';
 export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
 
   let actions = [];
+  let status = '';
 
-  switch (message.status) {
+  if (message.getStatus)
+    status = message.getStatus();
+
+  switch (status) {
     case MessageStatus.PREPARADO: {
       if (!cuk.cukCode) {
 
@@ -54,9 +58,11 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
       actions.push(MessageActions.CANCEL);
 
       message.actions = actions.join(',');
+      break;
     }
     case MessageStatus.ENVIADO: {
       updateMessage(messageRepository, message);
+      break;
     }
   }
   return await createMessage(messageRepository, message);

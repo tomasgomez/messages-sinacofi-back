@@ -11,7 +11,7 @@ import {
     Parameter
 } from "@/backend/entities/message/parameter";
 import { MessageStatus } from "@/backend/entities/message/status";
-import { createData } from "@/backend/repository/message/presenter/createData";
+import { createData } from "@/backend/repository/message/presenter/createData"; 
 
 async function create(message: Message): Promise < Message | Error > {
     try {
@@ -26,6 +26,7 @@ async function create(message: Message): Promise < Message | Error > {
 
         // Handle setting time if the method exists
         if (message.setTime) {
+            console.log('Setting time');
             message.setTime();
         }
 
@@ -86,7 +87,7 @@ async function create(message: Message): Promise < Message | Error > {
                         institutionCode: message.destination ?? '',
                     }
                 }
-            }
+            },
         });
 
 

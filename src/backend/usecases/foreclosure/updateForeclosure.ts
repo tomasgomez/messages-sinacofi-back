@@ -85,7 +85,6 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     if (hasToUpdateMessage) {
       newMessage = new Message();
       newMessage.cukCode = cuk.cukCode;
-      newMessage.status = '';
       newMessage.messageCode = messageType;
 
       await updateLastMessage(newMessage, messageRepository, cukRepository);
@@ -145,7 +144,7 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
   });
 
   /* If the last message is not empty, create a new empty one */
-  if (fetchedMessages.length === 0 || fetchedMessages[0].status !== '') {
+  if (fetchedMessages.length === 0 || fetchedMessages[0].getStatus || fetchedMessages[0].getStatus !== '') {
     createMessage(messageRepository, message);
 
     /* If the last message is empty, update the last message */
@@ -153,7 +152,6 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
 
     let messageToUpdate = fetchedMessages[0];
 
-    messageToUpdate.status = '';
     messageToUpdate.messageCode = message.messageCode;
     messageToUpdate.origin = message.origin;
     messageToUpdate.actions = '';

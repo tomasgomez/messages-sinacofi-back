@@ -49,7 +49,7 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
   });
 
   /* If the last message is not empty, create a new empty one */
-  if (fetchedMessages.length === 0 || fetchedMessages[0].status !== '') {
+  if (fetchedMessages.length === 0 || fetchedMessages[0].getStatus || fetchedMessages[0].getStatus !== '') {
     return new Error('No empty message found');
 
     /* If the last message is empty, update the last message */

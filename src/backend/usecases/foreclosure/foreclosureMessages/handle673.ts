@@ -15,13 +15,16 @@ export async function handle673(cuk: CUK, message: Message, cukRepository: CUKRe
     if (updatedMessage instanceof Error) {
         return updatedMessage;
     }
+    let status = '';
+
+    if (message.getStatus)
+        status = message.getStatus();
 
     /* If the message status is 05, create a new message with status 06 */
-    if (updatedMessage.status && updatedMessage.status === MessageStatus.ENVIADO ) {
+    if (status == MessageStatus.ENVIADO ) {
         if (updatedMessage.setReceivedTime) {
             updatedMessage.setReceivedTime();
         }
-
        //TODO: create new status 05 message
        //TODO: create new status 06 message
     }

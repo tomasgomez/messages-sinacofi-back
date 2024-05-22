@@ -25,6 +25,8 @@ export async function getSchemaTypes(req: NextApiRequest, res: NextApiResponse <
           return;
         }
 
+        console.log('schemaResponse:', schemaResponse);
+
         let adaptedShema = adaptSchemaTypes(schemaResponse);
 
         /* Return the Schema */
