@@ -106,7 +106,9 @@ export default function InProcessScreen() {
         <Box
           style={{
             maxHeight: maxHeight,
-            overflow: "scroll",
+            overflowY: "scroll",
+            overflowX: "hidden",
+            maxWidth: "calc(100vw - 270px)",
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
           }}
         >
