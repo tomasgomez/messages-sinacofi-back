@@ -28,6 +28,7 @@ export function validateGetMessage(request: any): FilterMessage | Error {
   filter.origin = processStringArrayField(origin);
   filter.destination = processStringArrayField(destination);
   filter.createdAt = processDateField(date);
+  filter.status = processStringArrayField(status);
   
   filter.count = count;
   filter.offset = offset;

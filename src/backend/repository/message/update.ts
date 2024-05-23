@@ -6,12 +6,12 @@ export async function update(message: Message): Promise<Message | Error> {
         const prisma = new PrismaClientWrapper();
         const prismaClient = prisma.getClient();
 
-        let includeDocument = false;
-
-        if (message.status && message?.status?.length > 0 && message.id !== undefined) {
-            prismaClient.status.createMany({
+        if (message.status && message.statusCode != undefined && message.id !== undefined) {
+            let updatedStatus = await prismaClient.status.createMany({
                 data: message.status
             });
+
+            console.log(updatedStatus);
         }
 
         /* Filter out empty values from the message object */
@@ -20,6 +20,8 @@ export async function update(message: Message): Promise<Message | Error> {
         );
 
         const { parameters, ...dataWithoutParameters } = dataToUpdate;
+
+        delete dataWithoutParameters.status;
 
         /* Update the message */
         const updatedMessage = await prismaClient.message.update({
@@ -30,7 +32,7 @@ export async function update(message: Message): Promise<Message | Error> {
                 ...dataWithoutParameters,
             },
             include: {
-                documents: includeDocument,
+                documents: false,
                 status: true,
                 parameters: true
             }

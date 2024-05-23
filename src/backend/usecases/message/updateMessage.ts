@@ -11,10 +11,13 @@ import { MessageStatus } from "@/utils/messagesStatus";
 // Create message function
 export async function updateMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
     try {
-        let status = '';
+        let status = '';      
 
-        if (message.status && message.getStatus) {
-            status = message.getStatus();    
+        if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
+            
+            status = message.statusCode;
+
+            message.setStatus(status);
         }
 
         // Update the status of the message
@@ -33,6 +36,10 @@ export async function updateMessage(repository: MessageRepository, message: Mess
                 }
                 break;
         }
+
+        console.log("message", message.status);
+
+        delete message.statusCode;
 
         /* Update the message */
         let messageResponse = await repository.update(message);

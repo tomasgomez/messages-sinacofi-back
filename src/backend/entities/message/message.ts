@@ -74,10 +74,18 @@ export class Message {
     }
 
     setStatus?(statusId: string) {
-        this.status?.push({
-            id: statusId,
-            messageId: this.id ?? '',
-            createdAt: this.updatedAt ?? new Date()
-        });
+        if (this.status) {
+            this.status.push({
+                id: statusId,
+                messageId: this.id ?? '',
+                createdAt: new Date(),
+            });
+        } else {
+            this.status = [{
+                id: statusId,
+                messageId: this.id ?? '',
+                createdAt: new Date(),
+            }];
+        }
     }
 }
