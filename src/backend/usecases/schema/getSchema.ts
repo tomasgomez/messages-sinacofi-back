@@ -36,7 +36,7 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
 
 
     let schemas = await get(url, path, {},{})
-    const messageAH = ["671", "672", "673"].find((element) => element === messageCode); // TODO: Sacar ultimo por 670
+    const messageAH = ["671", "672", "673", "674", "675"].find((element) => element === messageCode); // TODO: Sacar ultimo por 670
     if (messageAH && cuk) {
       let message = new Message();
       message.messageCode = "670";
