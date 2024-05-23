@@ -1,9 +1,21 @@
+import { FilterMessage } from '@/backend/entities/message/filter';
 import { Message } from '@/backend/entities/message/message';
 
-function prepareMessages(messages: Message[]): any{
+function prepareMessages(messages: Message[], filter: FilterMessage = {detail:false}): any{
     let preparedData = messages.map((message) => {
       let status = '';
-      
+
+      /* If the filter has a status then filter the messages statuses*/
+      if (filter.status && filter.status.length > 0) {
+        messages = messages.map(message => {
+            const filteredStatuses = message.status?.filter(s => filter?.status?.includes(s.id));
+            return {
+                ...message,
+                status: filteredStatuses
+            };
+        }).filter(message => message.status && message.status.length > 0);
+      }
+
       status = message.status
             ?.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)) // Descending order
             ?. [0]?.id ?? ''; // Get the first element's id or return an empty string

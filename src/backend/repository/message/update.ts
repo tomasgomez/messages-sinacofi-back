@@ -6,12 +6,10 @@ export async function update(message: Message): Promise<Message | Error> {
         const prisma = new PrismaClientWrapper();
         const prismaClient = prisma.getClient();
 
-        if (message.status && message.statusCode != undefined && message.id !== undefined) {
-            let updatedStatus = await prismaClient.status.createMany({
+        if (message.status && message.id !== undefined && message.status.length > 0 && message.id !== '') {
+            await prismaClient.status.createMany({
                 data: message.status
             });
-
-            console.log(updatedStatus);
         }
 
         /* Filter out empty values from the message object */

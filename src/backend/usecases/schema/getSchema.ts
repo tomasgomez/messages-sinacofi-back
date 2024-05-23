@@ -16,9 +16,6 @@ import {
 import {
   FilterMessage
 } from '@/backend/entities/message/filter';
-
-
-
 import {
   PrismaMessageAdapter as PrismaAdapter
 } from '../../repository/message/message';
@@ -57,7 +54,6 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
           id: filter?.messageId,
           detail: true,
         };
-
 
       let message = await messageRepository.find(filterMessage);
       if (message instanceof Error) {
