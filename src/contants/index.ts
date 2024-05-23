@@ -28,6 +28,7 @@ export const REJECT_MORTGAGE_DISCHARGE = "rejectMortgageDischarge";
 export const FULL_ACCESS = "FULL ACCESS";
 export const PROFILE_02 = "PROFILE_02";
 
+
 // const INGRESO_Y_EDICIÓN	= "Ingreso y Edición";
 // const ENVÍO_DE_MENSAJES	= "Envío de mensajes";
 // const ACTUALIZACIÓN_ESTADO_DE_ALZAMIENTO_HIPOTECARIO = "Actualización Estado de Alzamiento Hipotecario";
