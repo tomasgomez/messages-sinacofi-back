@@ -11,12 +11,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         /* Validate the query params and get the Schema */
         let filter = validateGetSchema(req.query);
 
-        const userData: { senderId: any, receiverId: any, sender: any, cuk: any } = {
-          senderId: req.query.senderId,
-          receiverId: req.query.receiverId,
-          sender: null,
-          cuk: req.query.cuk
-        };
 
         if (filter instanceof Error) {
           res.status(400).json([]);
@@ -29,7 +23,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         }
 
         /* Use the PrismaAreaAdapter to get the Schema from the database */
-        let schemaResponse = await schemaUseCase.getSchema(filter.messageCode[0], userData.cuk) //TODO: Change this to getSchema
+        let schemaResponse = await schemaUseCase.getSchema(filter)
 
         /* If the Schema is not found, return a 204 error */
         if (schemaResponse instanceof Error) {
@@ -37,13 +31,15 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
           return;
         }
         
-        if (req.query.senderId) {
+        let origin = '';
+
+        if (filter.origin) {
           await getInstitutions().then((institutionList) => {
-            userData.sender = institutionList.find((intitution: any) => req.query.senderId=== intitution.id);
+             origin = institutionList.find((intitution: any) => filter.origin === intitution.id);
           });
         }
 
-        let adaptedSchema = adaptSchema(schemaResponse, userData);
+        let adaptedSchema = adaptSchema(schemaResponse, origin);
 
         /* Return the Schema */
         res.status(200).json(adaptedSchema);

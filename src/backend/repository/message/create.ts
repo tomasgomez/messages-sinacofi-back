@@ -7,9 +7,6 @@ import {
 import {
     handleNullValues
 } from "@/backend/utils/functions";
-import {
-    Parameter
-} from "@/backend/entities/message/parameter";
 import { MessageStatus } from "@/backend/entities/message/status";
 import { createData } from "@/backend/repository/message/presenter/createData"; 
 
@@ -33,15 +30,6 @@ async function create(message: Message): Promise < Message | Error > {
         // Prepare message data for Prisma create
         const messageData = createData(message);
 
-        let parameters: Parameter[] = [];
-
-        if (message.parameters && message.cukCode && message.cukCode !== '') {
-            parameters = parameters?.map((parameter) => {
-                parameter.cukCode = message.cukCode;
-                return parameter;
-            });
-        }
-
         // Create a new message with associated parameters and documents
         const newMessage = await prismaClient.message.create({
             data: {
@@ -54,7 +42,7 @@ async function create(message: Message): Promise < Message | Error > {
                 },
                 parameters: {
                     createMany: {
-                        data: parameters
+                        data: messageData?.parameters ?? [],
                     }
                 },
                 TSN: {

@@ -69,7 +69,7 @@ const CreateMessage = () => {
     if(((cloneId || messageId) && !cukCode )) {
       getMessageDetails(cloneId || messageId).then((data) => {
         // console.log({ data });
-        getMessageSchema(messageCode, selectedInstitution, institutionId)
+        getMessageSchema(messageCode, messageId)
           .then((schema: any) => {
             console.log({ schema });
             setMessageSchema({
@@ -128,7 +128,7 @@ const CreateMessage = () => {
           });
       });
     } else {
-      getMessageSchema(messageCode, selectedInstitution, institutionId, cukCode)
+      getMessageSchema(messageCode, messageId)
         .then((schema: any) => {
           setMessageSchema({
             ...schema,

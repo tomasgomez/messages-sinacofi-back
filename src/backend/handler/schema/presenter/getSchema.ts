@@ -1,27 +1,29 @@
 import {
   Filter
 } from '@/backend/entities/schema/filter';
+import { processStringArrayField } from '@/backend/utils/functions';
+
 
 export function validateGetSchema(data: any): Filter | Error {
   const filter: Filter = {};
 
   const {
     messageCode,
+    messageId,
+    origin,
+    destination,
     count,
     offset,
   } = data;
 
-  if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
-    filter.messageCode = messageCode.trim().split(',').map(code => code.trim());
-  }
+  /* Set all the possible filters */
+  filter.messageId = processStringArrayField(messageId);
+  filter.messageCode = processStringArrayField(messageCode);
+  filter.origin = processStringArrayField(origin);
+  filter.destination = processStringArrayField(destination);
 
-  if (count && typeof count === 'string' && count.trim() !== '') {
-    filter.count = count.trim();
-  }
-
-  if (offset && typeof offset === 'string' && offset.trim() !== '') {
-    filter.offset = offset.trim();
-  }
+  filter.count = count;
+  filter.offset = offset;
 
   return filter;
 }

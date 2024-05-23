@@ -31,8 +31,8 @@ export function validateCreateMessage(data: any): Message | Error {
       let parameter: Parameter =  {
         id: element.id ?? '',
         name: element.name ?? '',
+        label: element.name ?? '',
         messageCode: element.messageCode ?? '',
-        label: element.label ?? '',
         type: element.type ?? '',
         placeholder: element.placeholder ?? '',
         description: element.description ?? '',
