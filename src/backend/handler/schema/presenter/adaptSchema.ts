@@ -25,7 +25,25 @@ function extractParameters(dataToAdapt: any, userData: any): Parameter[] {
     const parameters: any[] = dataToAdapt?.parameters || [];
     const sortedParameters = sortParametersByPriority(parameters);
 
-    return sortedParameters.map((parameter: any) => adaptParameter(parameter, userData));
+    const adaptedParameters = sortedParameters.map((parameter: any) => adaptParameter(parameter, userData));
+    let filterParams: any[]= [];
+    const finalParameters = adaptedParameters.map((parameter) => {
+        if (parameter.type === "accordion") {
+            if (parameter.defaultValue === "") {
+                parameter.parameters = [];
+                return parameter;
+            }
+            // const parameterChildren = parameter.defaultValue.split(",").map((el) => ({ [el]: true }));
+            const parameterChildren = parameter.defaultValue.split(",");
+            parameter.parameters = parameterChildren.map((child: any) => adaptedParameters.find(el => el.id === child));
+            filterParams = [...filterParams, ...parameterChildren];
+        }
+        return parameter;
+    })
+    if (filterParams.length > 0) {
+        return finalParameters.filter((param) => !filterParams.includes(param.id));
+    }
+    return finalParameters;
 }
 
 // Sort parameters by priority in ascending order
