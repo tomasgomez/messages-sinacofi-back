@@ -4,7 +4,6 @@ import {
 import {
     Message
 } from '../entities/message/message';
-import { FilterMessage } from '../entities/message/filter';
 
 export function getEnvVariable(name: string): string | Error {
     try {
@@ -105,13 +104,12 @@ export function processStringArrayField(fieldValue: string): string[] {
     return [];
 }
 
-export function processDateField(fieldValue: string): Date | null{
+export function processDateField(fieldValue: string): Date | undefined  {
     if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
         const convertedToDate = new Date(fieldValue.trim());
         if (!isNaN(convertedToDate.getTime())) {
             return convertedToDate;
         }
     }
-
-    return null;
+    return undefined;
 }

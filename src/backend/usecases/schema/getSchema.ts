@@ -51,22 +51,25 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
 
     let schemas = await get(url, path, {}, {})
 
-    let filterMessage: FilterMessage = {
-      id: filter?.messageId ?? [],
-      detail: true,
-    };
+    if (filter.messageId && filter.messageId.length > 0) {
 
-    let message = await messageRepository.find(filterMessage);
-    if (message instanceof Error) {
-      return message;
+      let filterMessage: FilterMessage = {
+          id: filter?.messageId,
+          detail: true,
+        };
+
+
+      let message = await messageRepository.find(filterMessage);
+      if (message instanceof Error) {
+        return message;
+      }
+
+      if (!message || message.length === 0) {
+        return schemas;
+      }
+
+      schemas.parameters = adaptSchema(schemas.parameters, message[0]);
     }
-
-    if (!message || message.length === 0) {
-      return schemas;
-    }
-
-    schemas.parameters = adaptSchema(schemas.parameters, message[0]);
-
 
     return schemas;
   } catch (error: any) {
@@ -99,6 +102,7 @@ function adaptSchema(parameters: Parameter[], message: Message): Parameter[] {
 
     if (schema && schema.name == 'CUK') {
       schema.defaultValue = message.cukCode;
+      schema.value = message.cukCode;
     }
 
     if (schema && schema.defaultValue == '') {

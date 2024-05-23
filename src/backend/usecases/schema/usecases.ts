@@ -13,7 +13,7 @@ export class SchemaUsecase implements SchemaUsecases {
 
     // get Schema
     getSchema = async (filter: Filter): Promise<MessageSchema[] | Error> => 
-        getSchema(filter: Filter)
+        getSchema(filter)
 
 }
 

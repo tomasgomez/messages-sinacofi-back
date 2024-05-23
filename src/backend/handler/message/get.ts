@@ -3,7 +3,6 @@ import { messageUseCase } from "@/backend/usecases/message/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prepareMessages } from "@/backend/handler/message/adapter/prepareMessages";
 
-
 // get message function
 export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
     try {

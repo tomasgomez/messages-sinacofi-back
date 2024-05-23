@@ -2,7 +2,6 @@ import { FilterMessage } from '@/backend/entities/message/filter';
 import { processStringArrayField, processDateField } from '@/backend/utils/functions';
 
 export function validateGetMessage(request: any): FilterMessage | Error {
-
   let data = request.query;
   
   let filter: FilterMessage = {
@@ -28,7 +27,7 @@ export function validateGetMessage(request: any): FilterMessage | Error {
   filter.cukCode = processStringArrayField(cukCode);
   filter.origin = processStringArrayField(origin);
   filter.destination = processStringArrayField(destination);
-  filter.createdAt = processDateField(date) ?? new Date;
+  filter.createdAt = processDateField(date);
   
   filter.count = count;
   filter.offset = offset;

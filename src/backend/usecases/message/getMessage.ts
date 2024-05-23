@@ -12,5 +12,3 @@ export async function getMessage(repository: MessageRepository, filter: FilterMe
     return error;
   }
 }
-
-

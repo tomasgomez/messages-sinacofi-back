@@ -39,7 +39,12 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
           });
         }
 
-        let adaptedSchema = adaptSchema(schemaResponse, origin);
+        let adaptedSchema = adaptSchema(schemaResponse, {
+          senderId: filter.origin,
+          receiverId: filter.destination,
+          sender: origin,
+          cuk: filter.cuk
+        });
 
         /* Return the Schema */
         res.status(200).json(adaptedSchema);
