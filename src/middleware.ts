@@ -4,6 +4,9 @@ import { iamOracleAPI } from './backend/iamOracle/handler/api';
 import { generateCodeChallenge, generateCodeVerifier } from './backend/iamOracle/entities/idcs';
 import { createAuthURL } from './backend/handler/middleware/IAM-oracle/authUrl';
 
+const deleteSession = (res: NextResponse) => {
+  res.cookies.delete('access_token')
+};
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
@@ -21,8 +24,10 @@ export async function middleware(request: NextRequest) {
         console.log('error', tokenDecoded);
         // TODO: redirect to page error
         let response = NextResponse.redirect(new URL('/', request.url));
+        deleteSession(response);
         return response;
     }
+
     return NextResponse.next();
   }
 
@@ -110,6 +115,6 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/:path*',
+  matcher: '/((?!api|_next/static|_next/image|.*\\.png$).*)',
 }
 

@@ -11,7 +11,9 @@ import { MyContexLayout } from "./context";
 import { useState, Suspense, useEffect } from "react";
 import ModalManagerProvider from "@/components/Modal/ModalManager";
 import { MessageExportProvider } from "./component/MessageExportProvider";
-import { SessionProvider } from 'next-auth/react'
+import { SessionProvider } from "@/context/SessionProvider";
+
+
 const clearObjet = {
   type: "none" as "none",
   title: "",
