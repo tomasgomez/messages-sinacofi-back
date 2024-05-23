@@ -10,7 +10,7 @@ export class CUK {
     creationDate?: string | null;
 
     parameters?: Parameter[] | null;
-    history?: History[] | null;
+    history?: History[];
     messages?: Message[] | null;
 
     

@@ -2,7 +2,7 @@ import {
     FilterMessage
 } from '@/backend/entities/message/filter';
 
-function findSelect(filter: FilterMessage): any {
+function findSelect(filter: FilterMessage = {detail: false}): any {
     const select: any = {
         id: true,
         messageCode: true,

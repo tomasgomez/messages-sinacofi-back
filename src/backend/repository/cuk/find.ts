@@ -10,6 +10,9 @@ import {
 import {
     createDateRangeFilter
 } from '@/backend/utils/functions';
+import {
+    findSelect
+} from '@/backend/repository/message/presenter/findSelect';
 import { Prisma } from '@prisma/client';
 
 
@@ -25,26 +28,15 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
         let offsetAsInt = parseInt(filter.offset ?? '0', 10);
 
         const query = cukFindManyQuery(filter, countAsInt, offsetAsInt);
+
         // Find all messages if count is not provided or is 0
         cuks = await prismaClient.cUK.findMany(query);
-
 
         // If the messages are not found, return an error
         if (cuks.length === 0) {
             return new Error('Message not found');
         }
 
-        // TODO: Crear un CUK que sea para el front que extienda el CUK para bd y que tenga los metodos para convertirse y ademas agregar otras clases (ex history)
-        // for (let cuk of cuks) {
-        //     if (cuk.messages !== undefined && cuk.messages.length > 0) {
-        //         for (let message of cuk.messages) {
-        //             handleNullValues(message, false);
-        //         }
-        //     }
-
-        //     cuk.history = setCukHistory(cuk);
-            
-        // }
         return cuks;
 
     } catch (error: any) {
@@ -69,7 +61,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
 
     // defune MessageArgs
     let messageArgs: Prisma.CUK$messagesArgs = {
-        select: createSelectFromFilter(),
+        select: findSelect(),
     };
 
     const dateRangeFilter =  createDateRangeFilter(filter.startDate, filter.endDate);
@@ -77,15 +69,31 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     let where: Prisma.CUKWhereInput = {
         ...dateRangeFilter
     };
+
+    if(filter.id && filter.id.length > 0)
     where.id = {
         in: filter.id
     };
+
+    if(filter.cukCode && filter.cukCode.length > 0)
     where.cukCode = {
         in: filter.cukCode
     };
+
+    if(filter.status && filter.status.length > 0)
     where.status = {
         in: filter.status
     };
+
+    // set values to query
+    query.where = where;
+    // define include
+    let include: Prisma.CUKInclude = { messages: messageArgs };
+    // set include to query
+    query.include = include;
+
+    return query;
+}
 
     // check if filter has institutionCode
     // if (filter.institutionCode) {
@@ -98,41 +106,3 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     //         }
     //     }
     // }
-    // set values to query
-    query.where = where;
-    // define include
-    let include: Prisma.CUKInclude = { messages: messageArgs };
-    // set include to query
-    query.include = include;
-
-    return query;
-}
-
-
-function createSelectFromFilter(): Prisma.MessageSelect {
-    let select: Prisma.MessageSelect = {
-        id: true,
-        TSN: true,
-        OSN: true,
-        NSE: true,
-        LSN: true,
-        NSR: true,
-        messageCode: true,
-        status: true,
-        origin: true,
-        destination: true,
-        originArea: true,
-        destinationArea: true,
-        creationDate: true,
-        creationTime: true,
-        receivedDate: true,
-        receivedTime: true,
-        cukCode: true,
-        actions: true,
-        createdAt: true,
-        documents: true,
-        parameters: true
-    }
-
-    return select;
-}

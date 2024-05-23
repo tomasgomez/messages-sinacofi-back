@@ -7,6 +7,6 @@ export enum MessageStatus {
 
 export type Status = {
     id: string;
-    createdAt: Date;
+    createdAt: Date | null;
     messageId: string;
 }

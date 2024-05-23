@@ -22,7 +22,6 @@ async function create(cuk: CUK): Promise < CUK | Error > {
         /* Set the history for the CUK */
         let history: History = {
             status: cuk.status ?? '' +' '+ getDescriptionByStatus(cuk.status ?? ''),
-            cukCode: cuk.cukCode ?? '',
             date: cuk.creationDate ?? '',
         }
 
@@ -49,7 +48,8 @@ async function create(cuk: CUK): Promise < CUK | Error > {
                 }
             },
             include: {
-                history: true
+                history: true,
+                messages: true
             }
         });
 

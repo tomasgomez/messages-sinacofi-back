@@ -9,7 +9,6 @@ async function find(filter: FilterMessage): Promise<Message[] | Error> {
     try {
         const prisma = new PrismaClientWrapper();
         const prismaClient = prisma.getClient();
-
         
         let where = findWhere(filter)
         let select: any = findSelect(filter);

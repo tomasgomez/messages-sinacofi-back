@@ -65,9 +65,17 @@ export class Message {
         this.receivedTime = time;
     }
 
-    getStatus ? () {
-        // get the first status
-        return this.status?.[0]?.id ?? '';
+    getStatus?() {
+        return this.status
+            ?.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)) // Descending order
+            ?. [0]?.id ?? ''; // Get the first element's id or return an empty string
+    }
 
+    setStatus?(statusId: string) {
+        this.status?.push({
+            id: statusId,
+            messageId: this.id ?? '',
+            createdAt: this.updatedAt ?? new Date()
+        });
     }
 }

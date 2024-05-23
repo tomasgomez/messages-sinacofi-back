@@ -4,7 +4,6 @@ function createData (message: Message): Partial<Message> {
     // Prepare message data for Prisma create
     const messageData: Partial < Message > = {};
     for (const [key, value] of Object.entries(message)) {
-        console.log(key);
         if (key === 'parameters' || key === 'documents') {
             continue;
         }
@@ -16,6 +15,8 @@ function createData (message: Message): Partial<Message> {
             messageData[key as keyof Message] = value;
         }
     }
+
+    
 
     return messageData;
 }

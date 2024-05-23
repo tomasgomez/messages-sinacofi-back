@@ -26,7 +26,6 @@ async function create(message: Message): Promise < Message | Error > {
 
         // Handle setting time if the method exists
         if (message.setTime) {
-            console.log('Setting time');
             message.setTime();
         }
 
@@ -39,6 +38,12 @@ async function create(message: Message): Promise < Message | Error > {
             parameters = message.parameters;
         }
 
+        // Default status is PREPARADO
+        let status: string = MessageStatus.PREPARADO;
+
+        if (message.getStatus)
+            status = message.getStatus();
+
         // Create a new message with associated parameters and documents
         const newMessage = await prismaClient.message.create({
             data: {
@@ -46,7 +51,7 @@ async function create(message: Message): Promise < Message | Error > {
                 documents: {},
                 status: {
                     create: {
-                        id: MessageStatus.PREPARADO, //TODO: add status
+                        id: status,
                     }
                 },
                 parameters: {

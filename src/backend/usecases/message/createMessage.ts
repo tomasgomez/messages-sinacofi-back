@@ -20,7 +20,6 @@ export async function createMessage(repository: MessageRepository, message: Mess
             return schemaTypes;
         }
 
-
         let messageResponse = await repository.create(message);
 
         /* Check if the response is an error */

@@ -23,12 +23,12 @@ model CUK {
 }
 
 model History {
-  id      String @id @default(uuid())
-  cukCode String
+  id      String  @id @default(uuid())
+  cukCode String?
   status  String
   date    String
 
-  cuk CUK @relation(fields: [cukCode], references: [cukCode])
+  cuk CUK? @relation(fields: [cukCode], references: [cukCode])
 }
 
 model Message {

@@ -8,6 +8,12 @@ export async function update(message: Message): Promise<Message | Error> {
 
         let includeDocument = false;
 
+        if (message.status && message?.status?.length > 0 && message.id !== undefined) {
+            prismaClient.status.createMany({
+                data: message.status
+            });
+        }
+
         /* Filter out empty values from the message object */
         const dataToUpdate = Object.fromEntries(
             Object.entries(message).filter(([_, value]) => value !== '')
@@ -25,9 +31,12 @@ export async function update(message: Message): Promise<Message | Error> {
             },
             include: {
                 documents: includeDocument,
+                status: true,
                 parameters: true
             }
         });
+
+
 
         // Get existing parameters for the message
         const existingParameters = updatedMessage.parameters;
@@ -43,7 +52,7 @@ export async function update(message: Message): Promise<Message | Error> {
 
         // Update existing parameters
         for (const parameter of toUpdate) {
-            await prismaClient.parameters.updateMany({
+            prismaClient.parameters.updateMany({
                 where: {
                     messageId: updatedMessage.id,
                     name: parameter.name
@@ -56,7 +65,7 @@ export async function update(message: Message): Promise<Message | Error> {
 
         // Create new parameters
         for (const parameter of toCreate) {
-            await prismaClient.parameters.create({
+            prismaClient.parameters.create({
                 data: {
                     name: parameter.name,
                     value: parameter.value,

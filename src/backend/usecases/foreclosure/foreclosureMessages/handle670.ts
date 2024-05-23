@@ -29,8 +29,10 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
   let actions = [];
   let status = '';
 
-  if (message.getStatus)
+  if (message.getStatus) {
     status = message.getStatus();
+    cuk.status = status;
+  }
 
   switch (status) {
     case MessageStatus.ENVIADO: {
@@ -39,8 +41,16 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
     }
     case MessageStatus.PREPARADO: default: {
       if (!cuk.cukCode) {
+        if (cuk.setCukCode)
+          cuk.setCukCode(message.origin ?? '');
+
+        actions.push(MessageActions.SIGN);
+        actions.push(MessageActions.CANCEL);
+
+        message.actions = actions.join(',');
 
         const createdCuk = await cukRepository.create(cuk);
+        
         if (createdCuk instanceof Error) {
           throw createdCuk;
         }
@@ -57,11 +67,6 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
       } else {
         message.cukCode = cuk.cukCode;
       }
-
-      actions.push(MessageActions.SIGN);
-      actions.push(MessageActions.CANCEL);
-
-      message.actions = actions.join(',');
       break;
     }
   }

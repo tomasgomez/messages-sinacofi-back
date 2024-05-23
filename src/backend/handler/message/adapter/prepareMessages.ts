@@ -3,9 +3,9 @@ import { Message } from '@/backend/entities/message/message';
 function prepareMessages(messages: Message[]): any{
     let preparedData = messages.map((message) => {
       let status = '';
-      if (message.status && message.status.length > 0) {
-        status = message.status[0].id;
-      }
+      
+      if (message.getStatus)
+        status = message.getStatus();
   
       return {
         ...message,
