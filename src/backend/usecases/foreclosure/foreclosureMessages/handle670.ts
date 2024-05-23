@@ -33,7 +33,11 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
     status = message.getStatus();
 
   switch (status) {
-    case MessageStatus.PREPARADO: {
+    case MessageStatus.ENVIADO: {
+      updateMessage(messageRepository, message);
+      break;
+    }
+    case MessageStatus.PREPARADO: default: {
       if (!cuk.cukCode) {
 
         const createdCuk = await cukRepository.create(cuk);
@@ -58,10 +62,6 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
       actions.push(MessageActions.CANCEL);
 
       message.actions = actions.join(',');
-      break;
-    }
-    case MessageStatus.ENVIADO: {
-      updateMessage(messageRepository, message);
       break;
     }
   }

@@ -46,7 +46,7 @@ async function create(message: Message): Promise < Message | Error > {
                 documents: {},
                 status: {
                     create: {
-                        id: message.status ?? MessageStatus.PREPARADO,
+                        id: MessageStatus.PREPARADO, //TODO: add status
                     }
                 },
                 parameters: {

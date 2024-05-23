@@ -62,6 +62,34 @@ model Message {
   NSQ NSQ?
 }
 
+model Parameters {
+  id           String  @default(uuid())
+  name         String
+  messageCode  String?
+  label        String?
+  type         String?
+  placeholder  String?
+  description  String?
+  defaultValue String?
+  priority     Int
+  value        String?
+
+  validations String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  messageId String
+  Message   Message @relation(fields: [messageId], references: [id])
+
+  cukCode    String?
+  CUK        CUK?        @relation(fields: [cukCode], references: [cukCode])
+  Properties Properties?
+
+  @@id([messageId, name, priority])
+  @@unique([messageId, name, priority])
+  @@index([messageId, name, priority])
+}
+
 model Status {
   id        String
   createdAt DateTime? @default(now())
@@ -147,34 +175,6 @@ model NSQ {
 
   @@id([id, institutionCode, areaCode])
   @@index([id, institutionCode, areaCode])
-}
-
-model Parameters {
-  id           String  @default(uuid())
-  name         String
-  messageCode  String?
-  label        String?
-  type         String?
-  placeholder  String?
-  description  String?
-  defaultValue String?
-  priority     Int
-  value        String?
-
-  validations String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  messageId String
-  Message   Message @relation(fields: [messageId], references: [id])
-
-  cukCode    String?
-  CUK        CUK?        @relation(fields: [cukCode], references: [cukCode])
-  Properties Properties?
-
-  @@id([messageId, name, priority])
-  @@unique([messageId, name, priority])
-  @@index([messageId, name, priority])
 }
 
 model Documents {

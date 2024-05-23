@@ -8,12 +8,8 @@ import {
     CUK
 } from '@/backend/entities/cuk/cuk';
 import {
-    handleNullValues,
     createDateRangeFilter
 } from '@/backend/utils/functions';
-import {
-    setCukHistory
-} from '@/backend/utils/foreclosure/history';
 import { Prisma } from '@prisma/client';
 
 
@@ -92,16 +88,16 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     };
 
     // check if filter has institutionCode
-    if (filter.institutionCode) {
-        messageArgs.where = {
-            OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
-        }
-        where.messages = {
-            some: {
-                OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
-            }
-        }
-    }
+    // if (filter.institutionCode) {
+    //     messageArgs.where = {
+    //         OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
+    //     }
+    //     where.messages = {
+    //         some: {
+    //             OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
+    //         }
+    //     }
+    // }
     // set values to query
     query.where = where;
     // define include

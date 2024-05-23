@@ -19,10 +19,6 @@ async function create(cuk: CUK): Promise < CUK | Error > {
 
         let cukData: Partial<CUK> = {};
 
-        /* Set the time for the CUK */
-        if (cuk.setTime)
-            cuk.setTime();
-
         /* Set the history for the CUK */
         let history: History = {
             status: cuk.status ?? '' +' '+ getDescriptionByStatus(cuk.status ?? ''),
@@ -45,11 +41,7 @@ async function create(cuk: CUK): Promise < CUK | Error > {
                 history: {
                     create: history
                 },
-                parameters: {
-                    createMany: {
-                        data: cukData.parameters || [],
-                    }
-                },
+                parameters: {},
                 messages: {
                     createMany: {
                         data: cukData.messages || []
