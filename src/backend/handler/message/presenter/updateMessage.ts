@@ -10,6 +10,9 @@ export function validateUpdateMessage(data: any): Message | Error {
 
   message.id = data.id;
 
+  if (message.setStatus)
+    message.setStatus(data.status);
+  
   if (data.messageCode) {
     message.messageCode = data.messageCode;
   }

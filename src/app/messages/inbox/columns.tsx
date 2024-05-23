@@ -102,7 +102,7 @@ export const rowOptions: RowOptions = {
   description: {
     align: Alignment.LEFT,
   },
-  sender: {
+  origin: {
     align: Alignment.LEFT,
   },
   receivedDate: {

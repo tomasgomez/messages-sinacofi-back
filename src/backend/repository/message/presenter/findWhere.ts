@@ -7,6 +7,9 @@ function findWhere (filter: FilterMessage): Partial<Message> {
 
     // Loop through the provided attributes and add them to the where object
     for (const key in filter) {
+        if (key === 'status') {
+            continue;
+        }
         if (Object.hasOwn(where, key)) {
             const value = filter[key as keyof FilterMessage];
             if (value !== undefined) {
@@ -14,7 +17,7 @@ function findWhere (filter: FilterMessage): Partial<Message> {
             }
         }
     }
-
+    
     return where;
 }
 

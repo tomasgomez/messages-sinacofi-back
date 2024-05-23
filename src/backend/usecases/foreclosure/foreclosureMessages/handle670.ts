@@ -27,14 +27,8 @@ import { updateMessage } from '../../message/updateMessage';
 export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
 
   let actions = [];
-  let status = '';
 
-  if (message.getStatus) {
-    status = message.getStatus();
-    cuk.status = status;
-  }
-
-  switch (status) {
+  switch (message.statusCode) {
     case MessageStatus.ENVIADO: {
       updateMessage(messageRepository, message);
       break;

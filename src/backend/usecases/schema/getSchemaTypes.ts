@@ -1,19 +1,15 @@
 import {
   Filter
-} from '../../entities/schema/filter';
+} from '@/backend/entities/schema/filter';
 import {
   MessageSchema,
-  MessageSchemaFront,
-  Parameter,
-  Properties,
-  Validations
-} from '../../entities/schema/messageSchema';
+} from '@/backend/entities/schema/messageSchema';
 import {
   getEnvVariable
-} from '../../utils/functions';
+} from '@/backend/utils/functions';
 import {
   envVariables
-} from '../../utils/variables';
+} from '@/backend/utils/variables';
 import {
   get
 } from "@/backend/adapters/rule/get";

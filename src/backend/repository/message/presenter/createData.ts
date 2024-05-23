@@ -16,7 +16,7 @@ function createData (message: Message): Partial<Message> {
         }
     }
 
-    
+    delete messageData.statusCode;
 
     return messageData;
 }

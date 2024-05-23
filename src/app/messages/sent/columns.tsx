@@ -26,7 +26,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
         style={{ padding: 0 }}
         onClick={() =>
           router.push(
-            `/messages/create?institutionId=${row.receiver}&messageCode=${row.messageCode}&cloneId=${row.id}`
+            `/messages/create?institutionId=${row.destination}&messageCode=${row.messageCode}&cloneId=${row.id}`
           )
         }
       >
@@ -132,7 +132,7 @@ export const rowOptions: RowOptions = {
   description: {
     align: Alignment.LEFT,
   },
-  receiver: {
+  destination: {
     align: Alignment.LEFT,
   },
   receivedDate: {

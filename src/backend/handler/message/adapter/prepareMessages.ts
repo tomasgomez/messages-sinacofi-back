@@ -4,8 +4,9 @@ function prepareMessages(messages: Message[]): any{
     let preparedData = messages.map((message) => {
       let status = '';
       
-      if (message.getStatus)
-        status = message.getStatus();
+      status = message.status
+            ?.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)) // Descending order
+            ?. [0]?.id ?? ''; // Get the first element's id or return an empty string
   
       return {
         ...message,

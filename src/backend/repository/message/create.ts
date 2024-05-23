@@ -29,20 +29,18 @@ async function create(message: Message): Promise < Message | Error > {
             message.setTime();
         }
 
+        let status = message.statusCode ?? MessageStatus.PREPARADO;
         // Prepare message data for Prisma create
         const messageData = createData(message);
 
         let parameters: Parameter[] = [];
 
-        if (message.parameters) {
-            parameters = message.parameters;
+        if (message.parameters && message.cukCode && message.cukCode !== '') {
+            parameters = parameters?.map((parameter) => {
+                parameter.cukCode = message.cukCode;
+                return parameter;
+            });
         }
-
-        // Default status is PREPARADO
-        let status: string = MessageStatus.PREPARADO;
-
-        if (message.getStatus)
-            status = message.getStatus();
 
         // Create a new message with associated parameters and documents
         const newMessage = await prismaClient.message.create({

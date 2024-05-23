@@ -38,10 +38,9 @@ export interface SentData {
   priority?: string;
   status: string;
   stateProgress?: string;
-  sender: string;
+  origin: string;
   creationDate: string;
   creationTime: string;
-  receiver?: string;
   receivedDate: string;
   receivedTime: string;
   documents?: any[];
@@ -150,10 +149,9 @@ export interface MSDetail {
   description: string;
   priority: string;
   status: string;
-  sender: string;
+  origin: string;
   creationDate: string;
   creationTime: string;
-  receiver: string;
   receivedDate: string;
   receivedTime: string;
   parameters: MSParameter[];

@@ -36,6 +36,8 @@ export class Message {
     status ? : Status[] ;
     cukCode ? : string | null;
 
+    statusCode? : string | null;
+
     setTime ? () {
 
         /* Get the Chilean time */

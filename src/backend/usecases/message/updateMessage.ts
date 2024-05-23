@@ -5,11 +5,35 @@ import { prepareMessages } from "@/backend/handler/message/adapter/prepareMessag
 import {
     MessageRepository
 } from "@/backend/repository/messageRepository";
+import { MessageStatus } from "@/utils/messagesStatus";
 
 
 // Create message function
 export async function updateMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
     try {
+        let status = '';
+
+        if (message.status && message.getStatus) {
+            status = message.getStatus();    
+        }
+
+        // Update the status of the message
+        switch (status) {
+            case MessageStatus.ENVIADO:
+                if (message.setReceivedTime) {
+                    message.setReceivedTime();
+                }
+                if (message.setStatus) {
+                    message.setStatus(MessageStatus.BANDEJA_DE_ENTRADA);
+                }
+                break;
+            case MessageStatus.BANDEJA_DE_ENTRADA:
+                if (message.setStatus) {
+                    message.setStatus(MessageStatus.ENVIADO);
+                }
+                break;
+        }
+
         /* Update the message */
         let messageResponse = await repository.update(message);
 

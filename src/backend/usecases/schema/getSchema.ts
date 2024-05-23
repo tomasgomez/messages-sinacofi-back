@@ -1,13 +1,13 @@
 import { MessageRepository } from '@/backend/repository/messageRepository';
 import {
   MessageSchema
-} from '../../entities/schema/messageSchema';
+} from '@/backend/entities/schema/messageSchema';
 import {
   getEnvVariable
-} from '../../utils/functions';
+} from '@/backend/utils/functions';
 import {
   envVariables
-} from '../../utils/variables';
+} from '@/backend/utils/variables';
 import {
   get
 } from "@/backend/adapters/rule/get";
@@ -74,8 +74,6 @@ export async function getSchema(messageCode: string, cuk?: string): Promise < Me
             schema.defaultValue = selected.value;
           }
         }
-
-        
 
         schema.value = params?.value;
         if (schema && schema.name == 'CUK'){

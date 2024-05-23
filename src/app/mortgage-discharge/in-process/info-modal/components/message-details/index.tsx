@@ -43,7 +43,7 @@ export function MessageDetails({ dataMessage = [] }: { dataMessage: any }) {
             <Grid item xs={2}>
               <Typography fontSize={"12px"}>Institución Destino</Typography>
               <StyledModalItem noWrap>
-                {dataHeader?.receiver || "-"}
+                {dataHeader?.destination || "-"}
               </StyledModalItem>
             </Grid>
             <Grid item xs={2}>

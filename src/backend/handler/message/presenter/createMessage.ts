@@ -16,6 +16,7 @@ export function validateCreateMessage(data: any): Message | Error {
   message.originArea = processStringField(originArea);
   message.destinationArea = processStringField(destinationArea);
   message.cukCode = processStringField(cukCode);
+  message.statusCode = status;
 
   // Add parameters to the message
   if (parameters && typeof parameters === 'object') {
@@ -38,7 +39,7 @@ export function validateCreateMessage(data: any): Message | Error {
         defaultValue: element.defaultValue ?? '',
         priority: counter,
         value: value,
-        validations: element.validations.toString() ?? '',
+        validations: JSON.stringify(element.validations),
       }
       parametersMessage.push(parameter)
       counter++;

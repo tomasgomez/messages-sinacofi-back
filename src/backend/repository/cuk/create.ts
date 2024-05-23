@@ -34,6 +34,8 @@ async function create(cuk: CUK): Promise < CUK | Error > {
             }
         }
 
+        console.log("cuk:",cukData)
+
         let newCUK = await prismaClient.cUK.create({
             data: {
                 ...cukData,
@@ -41,11 +43,7 @@ async function create(cuk: CUK): Promise < CUK | Error > {
                     create: history
                 },
                 parameters: {},
-                messages: {
-                    createMany: {
-                        data: cukData.messages || []
-                    }
-                }
+                messages: {}
             },
             include: {
                 history: true,

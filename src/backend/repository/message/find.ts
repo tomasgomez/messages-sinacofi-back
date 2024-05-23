@@ -4,6 +4,7 @@ import { handleNullValues } from "@/backend/utils/functions";
 import { FilterMessage } from "@/backend/entities/message/filter";
 import { findSelect } from "@/backend/repository/message/presenter/findSelect";
 import { findWhere } from "@/backend/repository/message/presenter/findWhere";
+import { findStatus } from "./presenter/findStatus";
 
 async function find(filter: FilterMessage): Promise<Message[] | Error> {
     try {
@@ -12,11 +13,16 @@ async function find(filter: FilterMessage): Promise<Message[] | Error> {
         
         let where = findWhere(filter)
         let select: any = findSelect(filter);
-
+        let status: any = {};
+        
+        if (filter.status && filter.status.length > 0) {
+            status = findStatus(filter);
+        }
+        
         const messages = await prismaClient.message.findMany({
             where: {
                 ...where,
-                status: {},
+                status: status,
                 documents: {},
                 parameters: {},
             },
@@ -27,7 +33,7 @@ async function find(filter: FilterMessage): Promise<Message[] | Error> {
             take: parseInt(filter.count ?? '5', 10) ?? 5,
             skip: parseInt(filter.offset ?? '0', 10) ?? 0,
         });
-
+        
 
         // If no messages are found, return an error
         if (messages.length === 0) {
@@ -36,12 +42,7 @@ async function find(filter: FilterMessage): Promise<Message[] | Error> {
 
         // Handle null values in each message
         messages.forEach(message => {
-            handleNullValues(message, filter);
-
-            if (!filter.detail) {
-                message.documents = [];
-                message.parameters = [];
-            }
+            handleNullValues(message);
         });
 
         return messages;

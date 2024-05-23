@@ -22,7 +22,7 @@ export default function InboxScreen() {
       // selectedInstitution = await intitutionCodeToLabel(selectedInstitution)
       // because we have to filter by label
       setIsLoading(true);
-      await fetch(`/api/message?status=06&receiver=${selectedInstitution}`)
+      await fetch(`/api/message?status=06&destination=${selectedInstitution}`)
         .then((res) => res.json())
         .then((res) => {
           setData(res);
