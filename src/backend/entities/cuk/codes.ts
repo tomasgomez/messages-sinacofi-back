@@ -23,9 +23,8 @@ export enum ForeclosureStatus {
     SENT = "05",
     RECEIVED = "06",
     ACCEPTED = "07",
-    REQUESTED = "09",
+    SENT_LIQUIDATION = "09",
   }
-  
 
  export function isForeclosureMessageCode(code?: string ): boolean {
 

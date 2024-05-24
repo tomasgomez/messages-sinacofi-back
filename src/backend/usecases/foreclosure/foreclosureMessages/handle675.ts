@@ -15,18 +15,31 @@ export async function handle675(cuk: CUK, message: Message, cukRepository: CUKRe
     if (updatedMessage instanceof Error) {
         return updatedMessage;
     }
+
     let status = '';
 
-    if (message.getStatus)
-        status = message.getStatus();
+    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
+            
+        status = message.statusCode;
 
-    /* If the message status is 05, create a new message with status 06 */
-    if (status == MessageStatus.ENVIADO ) {
-        if (updatedMessage.setReceivedTime) {
-            updatedMessage.setReceivedTime();
-        }
-       //TODO: create new status 05 message
-       //TODO: create new status 06 message
+        message.setStatus(status);
+    }
+
+    // Update the status of the message
+    switch (status) {
+        case MessageStatus.ENVIADO:
+            if (message.setReceivedTime) {
+                message.setReceivedTime();
+            }
+            if (message.setStatus) {
+                message.setStatus(MessageStatus.BANDEJA_DE_ENTRADA);
+            }
+            break;
+        case MessageStatus.BANDEJA_DE_ENTRADA:
+            if (message.setStatus) {
+                message.setStatus(MessageStatus.ENVIADO);
+            }
+            break;
     }
     
     return updatedMessage;

@@ -15,7 +15,6 @@ import {
 } from '../message/createMessage';
 import {
   MessageTypes,
-  MessageDescriptions
 } from '@/backend/entities/message/types';
 import {
   MessageRepository
@@ -71,6 +70,18 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
 
       case ForeclosureStatus.SIGN_IN_PROGRESS:
         cuk.status = ForeclosureStatus.SIGN_IN_PROGRESS;
+        break;
+
+      case ForeclosureStatus.ACCEPTED:
+        messageType = MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO
+        cuk.status = ForeclosureStatus.ACCEPTED;
+        hasToUpdateMessage = true;
+        break;
+
+      case ForeclosureStatus.SENT_LIQUIDATION:
+        messageType = MessageTypes.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO
+        cuk.status = ForeclosureStatus.SENT_LIQUIDATION;
+        hasToUpdateMessage = true;
         break;
 
       default:
