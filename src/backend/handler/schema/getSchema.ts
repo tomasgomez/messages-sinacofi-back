@@ -43,6 +43,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
           });
         }
 
+
         let adaptedSchema = adaptSchema(schemaResponse, userData);
 
         /* Return the Schema */

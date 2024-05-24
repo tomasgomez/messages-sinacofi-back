@@ -27,22 +27,24 @@ const ProgressBar = ({
   setSelectorMessage: Function;
   selectedMessage: string | null;
 }) => {
-  let firstElement: Message | null = null;
-  let lastElement: Message | null = null;
-  let insideElements: any = [];
+  let blockList: any[] = [];
 
-  if (data.length > 0) {
-    firstElement = data[0];
-    if (data.length > 7) {
-      lastElement = data[data.length - 1];
-      insideElements = data.slice(1, data.length - 1);
-    } else {
-      insideElements = data.slice(1, data.length);
-    }
-  }
-  while (insideElements.length < 6) {
-    insideElements.push(null);
-  }
+  if (data.length < 8) {
+    const nullCount = 8 - data.length;
+    blockList = [...data, ...new Array(nullCount).fill(null)];
+  } else blockList = [...data];
+
+  blockList = blockList.map((message, index) => {
+    return {
+      ...message,
+      border:
+        index === 0
+          ? "left"
+          : index !== blockList.length - 1
+          ? "center"
+          : "right",
+    };
+  });
 
   const handleSelectMessage = (id: string | undefined) => {
     if (!id || selectedMessage === id) {
@@ -59,109 +61,43 @@ const ProgressBar = ({
         <StyledTitleProgressBar>Seguimiento de Mensajes</StyledTitleProgressBar>
       </StyledContainerTitleProgressBar>
       <StyledContainerBar>
-        <StyledContainerBlock isSelected={isSelectedMessage(firstElement?.id)}>
-          {firstElement && (
-            <StyledContainerBlockStatus
-              onClick={() => handleSelectMessage(firstElement?.id)}
-            >
-              <StyledContainerIcon status={firstElement?.status}>
-                {!getIsPendingStatus(firstElement?.status) && (
-                  <StyledCheckIcon
-                    fontSize="small"
-                    iconColor={firstElement?.status}
-                  />
-                )}
-              </StyledContainerIcon>
-              <StyledTypographyCode>
-                MS {firstElement?.messageCode}
-              </StyledTypographyCode>
-              <StyledTypographyStatus>
-                {getStatusText(firstElement?.status, firstElement?.messageCode)}
-              </StyledTypographyStatus>
-            </StyledContainerBlockStatus>
-          )}
-          <StyledLinearProgress
-            variant="determinate"
-            value={firstElement ? 100 : 0}
-            borderRadius="left"
-            backgroundColor={
-              getIsPendingStatus(firstElement?.status) ? "#00B2E2" : "#00BC70"
-            }
-            borderRight={!!firstElement}
-          />
-        </StyledContainerBlock>
-
-        {insideElements.map((elem: any, i: number) => {
-          const element = elem;
-          const status = element?.status;
+        {blockList.map((elem: any, i: number) => {
+          const status = elem?.status;
+          const border = elem?.border;
+          const messageCode = elem?.messageCode;
+          const id = elem?.id;
           return (
             <StyledContainerBlock
-              isSelected={isSelectedMessage(element?.id)}
+              isSelected={isSelectedMessage(id)}
               key={`key-progress-block-${i}`}
             >
-              {element && (
+              {id && (
                 <StyledContainerBlockStatus
-                  onClick={() => handleSelectMessage(element?.id)}
+                  onClick={() => handleSelectMessage(id)}
                 >
-                  <StyledContainerIcon status={element?.status}>
+                  <StyledContainerIcon status={status}>
                     {!getIsPendingStatus(status) && (
-                      <StyledCheckIcon
-                        fontSize="small"
-                        iconColor={element?.status}
-                      />
+                      <StyledCheckIcon fontSize="small" iconColor={status} />
                     )}
                   </StyledContainerIcon>
-                  <StyledTypographyCode>
-                    MS {element?.messageCode}
-                  </StyledTypographyCode>
+                  <StyledTypographyCode>MS {messageCode}</StyledTypographyCode>
                   <StyledTypographyStatus>
-                    {getStatusText(element?.status, element?.messageCode)}
+                    {getStatusText(status, messageCode)}
                   </StyledTypographyStatus>
                 </StyledContainerBlockStatus>
               )}
               <StyledLinearProgress
                 variant="determinate"
-                value={element ? 100 : 0}
-                borderRadius="center"
+                value={id ? 100 : 0}
+                borderRadius={border}
                 backgroundColor={
                   getIsPendingStatus(status) ? "#00B2E2" : "#00BC70"
                 }
-                borderRight={!!element}
+                borderRight={!!id}
               />
             </StyledContainerBlock>
           );
         })}
-        <StyledContainerBlock isSelected={isSelectedMessage(lastElement?.id)}>
-          {lastElement && (
-            <StyledContainerBlockStatus
-              onClick={() => handleSelectMessage(lastElement?.id)}
-            >
-              <StyledContainerIcon status={lastElement?.status}>
-                {!getIsPendingStatus(lastElement?.status) && (
-                  <StyledCheckIcon
-                    fontSize="small"
-                    iconColor={lastElement?.status}
-                  />
-                )}
-              </StyledContainerIcon>
-              <StyledTypographyCode>
-                MS {lastElement?.messageCode}
-              </StyledTypographyCode>
-              <StyledTypographyStatus>
-                {getStatusText(lastElement?.status, lastElement?.messageCode)}
-              </StyledTypographyStatus>
-            </StyledContainerBlockStatus>
-          )}
-
-          <StyledLinearProgress
-            variant="determinate"
-            value={lastElement ? 100 : 0}
-            borderRadius="right"
-            backgroundColor={
-              getIsPendingStatus(lastElement?.status) ? "#00B2E2" : "#00BC70"
-            }
-          />
-        </StyledContainerBlock>
       </StyledContainerBar>
     </StyledContainerProgressBar>
   );

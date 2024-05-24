@@ -5,11 +5,12 @@ export function adaptSchemaTypes(dataToAdapt: any): Schema[] {
 
     const schemas: Schema[] = [];
 
+    console.log(dataToAdapt)
     // Check if data is not empty and is an array
-    if (dataToAdapt?.data instanceof Array && dataToAdapt.data.length > 0) {
+    if (dataToAdapt instanceof Array && dataToAdapt.length > 0) {
 
         // Iterate through each item in the data array
-        for (const schema of dataToAdapt.data) {
+        for (const schema of dataToAdapt) {
 
             // Destructure properties from schema object
             const { messageCode, description, name } = schema;

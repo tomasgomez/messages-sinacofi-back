@@ -34,7 +34,9 @@ const CustomCell = ({
       highlightRow={
         (highlightLastRow && isLastRow) || row.status === "01" || !row.status
       }
-      highlightRowRejected={row.status === "05" && row.messageCode === "672"}
+      highlightRowRejected={
+        isLastRow && row.status === "06" && row.messageCode === "672"
+      }
       withBorderLeft={highlightLastRow && isLastRow && isFirstColumn}
       scope="row"
       style={rowOptions?.style}

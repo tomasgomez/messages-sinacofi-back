@@ -14,13 +14,11 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { IconButton } from "@mui/material";
 import { formatModalDetailsCompleted } from "@/utils/mortgage-discharge";
-import {
-  ChannelDetailsMSInfoModal,
-  PropertyDetailsMSInfoModal,
-} from "@/types/mortgage-discharge";
+import { DetailsMSInfoModal } from "@/types/mortgage-discharge";
 import { Message } from "@/app/component/inbox-table/type";
+import DocumentCard from "../document-card";
 
-export function FirstMessageSection({
+export function MessageDetails670({
   dataMessage,
   showOnlyOneMessage = false,
 }: {
@@ -29,8 +27,9 @@ export function FirstMessageSection({
 }) {
   const [showContent, setShowContent] = React.useState(false);
 
-  const { dataHeader, channelDetailsMS, propertyDetailsMS, bankDetailsMS } =
-  formatModalDetailsCompleted(dataMessage);
+  const { dataHeader, detailsMS, bankDetailsMS, documents } =
+    formatModalDetailsCompleted(dataMessage);
+
   const handleShowContent = () => {
     setShowContent(!showContent);
   };
@@ -87,7 +86,7 @@ export function FirstMessageSection({
               <Grid item xs={2}>
                 <Typography fontSize={"12px"}>Institución Destino</Typography>
                 <StyledModalItem noWrap>
-                  {dataHeader?.sender || "-"}
+                  {dataHeader?.receiver || "-"}
                 </StyledModalItem>
               </Grid>
               <Grid item xs={2}>
@@ -120,12 +119,13 @@ export function FirstMessageSection({
             Contenido del Mensaje
           </StyledMoalSection>
           <Box display="flex">
-            <Box width="400px" borderRight="1px solid #E5E5E5" mr="24px">
-              {channelDetailsMS?.map((field: ChannelDetailsMSInfoModal) => {
+            <Box borderRight="1px solid #E5E5E5">
+              {detailsMS.slice(0, 10)?.map((field: DetailsMSInfoModal) => {
                 return (
                   <Stack
                     display="flex"
                     flexDirection="row"
+                    mr="24px"
                     mb={1}
                     key={`${field.accessor}-${field.value}`}
                   >
@@ -140,12 +140,13 @@ export function FirstMessageSection({
               })}
             </Box>
             <Box>
-              {propertyDetailsMS?.map((field: PropertyDetailsMSInfoModal) => {
+              {detailsMS.slice(11)?.map((field: DetailsMSInfoModal) => {
                 return (
                   <Stack
                     display="flex"
                     flexDirection="row"
                     mb={1}
+                    ml="24px"
                     key={`${field.accessor}-${field.value}`}
                   >
                     <Typography fontSize={"12px"} color="#49454F" mr={1.5}>
@@ -197,10 +198,16 @@ export function FirstMessageSection({
               Apoderado/Enviador:
             </Typography>
             <StyledModalItem noWrap>
-              {`${bankDetailsMS?.debsName || "N/A"} - ${
-                bankDetailsMS?.debtorRut || "N/A"
-              }`}
+              {`${bankDetailsMS?.sign_2 || "N/A"}`}
             </StyledModalItem>
+          </Stack>
+          <Stack display="flex" flexDirection="row" alignItems="center">
+            {documents.map((document: any, index: number) => (
+              <DocumentCard
+                document={document}
+                key={`${document.documentName}-${index}-document`}
+              />
+            ))}
           </Stack>
         </Stack>
       )}

@@ -20,16 +20,14 @@ export const StyledContentCard = styled(Box)<StyledContentCardProps>(
     margin: "32px",
     height: height ? `${height}px` : "auto", // Si height existe, se establece, de lo contrario, se ajusta automáticamente
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "scroll",
+    overflowX: "scroll",
+    flexDirection: "column",
   })
 );
 
 export const StyledCard = styled(Box)`
-  width: 100%;
+  width: 1178px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin: 16px;
 `;
@@ -143,7 +141,6 @@ export const StyledTypographyData = styled(Typography)`
 export const StyledContainerProgressBar = styled(Box)`
   height: 80px;
   display: flex;
-  width: 100%;
   justify-content: flex-start;
   align-items: center;
   padding: 16px;
@@ -164,7 +161,6 @@ export const StyledTitleProgressBar = styled(Typography)`
 `;
 
 export const StyledContainerBar = styled(Box)`
-  width: 1023px;
   display: flex;
   overflow-x: scroll;
 `;
@@ -299,7 +295,7 @@ export const StyledLinearProgress = styled(
     borderRight,
   }: StyledLinearProgressProps): CSSObject => ({
     height: 8,
-    width: 125,
+    width: 128,
     borderRadius: getBorderRadius(borderRadius),
     borderRight: borderRight ? "1px solid #FFF" : "none",
     backgroundColor: "#d9d9d9",
