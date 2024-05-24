@@ -22,7 +22,8 @@ export enum ForeclosureStatus {
     PREPARED = "01",
     SENT = "05",
     RECEIVED = "06",
-
+    ACCEPTED = "07",
+    REQUESTED = "09",
   }
   
 
