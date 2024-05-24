@@ -54,6 +54,7 @@ const getActions = (
   if (statusMessage === "06" || statusMessage === "05") {
     return ["details"];
   }
+  return [];
 };
 const formatModalInfoHeader = (message: Message): DataHeaderInfoModal => {
   const {
@@ -90,12 +91,13 @@ const getDetailsObjetToMSCode = (messageCode: string) => {
   if (messageCode === "675") return paramsTo675;
   return [];
 };
+
 export const formatCardData = (
   data: MortgageDischargeCard[]
 ): DataMortgageDischarge[] => {
   const formattedData = data.map((elem) => {
     let { messages: unSortedMessages } = elem;
-    let messages = sortMessagesOldToNew(unSortedMessages);
+    let messages = sortMessagesOldToNew(unSortedMessages || []);
     // // To Mock Data
     // const mewMessages2: Message[] = [
     //   messages[0],
@@ -163,7 +165,7 @@ export const formatCardData = (
       cukStatus: codeData.cukStatus,
     };
     const modalTrackingData: ModalTrackingData = {
-      cukCode: elem.cukCode,
+      cukCode: elem.cukCode || "",
       seller: `${elem?.ownerDni || ""} ${elem?.owner || ""}`,
       buyer: `${elem?.buyerDni || ""} ${elem?.buyer || ""}`,
       debtor: `${elem?.borrowerDni || ""} ${elem?.borrower || ""}`,
@@ -174,7 +176,11 @@ export const formatCardData = (
     const newMessaje = messages.map((message) => {
       return {
         ...message,
-        actions: getActions(message.messageCode, message.status, elem.status),
+        actions: getActions(
+          message.messageCode,
+          message.status,
+          elem.status || ""
+        ),
       };
     });
     return {

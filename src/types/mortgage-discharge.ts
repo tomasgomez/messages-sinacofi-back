@@ -6,30 +6,30 @@ import {
 export interface MortgageDischargeCard extends MortgageDischargeData {}
 
 export interface CodeCardMortgageDischarge {
-  cukCode: string;
-  foreclosureDate: string;
-  cukStatus: string;
-  lastMessageCode: string;
+  cukCode?: string;
+  foreclosureDate?: string;
+  cukStatus?: string;
+  lastMessageCode?: string;
 }
 
 export interface InforCardMortgageDischarge {
-  channel: string;
-  operationStatus: string;
-  buyer: string;
-  institutionDestination: string;
-  buyerDni: string;
-  cukStatus: string;
+  channel?: string;
+  operationStatus?: string;
+  buyer?: string;
+  institutionDestination?: string;
+  buyerDni?: string;
+  cukStatus?: string;
 }
 
 // TODO change after backend changes
 export interface ModalTrackingData {
-  cukCode: string;
-  seller: string;
-  buyer: string;
-  debtor: string;
-  region: string;
-  institutionDestination: string;
-  history: any[];
+  cukCode?: string;
+  seller?: string;
+  buyer?: string;
+  debtor?: string;
+  region?: string;
+  institutionDestination?: string;
+  history?: any[];
 }
 
 export interface DataMortgageDischarge {
