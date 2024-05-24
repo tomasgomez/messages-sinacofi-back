@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --ignore-scripts && npm install -g ts-node && npm cache clean --force
+RUN npm install -g ts-node && npm cache clean --force
 
 # Copy the rest of your app's source code from your host to your image filesystem.
 COPY . .
@@ -60,3 +60,4 @@ EXPOSE $PORT
 
 # Start the application
 CMD ["node", "server.js"]
+

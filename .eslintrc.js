@@ -13,10 +13,10 @@ module.exports = {
     '@typescript-eslint',
   ],
   extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
+    // 'eslint:recommended',
+    // 'plugin:react/recommended',
+    // 'plugin:@typescript-eslint/recommended',
+    // 'plugin:react-hooks/recommended',
     'next/core-web-vitals',
   ],
   settings: {

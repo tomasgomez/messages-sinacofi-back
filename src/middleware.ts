@@ -11,11 +11,16 @@ const deleteSession = (res: NextResponse) => {
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const idcs = await iamOracleAPI.getWellKnown();
+  if (idcs instanceof Error) {
+    console.log('error', idcs);
+    return NextResponse.redirect(new URL('/not_found', request.url));
+  }
+
   const access_token = cookies().get('access_token')?.value;
 
   // get the path and code on the url
   const path = request.nextUrl.pathname;
-  const code = request.nextUrl.searchParams.get('code');
+  const code = request.nextUrl.searchParams.get('code') || '';
   const codeChallenge = cookies().get('codeChallenge')?.value 
 
   if(access_token){
@@ -115,6 +120,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: '/((?!api|_next/static|_next/image|.*\\.png$).*)',
+  matcher: '/((?!api|_next/static|_next/image|not_found|.*\\.png$).*)',
 }
-
