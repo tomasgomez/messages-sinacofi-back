@@ -1,6 +1,10 @@
 "use client";
 
-import { Columns, Alignment, RowOptions } from "@/app/component/inbox-table/type";
+import {
+  Columns,
+  Alignment,
+  RowOptions,
+} from "@/app/component/inbox-table/type";
 import React, { useContext } from "react";
 import { IconButton, Box } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
@@ -9,13 +13,13 @@ import { CardContext } from "../../in-process/store/ModalStore";
 import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
-import { base64ToBlob, downloadFile } from "./utils";
+import { base64ToBlob, downloadFile } from "../../utils";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const AccionesColumn = ({ row }: { row: any }) => {
-  const { status, messageCode } = row;
+  const { actions, messageCode, status } = row;
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
   const router = useRouter();
-
   const handlerOpenModal = (row: any) => {
     setSelectedMessage(row);
     setModalIsOpen(true);
@@ -29,32 +33,28 @@ const AccionesColumn = ({ row }: { row: any }) => {
         alignItems: "center",
       }}
     >
-      {status === "01" && (
+      {actions.includes("sing") && (
         <IconButton
           key={`drive-icon-${row.id}`}
-          aria-label="DriveFileRenameOutlineIcon"
-          style={{ padding: 0, color: "#00B2E2" }}
-          onClick={() =>
-            messageCode === "670"
-              ? router.push(
-                  `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
-                )
-              : router.push(
-                  `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
-                )
+          style={{ padding: 0, color: "#00B2E2", margin: 2 }}
+          onClick={
+            () =>
+              router.push(
+                `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+              )
+            // case sent to the messagecode 670
+            // router.push(
+            //     `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
+            //   )
           }
         >
-          {messageCode === "670" ? (
-            <DriveFileRenameOutlineIcon />
-          ) : (
-            <SendOutlinedIcon />
-          )}
+          <DriveFileRenameOutlineIcon />
         </IconButton>
       )}
-      {(!status || status === "-") && (
+      {actions.includes("sent") && (
         <IconButton
           key={`sent-icon-${row.id}`}
-          style={{ padding: 0, color: "#00B2E2" }}
+          style={{ padding: 0, color: "#00B2E2", margin: 2 }}
           onClick={() =>
             router.push(
               `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
@@ -64,18 +64,32 @@ const AccionesColumn = ({ row }: { row: any }) => {
           <SendOutlinedIcon />
         </IconButton>
       )}
-      {/* Detail Icon */}
-      {(status === "05" || status === "06") && (
+      {actions.includes("details") && (
         <IconButton
           key={`detail-icon-${row.id}`}
-          aria-label="DetailOutlineIcon"
-          style={{ padding: 0, color: "#565656" }}
+          style={{ padding: 0, color: "#565656", margin: 2 }}
           onClick={() => handlerOpenModal(row)}
         >
           <InfoOutlinedIcon />
         </IconButton>
       )}
-      {/* TODO ADD Sent Icon */}
+      {messageCode === "670" && status === "01" && (
+        <IconButton
+          key={`edit-icon-${row.id}`}
+          style={{
+            padding: 0,
+            color: actions.includes("edit") ? "#00B2E2" : "#565656",
+            margin: 2,
+          }}
+          onClick={() =>
+            router.push(
+              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+            )
+          }
+        >
+          <EditOutlinedIcon />
+        </IconButton>
+      )}
     </Box>
   );
 };
@@ -83,7 +97,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
 const acciones: Columns = {
   id: "actions",
   label: "Acciones",
-  align: Alignment.LEFT,
+  align: Alignment.CENTER,
   sortable: false,
   render: ({ row }: { row: any }) => {
     return <AccionesColumn row={row} />;
@@ -159,7 +173,6 @@ export const columnsCard: Columns[] = [
   documents,
   acciones,
 ];
-
 
 export const rowOptions: RowOptions = {
   NSR: {

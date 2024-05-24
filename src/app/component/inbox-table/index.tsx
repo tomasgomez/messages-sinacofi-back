@@ -51,7 +51,6 @@ export default function EnhancedTable(props: {
     footerComponent = null,
     isExpansible = false,
     rowOptions = {},
-    endDetailsText = false,
   } = props;
 
   const [order, setOrder] = React.useState<Order>(defaultOrder || "asc");

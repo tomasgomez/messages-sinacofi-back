@@ -45,7 +45,7 @@ export interface DataHeaderInfoModal {
   messageCode: string;
   description: string;
   LSN?: number;
-  sender: string;
+  receiver?: string;
   creationDate: string;
   creationTime: string;
   priority?: string;
@@ -58,65 +58,29 @@ interface ObjectInfoModal {
   value?: string;
 }
 
-export interface ChannelDetailsMSInfoModal extends ObjectInfoModal {
-  accessor:
-    | "emissionDate"
-    | "channel"
-    | "operationType"
-    | "notaryRepertoire"
-    | "repertoireDate"
-    | "repertoireNumber"
-    | "gentlemenInstitution"
-    | "donDonaSociety"
-    | "rutSeller"
-    | "buyer"
-    | "rutBuyer";
-}
-
-export interface PropertyDetailsMSInfoModal extends ObjectInfoModal {
-  accessor:
-    | "correspondingProperty"
-    | "propertyDescription"
-    | "commune"
-    | "region"
-    | "bank"
-    | "buyer"
-    | "mutualForUF"
-    | "payableWithin"
-    | "complementaryMutualForUF"
-    | "cukCode"
-    | "debsName"
-    | "debtorRut"
-    | "amountUF";
-}
+export interface DetailsMSInfoModal extends ObjectInfoModal {}
 
 export interface BankDetailsMSInfoModal {
   bank: string;
   amountHeldByTheBank: string;
-  debsName: string;
-  debtorRut: string;
+  sign_2: string;
 }
 export interface InfoModalMortgageDischarge {
   dataHeader: DataHeaderInfoModal;
-  channelDetailsMS: ChannelDetailsMSInfoModal[];
-  propertyDetailsMS: PropertyDetailsMSInfoModal[];
+  detailsMS: DetailsMSInfoModal[];
   bankDetailsMS: BankDetailsMSInfoModal;
+  documents: any[];
 }
 
-export interface SmallMsDetailInfoModal extends ObjectInfoModal {
-  accessor:
-    | "creationDate"
-    | "observations"
-    | "sign"
-    | "debsName"
-    | "debtorRut"
-    | "requiresPrepaidSettlement"
-    | "";
+export interface SmallMsDetailInfoModal {
+  title?: string;
+  data: ObjectInfoModal[][];
 }
 
 export interface SmallMsInfoModalMortgageDischarge {
   smallMsDetail: SmallMsDetailInfoModal[];
   dataHeader: DataHeaderInfoModal;
+  documents: any[];
 }
 
 export interface Filter {

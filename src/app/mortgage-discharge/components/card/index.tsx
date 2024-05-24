@@ -98,49 +98,50 @@ const CarDischarge = ({
 
   return (
     <StyledContentCard>
-      <StyledCardContent>
-        <StyledBoxShadow borderRadiusComplete={isOpen} style={{ zIndex: 3 }}>
-          <StyledCard>
-            {isOpen ? (
-              <IconButton
-                style={{ color: "#565656" }}
-                onClick={handlerColapseCard}
-              >
-                <KeyboardArrowDownIcon />
-              </IconButton>
-            ) : (
-              <IconButton
-                style={{ color: "#565656" }}
-                onClick={handlerColapseCard}
-              >
-                <KeyboardArrowRightIcon />
-              </IconButton>
-            )}
-            <CodeColumn data={codeData} />
-            <InfoColumn data={infoData} />
-            <StyledButton
-              onClick={() => handlerTrackingModal(modalTrackingData)}
-              disabled={buttonDisabled}
+      <StyledBoxShadow
+        borderRadiusComplete={isOpen}
+        style={{ zIndex: 3, width: 1178 }}
+      >
+        <StyledCard>
+          {isOpen ? (
+            <IconButton
+              style={{ color: "#565656" }}
+              onClick={handlerColapseCard}
             >
-              Base de Seguimiento
-            </StyledButton>
-          </StyledCard>
-        </StyledBoxShadow>
-        <Collapse in={isOpen} style={{ width: "100%" }}>
-          <ProgressBar
-            data={messages}
-            setSelectorMessage={setSelectorMessage}
-            selectedMessage={selectedMessage}
-          />
-          <DataTable
-            maxHeight={343}
-            rows={handleFilterMessages(reverseArray(messages))}
-            columns={columnsCard}
-            withCheckbox={false}
-            footerComponent={getFooterComponent()}
-          />
-        </Collapse>
-      </StyledCardContent>
+              <KeyboardArrowDownIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              style={{ color: "#565656" }}
+              onClick={handlerColapseCard}
+            >
+              <KeyboardArrowRightIcon />
+            </IconButton>
+          )}
+          <CodeColumn data={codeData} />
+          <InfoColumn data={infoData} />
+          <StyledButton
+            onClick={() => handlerTrackingModal(modalTrackingData)}
+            disabled={buttonDisabled}
+          >
+            Base de Seguimiento
+          </StyledButton>
+        </StyledCard>
+      </StyledBoxShadow>
+      <Collapse in={isOpen} style={{ width: 1178 }}>
+        <ProgressBar
+          data={messages}
+          setSelectorMessage={setSelectorMessage}
+          selectedMessage={selectedMessage}
+        />
+        <DataTable
+          maxHeight={350}
+          rows={handleFilterMessages(reverseArray(messages))}
+          columns={columnsCard}
+          withCheckbox={false}
+          footerComponent={getFooterComponent()}
+        />
+      </Collapse>
     </StyledContentCard>
   );
 };
