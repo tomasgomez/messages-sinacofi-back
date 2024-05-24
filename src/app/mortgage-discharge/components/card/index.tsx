@@ -31,7 +31,7 @@ const CarDischarge = ({
   handlerTrackingModal,
 }: {
   data: any;
-  handlerTrackingModal: (data: ModalTrackingData) => void;
+  handlerTrackingModal: (data?: ModalTrackingData) => void;
 }) => {
   const [selectedMessage, setSelectorMessage] = React.useState<string | null>(
     null

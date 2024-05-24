@@ -49,27 +49,27 @@ export interface SentData {
 }
 
 export interface MortgageDischargeData {
-  id: string;
-  name: string;
-  cukCode: string;
-  description: string;
-  status: string;
-  creationDate: string;
-  foreclosureDate: string;
-  channel: string;
-  institutionDestination: string;
+  id?: string;
+  name?: string;
+  cukCode?: string;
+  description?: string;
+  status?: string;
+  creationDate?: string;
+  foreclosureDate?: string;
+  channel?: string;
+  institutionDestination?: string;
   region?: string;
-  createdAt: string;
-  updatedAt: string;
-  institutionCode: string;
-  ownerDni: string;
-  owner: string;
-  buyerDni: string;
-  buyer: string;
-  borrowerDni: string;
-  borrower: string;
-  history: any[];
-  messages: Message[];
+  createdAt?: string;
+  updatedAt?: string;
+  institutionCode?: string;
+  ownerDni?: string;
+  owner?: string;
+  buyerDni?: string;
+  buyer?: string;
+  borrowerDni?: string;
+  borrower?: string;
+  history?: any[];
+  messages?: Message[];
 }
 
 export interface TrackingModalData {

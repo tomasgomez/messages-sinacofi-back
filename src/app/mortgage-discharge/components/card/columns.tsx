@@ -15,10 +15,12 @@ import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { base64ToBlob, downloadFile } from "../../utils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { SessionProviderContext } from "@/context/SessionProvider";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const { actions, messageCode, status } = row;
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
+  const { userInfo } = React.useContext(SessionProviderContext) as any;
   const router = useRouter();
   const handlerOpenModal = (row: any) => {
     setSelectedMessage(row);
@@ -37,6 +39,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
         <IconButton
           key={`drive-icon-${row.id}`}
           style={{ padding: 0, color: "#00B2E2", margin: 2 }}
+          disabled={!userInfo.permissions.signMortgageDischarge}
           onClick={
             () =>
               router.push(
@@ -69,6 +72,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           key={`detail-icon-${row.id}`}
           style={{ padding: 0, color: "#565656", margin: 2 }}
           onClick={() => handlerOpenModal(row)}
+          disabled={!userInfo.permissions.sendMessage}
         >
           <InfoOutlinedIcon />
         </IconButton>

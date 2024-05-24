@@ -12,7 +12,6 @@ import { MyContexLayout } from "@/app/context";
 export default function InboxScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<Message[]>([]);
-
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
 

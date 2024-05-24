@@ -53,7 +53,6 @@ export default function InProcessScreen() {
 
     setLoading(false);
   };
-
   useEffect(() => {
     handleGetDataList();
   }, [filters, selectedInstitution, rowsPerPage, page]);
@@ -72,7 +71,7 @@ export default function InProcessScreen() {
     setPage(newPage);
   };
 
-  const handlerTrackingModal = (data: ModalTrackingData) => {
+  const handlerTrackingModal = (data?: ModalTrackingData) => {
     setIsOpenTrackingModal(true);
     setModalTrackingData(data);
   };
