@@ -12,7 +12,6 @@ export class CUK {
     parameters?: Parameter[] | null;
     history?: History[];
     messages?: Message[] | null;
-
     
     createdAt?: Date;
     updatedAt?: Date;
@@ -31,19 +30,14 @@ export class CUK {
         this.creationDate = dateString + ' ' + time;
     }
 
-    // addMessage ? (message: any) {
-    //     if (!this.messages) {
-    //         this.messages = [];
-    //     }
-
-    //     this.messages.push(message);
-    // }
-
+    // Cuk Code Example: AH00010000000040
     setCukCode ? (institutionCode: string) {
-        // AH00010000000040
         let randomNumber = Math.floor(Math.random() * 1000); // Generates a random number between 0 and 999
+
         let paddedRandomNumber = randomNumber.toString().padStart(8, '0'); // Pads the number with zeros to make it 8 digits long
+
         let code = 'AH000' + institutionCode + paddedRandomNumber;
+
         this.cukCode = code
     }
 }

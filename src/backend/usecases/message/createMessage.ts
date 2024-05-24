@@ -13,12 +13,12 @@ import {
 export async function createMessage(repository: MessageRepository, message: Message, ): Promise < Message | Error > {
     try {
 
-        /* Get the schema types */
-        let schemaTypes = await getSchemaTypes({});
+        // /* Get the schema types */
+        // let schemaTypes = await getSchemaTypes({});
 
-        if (schemaTypes instanceof Error) {
-            return schemaTypes;
-        }
+        // if (schemaTypes instanceof Error) {
+        //     return schemaTypes;
+        // }
 
         let messageResponse = await repository.create(message);
 

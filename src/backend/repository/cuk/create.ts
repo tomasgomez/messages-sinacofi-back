@@ -34,8 +34,6 @@ async function create(cuk: CUK): Promise < CUK | Error > {
             }
         }
 
-        console.log("cuk:",cukData)
-
         let newCUK = await prismaClient.cUK.create({
             data: {
                 ...cukData,

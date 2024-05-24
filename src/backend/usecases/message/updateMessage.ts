@@ -37,8 +37,6 @@ export async function updateMessage(repository: MessageRepository, message: Mess
                 break;
         }
 
-        console.log("message", message.status);
-
         delete message.statusCode;
 
         /* Update the message */

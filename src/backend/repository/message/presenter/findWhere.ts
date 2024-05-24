@@ -26,6 +26,8 @@ function findWhere(filter: FilterMessage): Partial < Message > {
         }
     }
 
+    delete where.detail;
+
     return where;
 }
 
