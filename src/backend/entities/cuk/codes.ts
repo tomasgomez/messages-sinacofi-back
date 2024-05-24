@@ -48,7 +48,6 @@ export enum ForeclosureStatus {
 
  export function getDescriptionByStatus(status: string): string {
     switch (status) {
-
         case ForeclosureStatus.PREPARED:
             return MessageDescriptions.ALZAMIENTO_HIPOTECARIO;
         case ForeclosureStatus.IN_PROCESS:

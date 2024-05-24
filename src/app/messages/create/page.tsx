@@ -12,19 +12,19 @@ const payloadDefault: string[] = [
   "messageCode",
   "priority",
   "status",
-  "sender",
-  "receiver",
+  "origin",
+  "destination",
   "parameters"
 ];
 
-const getCreateMessagePayload = (data: any, schema: any, sender: any) => {
+const getCreateMessagePayload = (data: any, schema: any, origin: any) => {
   const payload: { [key: string]: any } = {};
    
   payloadDefault.forEach((param: string) => {
     payload[param] = data[param];
   });
-  payload.sender = sender;
-  payload.receiver = data.beneficiaryBank
+  payload.origin = origin;
+  payload.destination = data.beneficiaryBank
   payload.parameters = Object.entries(data)
     // .filter((el: any) => payload[el[0]] === undefined)
     .map((el) => {
@@ -69,14 +69,14 @@ const CreateMessage = () => {
     if(((cloneId || messageId) && !cukCode )) {
       getMessageDetails(cloneId || messageId).then((data) => {
         // console.log({ data });
-        getMessageSchema(messageCode, selectedInstitution, institutionId)
+        getMessageSchema(messageCode, messageId)
           .then((schema: any) => {
             console.log({ schema });
             setMessageSchema({
               ...schema,
               actions: { saveDraftDisabled: true, sendButtonDisabled: false },
               parameters: schema?.parameters.map((parameter: any) => (
-                parameter.id === "receiver" 
+                parameter.id === "destination" 
                 ? {
                   ...parameter,
                   selected: institutionId,
@@ -128,7 +128,7 @@ const CreateMessage = () => {
           });
       });
     } else {
-      getMessageSchema(messageCode, selectedInstitution, institutionId, cukCode)
+      getMessageSchema(messageCode, messageId)
         .then((schema: any) => {
           setMessageSchema({
             ...schema,

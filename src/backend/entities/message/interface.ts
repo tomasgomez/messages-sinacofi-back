@@ -12,7 +12,7 @@ export interface IMessage {
     description?: string | null;
     priority?: string | null;
     status?: string | null;
-    sender?: string | null;
+    origin?: string | null;
     creationDate?: string | null;
     creationTime?: string | null;
     receiver?: string | null;

@@ -1,48 +1,39 @@
-import { Message } from '@/backend/entities/message/message'
+import { FilterMessage } from '@/backend/entities/message/filter';
+import { processStringArrayField, processDateField } from '@/backend/utils/functions';
 
-export function validateGetMessage(data: any): [Message, string, string] | Error {
-  let message: Message = new Message();
-
-  const { id, messageCode, date, status, count, offset, receiver, sender , family, areaCode, institutionCode } = data;
-
-  let countResponse: string = '0';
-  let offsetResponse: string = '0';
-
-  if (id && typeof id === 'string' && id.trim() !== ''){
-    message.id = id;
+export function validateGetMessage(request: any): FilterMessage | Error {
+  let data = request.query;
+  
+  let filter: FilterMessage = {
+    detail: false,
   }
 
-  if (messageCode && typeof messageCode === 'string' && messageCode.trim() !== '') {
-    message.messageCode = messageCode;
-  }
+  const {
+    id,
+    messageCode,
+    status,
+    date,
+    cukCode,
+    origin,
+    destination,
+    count,
+    offset
+  } = data;
 
-  if (date && typeof date === 'string' && date.trim() !== '') {
-    message.creationDate = date;
-  }
+  /* Set all the possible filters */
+  filter.id = processStringArrayField(id);
+  filter.messageCode = processStringArrayField(messageCode);
+  filter.status = processStringArrayField(status);
+  filter.cukCode = processStringArrayField(cukCode);
+  filter.origin = processStringArrayField(origin);
+  filter.destination = processStringArrayField(destination);
+  filter.createdAt = processDateField(date);
+  filter.status = processStringArrayField(status);
+  
+  filter.count = count;
+  filter.offset = offset;
 
-  if (status && typeof status === 'string' && status.trim() !== '') {
-    message.status = status;
-  }
+  filter.detail = false;
 
-  if (count && typeof count === 'string' && count.trim() !== '') {
-    countResponse = count;
-  }
-
-  if (offset && typeof offset === 'string' && offset.trim() !== '') {
-    offsetResponse = offset;
-  }
-
-  if (institutionCode && typeof institutionCode === 'string' && institutionCode.trim() !== '') {
-    message.sender = institutionCode;
-  }
-
-  if (sender && typeof sender === 'string' && sender.trim() !== '') {
-    message.sender = sender;
-  }
-
-  if (receiver && typeof receiver === 'string' && receiver.trim() !== '') {
-    message.receiver = receiver;
-  }
-
-  return [message, countResponse, offsetResponse];
+  return filter;
 }

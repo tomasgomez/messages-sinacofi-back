@@ -4,9 +4,6 @@ import {
 import {
     Message
 } from '../entities/message/message';
-import {
-    Filter
-} from '../entities/global/filter';
 
 export function getEnvVariable(name: string): string | Error {
     try {
@@ -44,14 +41,10 @@ export function getChileanTime(): [string, string] | Error {
 }
 
 // Function to handle null values and empty arrays based on detail flag and specific keys
-export function handleNullValues(message: Message, detail: boolean): void {
-    // If detail flag is false, set parameters to an empty array
-    if (!detail) {
-        message.parameters = [];
-    }
+export function handleNullValues(message: Message): void {
 
     // Define keys that should be treated as arrays when null
-    const arrayKeys: Array < keyof Message > = ['actions', 'documents', 'parameters'];
+    const arrayKeys: Array<keyof Message> = ['documents', 'parameters', 'status'];
 
     // Loop through each key-value pair in the message object
     Object.entries(message).forEach(([key, value]) => {
@@ -94,17 +87,29 @@ export function createDateRangeFilter(startDate: Date | undefined, endDate: Date
 
 }
 
-export function processStringArrayField(fieldName: string, fieldValue: string, filter: Filter) {
+export function processStringField(fieldValue: string): string {
     if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
-        filter[fieldName] = fieldValue.trim().split(',').map(value => value.trim());
+        return fieldValue.trim()
     }
+
+    return '';
 }
 
-export function processDateField(fieldName: string, fieldValue: string, filter: Filter) {
+
+export function processStringArrayField(fieldValue: string): string[] {
+    if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
+        return fieldValue.trim().split(',').map(value => value.trim());
+    }
+
+    return [];
+}
+
+export function processDateField(fieldValue: string): Date | undefined  {
     if (fieldValue && typeof fieldValue === 'string' && fieldValue.trim() !== '') {
         const convertedToDate = new Date(fieldValue.trim());
         if (!isNaN(convertedToDate.getTime())) {
-            filter[fieldName] = convertedToDate;
+            return convertedToDate;
         }
     }
+    return undefined;
 }

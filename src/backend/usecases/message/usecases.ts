@@ -6,6 +6,7 @@ import { getMessage } from './getMessage';
 import { createMessage } from './createMessage';
 import { updateMessage } from './updateMessage';
 import { handleMessage } from './handleMessage';
+import { FilterMessage } from '@/backend/entities/message/filter';
 
 
 /*
@@ -15,8 +16,8 @@ export class MessageUscase implements MessageUsecases  {
     constructor(private readonly messageRepository: MessageRepository) {} 
     
     // get message
-    getMessage = async (message: Message, count: string, offset: string): Promise<Message[] | Error> => 
-        getMessage(this.messageRepository, message, count, offset)
+    getMessage = async (filter: FilterMessage): Promise<Message[] | Error> => 
+        getMessage(this.messageRepository, filter);
     
     // create message
     createMessage = async (message: Message): Promise<Message | Error> => 

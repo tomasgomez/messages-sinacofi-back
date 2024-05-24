@@ -1,102 +1,55 @@
-import {
-    Message
-} from "@/backend/entities/message/message";
-import {
-    PrismaClientWrapper
-} from '../prismaWrapper';
-import {
-    handleNullValues
-} from "@/backend/utils/functions";
+import { Message } from "@/backend/entities/message/message";
+import { PrismaClientWrapper } from '../prismaWrapper';
+import { handleNullValues } from "@/backend/utils/functions";
+import { FilterMessage } from "@/backend/entities/message/filter";
+import { findSelect } from "@/backend/repository/message/presenter/findSelect";
+import { findWhere } from "@/backend/repository/message/presenter/findWhere";
+import { findStatus } from "./presenter/findStatus";
 
-async function find(message: Partial < Message > , detail: boolean, count: string, offset: string): Promise < Message[] | Error > {
+async function find(filter: FilterMessage): Promise<Message[] | Error> {
     try {
-        let messages: Message[];
-
         const prisma = new PrismaClientWrapper();
         const prismaClient = prisma.getClient();
-
-        // Initialize the where object with the provided attributes to search with
-        const where: Partial < Message > = {};
-
-        // Loop through the provided attributes and add them to the where object
-        for (const key in message) {
-            if (message[key as keyof Message] !== undefined) {
-                where[key as keyof Message] = message[key as keyof Message];
-            }
+        
+        let where = findWhere(filter)
+        let select: any = findSelect(filter);
+        let status: any = {};
+        
+        if (filter.status && filter.status.length > 0) {
+            status = findStatus(filter);
         }
+        
+        const messages = await prismaClient.message.findMany({
+            where: {
+                ...where,
+                status: status,
+                documents: {},
+                parameters: {},
+            },
+            select,
+            orderBy: {
+                createdAt: 'desc',
+            },
+            take: parseInt(filter.count ?? '5', 10) ?? 5,
+            skip: parseInt(filter.offset ?? '0', 10) ?? 0,
+        });
+        
 
-        let select = { // TODO: this should come from the usecase
-            id: true,
-            TSN: true,
-            OSN: true,
-            NSE: true,
-            LSN: true,
-            NSR: true,
-            messageCode: true,
-            description: true,
-            priority: true,
-            status: true,
-            sender: true,
-            creationDate: true,
-            creationTime: true,
-            receiver: true,
-            receivedDate: true,
-            receivedTime: true,
-            cukCode: true,
-            actions: true,
-            documents: true,
-            parameters: detail
-        }
-
-        // If count is not present then find all message
-        if (count === '0' || count === '' || offset === '' || offset === '0') {
-            messages = await prismaClient.message.findMany({
-                where: {
-                    ...where,
-                    documents: {},
-                    parameters: {}
-                },
-                select,
-                orderBy: {
-                    creationDate: 'desc'
-                },
-                take: parseInt("5"),
-                skip: parseInt("0")
-            });
-        } else {
-            messages = await prismaClient.message.findMany({
-                where: {
-                    ...where,
-                    documents: {},
-                    parameters: {}
-                },
-                select,
-                orderBy: {
-                    creationDate: 'desc'
-                },
-                take: parseInt(count),
-                skip: parseInt(offset)
-            });
-        }
-
-        // If the messages are not found, return an error
+        // If no messages are found, return an error
         if (messages.length === 0) {
             return new Error('Message not found');
         }
 
-        // Loop through each message and handle null values
+        // Handle null values in each message
         messages.forEach(message => {
-            handleNullValues(message, detail);
+            handleNullValues(message);
         });
 
         return messages;
-
     } catch (error: any) {
-        console.error('Error fetching message:', error);
-        return error;
+        console.error('Error fetching messages:', error);
+        return new Error(error.message);
     }
 }
 
-export {
-    find
-};
+export { find };

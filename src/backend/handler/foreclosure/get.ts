@@ -1,6 +1,7 @@
 import { validateGetMessageForeclosure } from "@/backend/handler/foreclosure/presenter/getMessage";
 import { messageForeclosureUseCase } from "@/backend/usecases/foreclosure/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
+import { prepareForclosure } from "./adapter/prepareForeclosure";
 
 export async function get(req: NextApiRequest, res: NextApiResponse < any >, detail: boolean = false){
     try {
@@ -26,8 +27,10 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
           return;
         }
 
+        let preparedData = prepareForclosure(messageResponse);
+
         /* Return the message */
-        res.status(200).json(messageResponse);
+        res.status(200).json(preparedData);
 
       } catch (error) {
         console.error('Error fetching message:', error);

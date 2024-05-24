@@ -40,7 +40,7 @@ export const columnsPrepared: Columns[] = [
     sortable: true,
   },
   {
-    id: "receiver",
+    id: "destination",
     label: "Destino",
     align: Alignment.LEFT,
     sortable: true,
@@ -81,7 +81,7 @@ export const rowOptions: RowOptions = {
   description: {
     align: Alignment.LEFT,
   },
-  receiver: {
+  destination: {
     align: Alignment.LEFT,
   },
   receivedDate: {

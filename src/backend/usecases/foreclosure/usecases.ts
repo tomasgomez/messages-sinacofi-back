@@ -2,7 +2,7 @@ import { MessageRepository } from "@/backend/repository/messageRepository";
 import { CUKRepository } from "@/backend/repository/cukRepository";
 import { PrismaMessageAdapter as PrismaAdapter } from '../../repository/message/message';
 import { PrismaCukAdapter as PrismaCukAdapter } from '../../repository/cuk/cuk';
-import { Filter } from '../../entities/global/filter';
+import { Filter } from '../../entities/cuk/filter';
 import { Message } from '../../entities/message/message';
 import { MessageForeclosureUsecases } from "./interface";
 import { getMessageForeclosure } from './getMessageForeclosure';
@@ -26,7 +26,7 @@ export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
     createForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 
         createForeclosure(this.cukRepository, cuk, message)
 
-    handleForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > =>
+    handleForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Message | Error > =>
         handleForeclosure(this.cukRepository,this.messageRepository , cuk, message)
 
     updateForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 

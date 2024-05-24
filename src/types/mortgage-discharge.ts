@@ -45,7 +45,7 @@ export interface DataHeaderInfoModal {
   messageCode: string;
   description: string;
   LSN?: number;
-  receiver?: string;
+  destination?: string;
   creationDate: string;
   creationTime: string;
   priority?: string;

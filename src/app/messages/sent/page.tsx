@@ -22,11 +22,11 @@ export default function SentScreen() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      // Backend have the sender like a label not a code
+      // Backend have the origin like a label not a code
       // const selectedInstitutionLabel = await intitutionCodeToLabel(
       //   selectedInstitution
       // );
-      await fetch(`/api/message?status=05&sender=${selectedInstitution}`)
+      await fetch(`/api/message?status=05&origin=${selectedInstitution}`)
         .then((res) => res.json())
         .then((res) => {
           setData(res);

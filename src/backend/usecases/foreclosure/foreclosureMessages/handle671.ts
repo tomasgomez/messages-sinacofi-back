@@ -17,18 +17,33 @@ export async function handle671(cuk: CUK, message: Message, cukRepository: CUKRe
         return updatedMessage;
     }
 
-    /* If the message status is 05, create a new message with status 06 */
-    if (updatedMessage.status && updatedMessage.status === MessageStatus.ENVIADO ) {
-        if (updatedMessage.setReceivedTime) {
-            updatedMessage.setReceivedTime();
-        }
+    let status = '';
 
-        let duplicatedMessage = await messageRepository.duplicateMessage(updatedMessage);
+    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
+            
+        status = message.statusCode;
 
-        if (duplicatedMessage instanceof Error) {
-            return duplicatedMessage;
-        }
+        message.setStatus(status);
     }
+
+    // Update the status of the message
+    switch (status) {
+        case MessageStatus.ENVIADO:
+            if (message.setReceivedTime) {
+                message.setReceivedTime();
+            }
+            if (message.setStatus) {
+                message.setStatus(MessageStatus.BANDEJA_DE_ENTRADA);
+            }
+            break;
+        case MessageStatus.BANDEJA_DE_ENTRADA:
+            if (message.setStatus) {
+                message.setStatus(MessageStatus.ENVIADO);
+            }
+            break;
+    }
+
+    delete message.statusCode;
     
     return updatedMessage;
 }

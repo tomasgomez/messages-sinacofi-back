@@ -4,6 +4,7 @@ import {
 import {
     CUK
 } from '@/backend/entities/cuk/cuk';
+import { History } from '@/backend/entities/cuk/history';
 import {
     addHistory
 } from '@/backend/utils/foreclosure/history';
@@ -34,7 +35,7 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
         if (cuk.status) {
             updatedCuk = await prismaClient.$transaction(async (prisma) => {
                 // Fetch the object from the database within the transaction
-                let fetchedCuk = await prismaClient.cUK.findFirst({
+                let fetchedCuk = await prisma.cUK.findFirst({
                     where,
                 });
 
@@ -47,18 +48,28 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
                 }
 
                 // Add the new history object to the history array
-                const updatedHistory = addHistory(cuk.status ?? '', fetchedCuk);
+                const updatedHistory: History = {
+                    cukCode: fetchedCuk.cukCode ?? '',
+                    status: cuk.status ?? '',
+                    date: new Date().toISOString()
+                };
 
-                // Update the object with the new history array
+                prisma.history.create({
+                    data: updatedHistory,
+                });
+
+                //TODO: agregar el history en el return del cuk
+                // Update the object
                 return await prisma.cUK.update({
                     where: {
                         id: fetchedCuk.id,
                     },
                     data: {
                         status: cuk.status,
-                        history: updatedHistory,
                     },
                 });
+
+
             });
         }
 

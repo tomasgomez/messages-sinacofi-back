@@ -29,10 +29,9 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     }
 
     /* Set variables */
-    let hasToUpdateMessage = false;
     let newMessage: Message;
     let messageType = '';
-    let messageDescription = '';
+    let hasToUpdateMessage = false;
 
     if (!cuk.cukCode || cuk.cukCode === '') {
       return new Error('Invalid CUK');
@@ -42,21 +41,18 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     switch (cuk.status) {
       case ForeclosureStatus.SIGNED: // 671
         messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
-        messageDescription = MessageDescriptions.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.SIGNED;
         hasToUpdateMessage = true;
         break;
 
       case ForeclosureStatus.REJECTED: // 672
         messageType = MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO
-        messageDescription = MessageDescriptions.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.REJECTED;
         hasToUpdateMessage = true;
         break;
 
       case ForeclosureStatus.START_NORMALIZATION: // 673
         messageType = MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION
-        messageDescription = MessageDescriptions.AVISO_DE_CLIENTE_EN_NORMALIZACION
         cuk.status = ForeclosureStatus.START_NORMALIZATION;
         hasToUpdateMessage = true;
         break;
@@ -85,9 +81,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     if (hasToUpdateMessage) {
       newMessage = new Message();
       newMessage.cukCode = cuk.cukCode;
-      newMessage.status = '';
       newMessage.messageCode = messageType;
-      newMessage.description = messageDescription;
 
       await updateLastMessage(newMessage, messageRepository, cukRepository);
     }
@@ -123,8 +117,8 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
   }
 
   /* Set the receiver of the message */
-  message.receiver = fetchedCuk[0].institutionCode;
-  message.sender = fetchedCuk[0].institutionDestination;
+  message.origin = "";
+  message.destination = "";
 
   let fetchedMessages = fetchedCuk[0].messages;
 
@@ -146,7 +140,7 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
   });
 
   /* If the last message is not empty, create a new empty one */
-  if (fetchedMessages.length === 0 || fetchedMessages[0].status !== '') {
+  if (fetchedMessages.length === 0 || fetchedMessages[0].getStatus || fetchedMessages[0].getStatus !== '') {
     createMessage(messageRepository, message);
 
     /* If the last message is empty, update the last message */
@@ -154,10 +148,8 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
 
     let messageToUpdate = fetchedMessages[0];
 
-    messageToUpdate.status = '';
     messageToUpdate.messageCode = message.messageCode;
-    messageToUpdate.receiver = message.receiver;
-    messageToUpdate.description = message.description;
+    messageToUpdate.origin = message.origin;
     messageToUpdate.actions = '';
 
     messageRepository.update(messageToUpdate);

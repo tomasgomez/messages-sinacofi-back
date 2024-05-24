@@ -43,11 +43,11 @@ const AccionesColumn = ({ row }: { row: any }) => {
           onClick={
             () =>
               router.push(
-                `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+                `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}`
               )
             // case sent to the messagecode 670
             // router.push(
-            //     `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
+            //     `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&cukCode=${row.cukCode}`
             //   )
           }
         >
@@ -60,7 +60,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           style={{ padding: 0, color: "#00B2E2", margin: 2 }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
+              `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
             )
           }
         >
@@ -87,7 +87,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+              `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}`
             )
           }
         >

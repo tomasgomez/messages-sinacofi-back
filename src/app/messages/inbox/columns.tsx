@@ -56,7 +56,7 @@ export const columnsInbox: Columns[] = [
   },
   descriptor,
   {
-    id: "sender",
+    id: "origin",
     label: "Origen",
     align: Alignment.LEFT,
     sortable: true,
@@ -102,7 +102,7 @@ export const rowOptions: RowOptions = {
   description: {
     align: Alignment.LEFT,
   },
-  sender: {
+  origin: {
     align: Alignment.LEFT,
   },
   receivedDate: {
