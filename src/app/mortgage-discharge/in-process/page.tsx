@@ -53,7 +53,6 @@ export default function InProcessScreen() {
 
     setLoading(false);
   };
-
   useEffect(() => {
     handleGetDataList();
   }, [filters, selectedInstitution, rowsPerPage, page]);

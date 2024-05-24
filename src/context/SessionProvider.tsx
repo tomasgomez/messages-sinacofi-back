@@ -8,7 +8,7 @@ type initialUserInfoType = {
 };
 
 const initialUserInfoState: initialUserInfoType = {
-    userInfo: {},
+  userInfo: {},
   setUserInfo: () => [],
 };
 
@@ -31,7 +31,7 @@ export const SessionProvider = ({ children }: { children: any}) => {
     
         fetchData();
       }, []);
-    
+
     const contextValue = React.useMemo(
         () => ({
             userInfo, setUserInfo

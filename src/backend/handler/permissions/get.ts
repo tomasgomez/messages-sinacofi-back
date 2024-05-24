@@ -16,7 +16,14 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         const tokenDecoded = await iamOracleAPI.validateToken(idcs, access_token!);
         //@ts-ignore
         const permissions = PERMISSION_ACCESS[userRoles[tokenDecoded.sub].role];
-        res.status(200).json(permissions);
+        
+        const userData = { 
+            //@ts-ignore
+            user: userRoles[tokenDecoded.sub],
+            permissions
+        };
+
+        res.status(200).json(userData);
         return;
       } catch (error) {
         res.status(500).json(new Error('Internal server error'));

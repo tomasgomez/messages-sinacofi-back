@@ -11,11 +11,12 @@ import {
   buttonUpdateStateSx,
 } from "./styles";
 import { ModalTrackingData } from "@/types/mortgage-discharge";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { updateForeClosureMessage } from "../../api-calls";
 import { options } from "./constants";
 import { EnabledExtraOptions } from "@/utils/tracking-modal";
 import { sortHistoryList } from "@/utils/mortgage-discharge";
+import { SessionProviderContext } from "@/context/SessionProvider";
 
 export const TrackingModal = (props: {
   open: boolean;
@@ -35,6 +36,8 @@ export const TrackingModal = (props: {
   const { open, onClose, data, handleGetDataList, selectedInstitution } = props;
   const { cukCode, history, institutionDestination, ...restOfData } =
     data || {};
+
+  const { userInfo } = useContext(SessionProviderContext);
 
   const handleClose = () => {
     onClose(false);
@@ -129,7 +132,9 @@ export const TrackingModal = (props: {
             loading ||
             !statusSelected ||
             // if you aren't the institution Destination you can change the status
-            selectedInstitution !== institutionDestination
+            selectedInstitution !== institutionDestination ||
+            (statusSelected == '022' && !userInfo?.permissions.acceptMortgageDischarge) ||
+            (statusSelected == '023' && !userInfo?.permissions.rejectMortgageDischarge)
           }
         >
           Actualizar Estado

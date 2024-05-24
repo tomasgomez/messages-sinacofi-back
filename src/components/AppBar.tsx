@@ -19,6 +19,7 @@ import Menu from "./Menu";
 import SearchField from "./SearchField";
 import InstitutionDropdown from "./FieldTypes/InstitutionDropdown";
 import { MyContexLayout } from "@/app/context";
+import { SessionProviderContext } from "@/context/SessionProvider";
 
 const Time = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -75,9 +76,17 @@ const MenuOptions = () => {
 
 const AppBar = () => {
   // Delete after add users
+  const { userInfo } = useContext(SessionProviderContext);
   const { selectedInstitution, setSelectedInsitution } = useContext(
     MyContexLayout
   ) as any;
+
+  useEffect(() => {
+    
+    if(userInfo?.user){
+      setSelectedInsitution(userInfo?.user?.institutionCode)
+    }
+  },[userInfo?.user]);
 
   return (
     <AppBarMui
@@ -143,7 +152,7 @@ const AppBar = () => {
               {/* // Delete after add users */}
               <InstitutionDropdown
                 label="Nombre de Institución"
-                defaultValue={selectedInstitution}
+                defaultValue={userInfo?.user?.institutionCode}
                 selected={selectedInstitution}
                 width={200}
                 onChange={setSelectedInsitution}
