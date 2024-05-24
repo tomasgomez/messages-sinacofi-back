@@ -50,6 +50,16 @@ export async function handleForeclosure(cukRepository: CUKRepository, messageRep
         return handle673(cuk, message, cukRepository, messageRepository);
       }
 
+      /* 674 */
+      case ('674'): {
+        return handle673(cuk, message, cukRepository, messageRepository);
+      }
+      
+      /* 675 */
+      case ('675'): {
+        return handle673(cuk, message, cukRepository, messageRepository);
+      }
+
       default: {
         return new Error('Invalid message code');
       }
