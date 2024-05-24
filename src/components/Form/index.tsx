@@ -19,7 +19,6 @@ const getDefaultValues = (schema: any) => {
         defaultValues[parameter.id] = parameter.defaultValue;
       }
     });
-  console.log({ defaultValues });
   return defaultValues;
 };
 
@@ -54,13 +53,16 @@ const Form = ({
   }, [schema, methods.reset]);
 
   const handlePrepare = () => {
-    trigger().then((validation) => {
+    methods.trigger().then((validation) => {
       if (validation) {
         const values = getValues();
         onPrepare(values);
       }
     });
   }
+
+  console.log("ERRORS", { errors: methods?.formState?.errors  });
+
 
   return (
     <FormProvider {...methods}>
