@@ -29,10 +29,9 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     }
 
     /* Set variables */
-    let hasToUpdateMessage = false;
     let newMessage: Message;
     let messageType = '';
-    let messageDescription = '';
+    let hasToUpdateMessage = false;
 
     if (!cuk.cukCode || cuk.cukCode === '') {
       return new Error('Invalid CUK');
@@ -42,21 +41,18 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     switch (cuk.status) {
       case ForeclosureStatus.SIGNED: // 671
         messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
-        messageDescription = MessageDescriptions.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.SIGNED;
         hasToUpdateMessage = true;
         break;
 
       case ForeclosureStatus.REJECTED: // 672
         messageType = MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO
-        messageDescription = MessageDescriptions.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.REJECTED;
         hasToUpdateMessage = true;
         break;
 
       case ForeclosureStatus.START_NORMALIZATION: // 673
         messageType = MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION
-        messageDescription = MessageDescriptions.AVISO_DE_CLIENTE_EN_NORMALIZACION
         cuk.status = ForeclosureStatus.START_NORMALIZATION;
         hasToUpdateMessage = true;
         break;
