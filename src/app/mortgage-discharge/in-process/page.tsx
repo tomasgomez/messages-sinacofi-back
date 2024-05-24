@@ -71,7 +71,7 @@ export default function InProcessScreen() {
     setPage(newPage);
   };
 
-  const handlerTrackingModal = (data: ModalTrackingData) => {
+  const handlerTrackingModal = (data?: ModalTrackingData) => {
     setIsOpenTrackingModal(true);
     setModalTrackingData(data);
   };

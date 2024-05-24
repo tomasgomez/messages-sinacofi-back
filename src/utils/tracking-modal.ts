@@ -4,7 +4,7 @@ export const getOnlyTheValue = (status: string) => {
 };
 
 export const EnabledExtraOptions = (extraOptions: any, history?: any[]) => {
-  if (history) {
+  if (history && history.length > 0) {
     const lastHistoryElem = history[0];
     // the lastHistoryElem is the most recent status
     let disabledOptions = [...extraOptions];
@@ -18,5 +18,5 @@ export const EnabledExtraOptions = (extraOptions: any, history?: any[]) => {
     });
     return disabledOptions;
   }
-  return [];
+  return extraOptions;
 };

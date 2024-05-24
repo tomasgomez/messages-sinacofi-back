@@ -6,10 +6,7 @@ import Typography from "@mui/material/Typography/Typography";
 import { CardDetails } from "./components/card-details";
 import { CardStatusUpdate } from "./components/card-status-update";
 import { MortgageStatusDropdown } from "./components/dropdown-mortgage-status";
-import {
-  buttonUpdateStateSecondarySx,
-  buttonUpdateStateSx,
-} from "./styles";
+import { buttonUpdateStateSecondarySx, buttonUpdateStateSx } from "./styles";
 import { ModalTrackingData } from "@/types/mortgage-discharge";
 import { useEffect, useState, useContext } from "react";
 import { updateForeClosureMessage } from "../../api-calls";
@@ -133,8 +130,10 @@ export const TrackingModal = (props: {
             !statusSelected ||
             // if you aren't the institution Destination you can change the status
             selectedInstitution !== institutionDestination ||
-            (statusSelected == '022' && !userInfo?.permissions.acceptMortgageDischarge) ||
-            (statusSelected == '023' && !userInfo?.permissions.rejectMortgageDischarge)
+            (statusSelected == "022" &&
+              !userInfo?.permissions.acceptMortgageDischarge) ||
+            (statusSelected == "023" &&
+              !userInfo?.permissions.rejectMortgageDischarge)
           }
         >
           Actualizar Estado
