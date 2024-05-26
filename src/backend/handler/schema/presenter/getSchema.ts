@@ -6,7 +6,6 @@ import { processStringArrayField } from '@/backend/utils/functions';
 
 export function validateGetSchema(data: any): Filter | Error {
   const filter: Filter = {};
-
   const {
     messageCode,
     messageId,
@@ -14,6 +13,7 @@ export function validateGetSchema(data: any): Filter | Error {
     destination,
     count,
     offset,
+    cukCode
   } = data;
 
   /* Set all the possible filters */
@@ -21,6 +21,7 @@ export function validateGetSchema(data: any): Filter | Error {
   filter.messageCode = processStringArrayField(messageCode);
   filter.origin = processStringArrayField(origin);
   filter.destination = processStringArrayField(destination);
+  filter.cuk = cukCode
 
   filter.count = count;
   filter.offset = offset;

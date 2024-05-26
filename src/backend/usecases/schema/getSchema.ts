@@ -48,14 +48,16 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
 
     let schemas = await get(url, path, {}, {})
 
-    if (filter.messageId && filter.messageId.length > 0) {
+    
+    if (!filter.messageCode?.includes('670') && filter.messageId && filter.messageId.length>0) {
 
       let filterMessage: FilterMessage = {
-          id: filter?.messageId,
-          detail: true,
+          id: filter.messageId,
+          detail: false,
         };
 
       let message = await messageRepository.find(filterMessage);
+
       if (message instanceof Error) {
         return message;
       }
@@ -64,9 +66,29 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
         return schemas;
       }
 
-      schemas.parameters = adaptSchema(schemas.parameters, message[0]);
-    }
+      // get message 670
+      const cuk = message.map(msg => msg.cukCode ?? '').filter(c => c != '');
+      
+      filterMessage = {
+        cukCode: cuk,
+        messageCode: ["670"],
+        detail: true
+      }
 
+      let message670 = await messageRepository.find(filterMessage);
+
+      if (message670 instanceof Error) {
+        return message670;
+      }
+
+      if (!message670 || message.length === 0) {
+        return schemas;
+      }
+
+
+      schemas.parameters = adaptSchema(schemas.parameters, message670[0]);
+    }
+ 
     return schemas;
   } catch (error: any) {
     console.error('Error updating message:', error);
