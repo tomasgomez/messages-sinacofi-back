@@ -13,11 +13,10 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
           res.status(400).json([]);
           return;
         }
-        console.log("FILTER", filter)
 
         /* Use the PrismaAreaAdapter to get the Message from the database */
         let messageResponse = await messageUseCase.getMessage(filter)
-        console.log("MESSAGE RESPONSE", messageResponse)
+    
 
         /* If the message is not found, return a 204 error */
         if (messageResponse instanceof Error) {
@@ -25,9 +24,9 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
           return;
         }
 
-        console.log("MESSAGE RESPONSE2", messageResponse)
+
         let preparedData = prepareMessages(messageResponse, filter);
-        console.log("PREPARED DATA", preparedData)
+ 
 
         /* Return the message */
         res.status(200).json(preparedData);

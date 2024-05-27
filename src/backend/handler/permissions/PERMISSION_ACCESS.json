@@ -74,7 +74,7 @@
         "paymentNotificationMessage": true,
         "paymentConfirmationMortgageDischarge": true,
         "acceptMortgageDischarge": false,
-        "signMortgageDischarge": false,
+        "signMortgageDischarge": true,
         "rejectMortgageDischarge": false
     },
     "12": {
@@ -204,7 +204,7 @@
         "paymentNotificationMessage": true,
         "paymentConfirmationMortgageDischarge": true,
         "acceptMortgageDischarge": true,
-        "signMortgageDischarge": false,
+        "signMortgageDischarge": true,
         "rejectMortgageDischarge": true
     } 
   }

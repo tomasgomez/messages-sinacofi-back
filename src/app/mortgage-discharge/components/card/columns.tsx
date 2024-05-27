@@ -26,7 +26,6 @@ const AccionesColumn = ({ row }: { row: any }) => {
     setSelectedMessage(row);
     setModalIsOpen(true);
   };
-
   return (
     <Box
       sx={{

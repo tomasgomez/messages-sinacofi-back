@@ -36,7 +36,6 @@ const InstitutionDropdown = ({
           label: `${institution.id} - ${institution.name}`,
         })
       );
-      console.log({ formattedInstitutions });
       setInstitutionList(
         withAllOption
           ? [AllOption, ...formattedInstitutions]

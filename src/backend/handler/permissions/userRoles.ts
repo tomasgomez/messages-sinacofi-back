@@ -22,7 +22,7 @@ export const userRoles: Record<string, User> = {
         status: "Active"
     },
     '6986932-0': { 
-        role:'02', 
+        role:'17', 
         name: 'LUIS PEREIRA',
         institutionCode: "0016", 
         area: "",

@@ -29,7 +29,6 @@ const getCreateMessagePayload = (data: any, schema: any, origin: any, userInfo: 
   payload.parameters = Object.entries(data)
     // .filter((el: any) => payload[el[0]] === undefined)
     .map((el) => {
-      console.log({ el })
       return {
         name: el[0],
         label: schema?.parameters
@@ -52,7 +51,6 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
 const CreateMessage = () => {
   const { setModalState, selectedInstitution } = useAppContext();
   const { userInfo } = useContext(SessionProviderContext) as any;
-  console.log({ userInfo });
   const { onOpen: onSignOpen, onClose } = useModalManager({
     component: AddFileModal
   });
@@ -70,10 +68,8 @@ const CreateMessage = () => {
     setLoading(true);
     if(((cloneId || messageId) && !cukCode )) {
       getMessageDetails(cloneId || messageId).then((data) => {
-        // console.log({ data });
         getMessageSchema(messageCode, messageId)
           .then((schema: any) => {
-            console.log({ schema });
             setMessageSchema({
               ...schema,
               actions: { saveDraftDisabled: true, sendButtonDisabled: false },
@@ -313,7 +309,6 @@ const CreateMessage = () => {
   const onPrepare = (data: any) => {
     setLoading(true);
     const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution, userInfo);
-    console.log({ payload })
     createMessage(payload, "01")
       .then((response: any) => {
         setLoading(false);

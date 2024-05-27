@@ -62,24 +62,24 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.SIGNED;
         hasToUpdateMessage = true;
-        newMessage.origin = destination;
-        newMessage.destination = origin;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
         break;
 
       case ForeclosureStatus.REJECTED: // 672
         messageType = MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.REJECTED;
         hasToUpdateMessage = true;
-        newMessage.origin = destination;
-        newMessage.destination = origin;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
         break;
 
       case ForeclosureStatus.START_NORMALIZATION: // 673
         messageType = MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION
         cuk.status = ForeclosureStatus.START_NORMALIZATION;
         hasToUpdateMessage = true;
-        newMessage.origin = destination;
-        newMessage.destination = origin;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
 
         break;
 

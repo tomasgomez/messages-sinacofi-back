@@ -19,8 +19,6 @@ function createData (message: Message): Partial<Message> {
     if (message.parameters && message.cukCode && message.cukCode !== '') {
         messageData.parameters = message.parameters?.map((parameter) => {
             parameter.cukCode = message.cukCode;
-
-            console.log('Parameter:', parameter);
             return parameter;
         });
     }

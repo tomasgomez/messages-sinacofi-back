@@ -24,8 +24,6 @@ const InfoColumn = ({ data }: { data: any }) => {
     cukStatus: string;
   } = data;
 
-  console.log(data);
-
   const getInstitutionText = (cukStatus: string) => {
     switch (cukStatus) {
       case "06":

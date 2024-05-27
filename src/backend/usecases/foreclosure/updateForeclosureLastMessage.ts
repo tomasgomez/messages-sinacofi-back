@@ -59,8 +59,6 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
 
     message.id = messageToUpdate.id;
 
-
-    console.log("unfo", message)
     const { parameters, id, receivedDate, receivedTime } = message;
 
     const newMessage = new Message()
