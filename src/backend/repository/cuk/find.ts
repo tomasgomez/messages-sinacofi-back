@@ -69,23 +69,52 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // check if filter has institutionCode
     if (filter.institutionCode) {
         messageArgs.where = {
-            OR: [{AND: [
+            OR: [
                 {
-                    origin: {
-                        in: filter.institutionCode}
-                    }, 
+                    AND: [
+                        {
+                            origin: {
+                                in: filter.institutionCode
+                            }
+                        }, 
                     {
-                    status: { some: { id: {in: ["01", "05"] } }}
-                       
+                    status: { 
+                        
+                        some: 
+                        { 
+                            id: {
+                                in: ["01", "05"] 
+                        }
+                    }
+                }       
             }
-        ]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some:{id: { in: ["06"]}} } } ]}]}]
-        }
+        ]}, {
+            AND: [
+                {
+                    destination: {
+                        in: filter.institutionCode
+                    }
+                }, {
+                    OR: [
+                        { 
+                            status: { 
+                                some:{
+                                    id: { 
+                                        in: ["06"]
+                                }
+                            } 
+                        } 
+                    } 
+                ]
+            }
+        ]}]}
         // where.messages = {
         //     some: {
         //         OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {some: {id: {in: ["01", "05",""]}}}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some: {id: {in: ["06"]}} } }]}]}]
         //     }
         // }
     }
+
 
     const dateRangeFilter =  createDateRangeFilter(filter.startDate, filter.endDate);
     // create where from filter
@@ -108,19 +137,51 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         in: filter.status
     };
     if (filter.institutionCode?.length != 0){
-    where.messages = { 
-        some: {    OR: [{AND: [
-            {
-                origin: {
-                    in: filter.institutionCode}
-                }, 
+        where.messages = { 
+            some: {    
+                OR: [
+                    {
+                        AND: [
+                            {
+                                origin: {
+                                    in: filter.institutionCode
+                                }
+                            }, 
+                    {
+                        status: { 
+                            some: { 
+                                id: {
+                                    in: ["01", "05"] 
+                                } 
+                            }
+                        }
+                    
+            }
+        ]}, {
+            AND: [
                 {
-                status: { some: { id: {in: ["01", "05"] } }}
-                   
+                    destination: {
+                        in: 
+                        filter.institutionCode
+                    }
+                }, 
+                { 
+                    OR: [
+                        { 
+                            status: { 
+                                some:{
+                                    id: { 
+                                        in: ["06"]
+                                    }
+                                } 
+                            } 
+                        } 
+                    ]
+                }
+            ]
+        }]
         }
-    ]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some:{id: { in: ["06"]}} } } ]}]}]
-    }
-    }
+        }
 }
     // where.messages = {
     //     some: {

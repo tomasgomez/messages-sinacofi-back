@@ -3,7 +3,6 @@ import { processStringArrayField, processDateField } from '@/backend/utils/funct
 
 export function validateGetMessage(request: any): FilterMessage | Error {
   let data = request.query;
-  
   let filter: FilterMessage = {
     detail: false,
   }
