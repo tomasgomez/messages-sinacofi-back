@@ -2,10 +2,12 @@ import { FilterMessage } from '@/backend/entities/message/filter';
 import { Message } from '@/backend/entities/message/message';
 import { getDescriptionByType } from '@/backend/entities/message/types';
 
-function prepareMessages(messages: Message[], filter: FilterMessage = {detail:false}): any{
-    let preparedData = messages.map((message) => {
-      let status = '';
+function prepareMessages(messages: Message[], filter: any = {detail:false}): any{
+    
+  let message670 = messages.filter(message => message.messageCode == "670");
 
+  let preparedData = messages.map((message) => {
+      let status = '';
       /* If the filter has a status then filter the messages statuses*/
       if (filter.status && filter.status.length > 0) {
         messages = messages.map(message => {
@@ -16,8 +18,17 @@ function prepareMessages(messages: Message[], filter: FilterMessage = {detail:fa
             };
         }).filter(message => message.status && message.status.length > 0);
       }
-
-      status = message.status
+      let statusFilered = message.status;
+      if (message670.length > 0 && (filter.origin?.length > 0 || filter.institutionCode?.length > 0)){
+        let filterOrigin = filter.institutionCode[0] ?? filter.origin[0];
+        if((message670[0].origin == filterOrigin) && ["670","674"].includes(message.messageCode!)){
+          console.log("entrecito");
+          statusFilered = statusFilered?.filter(d => d.id != '06')
+        } else {
+          statusFilered = statusFilered?.filter(d => d.id != '05' && d.id != '01')
+        }
+      }
+      status = statusFilered
             ?.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)) // Descending order
             ?. [0]?.id ?? ''; // Get the first element's id or return an empty string
   
@@ -45,3 +56,7 @@ function prepareMessages(messages: Message[], filter: FilterMessage = {detail:fa
   }
 
   export { prepareMessages }
+
+
+  // 670 y 674 (enviador)
+  // 671, 672, 673 y 675 (receptor)
