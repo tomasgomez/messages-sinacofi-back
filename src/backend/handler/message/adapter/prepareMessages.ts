@@ -20,7 +20,9 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
       }
       let statusFilered = message.status;
       if (message670.length > 0 && (filter.origin?.length > 0 || filter.institutionCode?.length > 0)){
-        let filterOrigin = filter.institutionCode[0] ?? filter.origin[0];
+
+        let filterOrigin = filter.institutionCode ? filter.institutionCode [0] : filter.origin[0];
+
         if((message670[0].origin == filterOrigin) && ["670","674"].includes(message.messageCode!)){
           console.log("entrecito");
           statusFilered = statusFilered?.filter(d => d.id != '06')

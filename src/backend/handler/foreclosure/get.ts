@@ -12,7 +12,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
           res.status(400).json([]);
           return;
         }
-
+        
         /* Use the PrismaAreaAdapter to get the Message from the database */
         let messageResponse = await messageForeclosureUseCase.getMessageForeclosure(filter)
 
