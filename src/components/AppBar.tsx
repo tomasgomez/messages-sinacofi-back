@@ -82,7 +82,6 @@ const AppBar = () => {
   ) as any;
 
   useEffect(() => {
-    
     if(userInfo?.user){
       setSelectedInsitution(userInfo?.user?.institutionCode)
     }
@@ -155,7 +154,10 @@ const AppBar = () => {
                 defaultValue={userInfo?.user?.institutionCode}
                 selected={selectedInstitution}
                 width={200}
-                onChange={setSelectedInsitution}
+                onChange={(institutionCode) => {
+                  setSelectedInsitution(institutionCode)
+                  // setCurrentIntitution(intitutionData);
+                }}
                 placeholder="Seleccione una Institución"
               />
             </Container>

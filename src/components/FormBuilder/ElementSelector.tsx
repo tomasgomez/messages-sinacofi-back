@@ -1,7 +1,7 @@
-import { Controller } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { Box, Typography } from "@mui/material";
 import { DatePickerInput } from "@/app/mortgage-discharge/in-process/header/components/filters/filter-selector/form-elements/date";
-import Dropdrown from "../Dropdown";
+import Dropdown from "../Dropdown";
 import RutField from "./fields/RutField";
 import Checkbox from "./fields/Checkbox";
 import AmountField from "./fields/AmountField";
@@ -10,11 +10,21 @@ import PasswordField from "./fields/PasswordField";
 import PhoneNumberField from "./fields/PhoneNumberField";
 import Accordion from "./labels/Accordion";
 
+
+const Select = (props: any) => {
+  const { setValue } = useFormContext();
+  const onChange = (value) => {
+    setValue(props.id, value);
+  }
+  return (
+    <Dropdown {...props} onChange={onChange}/>
+  )
+}
 const FieldTypes = {
   textField: Field,
   checkbox: (props: any) => <Checkbox {...props} options={props.properties.options} />,
   date: DatePickerInput,
-  select: Dropdrown,
+  select: Select,
   textArea: (props: any) => <Field {...props} multiline />,
   dni: RutField,
   phoneNumber: PhoneNumberField,

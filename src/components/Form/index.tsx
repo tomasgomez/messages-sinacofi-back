@@ -54,15 +54,15 @@ const Form = ({
 
   const handlePrepare = () => {
     methods.trigger().then((validation) => {
+      // console.log({ validation });
       if (validation) {
-        const values = getValues();
+        const values = methods.getValues();
         onPrepare(values);
       }
     });
   }
 
-  console.log("ERRORS", { errors: methods?.formState?.errors  });
-
+// console.log("ERRRORS", methods.formState.errors);
 
   return (
     <FormProvider {...methods}>

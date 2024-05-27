@@ -63,7 +63,6 @@ const CreateMessage = () => {
   const cloneId = searchParams?.get("cloneId") || "";
   const messageId = searchParams?.get("messageId") || "";
   const cukCode = searchParams?.get("cukCode") || "";
-
   useEffect(() => {
     setLoading(true);
     if(((cloneId || messageId) && !cukCode )) {
@@ -76,11 +75,19 @@ const CreateMessage = () => {
               ...schema,
               actions: { saveDraftDisabled: true, sendButtonDisabled: false },
               parameters: schema?.parameters.map((parameter: any) => (
-                parameter.id === "destination" 
+                parameter.id.startsWith("beneficiaryBank")
+                // parameter.id === "destination" 
                 ? {
                   ...parameter,
                   selected: institutionId,
                   defaultValue: institutionId,
+                  disabled: true
+                } 
+                : parameter.id === "bank" || parameter.id.startsWith("bank")
+                // parameter.id === "destination" 
+                ? {
+                  ...parameter,
+                  defaultValue: "BANCO",
                   disabled: true
                 } 
                 : parameter.id === "CUK" 
@@ -133,7 +140,24 @@ const CreateMessage = () => {
           setMessageSchema({
             ...schema,
             actions: { saveDraftDisabled: ["671", "672", "673", "674", "675"].includes(messageCode), sendButtonDisabled: messageCode === "670" },
-            parameters: schema?.parameters
+            parameters: messageCode === "670" ? schema?.parameters.map((parameter: any) => (
+              parameter.id.startsWith("beneficiaryBank")
+              // parameter.id === "destination" 
+              ? {
+                ...parameter,
+                selected: institutionId,
+                defaultValue: institutionId,
+                disabled: true
+              } 
+              : parameter.id === "bank" || parameter.id.startsWith("bank")
+              // parameter.id === "destination" 
+              ? {
+                ...parameter,
+                defaultValue: selectedInstitution,
+                disabled: true
+              } :
+              parameter
+             )) : schema?.parameters
           });
         })
         .catch((error) => {
