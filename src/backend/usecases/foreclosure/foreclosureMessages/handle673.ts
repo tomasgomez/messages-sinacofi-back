@@ -44,11 +44,11 @@ export async function handle673(cuk: CUK, message: Message, cukRepository: CUKRe
             break;
     }
     
-    delete message.statusCode;
-
-    cuk.status = ForeclosureStatus.START_NORMALIZATION
-
-    updateForclosure(cukRepository,messageRepository,cuk,message);
+    if (message.cukCode && message.cukCode !== ''){
+        cuk.status = ForeclosureStatus.START_NORMALIZATION
+        cuk.cukCode = message.cukCode;
+        updateForclosure(cukRepository,messageRepository,cuk,message);
+    }
     
     return updatedMessage;
 }

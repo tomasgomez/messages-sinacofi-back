@@ -27,11 +27,11 @@ export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRe
         message.setStatus(status);
     }
     
-    delete message.statusCode;
-
-    cuk.status = ForeclosureStatus.REJECTED
-
-    updateForclosure(cukRepository,messageRepository,cuk,message);
+    if (message.cukCode && message.cukCode !== ''){
+        cuk.status = ForeclosureStatus.REJECTED
+        cuk.cukCode = message.cukCode;
+        updateForclosure(cukRepository,messageRepository,cuk,message);
+    }
 
     return updatedMessage;
 }

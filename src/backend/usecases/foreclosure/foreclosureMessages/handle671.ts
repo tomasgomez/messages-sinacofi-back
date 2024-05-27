@@ -3,7 +3,6 @@ import { CUKRepository } from '@/backend/repository/cukRepository';
 import { MessageRepository } from '@/backend/repository/messageRepository';
 import { CUK } from '@/backend/entities/cuk/cuk';
 import { updateLastMessage } from '@/backend/usecases/foreclosure/updateForeclosureLastMessage';
-import { MessageStatus } from '@/backend/entities/message/status';
 import { updateForclosure } from '../updateForeclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 
@@ -27,10 +26,9 @@ export async function handle671(cuk: CUK, message: Message, cukRepository: CUKRe
         message.setStatus(status);
     }
 
-    if (cuk.status && cuk.status !== ''){
-        delete message.statusCode;
-
+    if (message.cukCode && message.cukCode !== ''){
         cuk.status = ForeclosureStatus.ACCEPTED
+        cuk.cukCode = message.cukCode;
         updateForclosure(cukRepository,messageRepository,cuk,message);
     }
 
