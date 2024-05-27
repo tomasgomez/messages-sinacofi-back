@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ExpandMore } from "@mui/icons-material";
 import { AccordionDetails, Accordion as AccordionMUI, AccordionSummary, styled } from "@mui/material";
 import ParamenterListBuilder from "../ParametersBuilder";
@@ -27,10 +28,12 @@ const StyledAccordionSummary = styled(AccordionSummary)({
   }
 });
 
-const Accordion = ({ parameters, label, control, errors }: {parameters: any, label: any, control: any, errors: any,}) => {
+const Accordion = ({ parameters, label, control, errors, open }: {parameters: any, label: any, control: any, errors: any, open: any}) => {
   const { register } = useFormContext();
+  const [expanded, setExpanded] = useState(open);
+
   return (
-    <StyledAccordionMUI sx={{ margin: "0 -20px" }} square>
+    <StyledAccordionMUI sx={{ margin: "0 -20px" }} square expanded={expanded} onChange={(_, value) => setExpanded(value)}>
       <StyledAccordionSummary
         expandIcon={<ExpandMore />}
         aria-controls="panel1-content"
