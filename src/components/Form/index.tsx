@@ -54,10 +54,10 @@ const Form = ({
 
   const handlePrepare = () => {
     methods.trigger().then((validation) => {
-      if (validation) {
-        const values = getValues();
+      // if (validation) {
+        const values = methods.getValues();
         onPrepare(values);
-      }
+      // }
     });
   }
 

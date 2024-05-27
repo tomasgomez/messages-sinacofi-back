@@ -28,10 +28,6 @@ export function validateCreateMessage(data: any): Message | Error {
         message.cukCode = value;
       }
 
-      if (element.name === 'bank' || element.name === 'bank_2') {
-        value = message.destination;
-      }
-
       let parameter: Parameter =  {
         name: element.name ?? '',
         label: element.name ?? '',
