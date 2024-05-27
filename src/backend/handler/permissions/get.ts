@@ -6,6 +6,20 @@ import { parseCookies } from '@/backend/utils/auth';
 import PERMISSION_ACCESS from './PERMISSION_ACCESS.json';
 import { userRoles } from './userRoles';
 
+export interface UserInfo {
+  user:        User;
+  permissions: { [key: string]: boolean };
+}
+
+export interface User {
+  role:            string;
+  name:            string;
+  institutionCode: string;
+  area:            string;
+  email:           string;
+  status:          string;
+}
+
 // get message function
 export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
     try {
@@ -18,7 +32,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         const permissions = PERMISSION_ACCESS[userRoles[tokenDecoded.sub].role];
         
         const userData = { 
-            //@ts-ignore
             user: userRoles[tokenDecoded.sub],
             permissions
         };

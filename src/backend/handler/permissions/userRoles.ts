@@ -1,14 +1,28 @@
-export const userRoles = {
+export interface UserInfo {
+    user:        User;
+    permissions: { [key: string]: boolean };
+}
+  
+export interface User {
+    role:            string;
+    name:            string;
+    institutionCode: string;
+    area:            string;
+    email:           string;
+    status:          string;
+}
+
+export const userRoles: Record<string, User> = {
     '18782721-3': { 
-        role: 'profileFullAccess',
+        role: '02',
         name: "J. BUSTOS", 
-        institutionCode: "0016", 
+        institutionCode: "0027", 
         area: "",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
     '6986932-0': { 
-        role:'profile02', 
+        role:'02', 
         name: 'LUIS PEREIRA',
         institutionCode: "0016", 
         area: "",
@@ -16,7 +30,7 @@ export const userRoles = {
         status: "Active" 
     },
     '17604011-4': { 
-        role: 'profile07', 
+        role: '07', 
         name: 'NICOLAS ROCA',
         institutionCode: "0037", 
         area: "",
@@ -24,7 +38,7 @@ export const userRoles = {
         status: "Active"
     },
     '3077016': {
-        role: 'profile12',
+        role: '12',
         name: "DANIEL KOKAL",
         institutionCode: "350",
         area: "",
@@ -32,7 +46,7 @@ export const userRoles = {
         status: "Active"
     },
     "3077015":{
-        role: 'profile13',
+        role: '13',
         name: "LUIS P. UPR1",
         institutionCode: "350",
         area: "",
@@ -40,7 +54,7 @@ export const userRoles = {
         status: "Active"
     },
     "16088932":{
-        role: 'profile13',
+        role: '13',
         name: "O. VÉLIZ",
         institutionCode: "0027",
         area: "",
@@ -48,7 +62,7 @@ export const userRoles = {
         status: "Active"
     },
     "13003450":{
-        role: 'profile02',
+        role: '02',
         name: "P.RAMÍREZ",
         institutionCode: "0049",
         area: "",
@@ -56,7 +70,7 @@ export const userRoles = {
         status: "Active"
     },
     "16642594":{
-        role: 'profile12',
+        role: '12',
         name: "JAVIER CANAL",
         institutionCode: "0051",
         area: "",
@@ -64,7 +78,7 @@ export const userRoles = {
         status: "Active"
     },
     "30077020":{
-        role: 'profile07',
+        role: '07',
         name: "MONITOREO",
         institutionCode: "0049",
         area: "",
@@ -72,7 +86,7 @@ export const userRoles = {
         status: "Active"
     },
     "25876655":{
-        role: 'profile13',
+        role: '13',
         name: "LUIS TOMOCHE",
         institutionCode: "0051",
         area: "",
