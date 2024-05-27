@@ -5,9 +5,6 @@ import {
     CUK
 } from '@/backend/entities/cuk/cuk';
 import { History } from '@/backend/entities/cuk/history';
-import {
-    addHistory
-} from '@/backend/utils/foreclosure/history';
 
 export async function update(cuk: CUK): Promise < CUK | Error > {
     try {

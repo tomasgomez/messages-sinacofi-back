@@ -60,7 +60,5 @@ function prepareForclosure(cuks: CUK[]): any{
       }
     });
 
-    adaptedCuk.buyer = adaptedCuk?.buyer ? `${adaptedCuk?.buyer}/${adaptedCuk.buyerDni}` : adaptedCuk.buyerDni;
-
     return adaptedCuk;
   }
