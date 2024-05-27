@@ -1,7 +1,4 @@
 import {
-    ICUK
-} from '@/backend/entities/cuk/interface';
-import {
     PrismaClientWrapper
 } from '../prismaWrapper';
 import {
@@ -20,46 +17,39 @@ async function create(cuk: CUK): Promise < CUK | Error > {
 
         const prismaClient = prisma.getClient();
 
-        let cukData: Partial<ICUK> = {};
-
-        /* Set the time for the CUK */
-        if (cuk.setTime) {
-            cuk.setTime();
-        }
+        let cukData: Partial<CUK> = {};
 
         /* Set the history for the CUK */
-        let history: History[] = [{
+        let history: History = {
             status: cuk.status ?? '' +' '+ getDescriptionByStatus(cuk.status ?? ''),
-            cukCode: cuk.cukCode ?? '',
             date: cuk.creationDate ?? '',
-        }];
-
-        let historyAsString = JSON.stringify(history);
-
-        cukData.history = historyAsString;
+        }
 
         /* Add all the attributes to the new CUK */
         if (Object.keys(cuk).length > 0) {
             for (const [key, value] of Object.entries(cuk)) {
                 if (value !== undefined && key in cuk) {
-                    cukData[key as keyof ICUK] = value;
+                    cukData[key as keyof CUK] = value;
                 }
             }
-        } else {
-            console.error('No CUK data provided');
-            return new Error('No CUK data provided');
         }
 
         let newCUK = await prismaClient.cUK.create({
-            data: cukData
+            data: {
+                ...cukData,
+                history: {
+                    create: history
+                },
+                parameters: {},
+                messages: {}
+            },
+            include: {
+                history: true,
+                messages: true
+            }
         });
 
-        if (newCUK === null) {
-            console.error('Error creating CUK');
-            return new Error('Error creating CUK');
-        }
-
-        return newCUK as CUK;
+        return newCUK;
 
     } catch (error: any) {
         console.error('Error creating CUK:', error);

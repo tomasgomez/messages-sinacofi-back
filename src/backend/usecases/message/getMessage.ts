@@ -3,13 +3,12 @@ import { Message } from '../../entities/message/message';
 import { docUseCase } from '../docs/usecases';
 import { Documents } from '@/backend/entities/message/interface';
 import { findDocuments } from './findDocuments';
+import { FilterMessage } from '@/backend/entities/message/filter';
 
 // Get message function
-export async function getMessage(repository: MessageRepository, message: Message, count: string, offset: string): Promise<Message[] | Error> {
+export async function getMessage(repository: MessageRepository, filter: FilterMessage): Promise<Message[] | Error> {
   try {
-
-    /* Get the messages */
-    let messageResponse: Message[] | Error =  await repository.find(message, false, count, offset);
+    let messageResponse = await repository.find(filter);
     
     /* Check if the response is an error */
     if (messageResponse instanceof Error) {
@@ -39,5 +38,3 @@ export async function getMessage(repository: MessageRepository, message: Message
     return error;
   }
 }
-
-

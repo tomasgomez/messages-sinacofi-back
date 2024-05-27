@@ -22,9 +22,10 @@ export enum ForeclosureStatus {
     PREPARED = "01",
     SENT = "05",
     RECEIVED = "06",
-
+    ACCEPTED = "07",
+    SENT_LIQUIDATION = "09",
+    PAYMENT = "11",
   }
-  
 
  export function isForeclosureMessageCode(code?: string ): boolean {
 
@@ -48,7 +49,6 @@ export enum ForeclosureStatus {
 
  export function getDescriptionByStatus(status: string): string {
     switch (status) {
-
         case ForeclosureStatus.PREPARED:
             return MessageDescriptions.ALZAMIENTO_HIPOTECARIO;
         case ForeclosureStatus.IN_PROCESS:

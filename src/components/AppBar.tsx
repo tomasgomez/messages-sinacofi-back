@@ -19,6 +19,7 @@ import Menu from "./Menu";
 import SearchField from "./SearchField";
 import InstitutionDropdown from "./FieldTypes/InstitutionDropdown";
 import { MyContexLayout } from "@/app/context";
+import { SessionProviderContext } from "@/context/SessionProvider";
 
 const Time = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -40,44 +41,53 @@ const Time = () => {
   );
 };
 
-const MenuOptions = () => {
-  const options = useMemo(() => {
-    return [
-      {
-        label: "Configuration",
-        icon: <SettingsOutlined sx={{ color: "#898989" }} />,
-      },
-      {
-        label: "Ayuda",
-        icon: <HelpOutline sx={{ color: "#898989" }} />,
-      },
-      {
-        label: "Salir",
-        icon: <Logout sx={{ color: "#898989" }} />,
-      },
-    ];
-  }, []);
 
-  return (
-    <Menu options={options}>
-      <Typography color="#565656" fontWeight={500} variant="body1">
-        4002701
-      </Typography>
-      <Box style={{ display: "flex", alignItems: "center" }}>
-        <Typography variant="caption" fontWeight={600} color="#151515">
-          03 - Tratador Mensajes Tipo 7
-        </Typography>
-        <ArrowDropDown sx={{ color: "#898989" }} />
-      </Box>
-    </Menu>
-  );
-};
 
 const AppBar = () => {
   // Delete after add users
+  const { userInfo } = useContext(SessionProviderContext);
   const { selectedInstitution, setSelectedInsitution } = useContext(
     MyContexLayout
   ) as any;
+
+  const MenuOptions = () => {
+    const options = useMemo(() => {
+      return [
+        {
+          label: "Configuration",
+          icon: <SettingsOutlined sx={{ color: "#898989" }} />,
+        },
+        {
+          label: "Ayuda",
+          icon: <HelpOutline sx={{ color: "#898989" }} />,
+        },
+        {
+          label: "Salir",
+          icon: <Logout sx={{ color: "#898989" }} />,
+        },
+      ];
+    }, []);
+  
+    return (
+      <Menu options={options}>
+        <Typography color="#565656" fontWeight={500} variant="body1">
+          {userInfo?.user?.name}
+        </Typography>
+        <Box style={{ display: "flex", alignItems: "center" }}>
+          <Typography variant="caption" fontWeight={600} color="#151515">
+            03 - Tratador Mensajes Tipo {userInfo?.user?.role}
+          </Typography>
+          <ArrowDropDown sx={{ color: "#898989" }} />
+        </Box>
+      </Menu>
+    );
+  };
+
+  useEffect(() => {
+    if(userInfo?.user){
+      setSelectedInsitution(userInfo?.user?.institutionCode)
+    }
+  },[userInfo?.user]);
 
   return (
     <AppBarMui
@@ -143,10 +153,13 @@ const AppBar = () => {
               {/* // Delete after add users */}
               <InstitutionDropdown
                 label="Nombre de Institución"
-                defaultValue={selectedInstitution}
+                defaultValue={userInfo?.user?.institutionCode}
                 selected={selectedInstitution}
                 width={200}
-                onChange={setSelectedInsitution}
+                onChange={(institutionCode: any) => {
+                  setSelectedInsitution(institutionCode)
+                  // setCurrentIntitution(intitutionData);
+                }}
                 placeholder="Seleccione una Institución"
               />
             </Container>

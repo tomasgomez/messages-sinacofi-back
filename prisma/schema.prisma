@@ -10,81 +10,171 @@ datasource db {
 }
 
 model CUK {
-  id                     String  @id @default(uuid())
-  name                   String?
-  cukCode                String? @unique
-  description            String?
-  status                 String?
-  creationDate           String?
-  issuedDate             String?
-  channel                String?
-  institutionCode        String?
-  institutionDestination String?
-  region                 String?
-  buyerDni               String?
-  buyer                  String?
-  ownerDni               String?
-  owner                  String?
-  borrowerDni            String?
-  borrower               String?
+  id      String  @id @default(uuid())
+  cukCode String? @unique
+  status  String?
 
-  history Json? // [ {cukCode:'AH0000270000' status: '022 EN PROCESO', date: '2021-01-01 16:40:00' }, {cukCode:'AH0000270000' status: '023 ACEPTADO', date: '2021-01-02 16:40:00' } ]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  messages  Message[] @relation(name: "CukMessages")
+  history    History[]
+  messages   Message[]    @relation(name: "CukMessages")
+  parameters Parameters[]
+}
+
+model History {
+  id      String  @id @default(uuid())
+  cukCode String?
+  status  String
+  date    String
+
+  cuk CUK? @relation(fields: [cukCode], references: [cukCode])
 }
 
 model Message {
-  id           String      @id @default(uuid())
-  TSN          Int?        @unique @default(autoincrement()) //TODO: Check correlation with NSE, OSN, etc.
-  OSN          Int?        @unique @default(autoincrement())
-  NSE          Int?        @unique @default(autoincrement())
-  LSN          Int?        @unique @default(autoincrement())
-  NSR          Int?        @unique @default(autoincrement())
-  messageCode  String?
-  description  String?
-  priority     String?
-  status       String?
-  sender       String?
-  creationDate String?
-  creationTime String?
-  receiver     String?
-  receivedDate String?
-  receivedTime String?
-  documents    Documents[]
-  actions      String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id              String   @id @default(uuid())
+  messageCode     String?
+  origin          String?
+  destination     String?
+  originArea      String?
+  destinationArea String?
+  creationDate    String?
+  creationTime    String?
+  receivedDate    String?
+  receivedTime    String?
+  actions         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  status     Status[]
+  documents  Documents[]
+  parameters Parameters[]
 
   cukCode String?
+  Cuk     CUK?    @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
 
-  parameters Parameters[]
-  cuk        CUK?         @relation(fields: [cukCode], references: [cukCode], name: "CukMessages")
+  // Correlatives
+  TSN TSN?
+  LSN LSN?
+  OSN OSN?
+  NSE NSE?
+  NSR NSR?
+  NSQ NSQ?
 }
 
 model Parameters {
-  internalId   Int      @id @default(autoincrement())
-  id           String
-  name         String?
+  id           String  @default(uuid())
+  name         String
   messageCode  String?
   label        String?
   type         String?
   placeholder  String?
   description  String?
   defaultValue String?
-  priority     Int?
-  value        String? //string or number
-  properties   Json?
-  validations  Json?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  priority     Int
+  value        String?
+
+  validations String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   messageId String
   Message   Message @relation(fields: [messageId], references: [id])
 
-  @@unique([messageId, name])
-  @@index([messageId, name])
+  cukCode    String?
+  CUK        CUK?        @relation(fields: [cukCode], references: [cukCode])
+  Properties Properties?
+
+  @@id([messageId, name, priority])
+  @@unique([messageId, name, priority])
+  @@index([messageId, name, priority])
+}
+
+model Status {
+  id        String
+  createdAt DateTime? @default(now())
+
+  messageId String
+  message   Message @relation(fields: [messageId], references: [id])
+
+  @@id([messageId, id])
+}
+
+model TSN {
+  id              Int      @default(autoincrement()) // TODO: setear algunos para la migracion
+  institutionCode String
+  areaCode        String   @default("05")
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model LSN {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  areaCode        String
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model OSN {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode])
+  @@index([id, institutionCode])
+}
+
+model NSE {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  areaCode        String
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model NSR {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  areaCode        String
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
+}
+
+model NSQ {
+  id              Int      @default(autoincrement())
+  institutionCode String
+  areaCode        String   @default("05")
+  createdAt       DateTime @default(now())
+
+  message   Message @relation(fields: [messageId], references: [id])
+  messageId String  @unique
+
+  @@id([id, institutionCode, areaCode])
+  @@index([id, institutionCode, areaCode])
 }
 
 model Documents {
@@ -96,6 +186,21 @@ model Documents {
 
   messageId String
   Message   Message @relation(fields: [messageId], references: [id])
+}
+
+model Properties {
+  id        String   @id @default(uuid())
+  name      String?
+  value     String?
+  createdAt DateTime @default(now())
+
+  messageId String
+  paramName String
+  priority  Int
+
+  Parameter Parameters @relation(fields: [messageId, paramName, priority], references: [messageId, name, priority])
+
+  @@unique([messageId, paramName, priority])
 }
 
 model Family {

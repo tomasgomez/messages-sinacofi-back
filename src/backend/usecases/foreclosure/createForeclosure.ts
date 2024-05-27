@@ -1,7 +1,8 @@
 import { CUKRepository } from '../../repository/cukRepository';
 import { CUK } from '../../entities/cuk/cuk';
 import { Message } from '../../entities/message/message';
-import { isValidMessage, processMessageParameters, setCukDestination, setCukStatus } from '@/backend/utils/foreclosure';
+import { isValidMessage } from '@/backend/utils/foreclosure';
+import { MessageStatus } from '@/utils/messagesStatus';
 
 export async function createForeclosure(cukRepository: CUKRepository, cuk: CUK, message: Message): Promise<CUK | Error> {
   try {
@@ -9,12 +10,8 @@ export async function createForeclosure(cukRepository: CUKRepository, cuk: CUK, 
       throw new Error('Invalid message');
     }
 
-    processMessageParameters(message.parameters, cuk);
-
-    setCukDestination(cuk, message.receiver);
-
-    setCukStatus(cuk, message.status);
-
+    cuk.status = MessageStatus.PREPARADO;
+  
     const createdCuk = await cukRepository.create(cuk);
 
     if (createdCuk instanceof Error) {

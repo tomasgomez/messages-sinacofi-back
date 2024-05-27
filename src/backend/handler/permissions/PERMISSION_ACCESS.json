@@ -1,6 +1,5 @@
 {
-    "profileFullAccess": {
-        "sign670": true, 
+    "FullAccess": { 
         "edit": true,
         "access": true,
         "sendMessage": true,
@@ -22,12 +21,11 @@
         "paymentDetails": true,
         "paymentNotificationMessage": true,
         "paymentConfirmationMortgageDischarge": true,
-        "agreeMortgageDischarge": true,
+        "acceptMortgageDischarge": true,
         "signMortgageDischarge": true,
         "rejectMortgageDischarge": true
     },
-    "profile02": {
-        "sign670": true,
+    "02": {
         "edit": false,
         "access": false,
         "sendMessage": true,
@@ -49,12 +47,11 @@
         "paymentDetails": false,
         "paymentNotificationMessage": false,
         "paymentConfirmationMortgageDischarge": false,
-        "agreeMortgageDischarge": false,
+        "acceptMortgageDischarge": false,
         "signMortgageDischarge": false,
         "rejectMortgageDischarge": false
     },
-    "profile07": {
-        "sign670": true,
+    "07": {
         "edit": true,
         "access": true,
         "sendMessage": true,
@@ -76,12 +73,11 @@
         "paymentDetails": true,
         "paymentNotificationMessage": true,
         "paymentConfirmationMortgageDischarge": true,
-        "agreeMortgageDischarge": false,
-        "signMortgageDischarge": false,
+        "acceptMortgageDischarge": false,
+        "signMortgageDischarge": true,
         "rejectMortgageDischarge": false
     },
-    "profile12": {
-        "sign670": true,
+    "12": {
         "edit": true,
         "access": true,
         "sendMessage": true,
@@ -103,12 +99,11 @@
         "paymentDetails": false,
         "paymentNotificationMessage": false,
         "paymentConfirmationMortgageDischarge": false,
-        "agreeMortgageDischarge": false,
+        "acceptMortgageDischarge": false,
         "signMortgageDischarge": true,
         "rejectMortgageDischarge": true
     },
-    "profile13": {
-        "sign670": true,
+    "13": {
         "edit": true,
         "access": true,
         "sendMessage": true,
@@ -130,12 +125,11 @@
         "paymentDetails": false,
         "paymentNotificationMessage": false,
         "paymentConfirmationMortgageDischarge": false,
-        "agreeMortgageDischarge": false,
+        "acceptMortgageDischarge": false,
         "signMortgageDischarge": false,
         "rejectMortgageDischarge": false
     },
-    "profile14": {
-        "sign670": true,
+    "14": {
         "edit": true,
         "access": true,
         "sendMessage": false,
@@ -157,12 +151,11 @@
         "paymentDetails": true,
         "paymentNotificationMessage": true,
         "paymentConfirmationMortgageDischarge": true,
-        "agreeMortgageDischarge": true,
+        "acceptMortgageDischarge": true,
         "signMortgageDischarge": false,
         "rejectMortgageDischarge": true
     },
-    "profile16": {
-        "sign670": true,
+    "16": {
         "edit": true,
         "access": true,
         "sendMessage": false,
@@ -184,12 +177,11 @@
         "paymentDetails": true,
         "paymentNotificationMessage": true,
         "paymentConfirmationMortgageDischarge": true,
-        "agreeMortgageDischarge": true,
+        "acceptMortgageDischarge": true,
         "signMortgageDischarge": false,
         "rejectMortgageDischarge": true
     },
-    "profile17": {
-        "sign670": true,
+    "17": {
         "edit": true,
         "access": true,
         "sendMessage": true,
@@ -211,8 +203,8 @@
         "paymentDetails": true,
         "paymentNotificationMessage": true,
         "paymentConfirmationMortgageDischarge": true,
-        "agreeMortgageDischarge": true,
-        "signMortgageDischarge": false,
+        "acceptMortgageDischarge": true,
+        "signMortgageDischarge": true,
         "rejectMortgageDischarge": true
     } 
   }

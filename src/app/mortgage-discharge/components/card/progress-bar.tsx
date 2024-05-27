@@ -57,9 +57,7 @@ const ProgressBar = ({
 
   return (
     <StyledContainerProgressBar>
-      <StyledContainerTitleProgressBar>
-        <StyledTitleProgressBar>Seguimiento de Mensajes</StyledTitleProgressBar>
-      </StyledContainerTitleProgressBar>
+      <StyledTitleProgressBar>Seguimiento de Mensajes</StyledTitleProgressBar>
       <StyledContainerBar>
         {blockList.map((elem: any, i: number) => {
           const status = elem?.status;

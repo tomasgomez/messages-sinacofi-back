@@ -1,4 +1,4 @@
-export interface Filter {
+export interface FilterCUK {
   [key: string]: string | string[] | Date | undefined | null;
 
   id ? : string[];

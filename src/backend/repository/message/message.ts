@@ -3,12 +3,10 @@ import { Message } from '../../entities/message/message';
 import { find } from './find';
 import { create } from './create';
 import { update } from './update';
-import { duplicateMessage } from './duplicateMessage';
-import { MessageFilter } from '@/backend/entities/message/filter';
-
+import { FilterMessage } from '@/backend/entities/message/filter';
 export class PrismaMessageAdapter implements MessageRepository {
   // find message
-  find = async(message: Message, detail: boolean, count:string, offset: string): Promise<Message[] | Error> => find(message, detail, count, offset);
+  find = async(filter: FilterMessage): Promise<Message[] | Error> => find(filter);
   
   // create message
   create = async(message: Message): Promise<Message | Error> => create(message);
@@ -16,11 +14,8 @@ export class PrismaMessageAdapter implements MessageRepository {
   // update message
   update = async(message: Message): Promise<Message | Error> => update(message);
 
-  // duplicate message
-  duplicateMessage = async(message: Message): Promise<Message | Error> => duplicateMessage(message);
-
   // find by filter
-  findBy = async(filter: MessageFilter): Promise<Message[] | Error> => {
+  findBy = async(filter: FilterMessage): Promise<Message[] | Error> => {
     throw new Error('Method not implemented.');
   }
 

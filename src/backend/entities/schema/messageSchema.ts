@@ -36,6 +36,7 @@ export interface Parameter {
     placeholder: string;
     properties: Properties;
     validations: Validations;
+    parameters?: Parameter[];
 }
 
 export interface Properties {

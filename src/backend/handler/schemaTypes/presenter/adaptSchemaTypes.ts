@@ -5,7 +5,6 @@ export function adaptSchemaTypes(dataToAdapt: any): Schema[] {
 
     const schemas: Schema[] = [];
 
-    console.log(dataToAdapt)
     // Check if data is not empty and is an array
     if (dataToAdapt instanceof Array && dataToAdapt.length > 0) {
 

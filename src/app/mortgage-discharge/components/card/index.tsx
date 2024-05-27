@@ -31,7 +31,7 @@ const CarDischarge = ({
   handlerTrackingModal,
 }: {
   data: any;
-  handlerTrackingModal: (data: ModalTrackingData) => void;
+  handlerTrackingModal: (data?: ModalTrackingData) => void;
 }) => {
   const [selectedMessage, setSelectorMessage] = React.useState<string | null>(
     null
@@ -98,11 +98,8 @@ const CarDischarge = ({
 
   return (
     <StyledContentCard>
-      <StyledBoxShadow
-        borderRadiusComplete={isOpen}
-        style={{ zIndex: 3, width: 1178 }}
-      >
-        <StyledCard>
+      <StyledBoxShadow borderRadiusComplete={isOpen} style={{ zIndex: 3 }}>
+        <div style={{ display: "flex" }}>
           {isOpen ? (
             <IconButton
               style={{ color: "#565656" }}
@@ -119,22 +116,33 @@ const CarDischarge = ({
             </IconButton>
           )}
           <CodeColumn data={codeData} />
-          <InfoColumn data={infoData} />
-          <StyledButton
-            onClick={() => handlerTrackingModal(modalTrackingData)}
-            disabled={buttonDisabled}
-          >
-            Base de Seguimiento
-          </StyledButton>
-        </StyledCard>
+        </div>
+
+        <InfoColumn data={infoData} />
+        <StyledButton
+          onClick={() => handlerTrackingModal(modalTrackingData)}
+          disabled={buttonDisabled}
+        >
+          Base de Seguimiento
+        </StyledButton>
       </StyledBoxShadow>
-      <Collapse in={isOpen} style={{ width: 1178 }}>
+      <Collapse
+        in={isOpen}
+        style={{
+          width: "100%",
+          overflow: "inherit",
+          boxShadow: "0px 2px 5px 0px rgba(0, 0, 0, 0.1)",
+          borderRadius: "0px 0px 10px 10px",
+          background: "#fff",
+        }}
+      >
         <ProgressBar
           data={messages}
           setSelectorMessage={setSelectorMessage}
           selectedMessage={selectedMessage}
         />
         <DataTable
+          // style={{ overflow: "initial" }}
           maxHeight={350}
           rows={handleFilterMessages(reverseArray(messages))}
           columns={columnsCard}

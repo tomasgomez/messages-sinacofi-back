@@ -1,41 +1,42 @@
 import {
-    IMessage,
-    Parameter
-} from './interface';
-import {
     getChileanTime
-} from '../../utils/functions';
-import {
-    Documents
-} from '@/backend/entities/message/interface';
+} from '@/backend/utils/functions';
+import { Parameter } from './parameter';
+import { Document } from '@/backend/entities/global/document';
+import { TSN, LSN, OSN, NSE, NSR, NSQ } from './correlatives';
+import { Status } from './status';
 
+export class Message {
+    [key: string]: unknown;
 
-export class Message implements IMessage {
     id ? : string;
-    TSN ? : number | null;
-    OSN ? : number | null;
-    NSE ? : number | null;
-    LSN ? : number | null;
-    NSR ? : number | null;
-    NSQ ? : number | null;
     messageCode ? : string | null;
-    description ? : string | null;
-    priority ? : string | null;
-    status ? : string | null;
-    sender ? : string | null;
+    origin ? : string | null;
+    destination ? : string | null;
+    originArea ? : string | null;
+    destinationArea ? : string | null;
     creationDate ? : string | null;
     creationTime ? : string | null;
-    receiver ? : string | null;
     receivedDate ? : string | null;
     receivedTime ? : string | null;
-    documents ? : Documents[];
-    actions ? : any;
-    parameters? : Parameter[] ;
-    cukCode ? : string | null;
-    cuk ? : any;
+    actions ? : string | null;
     createdAt ? : Date;
+    updatedAt ? : Date;
 
-    constructor() {}
+    TSN ? : TSN;
+    LSN ? : LSN;
+    OSN ? : OSN;
+    NSE ? : NSE;
+    NSR ? : NSR;
+    NSQ ? : NSQ;
+
+    parameters ? : Parameter[];
+    documents ? : Document[];
+
+    status ? : Status[] ;
+    cukCode ? : string | null;
+
+    statusCode? : string | null;
 
     setTime ? () {
 
@@ -64,5 +65,27 @@ export class Message implements IMessage {
 
         this.receivedDate = dateString
         this.receivedTime = time;
+    }
+
+    getStatus?() {
+        return this.status
+            ?.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)) // Descending order
+            ?. [0]?.id ?? ''; // Get the first element's id or return an empty string
+    }
+
+    setStatus?(statusId: string) {
+        if (this.status) {
+            this.status.push({
+                id: statusId,
+                messageId: this.id ?? '',
+                createdAt: new Date(),
+            });
+        } else {
+            this.status = [{
+                id: statusId,
+                messageId: this.id ?? '',
+                createdAt: new Date(),
+            }];
+        }
     }
 }

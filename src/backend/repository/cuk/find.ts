@@ -1,6 +1,6 @@
 import {
     Filter
-} from '@/backend/entities/global/filter';
+} from '@/backend/entities/cuk/filter';
 import {
     PrismaClientWrapper
 } from '../prismaWrapper';
@@ -8,17 +8,18 @@ import {
     CUK
 } from '@/backend/entities/cuk/cuk';
 import {
-    handleNullValues,
     createDateRangeFilter
 } from '@/backend/utils/functions';
 import {
-    setCukHistory
-} from '@/backend/utils/foreclosure/history';
+    findSelect
+} from '@/backend/repository/message/presenter/findSelect';
 import { Prisma } from '@prisma/client';
+import { MessageTypes } from '@/backend/entities/message/types';
 
 
 async function find(filter: Filter): Promise < CUK[] | Error > {
     try {
+        console.log(filter)
         let cuks: CUK[];
 
         const prisma = new PrismaClientWrapper();
@@ -29,25 +30,15 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
         let offsetAsInt = parseInt(filter.offset ?? '0', 10);
 
         const query = cukFindManyQuery(filter, countAsInt, offsetAsInt);
+
         // Find all messages if count is not provided or is 0
         cuks = await prismaClient.cUK.findMany(query);
-
 
         // If the messages are not found, return an error
         if (cuks.length === 0) {
             return new Error('Message not found');
         }
 
-        for (let cuk of cuks) {
-            if (cuk.messages !== undefined && cuk.messages.length > 0) {
-                for (let message of cuk.messages) {
-                    handleNullValues(message, false);
-                }
-            }
-
-            cuk.history = setCukHistory(cuk);
-            
-        }
         return cuks;
 
     } catch (error: any) {
@@ -69,170 +60,175 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         skip: offset,
         orderBy: { createdAt: 'desc' },
     }
-
+    
     // defune MessageArgs
     let messageArgs: Prisma.CUK$messagesArgs = {
-        select: createSelectFromFilter(),
+        select: findSelect(),
     };
+
+    // check if filter has institutionCode
+    if (filter.institutionCode) {
+        messageArgs.where = {
+            OR: [
+                {
+                    AND: [
+                        {
+                            origin: {
+                                in: filter.institutionCode
+                            }
+                        }, 
+                    {
+                    status: { 
+                        
+                        some: 
+                        { 
+                            id: {
+                                in: ["01", "05"] 
+                        }
+                    }
+                }       
+            }
+        ]}, {
+            AND: [
+                {
+                    destination: {
+                        in: filter.institutionCode
+                    }
+                }, {
+                    OR: [
+                        { 
+                            status: { 
+                                some:{
+                                    id: { 
+                                        in: ["06"]
+                                }
+                            } 
+                        } 
+                    } 
+                ]
+            }
+        ]}]}
+        // where.messages = {
+        //     some: {
+        //         OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {some: {id: {in: ["01", "05",""]}}}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some: {id: {in: ["06"]}} } }]}]}]
+        //     }
+        // }
+    }
+
 
     const dateRangeFilter =  createDateRangeFilter(filter.startDate, filter.endDate);
     // create where from filter
     let where: Prisma.CUKWhereInput = {
         ...dateRangeFilter
     };
+
+    if(filter.id && filter.id.length > 0)
     where.id = {
         in: filter.id
     };
-    where.name = {
-        in: filter.name
-    };
+
+    if(filter.cukCode && filter.cukCode.length > 0)
     where.cukCode = {
         in: filter.cukCode
     };
-    where.description = {
-        in: filter.description
-    };
-    where.channel = {
-        in: filter.channel
-    };
+
+    if(filter.status && filter.status.length > 0)
     where.status = {
         in: filter.status
     };
-    where.region = {
-        in: filter.region
-    };
-    where.buyerDni = {
-        in: filter.buyerDni
-    };
-    where.buyer = {
-        in: filter.buyer
-    };
-    where.ownerDni = {
-        in: filter.ownerDni
-    };
-    where.owner = {
-        in: filter.owner
-    };
-    where.borrowerDni = {
-        in: filter.borrowerDni
-    };
-    where.borrower = {
-        in: filter.borrower
-    };
-
-    // check if filter has institutionCode
-    if (filter.institutionCode) {
-        messageArgs.where = {
-            OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
-        }
-        where.messages = {
-            some: {
-                OR: [{AND: [{sender: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{receiver: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
+    if (filter.institutionCode?.length != 0){
+        where.messages = { 
+            some: {    
+                OR: [
+                    {
+                        AND: [
+                            {
+                                origin: {
+                                    in: filter.institutionCode
+                                }
+                            }, 
+                    {
+                        status: { 
+                            some: { 
+                                id: {
+                                    in: ["01", "05"] 
+                                } 
+                            }
+                        }
+                    
             }
+        ]}, {
+            AND: [
+                {
+                    destination: {
+                        in: 
+                        filter.institutionCode
+                    }
+                }, 
+                { 
+                    OR: [
+                        { 
+                            status: { 
+                                some:{
+                                    id: { 
+                                        in: ["06"]
+                                    }
+                                } 
+                            } 
+                        } 
+                    ]
+                }
+            ]
+        }]
         }
-    }
+        }
+}
+    // where.messages = {
+    //     some: {
+    //         OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {some: {id: {in: ["01", "05",""]}}}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some: {id: {in: ["06"]}} } }]}]}]
+    //     }
+    // }
+
     // set values to query
     query.where = where;
     // define include
-    let include: Prisma.CUKInclude = { messages: messageArgs };
+    let include: Prisma.CUKInclude = { 
+        messages: messageArgs, 
+        parameters: {
+            where: {
+                messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO,
+                name: {
+                        in: [
+                            'id',
+                            'name',
+                            'cukCode',
+                            'description',
+                            'status',
+                            'creationDate',
+                            'issuedDate',
+                            'channel',
+                            'bank',
+                            'region',
+                            'buyerDni',
+                            'buyer',
+                            'ownerDni',
+                            'owner',
+                            'borrowerDni',
+                            'borrower',
+                        ]
+                    }            
+                },
+            select: {
+                name: true,
+                value: true
+            }
+        },
+        history: true
+    };
+
     // set include to query
     query.include = include;
 
     return query;
 }
 
-
-function createWhereFromFilter(filter: Filter): any {
-    let where: any = {};
-
-    where.id = {
-        in: filter.id
-    };
-    where.name = {
-        in: filter.name
-    };
-    where.cukCode = {
-        in: filter.cukCode
-    };
-    where.description = {
-        in: filter.description
-    };
-    where.channel = {
-        in: filter.channel
-    };
-    where.status = {
-        in: filter.status
-    };
-    where.region = {
-        in: filter.region
-    };
-    where.buyerDni = {
-        in: filter.buyerDni
-    };
-    where.buyer = {
-        in: filter.buyer
-    };
-    where.ownerDni = {
-        in: filter.ownerDni
-    };
-    where.owner = {
-        in: filter.owner
-    };
-    where.borrowerDni = {
-        in: filter.borrowerDni
-    };
-    where.borrower = {
-        in: filter.borrower
-    };
-
-    where.messages = {
-        some: {
-                OR: [{
-                sender: {
-                    in: filter.institutionCode
-                }},
-                {receiver: {
-                    in: filter.institutionCode
-                }
-            }]
-            }
-        }
-    
-
-    let dateRangeFilter = createDateRangeFilter(filter.startDate, filter.endDate);
-
-    where = {
-        ...where,
-        ...dateRangeFilter
-    };
-
-    return where;
-}
-
-function createSelectFromFilter(): Prisma.MessageSelect {
-    let select: Prisma.MessageSelect = {
-        id: true,
-        TSN: true,
-        OSN: true,
-        NSE: true,
-        LSN: true,
-        NSR: true,
-        messageCode: true,
-        description: true,
-        priority: true,
-        status: true,
-        sender: true,
-        creationDate: true,
-        creationTime: true,
-        receiver: true,
-        receivedDate: true,
-        receivedTime: true,
-        cukCode: true,
-        actions: true,
-        createdAt: true,
-        documents: true,
-        parameters: true
-    }
-
-    return select;
-}

@@ -39,7 +39,7 @@ export const MortgageStatusDropdown = (props: {
           defaultValue={
             options.find((option) => !option?.disabled)?.value || "021"
           }
-          disabled={disabled || !options.find((option) => !option?.disabled)}
+          // disabled={disabled || !options.find((option) => !option?.disabled)}
           label="Mensajes por Familia"
           onChange={handleChange}
           MenuProps={{
@@ -58,7 +58,7 @@ export const MortgageStatusDropdown = (props: {
             <MenuItem
               key={`${option.label}-${index}`}
               value={option.value}
-              disabled={option?.disabled}
+              // disabled={option?.disabled}
             >
               {option.label}
             </MenuItem>

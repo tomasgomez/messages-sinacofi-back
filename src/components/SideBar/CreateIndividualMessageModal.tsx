@@ -39,7 +39,6 @@ const CreateIndividualMessageModal = ({ open, onClose } : { open: boolean; onClo
             label="Código"
             onChange={(value: any) => {
               setMessageCode(value)
-              console.log({ value });
             }}
             focused={!!messageCode}
           />

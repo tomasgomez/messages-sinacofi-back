@@ -18,11 +18,10 @@ import {
 } from "@/backend/entities/cuk/cuk";
 import {
     Parameter
-} from "@/backend/entities/message/interface";
+} from "@/backend/entities/message/parameter";
 import {
     getSchema
 } from "@/backend/usecases/schema/getSchema";
-
 
 // Create message function
 export async function handleMessage(repository: MessageRepository, message: Message, ): Promise < Message | Error > {
@@ -30,7 +29,6 @@ export async function handleMessage(repository: MessageRepository, message: Mess
 
         /* CUK flow */
         if (message.messageCode && isForeclosureMessageCode(message?.messageCode)) {
-
             // message = await completeParameters(message);
 
             let newMessage = await messageForeclosureUseCase.handleForeclosure(new CUK, message);
@@ -55,52 +53,52 @@ export async function handleMessage(repository: MessageRepository, message: Mess
     }
 }
 
-async function completeParameters(message: Message): Promise<Message> {
-    if (!message.parameters || message.parameters.length === 0 || !message.messageCode) {
-        return message;
-    }
+// async function completeParameters(message: Message): Promise<Message> {
+//     if (!message.parameters || message.parameters.length === 0 || !message.messageCode) {
+//         return message;
+//     }
 
-    // Get schema
-    let schemas = await getSchema(message.messageCode);
+//     // Get schema
+//     let schemas = await getSchema(message.messageCode);
 
-    if (schemas instanceof Error) {
-        return message;
-    }
+//     if (schemas instanceof Error) {
+//         return message;
+//     }
 
-    if (!schemas || schemas.length === 0 || schemas instanceof Error) {
-        return message;
-    }
+//     if (!schemas || schemas.length === 0 || schemas instanceof Error) {
+//         return message;
+//     }
 
-    let schema = schemas[0];
+//     let schema = schemas[0];
 
-    if (!schema || !schema.parameters || schema.parameters.length === 0) {
-        return message;
-    }
+//     if (!schema || !schema.parameters || schema.parameters.length === 0) {
+//         return message;
+//     }
 
-    // Traverse through the message parameters and match them with the schema
-    message.parameters.forEach((param: Parameter) => {
-        if (!schema.parameters)
-            return;
+//     // Traverse through the message parameters and match them with the schema
+//     message.parameters.forEach((param: Parameter) => {
+//         if (!schema.parameters)
+//             return;
 
-        const matchedParam = schema.parameters.find((paramSchema: Parameter) => paramSchema.name === param.name);
+//         const matchedParam = schema.parameters.find((paramSchema: Parameter) => paramSchema.name === param.name);
 
-        if (matchedParam) {
-            // Update parameter with schema data
-            param.id = matchedParam.id;
-            param.messageCode = matchedParam.messageCode;
-            param.label = matchedParam.label;
-            param.type = matchedParam.type;
-            param.defaultValue = matchedParam.defaultValue;
-            param.priority = matchedParam.priority;
-            param.description = matchedParam.description;
-            param.placeholder = matchedParam.placeholder;
+//         if (matchedParam) {
+//             // Update parameter with schema data
+//             param.id = matchedParam.id;
+//             param.messageCode = matchedParam.messageCode;
+//             param.label = matchedParam.label;
+//             param.type = matchedParam.type;
+//             param.defaultValue = matchedParam.defaultValue;
+//             param.priority = matchedParam.priority;
+//             param.description = matchedParam.description;
+//             param.placeholder = matchedParam.placeholder;
 
-            // Set default value if the parameter is 'CUK'
-            if (param.name === 'CUK') {
-                param.defaultValue = message.cukCode;
-            }
-        }
-    });
+//             // Set default value if the parameter is 'CUK'
+//             if (param.name === 'CUK') {
+//                 param.defaultValue = message.cukCode;
+//             }
+//         }
+//     });
 
-    return message;
-}
+//     return message;
+// }

@@ -53,7 +53,6 @@ export default function InProcessScreen() {
 
     setLoading(false);
   };
-
   useEffect(() => {
     handleGetDataList();
   }, [filters, selectedInstitution, rowsPerPage, page]);
@@ -72,7 +71,7 @@ export default function InProcessScreen() {
     setPage(newPage);
   };
 
-  const handlerTrackingModal = (data: ModalTrackingData) => {
+  const handlerTrackingModal = (data?: ModalTrackingData) => {
     setIsOpenTrackingModal(true);
     setModalTrackingData(data);
   };
@@ -108,7 +107,7 @@ export default function InProcessScreen() {
             maxHeight: maxHeight,
             overflowY: "scroll",
             overflowX: "hidden",
-            maxWidth: "calc(100vw - 270px)",
+            width: "calc(100vw - 270px)",
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
           }}
         >

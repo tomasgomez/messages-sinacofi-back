@@ -15,16 +15,17 @@ import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { base64ToBlob, downloadFile } from "../../utils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import { SessionProviderContext } from "@/context/SessionProvider";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const { actions, messageCode, status } = row;
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
+  const { userInfo } = React.useContext(SessionProviderContext) as any;
   const router = useRouter();
   const handlerOpenModal = (row: any) => {
     setSelectedMessage(row);
     setModalIsOpen(true);
   };
-
   return (
     <Box
       sx={{
@@ -36,15 +37,16 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("sing") && (
         <IconButton
           key={`drive-icon-${row.id}`}
-          style={{ padding: 0, color: "#00B2E2", margin: 2 }}
+          style={{ padding: 0, color: userInfo.permissions.signMortgageDischarge ? "#00B2E2" : '#CCC', margin: 2 }}
+          disabled={!userInfo.permissions.signMortgageDischarge}
           onClick={
             () =>
               router.push(
-                `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+                `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}`
               )
             // case sent to the messagecode 670
             // router.push(
-            //     `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&cukCode=${row.cukCode}`
+            //     `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&cukCode=${row.cukCode}`
             //   )
           }
         >
@@ -54,10 +56,11 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("sent") && (
         <IconButton
           key={`sent-icon-${row.id}`}
-          style={{ padding: 0, color: "#00B2E2", margin: 2 }}
+          style={{ padding: 0, color: userInfo.permissions.sendMessage ? "#00B2E2" : '#CCC', margin: 2 }}
+          disabled={!userInfo.permissions.sendMessage}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
+              `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
             )
           }
         >
@@ -69,6 +72,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           key={`detail-icon-${row.id}`}
           style={{ padding: 0, color: "#565656", margin: 2 }}
           onClick={() => handlerOpenModal(row)}
+          disabled={!userInfo.permissions.sendMessage}
         >
           <InfoOutlinedIcon />
         </IconButton>
@@ -83,7 +87,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${row.receiver}&messageCode=${messageCode}&messageId=${row.id}`
+              `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}`
             )
           }
         >

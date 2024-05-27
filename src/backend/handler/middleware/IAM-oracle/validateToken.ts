@@ -27,9 +27,6 @@ export const validateToken = async (request: NextRequest, res: NextResponse) => 
             const response = NextResponse.json({path: '/'});
             return response;
         }
-        console.log("----");
-        console.log(tokenDecoded);
-        console.log("-----");
         // set user info
         cookies().set('user_info', tokenDecoded);
     } catch(error){

@@ -2,21 +2,37 @@
 
 import React, { useEffect, createContext, useState, useCallback  } from "react";
 
+
+
+export interface User {
+  role:            string;
+  name:            string;
+  institutionCode: string;
+  area:            string;
+  email:           string;
+  status:          string;
+}
+
+export interface UserInfo {
+  user:        User;
+  permissions: { [key: string]: boolean };
+}
 type initialUserInfoType = {
-  userInfo: {},
-  setUserInfo: Function,
+  userInfo: UserInfo | undefined,
+  setUserInfo: React.Dispatch<React.SetStateAction<UserInfo | undefined>>,
 };
 
+
 const initialUserInfoState: initialUserInfoType = {
-    userInfo: {},
-  setUserInfo: () => [],
+  userInfo: undefined,
+  setUserInfo: () => undefined,
 };
 
 export const SessionProviderContext = createContext(initialUserInfoState);
 
 export const SessionProvider = ({ children }: { children: any}) => {
 
-    const [userInfo, setUserInfo] = useState<{}>({});
+    const [userInfo, setUserInfo] = useState<initialUserInfoType | undefined>(undefined);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,7 +47,7 @@ export const SessionProvider = ({ children }: { children: any}) => {
     
         fetchData();
       }, []);
-    
+
     const contextValue = React.useMemo(
         () => ({
             userInfo, setUserInfo

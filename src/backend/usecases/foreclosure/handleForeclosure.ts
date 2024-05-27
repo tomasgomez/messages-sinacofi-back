@@ -18,10 +18,11 @@ import { handle670 } from './foreclosureMessages/handle670';
 import { handle671 } from './foreclosureMessages/handle671';
 import { handle672 } from './foreclosureMessages/handle672';
 import { handle673 } from './foreclosureMessages/handle673';
+import { handle674 } from './foreclosureMessages/handle674';
+import { handle675 } from './foreclosureMessages/handle675';
 
 export async function handleForeclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message): Promise < CUK | Message | Error > {
   try {
-
     /* Check if is a valid message for foreclosure */
     if (!isValidMessage(message)) {
       return new Error('Invalid message');
@@ -48,6 +49,16 @@ export async function handleForeclosure(cukRepository: CUKRepository, messageRep
       /* NORMALIZACION */
       case (MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION): {
         return handle673(cuk, message, cukRepository, messageRepository);
+      }
+
+      /* 674 */
+      case (MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO): {
+        return handle674(cuk, message, cukRepository, messageRepository);
+      }
+      
+      /* 675 */
+      case (MessageTypes.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO): {
+        return handle675(cuk, message, cukRepository, messageRepository);
       }
 
       default: {

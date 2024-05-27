@@ -8,10 +8,10 @@ import { ErrorModal } from "@/components/Modal/ErrorModal";
 import SuccessModal from "@/components/Modal/SuccessModal";
 import DecisionModal from "@/components/Modal/DecisionModal";
 import { MyContexLayout } from "./context";
-import { useState, Suspense, useEffect } from "react";
+import { useState, Suspense, useEffect, useContext } from "react";
 import ModalManagerProvider from "@/components/Modal/ModalManager";
 import { MessageExportProvider } from "./component/MessageExportProvider";
-import { SessionProvider } from "@/context/SessionProvider";
+import { SessionProvider, SessionProviderContext } from "@/context/SessionProvider";
 
 
 const clearObjet = {
@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // Change after add users "selectedInstitution"
-  const [selectedInstitution, setSelectedInsitution] = useState("0027");
+  const [selectedInstitution, setSelectedInsitution] = useState();
   const [modalState, setModalState] = useState<{
     type: "success" | "error" | "decision" | "none";
     title: string;

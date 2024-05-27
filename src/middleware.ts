@@ -24,6 +24,7 @@ export async function middleware(request: NextRequest) {
   const codeChallenge = cookies().get('codeChallenge')?.value 
 
   if(access_token){
+    //@ts-ignore
     let tokenDecoded = await iamOracleAPI.validateToken(idcs, access_token!);
     if (tokenDecoded instanceof Error) {
         console.log('error', tokenDecoded);
@@ -45,6 +46,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL('/', request.url));
     }
     // validate the token
+    //@ts-ignore
     const tokenResponse = await iamOracleAPI.authCode(idcs, code, codeChallenge!);
     if (tokenResponse instanceof Error) {
       console.log('error', tokenResponse);

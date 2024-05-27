@@ -4,15 +4,15 @@ import {
 import {
     Message
 } from '../../entities/message/message';
+import { FilterMessage } from '@/backend/entities/message/filter';
 
 
 // Get messageDetail function
-export async function getMessageDetail(repository: MessageRepository, message: Message, count: string, offset: string): Promise < Message[] | Error > {
+export async function getMessageDetail(repository: MessageRepository, message: FilterMessage): Promise < Message[] | Error > {
     try {
-        let messageResponse = await repository.find(message, true, count, offset);
-        return messageResponse;
+        return await repository.find(message);
     } catch (error: any) {
-        // Handle errors appropriately
+
         console.error('Error fetching messageDetail:', error);
         return error;
     }

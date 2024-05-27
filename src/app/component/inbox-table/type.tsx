@@ -11,12 +11,13 @@ export interface Message {
   description: string;
   priority?: string;
   status: string;
-  sender: string;
+  origin: string;
   creationDate: string;
   creationTime: string;
-  receiver?: string;
   receivedDate: string;
   receivedTime: string;
+  destinationArea?: string;
+  originArea?: string;
   cukCode?: string;
   documents?: any[];
   actions?: any[];
@@ -37,10 +38,9 @@ export interface SentData {
   priority?: string;
   status: string;
   stateProgress?: string;
-  sender: string;
+  origin: string;
   creationDate: string;
   creationTime: string;
-  receiver?: string;
   receivedDate: string;
   receivedTime: string;
   documents?: any[];
@@ -49,27 +49,27 @@ export interface SentData {
 }
 
 export interface MortgageDischargeData {
-  id: string;
-  name: string;
-  cukCode: string;
-  description: string;
-  status: string;
-  creationDate: string;
-  foreclosureDate: string;
-  channel: string;
-  institutionDestination: string;
+  id?: string;
+  name?: string;
+  cukCode?: string;
+  description?: string;
+  status?: string;
+  creationDate?: string;
+  foreclosureDate?: string;
+  channel?: string;
+  institutionDestination?: string;
   region?: string;
-  createdAt: string;
-  updatedAt: string;
-  institutionCode: string;
-  ownerDni: string;
-  owner: string;
-  buyerDni: string;
-  buyer: string;
-  borrowerDni: string;
-  borrower: string;
-  history: any[];
-  messages: Message[];
+  createdAt?: string;
+  updatedAt?: string;
+  institutionCode?: string;
+  ownerDni?: string;
+  owner?: string;
+  buyerDni?: string;
+  buyer?: string;
+  borrowerDni?: string;
+  borrower?: string;
+  history?: any[];
+  messages?: Message[];
 }
 
 export interface TrackingModalData {
@@ -149,10 +149,9 @@ export interface MSDetail {
   description: string;
   priority: string;
   status: string;
-  sender: string;
+  origin: string;
   creationDate: string;
   creationTime: string;
-  receiver: string;
   receivedDate: string;
   receivedTime: string;
   parameters: MSParameter[];
