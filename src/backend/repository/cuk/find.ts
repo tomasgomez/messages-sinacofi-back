@@ -19,6 +19,7 @@ import { MessageTypes } from '@/backend/entities/message/types';
 
 async function find(filter: Filter): Promise < CUK[] | Error > {
     try {
+        console.log(filter)
         let cuks: CUK[];
 
         const prisma = new PrismaClientWrapper();
@@ -59,11 +60,32 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         skip: offset,
         orderBy: { createdAt: 'desc' },
     }
-
+    
     // defune MessageArgs
     let messageArgs: Prisma.CUK$messagesArgs = {
         select: findSelect(),
     };
+
+    // check if filter has institutionCode
+    if (filter.institutionCode) {
+        messageArgs.where = {
+            OR: [{AND: [
+                {
+                    origin: {
+                        in: filter.institutionCode}
+                    }, 
+                    {
+                    status: { some: { id: {in: ["01", "05"] } }}
+                       
+            }
+        ]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some:{id: { in: ["06"]}} } } ]}]}]
+        }
+        // where.messages = {
+        //     some: {
+        //         OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {some: {id: {in: ["01", "05",""]}}}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some: {id: {in: ["06"]}} } }]}]}]
+        //     }
+        // }
+    }
 
     const dateRangeFilter =  createDateRangeFilter(filter.startDate, filter.endDate);
     // create where from filter
@@ -85,6 +107,26 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     where.status = {
         in: filter.status
     };
+    if (filter.institutionCode?.length != 0){
+    where.messages = { 
+        some: {    OR: [{AND: [
+            {
+                origin: {
+                    in: filter.institutionCode}
+                }, 
+                {
+                status: { some: { id: {in: ["01", "05"] } }}
+                   
+        }
+    ]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some:{id: { in: ["06"]}} } } ]}]}]
+    }
+    }
+}
+    // where.messages = {
+    //     some: {
+    //         OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {some: {id: {in: ["01", "05",""]}}}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some: {id: {in: ["06"]}} } }]}]}]
+    //     }
+    // }
 
     // set values to query
     query.where = where;
@@ -128,14 +170,3 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     return query;
 }
 
-    // check if filter has institutionCode
-    // if (filter.institutionCode) {
-    //     messageArgs.where = {
-    //         OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
-    //     }
-    //     where.messages = {
-    //         some: {
-    //             OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {in: ["01", "05",""]}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { in: ["06"] } }, { status: null }]}]}]
-    //         }
-    //     }
-    // }
