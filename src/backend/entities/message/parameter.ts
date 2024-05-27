@@ -1,7 +1,7 @@
 import { Properties } from "./properties";
 
 export type Parameter = {
-    id: string;
+    id ? : string;
     name: string;
     messageCode ? : string | null;
     label ? : string | null;

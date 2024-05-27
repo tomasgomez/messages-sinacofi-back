@@ -29,14 +29,13 @@ export function validateCreateMessage(data: any): Message | Error {
       }
 
       let parameter: Parameter =  {
-        id: element.id ?? '',
         name: element.name ?? '',
         label: element.name ?? '',
-        messageCode: element.messageCode ?? '',
+        messageCode: message.messageCode ?? '',
         type: element.type ?? '',
         placeholder: element.placeholder ?? '',
         description: element.description ?? '',
-        defaultValue: element.defaultValue ?? '',
+        defaultValue: element.value ?? '',
         priority: counter,
         value: value,
         validations: JSON.stringify(element.validations),

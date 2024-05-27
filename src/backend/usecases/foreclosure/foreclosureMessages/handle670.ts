@@ -41,6 +41,8 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
         actions.push(MessageActions.SIGN);
         actions.push(MessageActions.CANCEL);
 
+        cuk.status = '-'
+
         message.actions = actions.join(',');
 
         const createdCuk = await cukRepository.create(cuk);

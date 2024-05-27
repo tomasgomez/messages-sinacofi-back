@@ -36,8 +36,6 @@ export async function update(message: Message): Promise<Message | Error> {
             }
         });
 
-
-
         // Get existing parameters for the message
         const existingParameters = updatedMessage.parameters;
 

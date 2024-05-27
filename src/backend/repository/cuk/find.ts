@@ -14,6 +14,7 @@ import {
     findSelect
 } from '@/backend/repository/message/presenter/findSelect';
 import { Prisma } from '@prisma/client';
+import { MessageTypes } from '@/backend/entities/message/types';
 
 
 async function find(filter: Filter): Promise < CUK[] | Error > {
@@ -88,7 +89,39 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // set values to query
     query.where = where;
     // define include
-    let include: Prisma.CUKInclude = { messages: messageArgs };
+    let include: Prisma.CUKInclude = { 
+        messages: messageArgs, 
+        parameters: {
+            where: {
+                messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO,
+                name: {
+                        in: [
+                            'id',
+                            'name',
+                            'cukCode',
+                            'description',
+                            'status',
+                            'creationDate',
+                            'issuedDate',
+                            'channel',
+                            'bank',
+                            'region',
+                            'buyerDni',
+                            'buyer',
+                            'ownerDni',
+                            'owner',
+                            'borrowerDni',
+                            'borrower',
+                        ]
+                    }            
+                },
+            select: {
+                name: true,
+                value: true
+            }
+        }
+    };
+
     // set include to query
     query.include = include;
 

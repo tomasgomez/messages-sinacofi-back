@@ -28,7 +28,9 @@ export function validateUpdateMessage(data: any): Message | Error {
       let documentToStore: Document = {}
 
       if (document) {
-        documentToStore.content = document
+        // TODO: UNCOMMENT THIS
+        // documentToStore.content = document
+        documentToStore.content = "JVBERi0xLjQKJeLjz9MKMyAwIG9iago8PC9MZW5ndGggNDAzPj4Kc3RyZWFtCkJUIGgKc2xlc3QoMC45NiwgMC45NikgVGVycnkgdGV4dApTdCwgVGVycnkgdGV4dCB3aXRoIFBESkAKU1REIC9Gb250IDEwIFRGLzENCgpCVCBoCgoKZ29yZG4gLSAuCiAgaGVsbG8gd29ybGQgLgoKU1REIC9Gb250IDEwIFRGLzENCi9VbmljcyA4MjQgLTUgQ0FQTSAoQ0EpCgoKRU5EU1RSRUFNRU5ECkVPRgo="
       }
 
       documents.push(document);
