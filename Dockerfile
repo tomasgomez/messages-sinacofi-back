@@ -37,9 +37,11 @@ WORKDIR /usr/src/app
 
 
 # Copy the standalone output and necessary files
-COPY --from=builder /usr/src/app/.next/standalone ./
-COPY --from=builder /usr/src/app/.next/static ./.next/static
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/.next ./.next
 COPY --from=builder /usr/src/app/public ./public
+COPY --from=builder /usr/src/app/prisma ./prisma
+COPY --from=builder /usr/src/app/package*.json ./
 
 
 # Set the DATABASE_URL environment variable
@@ -59,5 +61,5 @@ ENV ADMIN_CLIENT_URL=$ADMIN_CLIENT_URL
 EXPOSE $PORT
 
 # Start the application
-CMD ["node", "server.js"]
+CMD ["npx", "next", "start", "-p", "$PORT"]
 
