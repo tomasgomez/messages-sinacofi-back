@@ -33,6 +33,5 @@ export function validateUpdateMessageForeclosure(data: any): [CUK, Message] | Er
     return new Error('Invalid CUK');
   }
 
-
   return [cuk, message];
 }

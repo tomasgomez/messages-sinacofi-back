@@ -26,23 +26,6 @@ export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRe
 
         message.setStatus(status);
     }
-
-    // Update the status of the message
-    switch (status) {
-        case MessageStatus.ENVIADO:
-            if (message.setReceivedTime) {
-                message.setReceivedTime();
-            }
-            if (message.setStatus) {
-                message.setStatus(MessageStatus.BANDEJA_DE_ENTRADA);
-            }
-            break;
-        case MessageStatus.BANDEJA_DE_ENTRADA:
-            if (message.setStatus) {
-                message.setStatus(MessageStatus.ENVIADO);
-            }
-            break;
-    }
     
     delete message.statusCode;
 

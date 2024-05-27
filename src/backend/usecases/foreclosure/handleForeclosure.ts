@@ -24,6 +24,8 @@ import { handle675 } from './foreclosureMessages/handle675';
 export async function handleForeclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message): Promise < CUK | Message | Error > {
   try {
 
+    console.log("cuks", cuk)
+    console.log("message", message)
     /* Check if is a valid message for foreclosure */
     if (!isValidMessage(message)) {
       return new Error('Invalid message');
@@ -39,7 +41,6 @@ export async function handleForeclosure(cukRepository: CUKRepository, messageRep
 
       /* ACEPTACION DE AH */
       case (MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO): {
-        console.log("here");
         return handle671(cuk, message, cukRepository, messageRepository);
       }
 

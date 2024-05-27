@@ -7,13 +7,13 @@ import {
 import {
   MessageRepository
 } from '@/backend/repository/messageRepository';
+import {
+  MessageStatus
+} from '@/backend/entities/message/status';
 
 /* When the cuk status is being updated, an empty message is created or updated the last empty message */
 export async function updateLastMessage(message: Message, messageRepository: MessageRepository, cukRepository: CUKRepository): Promise<Message | Error> {
   
-  console.log(message);
-
-
   if (!message.cukCode) {
     return new Error('Invalid CUK');
   }
@@ -28,13 +28,7 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
     return new Error('No CUK found');
   }
 
-  /* Set the receiver of the message */
-  // message.origin = "";
-  // message.destination = "";
-
   let fetchedMessages = fetchedCuk[0].messages;
-
-  console.log("fetched", fetchedMessages)
 
   if (!fetchedMessages) {
     fetchedMessages = [];
@@ -52,11 +46,6 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
       return 1;
     }
   });
-
-  console.log("status:", fetchedMessages[0].getStatus)
-
-  console.log(fetchedMessages[0].getStatus)
-  console.log(fetchedMessages.length === 0)
 
   /* If the last message is not empty, create a new empty one */
   if (fetchedMessages.length === 0 || fetchedMessages[0].getStatus) {
@@ -79,7 +68,19 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
     newMessage.receivedTime = receivedTime;
     newMessage.parameters = parameters;
 
-    messageRepository.update(message);
+     // Update the status of the message
+
+      if (message.statusCode == MessageStatus.ENVIADO ){
+          if (newMessage.setReceivedTime) {
+              newMessage.setReceivedTime();
+          }
+          if (newMessage.setStatus) {
+              newMessage.setStatus(MessageStatus.BANDEJA_DE_ENTRADA);
+              newMessage.setStatus(MessageStatus.ENVIADO);
+          }
+  }
+
+    messageRepository.update(newMessage);
   }
 
   return message;
