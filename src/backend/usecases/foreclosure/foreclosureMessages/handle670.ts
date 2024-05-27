@@ -31,6 +31,11 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
   switch (message.statusCode) {
     case MessageStatus.ENVIADO: {
       updateMessage(messageRepository, message);
+
+      cuk.status = MessageStatus.ENVIADO;
+
+      cukRepository.update(cuk);
+
       break;
     }
     case MessageStatus.PREPARADO: default: {

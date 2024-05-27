@@ -4,21 +4,10 @@ import {
 import {
     MessageRepository
 } from "@/backend/repository/messageRepository";
-import {
-    getSchemaTypes
-} from "@/backend/usecases/schema/getSchemaTypes";
-
 
 // Create message function
 export async function createMessage(repository: MessageRepository, message: Message, ): Promise < Message | Error > {
     try {
-
-        // /* Get the schema types */
-        // let schemaTypes = await getSchemaTypes({});
-
-        // if (schemaTypes instanceof Error) {
-        //     return schemaTypes;
-        // }
 
         let messageResponse = await repository.create(message);
 

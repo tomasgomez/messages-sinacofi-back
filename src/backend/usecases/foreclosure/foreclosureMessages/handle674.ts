@@ -44,6 +44,8 @@ export async function handle674(cuk: CUK, message: Message, cukRepository: CUKRe
             break;
     }
 
+    delete message.statusCode;
+
     cuk.status = ForeclosureStatus.SENT_LIQUIDATION
 
     updateForclosure(cukRepository,messageRepository,cuk,message);
