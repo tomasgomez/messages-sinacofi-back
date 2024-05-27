@@ -103,8 +103,8 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         messageType = MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.ACCEPTED;
         hasToUpdateMessage = true;
-        newMessage.origin = origin;
-        newMessage.destination = destination;
+        newMessage.origin = destination;
+        newMessage.destination = origin;
         break;
 
       case ForeclosureStatus.SENT_LIQUIDATION: // 675
