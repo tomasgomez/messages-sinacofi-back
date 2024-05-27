@@ -1,4 +1,3 @@
-import { FilterMessage } from '@/backend/entities/message/filter';
 import { Message } from '@/backend/entities/message/message';
 import { getDescriptionByType } from '@/backend/entities/message/types';
 
@@ -8,6 +7,7 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
 
   let preparedData = messages.map((message) => {
       let status = '';
+
       /* If the filter has a status then filter the messages statuses*/
       if (filter.status && filter.status.length > 0) {
         messages = messages.map(message => {

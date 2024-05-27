@@ -72,13 +72,13 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         cuk.status = ForeclosureStatus.SIGN_IN_PROGRESS;
         break;
 
-      case ForeclosureStatus.ACCEPTED:
+      case ForeclosureStatus.ACCEPTED: //674
         messageType = MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.ACCEPTED;
         hasToUpdateMessage = true;
         break;
 
-      case ForeclosureStatus.SENT_LIQUIDATION:
+      case ForeclosureStatus.SENT_LIQUIDATION: // 675
         messageType = MessageTypes.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.SENT_LIQUIDATION;
         hasToUpdateMessage = true;
@@ -90,10 +90,29 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
 
     /* When the cuk status is being updated, a message is created or updated the last message */
     if (hasToUpdateMessage) {
+
+      let fetchedMessage = await messageRepository.find({
+        cukCode: [cuk.cukCode],
+        messageCode: [MessageTypes.ALZAMIENTO_HIPOTECARIO],
+        detail: false
+      });
+
+      console.log('fetchedMessage', fetchedMessage);
+
+      if (fetchedMessage instanceof Error) {
+        return new Error('Error fetching message');
+      }
+      
       newMessage = new Message();
+      
+      if (fetchedMessage instanceof Array && fetchedMessage.length > 0) {
+        newMessage.origin = fetchedMessage[0].destination
+        newMessage.destination = fetchedMessage[0].origin
+      }
+
       newMessage.cukCode = cuk.cukCode;
       newMessage.messageCode = messageType;
-
+      
       await updateLastMessage(newMessage, messageRepository, cukRepository);
     }
 
@@ -119,7 +138,8 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
   
   /* Get Cuk */
   let fetchedCuk = await cukRepository.find({
-    cukCode: [message.cukCode]
+    cukCode: [message.cukCode],
+    // mesageCode: [MessageTypes.ALZAMIENTO_HIPOTECARIO],
   });  
   
   /* Check last message attached to the CUK */
@@ -128,8 +148,8 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
   }
 
   /* Set the receiver of the message */
-  message.origin = "";
-  message.destination = "";
+  // message.origin = "";
+  // message.destination = "";
 
   let fetchedMessages = fetchedCuk[0].messages;
 
@@ -161,6 +181,7 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
 
     messageToUpdate.messageCode = message.messageCode;
     messageToUpdate.origin = message.origin;
+    messageToUpdate.destination = message.destination;
     messageToUpdate.actions = '';
 
     messageRepository.update(messageToUpdate);

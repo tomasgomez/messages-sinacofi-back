@@ -17,7 +17,7 @@ export async function update(message: Message): Promise<Message | Error> {
             Object.entries(message).filter(([_, value]) => value !== '')
         );
 
-        const { parameters, ...dataWithoutParameters } = dataToUpdate;
+        const { parameters, documents, ...dataWithoutParameters } = dataToUpdate;
 
         delete dataWithoutParameters.status;
 
