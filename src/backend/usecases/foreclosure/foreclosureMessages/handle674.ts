@@ -28,7 +28,6 @@ export async function handle674(cuk: CUK, message: Message, cukRepository: CUKRe
     }
 
     if (message.cukCode && message.cukCode !== ''){
-        console.log("cukCode", message.cukCode)
         cuk.status = ForeclosureStatus.SENT_LIQUIDATION
         cuk.cukCode = message.cukCode;
         updateForclosure(cukRepository,messageRepository,cuk,message);

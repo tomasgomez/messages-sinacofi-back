@@ -9,6 +9,7 @@ import {
 import { docUseCase } from "../docs/usecases";
 import { Documents } from "@/backend/entities/message/interface";
 import { MessageStatus } from "@/utils/messagesStatus";
+import path from "path";
 
 
 // Create message function
@@ -23,13 +24,20 @@ export async function updateMessage(repository: MessageRepository, message: Mess
             message.setStatus(status);
         }
 
+        console.log(message.documents);
+
         /* Check if the message has documents */
         if (message.documents && message.documents.length > 0) {
 
             let docs: Documents[] = [];
             /* Store the documents */
             for (const doc of message.documents) {
-                const docResponse = await docUseCase.storeDoc(doc);
+                let cukCode = message.parameters?.filter(d => d.name == 'CUK');
+                let messagePath = message.messageCode ? message.messageCode : ''; 
+                if (cukCode && cukCode.length > 0 && cukCode[0].value != ''){
+                    messagePath = path.join(cukCode[0].value!, messagePath);
+                }
+                const docResponse = await docUseCase.storeDoc(doc, messagePath);
                 // check response
                 if (docResponse instanceof Error) {
                     return docResponse;

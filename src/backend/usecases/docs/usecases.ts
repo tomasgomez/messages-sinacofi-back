@@ -4,7 +4,6 @@ import { storeDoc } from "./methods/storeDoc";
 import { findDoc } from "./methods/findDoc";
 
 
-
 class DocUsecase implements DocUsecases  {
     constructor() {} 
 
@@ -12,7 +11,7 @@ class DocUsecase implements DocUsecases  {
     findDoc = async (doc: Documents): Promise<any | Error> => findDoc(doc);
 
     // store docs
-    storeDoc = async (doc: Documents): Promise<any | Error> => storeDoc(doc);;     
+    storeDoc = async (doc: Documents, messagePath: string): Promise<any | Error> => storeDoc(doc, messagePath);
 }
 
 export const docUseCase: DocUsecases = new DocUsecase(); 
