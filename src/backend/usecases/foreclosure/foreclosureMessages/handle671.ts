@@ -11,15 +11,21 @@ import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 export async function handle671(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
 
     let updatedMessage: Message | Error;
-
+    
     /* Update the last message */
-    updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
 
+    updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
     if (updatedMessage instanceof Error) {
         return updatedMessage;
     }
+    
+
 
     let status = '';
+
+    console.log(cuk);
+    console.log(message);
+
 
     if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
             
@@ -45,11 +51,25 @@ export async function handle671(cuk: CUK, message: Message, cukRepository: CUKRe
             break;
     }
 
-    delete message.statusCode;
 
-    cuk.status = ForeclosureStatus.ACCEPTED
+    if (message.statusCode == "01"){
+        delete message.statusCode;
 
-    updateForclosure(cukRepository,messageRepository,cuk,message);
+        cuk.status = ForeclosureStatus.ACCEPTED
+        updateForclosure(cukRepository,messageRepository,cuk,message);
+    }
+
+    // if (cukResponse instanceof Error){
+    //     return message;
+    // }
+
+    // let messageUpdated = cukResponse.messages?.filter(d => d.messageCode == message.messageCode);
+
+    // if (messageUpdated && messageUpdated.length >0){
+    //     updatedMessage = messageUpdated[0];
+
+    //     return updatedMessage
+    // }
     
     return updatedMessage;
 }

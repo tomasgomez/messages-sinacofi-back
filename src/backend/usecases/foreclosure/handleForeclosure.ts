@@ -39,6 +39,7 @@ export async function handleForeclosure(cukRepository: CUKRepository, messageRep
 
       /* ACEPTACION DE AH */
       case (MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO): {
+        console.log("here");
         return handle671(cuk, message, cukRepository, messageRepository);
       }
 

@@ -11,6 +11,9 @@ import {
 /* When the cuk status is being updated, an empty message is created or updated the last empty message */
 export async function updateLastMessage(message: Message, messageRepository: MessageRepository, cukRepository: CUKRepository): Promise<Message | Error> {
   
+  console.log(message);
+
+
   if (!message.cukCode) {
     return new Error('Invalid CUK');
   }
@@ -26,10 +29,12 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
   }
 
   /* Set the receiver of the message */
-  message.origin = "";
-  message.destination = "";
+  // message.origin = "";
+  // message.destination = "";
 
   let fetchedMessages = fetchedCuk[0].messages;
+
+  console.log("fetched", fetchedMessages)
 
   if (!fetchedMessages) {
     fetchedMessages = [];
@@ -48,8 +53,14 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
     }
   });
 
+  console.log("status:", fetchedMessages[0].getStatus)
+
+  console.log(fetchedMessages[0].getStatus)
+  console.log(fetchedMessages.length === 0)
+
   /* If the last message is not empty, create a new empty one */
-  if (fetchedMessages.length === 0 || fetchedMessages[0].getStatus || fetchedMessages[0].getStatus !== '') {
+  if (fetchedMessages.length === 0 || fetchedMessages[0].getStatus) {
+    console.log("error")
     return new Error('No empty message found');
 
     /* If the last message is empty, update the last message */
@@ -57,6 +68,16 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
     let messageToUpdate = fetchedMessages[0];
 
     message.id = messageToUpdate.id;
+
+
+    console.log("unfo", message)
+    const { parameters, id, receivedDate, receivedTime } = message;
+
+    const newMessage = new Message()
+    newMessage.id = id;
+    newMessage.receivedDate = receivedDate;
+    newMessage.receivedTime = receivedTime;
+    newMessage.parameters = parameters;
 
     messageRepository.update(message);
   }

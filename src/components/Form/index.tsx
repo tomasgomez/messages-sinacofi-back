@@ -11,7 +11,7 @@ const getDefaultValues = (schema: any) => {
   schema?.parameters?.filter((parameter: any) => parameter.type !== "label" && parameter.type !== "linebreak")
     .forEach((parameter: { defaultValue: any, id: string }) => {
       if (parameter.type === "accordion") {
-        console.log(parameter.type, parameter.parameters )
+        // console.log(parameter.type, parameter.parameters )
         parameter.parameters.forEach((parameterChild: { defaultValue: any, id: string }) => {
           defaultValues[parameterChild.id] = parameterChild.defaultValue;
         });
@@ -54,19 +54,15 @@ const Form = ({
 
   const handlePrepare = () => {
     methods.trigger().then((validation) => {
-<<<<<<< HEAD
-      // if (validation) {
-=======
       // console.log({ validation });
       if (validation) {
->>>>>>> 9f6aaa8c3807dc4d91fb2c4adcbd957a29d98cf2
         const values = methods.getValues();
         onPrepare(values);
-      // }
+      }
     });
   }
 
-// console.log("ERRRORS", methods.formState.errors);
+console.log("ERRRORS", methods.formState.errors);
 
   return (
     <FormProvider {...methods}>
