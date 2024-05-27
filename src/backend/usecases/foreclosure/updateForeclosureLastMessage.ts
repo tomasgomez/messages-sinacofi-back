@@ -15,6 +15,7 @@ import {
 export async function updateLastMessage(message: Message, messageRepository: MessageRepository, cukRepository: CUKRepository): Promise<Message | Error> {
   
   if (!message.cukCode) {
+    console.log("message error cukcode");
     return new Error('Invalid CUK');
   }
   
