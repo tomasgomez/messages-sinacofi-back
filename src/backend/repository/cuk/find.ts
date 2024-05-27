@@ -222,7 +222,8 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
                 name: true,
                 value: true
             }
-        }
+        },
+        history: true
     };
 
     // set include to query
