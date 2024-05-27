@@ -6,7 +6,8 @@ import Form from "@/components/Form";
 import { useModalManager } from "@/components/Modal";
 import { Container, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { SessionProviderContext } from "@/context/SessionProvider";
 const statusCodes = ["01", "05", "pending"];
 const payloadDefault: string[] = [
   "messageCode",
@@ -17,7 +18,7 @@ const payloadDefault: string[] = [
   "parameters"
 ];
 
-const getCreateMessagePayload = (data: any, schema: any, origin: any) => {
+const getCreateMessagePayload = (data: any, schema: any, origin: any, userInfo: any) => {
   const payload: { [key: string]: any } = {};
    
   payloadDefault.forEach((param: string) => {
@@ -34,7 +35,7 @@ const getCreateMessagePayload = (data: any, schema: any, origin: any) => {
         label: schema?.parameters
           .filter((field: any) => field.type !== "label" && field.type !== "linebreak")
           .find((field: any) => field.name === el[0])?.label,
-        value: el[1],
+        value: (el[0] === "sign" && el[1]) ? userInfo.user?.name : el[1],
       }
     });
   return payload;
@@ -50,6 +51,8 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
 }
 const CreateMessage = () => {
   const { setModalState, selectedInstitution } = useAppContext();
+  const { userInfo } = useContext(SessionProviderContext) as any;
+  console.log({ userInfo });
   const { onOpen: onSignOpen, onClose } = useModalManager({
     component: AddFileModal
   });
@@ -114,6 +117,8 @@ const CreateMessage = () => {
                     ? {
                       ...parameter,
                       type: "password",
+                      // label: parameter.label
+                      required: true,
                       defaultValue: initializarField(parameter.id, data[0]?.parameters),
                       disabled: false
                     }
@@ -157,7 +162,84 @@ const CreateMessage = () => {
                 disabled: true
               } :
               parameter
-             )) : schema?.parameters
+             )) : messageCode === "675" ? schema?.parameters.map((parameter: any) => (
+              parameter.type === "accordion" ?
+                {
+                  ...parameter,
+                  open: parameter.label !== "Datos de Hipoteca" && parameter.label !== "Detalle Otros Créditos",
+                  parameters: parameter?.parameters.map((parameter: any) => (
+                    parameter.id === "bank" || parameter.id === "currentBank" || parameter.id.startsWith("bank")
+                    ? {
+                      ...parameter,
+                      defaultValue: selectedInstitution,
+                      disabled: true
+                    } : 
+                    parameter.id === "typeOfObligation"
+                    ? {
+                      ...parameter,
+                      properties: {
+                        ...parameter.properties,
+                        options: [
+                          {
+                            label: "Credito Complementario",
+                            value: "Credito Complementario",
+                          }
+                        ]
+                      },
+                      defaultValue: "Credito Complementario",
+                    } : 
+                     parameter.id === "typeOfDebt" ? {
+                      ...parameter,
+                      properties: {
+                        ...parameter.properties,
+                        options: [
+                          {
+                            label: "Directo",
+                            value: "Directo",
+                          }
+                        ]
+                      },
+                      defaultValue: "Directo",
+                    } : 
+                     parameter.id === "typeOfCurrency" ? {
+                      ...parameter,
+                      properties: {
+                        ...parameter.properties,
+                        options: [
+                          {
+                            label: "UF",
+                            value: "uf",
+                          },
+                          {
+                            label: "Pesos $ -",
+                            value: "pesos",
+                          }
+                        ]
+                      },
+                      defaultValue: "uf",
+                    } : 
+                     parameter.id === "typeOfCurrency_2" ? {
+                      ...parameter,
+                      properties: {
+                        ...parameter.properties,
+                        options: [
+                          {
+                            label: "UF",
+                            value: "uf",
+                          },
+                          {
+                            label: "Pesos $ -",
+                            value: "pesos",
+                          }
+                        ]
+                      },
+                      defaultValue: "pesos",
+                    } : 
+                      parameter
+                  )),
+                }
+                 : parameter
+              )) : schema?.parameters
           });
         })
         .catch((error) => {
@@ -171,7 +253,7 @@ const CreateMessage = () => {
   }, [messageCode, institutionId, cloneId, messageId, selectedInstitution, cukCode]);
 
   const onSubmit = (data: any) => {
-    const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution);
+    const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution, userInfo);
 
     if (messageCode === "670" || messageCode === "672") {
       onSignOpen({
@@ -230,7 +312,8 @@ const CreateMessage = () => {
   };
   const onPrepare = (data: any) => {
     setLoading(true);
-    const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution);
+    const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution, userInfo);
+    console.log({ payload })
     createMessage(payload, "01")
       .then((response: any) => {
         setLoading(false);
