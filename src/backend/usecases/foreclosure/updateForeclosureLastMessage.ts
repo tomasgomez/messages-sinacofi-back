@@ -25,10 +25,6 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
     return new Error('No CUK found');
   }
 
-  /* Set the receiver of the message */
-  message.origin = "";
-  message.destination = "";
-
   let fetchedMessages = fetchedCuk[0].messages;
 
   if (!fetchedMessages) {
