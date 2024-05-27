@@ -13,7 +13,7 @@ import Accordion from "./labels/Accordion";
 
 const Select = (props: any) => {
   const { setValue } = useFormContext();
-  const onChange = (value) => {
+  const onChange = (value: any) => {
     setValue(props.id, value);
   }
   return (

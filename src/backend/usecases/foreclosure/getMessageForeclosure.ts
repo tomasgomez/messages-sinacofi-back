@@ -10,6 +10,8 @@ import {
 import {
   Filter
 } from '../../entities/cuk/filter';
+import { messageUseCase } from '../message/usecases';
+
 
 // Get message function
 export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: Filter): Promise < CUK[] | Error > {

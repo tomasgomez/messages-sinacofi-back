@@ -17,18 +17,31 @@ export interface UserInfo {
   user:        User;
   permissions: { [key: string]: boolean };
 }
-type initialUserInfoType = {
+
+// type initialUserInfoType = {
+//   userInfo: UserInfo | undefined,
+//   setUserInfo: React.Dispatch<React.SetStateAction<UserInfo | undefined>>,
+// };
+
+// const initialUserInfoState: initialUserInfoType = {
+//   userInfo: undefined,
+//   setUserInfo: () => undefined,
+// };
+
+
+type initialUserInfoType = UserInfo | undefined;
+
+interface SessionContextType {
   userInfo: UserInfo | undefined,
   setUserInfo: React.Dispatch<React.SetStateAction<UserInfo | undefined>>,
-};
+}
 
-
-const initialUserInfoState: initialUserInfoType = {
+const initialUserInfoState: SessionContextType = {
   userInfo: undefined,
-  setUserInfo: () => undefined,
-};
+  setUserInfo: () => undefined
+}
 
-export const SessionProviderContext = createContext(initialUserInfoState);
+export const SessionProviderContext = createContext<SessionContextType>(initialUserInfoState);
 
 export const SessionProvider = ({ children }: { children: any}) => {
 

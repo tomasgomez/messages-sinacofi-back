@@ -9,7 +9,7 @@ import { useEffect } from "react";
 const getDefaultValues = (schema: any) => {
   const defaultValues: { [key: string]: any } = {};
   schema?.parameters?.filter((parameter: any) => parameter.type !== "label" && parameter.type !== "linebreak")
-    .forEach((parameter: { defaultValue: any, id: string }) => {
+    .forEach((parameter: any) => {
       if (parameter.type === "accordion") {
         parameter.parameters.forEach((parameterChild: { defaultValue: any, id: string }) => {
           defaultValues[parameterChild.id] = parameterChild.defaultValue;
