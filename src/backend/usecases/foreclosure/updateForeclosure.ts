@@ -31,10 +31,31 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     let newMessage: Message;
     let messageType = '';
     let hasToUpdateMessage = false;
+    let origin = '';
+    let destination = '';
 
     if (!cuk.cukCode || cuk.cukCode === '') {
       return new Error('Invalid CUK');
     }
+
+
+    let fetchedMessage = await messageRepository.find({
+      cukCode: [cuk.cukCode],
+      messageCode: [MessageTypes.ALZAMIENTO_HIPOTECARIO],
+      detail: false
+    });
+
+    if (fetchedMessage instanceof Error) {
+      return new Error('Error fetching message');
+    }
+    
+    newMessage = new Message();
+    
+    if (fetchedMessage instanceof Array && fetchedMessage.length > 0) {
+      origin = fetchedMessage[0].destination ?? '';
+      destination = fetchedMessage[0].origin ?? '';
+    }
+
 
     /* Check if is updating cuk status and set the new status with new message values */
     switch (cuk.status) {
@@ -42,18 +63,28 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.SIGNED;
         hasToUpdateMessage = true;
+        newMessage.origin = destination;
+        newMessage.destination = origin;
+
         break;
 
       case ForeclosureStatus.REJECTED: // 672
         messageType = MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.REJECTED;
         hasToUpdateMessage = true;
+        newMessage.origin = destination;
+        newMessage.destination = origin;
+
+
         break;
 
       case ForeclosureStatus.START_NORMALIZATION: // 673
         messageType = MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION
         cuk.status = ForeclosureStatus.START_NORMALIZATION;
         hasToUpdateMessage = true;
+        newMessage.origin = destination;
+        newMessage.destination = origin;
+
         break;
 
       case ForeclosureStatus.IN_PROCESS:
@@ -76,12 +107,16 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         messageType = MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.ACCEPTED;
         hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
         break;
 
       case ForeclosureStatus.SENT_LIQUIDATION: // 675
         messageType = MessageTypes.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO
         cuk.status = ForeclosureStatus.SENT_LIQUIDATION;
         hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
         break;
 
       default:
@@ -90,25 +125,6 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
 
     /* When the cuk status is being updated, a message is created or updated the last message */
     if (hasToUpdateMessage) {
-
-      let fetchedMessage = await messageRepository.find({
-        cukCode: [cuk.cukCode],
-        messageCode: [MessageTypes.ALZAMIENTO_HIPOTECARIO],
-        detail: false
-      });
-
-      console.log('fetchedMessage', fetchedMessage);
-
-      if (fetchedMessage instanceof Error) {
-        return new Error('Error fetching message');
-      }
-      
-      newMessage = new Message();
-      
-      if (fetchedMessage instanceof Array && fetchedMessage.length > 0) {
-        newMessage.origin = fetchedMessage[0].destination
-        newMessage.destination = fetchedMessage[0].origin
-      }
 
       newMessage.cukCode = cuk.cukCode;
       newMessage.messageCode = messageType;
@@ -148,9 +164,6 @@ async function updateLastMessage(message: Message, messageRepository: MessageRep
   }
 
   /* Set the receiver of the message */
-  // message.origin = "";
-  // message.destination = "";
-
   let fetchedMessages = fetchedCuk[0].messages;
 
   if (!fetchedMessages) {

@@ -1,5 +1,5 @@
 {
-    "profileFullAccess": { 
+    "FullAccess": { 
         "edit": true,
         "access": true,
         "sendMessage": true,
@@ -25,7 +25,7 @@
         "signMortgageDischarge": true,
         "rejectMortgageDischarge": true
     },
-    "profile02": {
+    "02": {
         "edit": false,
         "access": false,
         "sendMessage": true,
@@ -51,7 +51,7 @@
         "signMortgageDischarge": false,
         "rejectMortgageDischarge": false
     },
-    "profile07": {
+    "07": {
         "edit": true,
         "access": true,
         "sendMessage": true,
@@ -77,7 +77,7 @@
         "signMortgageDischarge": false,
         "rejectMortgageDischarge": false
     },
-    "profile12": {
+    "12": {
         "edit": true,
         "access": true,
         "sendMessage": true,
@@ -103,7 +103,7 @@
         "signMortgageDischarge": true,
         "rejectMortgageDischarge": true
     },
-    "profile13": {
+    "13": {
         "edit": true,
         "access": true,
         "sendMessage": true,
@@ -129,7 +129,7 @@
         "signMortgageDischarge": false,
         "rejectMortgageDischarge": false
     },
-    "profile14": {
+    "14": {
         "edit": true,
         "access": true,
         "sendMessage": false,
@@ -155,7 +155,7 @@
         "signMortgageDischarge": false,
         "rejectMortgageDischarge": true
     },
-    "profile16": {
+    "16": {
         "edit": true,
         "access": true,
         "sendMessage": false,
@@ -181,7 +181,7 @@
         "signMortgageDischarge": false,
         "rejectMortgageDischarge": true
     },
-    "profile17": {
+    "17": {
         "edit": true,
         "access": true,
         "sendMessage": true,

@@ -38,7 +38,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("sing") && (
         <IconButton
           key={`drive-icon-${row.id}`}
-          style={{ padding: 0, color: "#00B2E2", margin: 2 }}
+          style={{ padding: 0, color: userInfo.permissions.signMortgageDischarge ? "#00B2E2" : '#CCC', margin: 2 }}
           disabled={!userInfo.permissions.signMortgageDischarge}
           onClick={
             () =>
@@ -57,7 +57,8 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("sent") && (
         <IconButton
           key={`sent-icon-${row.id}`}
-          style={{ padding: 0, color: "#00B2E2", margin: 2 }}
+          style={{ padding: 0, color: userInfo.permissions.sendMessage ? "#00B2E2" : '#CCC', margin: 2 }}
+          disabled={!userInfo.permissions.sendMessage}
           onClick={() =>
             router.push(
               `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
