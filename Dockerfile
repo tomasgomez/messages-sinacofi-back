@@ -25,7 +25,7 @@ RUN npm install -g ts-node && npm cache clean --force
 COPY . .
 
 # Build your Prisma client and Next.js app
-RUN npx prisma generate && npm run build
+RUN npm run build
 
 # Run prisma migration
 RUN DATABASE_URL=postgresql://$DB_USER:$DB_PASS@$DB_HOST:5432/$DB_NAME npx prisma migrate deploy
