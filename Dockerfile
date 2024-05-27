@@ -28,8 +28,7 @@ COPY . .
 RUN npx prisma generate && npm run build
 
 # Run prisma migration
-RUN DATABASE_URL=postgresql://$DB_USER:$DB_PASS@$DB_HOST:5432/$DB_NAME npx prisma migrate deploy
-
+RUN DATABASE_URL=postgresql://$DB_USER:$DB_PASS@$DB_HOST:5432/$DB_NAME npx prisma migrate deployRUN DATABASE_URL=$DATABASE_URL SHADOW_DATABASE_URL=$SHADOW_DATABASE_URL npx prisma migrate deploy
 # Step 2: Serve the Next.js application
 FROM node:alpine AS runner
 
@@ -46,6 +45,7 @@ COPY --from=builder /usr/src/app/package*.json ./
 
 # Set the DATABASE_URL environment variable
 ENV DATABASE_URL=postgresql://$DB_USER:$DB_PASS@$DB_HOST:5432/$DB_NAME
+ENV SHADOW_DATABASE_URL=postgresql://$DB_USER:$DB_PASS@$DB_HOST:5432/$DB_NAME
 # Set FILES_PATH environment variable
 ENV FILES_PATH=$FILES_PATH
 # Set LOGS_PATH environment variable
