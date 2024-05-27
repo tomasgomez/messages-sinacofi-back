@@ -15,6 +15,7 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
 
 
   if (!message.cukCode) {
+    console.log("message error cukcode");
     return new Error('Invalid CUK');
   }
   
@@ -79,7 +80,9 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
     newMessage.receivedTime = receivedTime;
     newMessage.parameters = parameters;
 
-    messageRepository.update(message);
+    const response = await messageRepository.update(newMessage);
+    console.log("errr");
+    console.log(response);
   }
 
   return message;
