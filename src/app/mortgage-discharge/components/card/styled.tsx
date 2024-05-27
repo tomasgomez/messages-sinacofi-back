@@ -17,7 +17,7 @@ export const StyledContentCard = styled(Box)<StyledContentCardProps>(
     // borderRadius: "10px",
     background: "#fff",
     // boxShadow: "0px 2px 5px 0px rgba(0, 0, 0, 0.1)",
-    padding: "32px",
+    padding: "16px 32px 16px 32px",
     height: height ? `${height}px` : "auto", // Si height existe, se establece, de lo contrario, se ajusta automáticamente
     display: "flex",
     flexDirection: "column",
