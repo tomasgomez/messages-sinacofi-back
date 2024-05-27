@@ -37,24 +37,24 @@ const InfoColumn = ({ data }: { data: any }) => {
 
   return (
     <StyleInfoColumn>
-      <Box width={90}>
+      <Box width="auto" maxWidth={90}>
         <StyledTypographyText>Canal</StyledTypographyText>
         <StyledTypographyData>{channel}</StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box width={170}>
+      <Box minWidth={90} width="auto" maxWidth={170}>
         <StyledTypographyText>Estado Operación</StyledTypographyText>
         <StyledTypographyData>{operationStatus}</StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box width={170}>
+      <Box minWidth={90} width="auto" maxWidth={170}>
         <StyledTypographyText>Comprador</StyledTypographyText>
         <StyledTypographyData>
           {buyerDni}/{buyer}
         </StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box width={110}>
+      <Box minWidth={90} width="auto" maxWidth={110}>
         <StyledTypographyText>
           {getInstitutionText(cukStatus)}
         </StyledTypographyText>
