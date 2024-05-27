@@ -37,6 +37,7 @@ export default function EnhancedTable(props: {
   endDetailsText?: string;
   rowOptions?: RowOptions;
   footerComponent?: React.ReactNode;
+  style?: any;
 }) {
   const {
     rows,
@@ -51,6 +52,7 @@ export default function EnhancedTable(props: {
     footerComponent = null,
     isExpansible = false,
     rowOptions = {},
+    style = {},
   } = props;
 
   const [order, setOrder] = React.useState<Order>(defaultOrder || "asc");
@@ -128,8 +130,8 @@ export default function EnhancedTable(props: {
   }, [order, rows, orderBy, page, rowsPerPage]);
 
   return (
-    <Paper>
-      <TableContainer style={{ maxHeight }}>
+    <Paper style={{ overflow: "inherit" }}>
+      <TableContainer style={{ maxHeight, ...style }}>
         {tableTitle}
         <Table aria-labelledby="tableTitle" size="medium" stickyHeader>
           <TableHeader
