@@ -196,6 +196,15 @@ export const formatCardData = (
 export const formatModalDetailsCompleted = (
   message: Message
 ): InfoModalMortgageDischarge => {
+  //
+  if (!message) {
+    return {
+      dataHeader: {} as DataHeaderInfoModal,
+      detailsMS: [],
+      bankDetailsMS: {} as BankDetailsMSInfoModal,
+      documents: [],
+    };
+  }
   const { parameters, documents } = message;
   const dataHeader = formatModalInfoHeader(message);
   const detailsMS: DetailsMSInfoModal[] = paramsTo670;
@@ -220,6 +229,13 @@ export const formatModalDetailsCompleted = (
 export const formatModalDetailSmall = (
   message: Message
 ): SmallMsInfoModalMortgageDischarge => {
+  if (!message) {
+    return {
+      dataHeader: {} as DataHeaderInfoModal,
+      smallMsDetail: [],
+      documents: [],
+    };
+  }
   const { messageCode, parameters, documents } = message;
   const dataHeader = formatModalInfoHeader(message);
   // Get all data necessary of the parameters

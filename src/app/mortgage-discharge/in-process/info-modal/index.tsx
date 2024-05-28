@@ -53,7 +53,7 @@ export const InfoModal = () => {
 
         // If you selected the first 670 show only this message
         // How the array was sorted => the first message is 670 and the first is 670
-        if (selectedMessage.id === extraMessages[0].id) {
+        if (selectedMessage?.id === extraMessages[0]?.id) {
           // Save only the selected messages
           setDetails(messageSelectedDetails);
         } else {
@@ -75,7 +75,7 @@ export const InfoModal = () => {
           // Set the state to show 2 details in the modal
           setShowOnlyOneMessage(false);
         }
-
+        
         setIsLoading(false);
       }
     } catch (error) {
@@ -137,7 +137,7 @@ export const InfoModal = () => {
             </Grid>
             {!showOnlyOneMessage && (
               <Box borderBottom="1px dashed #898989">
-                {details[1].messageCode === "670" ? (
+                {details[1]?.messageCode === "670" ? (
                   <MessageDetails670
                     showOnlyOneMessage
                     dataMessage={details[1]}
