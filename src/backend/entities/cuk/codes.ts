@@ -24,7 +24,13 @@ export enum ForeclosureStatus {
     RECEIVED = "06",
     ACCEPTED = "07",
     SENT_LIQUIDATION = "09",
+    SEND_LIQUIDATION_PAYMENT = "10",
     PAYMENT = "11",
+    SENT_REJECTION = "12",
+    SENT_CONFIRM_PAYMENT = "14",
+    PAYMENT_DATA = "999",
+    PAYMENT_OPTION_REJECTION = "1000",
+    PAYMENT_OPTION_ACCEPTED = "1001",
   }
 
  export function isForeclosureMessageCode(code?: string ): boolean {

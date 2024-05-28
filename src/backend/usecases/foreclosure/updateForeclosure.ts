@@ -114,6 +114,38 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         newMessage.origin = origin;
         newMessage.destination = destination;
         break;
+      
+      case ForeclosureStatus.PAYMENT_DATA: // 676
+        messageType = MessageTypes.DATOS_PARA_EL_PAGO_AH
+        cuk.status = ForeclosureStatus.SEND_LIQUIDATION_PAYMENT;
+        hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
+        break;
+
+      case ForeclosureStatus.SEND_LIQUIDATION_PAYMENT: // 677
+        messageType = MessageTypes.AVISO_DE_PAGO_AH
+        cuk.status = ForeclosureStatus.SEND_LIQUIDATION_PAYMENT;
+        hasToUpdateMessage = true;
+        newMessage.origin = destination;
+        newMessage.destination = origin;
+        break;
+      
+      case ForeclosureStatus.PAYMENT_OPTION_REJECTION: // 678
+        messageType = MessageTypes.RECHAZO_DE_PAGO_AH
+        cuk.status = ForeclosureStatus.PAYMENT_OPTION_REJECTION;
+        hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
+        break;
+      
+      case ForeclosureStatus.PAYMENT_OPTION_ACCEPTED: // 679
+        messageType = MessageTypes.CONFIRMACION_DE_PAGO_AH
+        cuk.status = ForeclosureStatus.PAYMENT_OPTION_ACCEPTED;
+        hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
+        break;
 
       default:
         return new Error('Invalid status');

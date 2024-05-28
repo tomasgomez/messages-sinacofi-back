@@ -8,7 +8,7 @@ import { updateForclosure } from '../updateForeclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 
 
-export async function handle674(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
+export async function handle676(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
 
     /* Update the last message */
@@ -28,7 +28,7 @@ export async function handle674(cuk: CUK, message: Message, cukRepository: CUKRe
     }
 
     if (message.cukCode && message.cukCode !== ''){
-        cuk.status = ForeclosureStatus.SENT_LIQUIDATION
+        cuk.status = ForeclosureStatus.SEND_LIQUIDATION_PAYMENT
         cuk.cukCode = message.cukCode;
         updateForclosure(cukRepository,messageRepository,cuk,message);
     }
