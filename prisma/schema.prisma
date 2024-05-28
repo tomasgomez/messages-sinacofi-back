@@ -13,7 +13,6 @@ model CUK {
   id      String  @id @default(uuid())
   cukCode String? @unique
   status  String?
-  status2 String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
