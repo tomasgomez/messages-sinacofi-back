@@ -109,7 +109,7 @@ export const TrackingModal = (props: {
             value={statusSelected}
             onChange={setStatusSelected}
             options={dataOptions}
-            // disabled={selectedInstitution !== institutionDestination}
+            disabled={selectedInstitution !== institutionDestination}
           />
         </Box>
       </Box>
@@ -125,16 +125,16 @@ export const TrackingModal = (props: {
           sx={buttonUpdateStateSecondarySx}
           onClick={handleChange}
           variant="contained"
-          // disabled={
-          //   loading ||
-          //   !statusSelected ||
-          //   // if you aren't the institution Destination you can change the status
-          //   selectedInstitution !== institutionDestination ||
-          //   (statusSelected == "022" &&
-          //     !userInfo?.permissions.acceptMortgageDischarge) ||
-          //   (statusSelected == "023" &&
-          //     !userInfo?.permissions.rejectMortgageDischarge)
-          // }
+          disabled={
+            loading ||
+            !statusSelected ||
+            // if you aren't the institution Destination you can change the status
+            selectedInstitution !== institutionDestination ||
+            (statusSelected == "022" &&
+              !userInfo?.permissions.acceptMortgageDischarge) ||
+            (statusSelected == "023" &&
+              !userInfo?.permissions.rejectMortgageDischarge)
+          }
         >
           Actualizar Estado
         </Button>
