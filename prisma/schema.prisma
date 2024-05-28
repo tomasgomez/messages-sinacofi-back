@@ -6,8 +6,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = "postgresql://USR_DLNLBFOVO:Mayo.2024$$@100.66.49.10:5432/DEV_IMMSJ"
-  shadowDatabaseUrl = "postgresql://USR_DLNLBFOVO:Mayo.2024$$@100.66.49.10:5432/DEV_IMMSJ"
+  url = env("DATABASE_URLs")
 }
 
 model CUK {
