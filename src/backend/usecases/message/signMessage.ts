@@ -1,10 +1,18 @@
-import { Message } from "@/backend/entities/message/message";
-import { MessageRepository } from "@/backend/repository/messageRepository";
+import { isForeclosureMessageCode } from "@/backend/entities/cuk/codes";
+import { CUK } from "@/backend/entities/cuk/cuk";
+import {
+    Message
+} from "@/backend/entities/message/message";
+import {
+    MessageRepository
+} from "@/backend/repository/messageRepository";
 import { MessageStatus } from "@/utils/messagesStatus";
+import { updateForclosure } from "../foreclosure/updateForeclosure";
+import { CUKRepository } from "@/backend/repository/cukRepository";
 
 
 // Create message function
-export async function updateMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
+export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message): Promise < Message | Error > {
     try {
         let status = '';      
 
@@ -39,6 +47,13 @@ export async function updateMessage(repository: MessageRepository, message: Mess
 
         if (messageResponse instanceof Error) {
             return messageResponse;
+        }
+
+        if (message.messageCode && isForeclosureMessageCode(message.messageCode)) {
+            let cuk = new CUK();
+            cuk.cukCode = message.cukCode;
+
+            updateForclosure(cukRepository, repository, cuk, message);
         }
 
         return messageResponse;

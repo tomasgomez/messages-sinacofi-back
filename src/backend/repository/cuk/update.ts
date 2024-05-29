@@ -51,11 +51,10 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
                     date: new Date().toISOString()
                 };
 
-                prisma.history.create({
+                await prisma.history.create({
                     data: updatedHistory,
                 });
 
-                //TODO: agregar el history en el return del cuk
                 // Update the object
                 return await prisma.cUK.update({
                     where: {
@@ -64,9 +63,10 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
                     data: {
                         status: cuk.status,
                     },
+                    include: {
+                        history: true,
+                    }
                 });
-
-
             });
         }
 

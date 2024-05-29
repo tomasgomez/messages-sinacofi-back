@@ -12,6 +12,7 @@ const foreclosureMessageCodes = [
  ]
 
 export enum ForeclosureStatus {
+    INIT = "01",
     IN_PROCESS = "021",
     APPROVED = "022",
     REJECTED = "023",

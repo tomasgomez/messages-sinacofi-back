@@ -7,4 +7,5 @@ export interface MessageUsecases {
     handleMessage(message: Message): Promise<Message | Error>;
     createMessage(message: Message): Promise<Message | Error>;
     updateMessage(message: Message): Promise<Message | Error>;
+    signMessage(message: Message): Promise<Message | Error>;
 }

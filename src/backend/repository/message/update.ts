@@ -32,7 +32,13 @@ export async function update(message: Message): Promise<Message | Error> {
             include: {
                 documents: false,
                 status: true,
-                parameters: true
+                parameters: true,
+                TSN: true,
+                LSN: true,
+                OSN: true,
+                NSE: true,
+                NSQ: true,
+                NSR: true,
             }
         });
 

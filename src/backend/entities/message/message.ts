@@ -23,12 +23,12 @@ export class Message {
     createdAt ? : Date;
     updatedAt ? : Date;
 
-    TSN ? : TSN;
-    LSN ? : LSN;
-    OSN ? : OSN;
-    NSE ? : NSE;
-    NSR ? : NSR;
-    NSQ ? : NSQ;
+    TSN ? : TSN|null;
+    LSN ? : LSN|null;
+    OSN ? : OSN|null;
+    NSE ? : NSE|null;
+    NSR ? : NSR|null;
+    NSQ ? : NSQ|null;
 
     parameters ? : Parameter[];
     documents ? : Document[];

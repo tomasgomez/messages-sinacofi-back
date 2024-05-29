@@ -12,18 +12,20 @@ import {
 } from '@/backend/entities/message/status';
 
 /* When the cuk status is being updated, an empty message is created or updated the last empty message */
-export async function updateLastMessage(message: Message, messageRepository: MessageRepository, cukRepository: CUKRepository): Promise<Message | Error> {
+export async function updateLastMessage(message: Message, messageRepository: MessageRepository, cukRepository: CUKRepository): Promise < Message | Error > {
+
+  let createdMessage = message;
   
   if (!message.cukCode) {
     console.log("message error cukcode");
     return new Error('Invalid CUK');
   }
-  
+
   /* Get Cuk */
   let fetchedCuk = await cukRepository.find({
     cukCode: [message.cukCode]
-  });  
-  
+  });
+
   /* Check last message attached to the CUK */
   if (fetchedCuk instanceof Error || fetchedCuk.length === 0) {
     return new Error('No CUK found');
@@ -42,7 +44,7 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
     } else if (a.createdAt === b.createdAt) {
       return 0;
     } else if (a.createdAt > b.createdAt) {
-      return -1; 
+      return -1;
     } else {
       return 1;
     }
@@ -59,7 +61,12 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
 
     message.id = messageToUpdate.id;
 
-    const { parameters, id, receivedDate, receivedTime } = message;
+    const {
+      parameters,
+      id,
+      receivedDate,
+      receivedTime
+    } = message;
 
     const newMessage = new Message()
     newMessage.id = id;
@@ -67,20 +74,26 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
     newMessage.receivedTime = receivedTime;
     newMessage.parameters = parameters;
 
-     // Update the status of the message
+    // Update the status of the message
 
-      if (message.statusCode == MessageStatus.ENVIADO ){
-          if (newMessage.setReceivedTime) {
-              newMessage.setReceivedTime();
-          }
-          if (newMessage.setStatus) {
-              newMessage.setStatus(MessageStatus.BANDEJA_DE_ENTRADA);
-              newMessage.setStatus(MessageStatus.ENVIADO);
-          }
+    if (message.statusCode == MessageStatus.ENVIADO) {
+      if (newMessage.setReceivedTime) {
+        newMessage.setReceivedTime();
+      }
+      if (newMessage.setStatus) {
+        newMessage.setStatus(MessageStatus.BANDEJA_DE_ENTRADA);
+        newMessage.setStatus(MessageStatus.ENVIADO);
+      }
+    }
+
+    let updated = await messageRepository.update(newMessage);
+
+    if (updated instanceof Error) {
+      return updated;
+    }
+
+    createdMessage = updated;
   }
 
-    messageRepository.update(newMessage);
-  }
-
-  return message;
+  return createdMessage;
 }

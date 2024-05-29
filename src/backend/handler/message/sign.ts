@@ -3,9 +3,8 @@ import { validateUpdateMessage } from "@/backend/handler/message/presenter/updat
 import { NextApiRequest, NextApiResponse } from "next";
 import { prepareMessages } from "./adapter/prepareMessages";
 
-
 // put message function
-export async function put(req: NextApiRequest, res: NextApiResponse < any > ) {
+export async function sign(req: NextApiRequest, res: NextApiResponse < any > ) {
     try {
 
         let message = validateUpdateMessage(req.body);
@@ -14,9 +13,7 @@ export async function put(req: NextApiRequest, res: NextApiResponse < any > ) {
             res.status(400).json(message);
             return;
         }
-        let messageResponse = await messageUseCase.updateMessage(message);
-
-        console.log('messageResponse:', messageResponse);
+        let messageResponse = await messageUseCase.signMessage(message);
 
         if (messageResponse instanceof Error) {
             res.status(400).json(messageResponse);
