@@ -116,8 +116,10 @@ export const intitutionLabelToCode = (label: string) => {
 export const completeInstitutions = (value: string | undefined) => {
   if (value === undefined) return "";
   const institution = institutionsList.find(
-    (institution: any) => institution.id === value || institution.name === value
+    (institution) => institution.id === value || institution.name === value
   );
-  if (!institution) return "";
-  return `${institution.id} - ${institution.name}`;
+
+  if (!institution || (!institution.id && !institution.name)) return "";
+
+  return `${institution?.id || ""} - ${institution?.name || ""}`;
 };

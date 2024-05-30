@@ -48,6 +48,12 @@ export interface SentData {
   parameters?: any[];
 }
 
+export interface HistoryTrackingModal {
+  id: string;
+  cukCode: string;
+  status: string;
+  date: string;
+}
 export interface MortgageDischargeData {
   id?: string;
   name?: string;
@@ -68,7 +74,7 @@ export interface MortgageDischargeData {
   buyer?: string;
   borrowerDni?: string;
   borrower?: string;
-  history?: any[];
+  history?: HistoryTrackingModal[];
   messages?: Message[];
 }
 
@@ -137,24 +143,6 @@ export interface TableProps {
   isLastRow?: boolean;
   isExpansible?: boolean;
   rowOptions?: RowOptions;
-}
-
-export interface MSDetail {
-  id: string;
-  TSN: string;
-  OSN: string;
-  NSE: string;
-  messageCode: string;
-  destination: string;
-  description: string;
-  priority: string;
-  status: string;
-  origin: string;
-  creationDate: string;
-  creationTime: string;
-  receivedDate: string;
-  receivedTime: string;
-  parameters: MSParameter[];
 }
 
 export interface MSParameter {

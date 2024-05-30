@@ -7,7 +7,7 @@ import Loader from "@/components/Loader";
 import { StyledFooterComponent, StyledCircle } from "../../styles";
 
 export const CardStatusUpdate = (props: { data?: any[]; loading: boolean }) => {
-  const { data, loading } = props;
+  const { data = [], loading = false } = props || {};
 
   const footerComponent = (
     <StyledFooterComponent>
@@ -28,7 +28,7 @@ export const CardStatusUpdate = (props: { data?: any[]; loading: boolean }) => {
         <EnhancedTable
           maxHeight={342}
           withCheckbox={false}
-          rows={data || []}
+          rows={data}
           columns={columnData}
           rowOptions={rowOptions}
           footerComponent={footerComponent}

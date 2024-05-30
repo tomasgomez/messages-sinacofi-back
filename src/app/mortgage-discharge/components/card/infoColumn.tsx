@@ -15,6 +15,7 @@ const InfoColumn = ({ data }: { data: any }) => {
     institutionDestination,
     buyerDni,
     cukStatus,
+    institutionCode,
   }: {
     channel: string;
     operationStatus: string;
@@ -22,6 +23,7 @@ const InfoColumn = ({ data }: { data: any }) => {
     institutionDestination: string;
     buyerDni: string;
     cukStatus: string;
+    institutionCode: string;
   } = data;
 
   const getInstitutionText = (cukStatus: string) => {
@@ -30,6 +32,15 @@ const InfoColumn = ({ data }: { data: any }) => {
         return "Institución Origen";
       default:
         return "Institución Destino";
+    }
+  };
+
+  const getInstitution = (cukStatus: string) => {
+    switch (cukStatus) {
+      case "06":
+        return institutionCode;
+      default:
+        return institutionDestination;
     }
   };
 
@@ -56,7 +67,7 @@ const InfoColumn = ({ data }: { data: any }) => {
         <StyledTypographyText>
           {getInstitutionText(cukStatus)}
         </StyledTypographyText>
-        <StyledTypographyData>{institutionDestination}</StyledTypographyData>
+        <StyledTypographyData>{getInstitution(cukStatus)}</StyledTypographyData>
       </Box>
     </StyleInfoColumn>
   );

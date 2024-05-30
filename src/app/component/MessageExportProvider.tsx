@@ -2,9 +2,7 @@ import React, { useEffect, createContext, useState, useCallback  } from "react";
 import { ModalPrint } from "./inbox-header/ModalPrint";
 import { pdf, usePDF } from "@react-pdf/renderer";
 import { PDFTemplate } from "./PDFTemplate";
-import { MSDetail } from "./inbox-table/type";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-// import { PDFTemplate } from "./PDFTemplate";
+import { Message } from "./inbox-table/type";
 
 type initialinitialMessageExportType = {
   selectedMessages: [],
@@ -15,7 +13,7 @@ type initialinitialMessageExportType = {
   setDownloadPDF: Function,
   isLoading: boolean,
   setIsLoading: Function,
-  details: MSDetail[] | [],
+  details: Message[] | [],
   setDetails: Function,
 };
 
@@ -39,10 +37,10 @@ export const MessageExportProvider = ({ children }: { children: any}) => {
   const [selectedMessages, setSelectedMessages] = useState<[]>([]);
   const [printPDF, setPrintPDF] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [details, setDetails] = useState<MSDetail[] | []>([])
+  const [details, setDetails] = useState<Message[] | []>([])
   const [downloadPDF, setDownloadPDF] = useState<boolean>(false);
 
-  const downloadPDFFiles = async (data: MSDetail | MSDetail[] ) => {
+  const downloadPDFFiles = async (data: Message | Message[] ) => {
     const instance = pdf(<PDFTemplate data={data}/>)
     try {
       const blob = await instance.toBlob();

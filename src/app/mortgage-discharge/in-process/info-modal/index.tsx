@@ -7,25 +7,29 @@ import PrintOutlinedIcon from "@mui/icons-material/PrintOutlined";
 import Loader from "@/components/Loader";
 import { PDFViewer } from "@react-pdf/renderer";
 import { PDFTemplate } from "@/app/component/PDFTemplate";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MessageDetails } from "./components/message-details";
 import { MessageDetails670 } from "./components/message-details-670";
 import { CardContext } from "../store/ModalStore";
-import { findPreviousMessage670 } from "@/utils/mortgage-discharge";
+import { findPreviousMessage670 } from "@/utils/mortgage-discharge-utils";
 import { sortMessagesOldToNew } from "@/utils/messagesFuntions";
+import { MyContexLayout } from "@/app/context";
+import { Message } from "@/app/component/inbox-table/type";
 
 export const InfoModal = () => {
-  const [details, setDetails] = React.useState<undefined | any[]>([]);
-  const [pdfView, setPdfView] = React.useState<boolean>(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [showOnlyOneMessage, setShowOnlyOneMessage] =
-    React.useState<boolean>(true);
+  const [details, setDetails] = useState<Message[]>([]);
+  const [pdfView, setPdfView] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showOnlyOneMessage, setShowOnlyOneMessage] = useState<boolean>(true);
 
   const { modalIsOpen, setModalIsOpen, selectedMessage } =
     useContext(CardContext);
 
+  const { selectedInstitution } = useContext(MyContexLayout) as any;
+  
   const handleClose = () => {
     setModalIsOpen(false);
+    setPdfView(false);
   };
 
   const handlePrint = () => {
@@ -39,15 +43,17 @@ export const InfoModal = () => {
 
         // Get the cuck and save only the messages and sort oldest to newest
         // If we have to do a Dropdown, we can save all messages in a state and with the dropdown select the message
-        const extraMessages = sortMessagesOldToNew(
+        // &selectedInstitution=${selectedInstitution}`
+        const extraMessages: Message[] = sortMessagesOldToNew(
           (
             await fetch(
-              `/api/message/foreclosure?cukCode=${selectedMessage?.cukCode}`
+              `/api/message/foreclosure?cukCode=${selectedMessage?.cukCode}&institutionCode=${selectedInstitution}`
             ).then((res) => res.json())
           )[0].messages
         );
 
-        const messageSelectedDetails = await fetch(
+        // The get allways return a list
+        const messageSelectedDetails: Message[] = await fetch(
           `/api/message/detail?id=${selectedMessage?.id}`
         ).then((res) => res.json());
 
@@ -75,7 +81,7 @@ export const InfoModal = () => {
           // Set the state to show 2 details in the modal
           setShowOnlyOneMessage(false);
         }
-        
+
         setIsLoading(false);
       }
     } catch (error) {
