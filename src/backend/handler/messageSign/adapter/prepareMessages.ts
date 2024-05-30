@@ -2,8 +2,6 @@ import { Message } from '@/backend/entities/message/message';
 import { getDescriptionByType } from '@/backend/entities/message/types';
 
 function prepareMessages(messages: Message[], filter: any = {detail:false}): any{
-
-  console.log('messages', messages)
     
   let message670 = messages.filter(message => message.messageCode == "670");
 
@@ -54,8 +52,6 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
         cukCode: message?.cukCode ?? '',
         status,
       }});
-
-      console.log('preparedData', preparedData)
   
       return preparedData
   }

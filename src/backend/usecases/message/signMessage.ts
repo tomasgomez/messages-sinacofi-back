@@ -53,7 +53,7 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
             let cuk = new CUK();
             cuk.cukCode = message.cukCode;
 
-            updateForclosure(cukRepository, repository, cuk, message);
+            await updateForclosure(cukRepository, repository, cuk, message);
         }
 
         return messageResponse;

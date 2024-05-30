@@ -71,7 +71,7 @@ export enum ForeclosureStatus {
         case ForeclosureStatus.SIGN_IN_PROGRESS:
             return MessageDescriptions.ALZAMIENTO_HIPOTECARIO
         case ForeclosureStatus.SIGNED:
-            return MessageDescriptions.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO;
+            return MessageDescriptions.ESCRITURA_FIRMADA;
         default:
             return '';
     }

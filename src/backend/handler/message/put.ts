@@ -16,8 +16,6 @@ export async function put(req: NextApiRequest, res: NextApiResponse < any > ) {
         }
         let messageResponse = await messageUseCase.updateMessage(message);
 
-        console.log('messageResponse:', messageResponse);
-
         if (messageResponse instanceof Error) {
             res.status(400).json(messageResponse);
             return;

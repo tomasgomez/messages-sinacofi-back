@@ -33,8 +33,11 @@ function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
         case 'channel': 
           adaptedCuk.channel = parameter.value;
           break;
-        case 'bank':
+        case 'beneficiaryBank':
           adaptedCuk.institutionDestination = parameter.value;
+          break;
+        case 'bank':
+          adaptedCuk.institutionCode = parameter.value;
           break;
         case 'region':
           adaptedCuk.region = parameter.value;

@@ -17,7 +17,6 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
   let createdMessage = message;
   
   if (!message.cukCode) {
-    console.log("message error cukcode");
     return new Error('Invalid CUK');
   }
 
@@ -52,7 +51,6 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
 
   /* If the last message is not empty, create a new empty one */
   if (fetchedMessages.length === 0 || fetchedMessages[0].getStatus) {
-    console.log("error")
     return new Error('No empty message found');
 
     /* If the last message is empty, update the last message */

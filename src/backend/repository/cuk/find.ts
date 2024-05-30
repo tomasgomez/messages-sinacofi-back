@@ -19,7 +19,6 @@ import { MessageTypes } from '@/backend/entities/message/types';
 
 async function find(filter: Filter): Promise < CUK[] | Error > {
     try {
-        console.log(filter)
         let cuks: CUK[];
 
         const prisma = new PrismaClientWrapper();
@@ -215,6 +214,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
                             'owner',
                             'borrowerDni',
                             'borrower',
+                            'beneficiaryBank',
                         ]
                     }            
                 },
