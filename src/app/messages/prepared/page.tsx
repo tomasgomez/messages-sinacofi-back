@@ -9,6 +9,7 @@ import { Columns, SentData } from "@/app/component/inbox-table/type";
 import { SendOutlined } from "@mui/icons-material";
 import { MyContexLayout } from "@/app/context";
 import { updateMessage } from "../api-calls";
+import { getMessage } from "@/app/services/common";
 // import { intitutionCodeToLabel } from "@/utils/intitutions";
 
 export default function PreparedScreen() {
@@ -24,18 +25,13 @@ export default function PreparedScreen() {
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      // Backend have the origin like a label not a code
-      // const selectedInstitutionLabel = await intitutionCodeToLabel(
-      //   selectedInstitution
-      // );
-      await fetch(`/api/message?status=01&origin=${selectedInstitution}`)
-        .then((res) => res.json())
-        .then((res) => {
-          setData(res);
-          setIsLoading(false);
-        });
+      const response = await getMessage({
+        status: "01",
+        origin: selectedInstitution,
+      });
+      setData(response);
+      setIsLoading(false);
     } catch (error) {
-      console.error("Error al solicitar mensajes", error);
       setIsLoading(false);
     }
   };

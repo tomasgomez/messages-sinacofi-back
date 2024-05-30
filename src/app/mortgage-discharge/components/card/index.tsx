@@ -44,7 +44,7 @@ const CarDischarge = ({
   const {
     codeData,
     infoData,
-    messages,
+    messages = [],
     buttonDisabled,
     modalTrackingData,
   }: {
@@ -53,17 +53,16 @@ const CarDischarge = ({
     messages: Message[];
     buttonDisabled: boolean;
     modalTrackingData: ModalTrackingData;
-  } = data;
+  } = data || {};
 
   const handlerColapseCard = () => {
     setIsOpen(!isOpen);
   };
-
   const handleFilterMessages = React.useCallback(
     (messages: Message[]): Message[] => {
       if (selectedMessage) {
-        return messages.filter(
-          (message: Message) => message.id === selectedMessage
+        return messages?.filter(
+          (message: Message) => message?.id === selectedMessage
         );
       } else {
         return messages;
@@ -87,7 +86,7 @@ const CarDischarge = ({
       );
     } else {
       // Si sos el que envio el 670 y recibiste un 672 mostras el footer
-      if (codeData.lastMessageCode === "672") {
+      if (codeData?.lastMessageCode === "672") {
         return footerComponent(
           "Operación Rechazada. Puedes editar el mensaje 670 para reenviar esta solicitud. Motivo del Rechazo: Reparo Legal, Cláusula de Escritura",
           12
@@ -142,7 +141,6 @@ const CarDischarge = ({
           selectedMessage={selectedMessage}
         />
         <DataTable
-          // style={{ overflow: "initial" }}
           maxHeight={350}
           rows={handleFilterMessages(reverseArray(messages))}
           columns={columnsCard}

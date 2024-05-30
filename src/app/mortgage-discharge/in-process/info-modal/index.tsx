@@ -15,6 +15,8 @@ import { findPreviousMessage670 } from "@/utils/mortgage-discharge-utils";
 import { sortMessagesOldToNew } from "@/utils/messagesFuntions";
 import { MyContexLayout } from "@/app/context";
 import { Message } from "@/app/component/inbox-table/type";
+import { getMessageDetails } from "@/app/services/common";
+import { getForeClosureDataCards } from "../../api-calls";
 
 export const InfoModal = () => {
   const [details, setDetails] = useState<Message[]>([]);
@@ -26,7 +28,7 @@ export const InfoModal = () => {
     useContext(CardContext);
 
   const { selectedInstitution } = useContext(MyContexLayout) as any;
-  
+
   const handleClose = () => {
     setModalIsOpen(false);
     setPdfView(false);
@@ -43,19 +45,18 @@ export const InfoModal = () => {
 
         // Get the cuck and save only the messages and sort oldest to newest
         // If we have to do a Dropdown, we can save all messages in a state and with the dropdown select the message
-        // &selectedInstitution=${selectedInstitution}`
-        const extraMessages: Message[] = sortMessagesOldToNew(
-          (
-            await fetch(
-              `/api/message/foreclosure?cukCode=${selectedMessage?.cukCode}&institutionCode=${selectedInstitution}`
-            ).then((res) => res.json())
-          )[0].messages
-        );
+        const cukData = await getForeClosureDataCards([
+          { label: "cukCode", value: selectedMessage?.cukCode || "" },
+          { label: "institutionCode", value: selectedInstitution || "" },
+        ]);
 
+        const extraMessages: Message[] = sortMessagesOldToNew(
+          cukData[0]?.messages || []
+        );
         // The get allways return a list
-        const messageSelectedDetails: Message[] = await fetch(
-          `/api/message/detail?id=${selectedMessage?.id}`
-        ).then((res) => res.json());
+        const messageSelectedDetails: Message[] = await getMessageDetails(
+          selectedMessage?.id
+        );
 
         // If you selected the first 670 show only this message
         // How the array was sorted => the first message is 670 and the first is 670
@@ -72,9 +73,7 @@ export const InfoModal = () => {
 
           // Save the selected message and the previous 670 message
           setDetails([
-            ...(await fetch(
-              `/api/message/detail?id=${previousMessage670?.id}`
-            ).then((res) => res.json())),
+            ...(await getMessageDetails(previousMessage670?.id)),
             ...messageSelectedDetails,
           ]);
 

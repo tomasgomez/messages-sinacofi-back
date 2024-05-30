@@ -56,8 +56,8 @@ const getChipBackgroundColor = (messageCode: string, status: string) => {
 };
 
 const StatusChip = ({
-  status,
-  messageCode,
+  status = "",
+  messageCode = "",
 }: {
   status: string;
   messageCode: string;

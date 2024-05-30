@@ -51,7 +51,9 @@ export const getMessageSchema = async (
   //   });
 };
 
-export const getMessageDetails = async (messageId: number | string) => {
+export const getMessageDetails = async (
+  messageId: number | string | undefined
+) => {
   try {
     const response = await fetch(`/api/message/detail?id=${messageId}`);
     if (!response.ok) {
@@ -90,28 +92,65 @@ export const createMessage = async (data: any, status: string) => {
   }).then((response) => response.json());
 };
 
-export const signMessage = async (id: string, status: string, data: any = {}) => {
-  return fetch(
-    `/api/message/sign?id=${id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...data, id: id, status }),
-    }
-  ).then((res) => res.json());
-}
+export const signMessage = async (
+  id: string,
+  status: string,
+  data: any = {}
+) => {
+  return fetch(`/api/message/sign?id=${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data, id: id, status }),
+  }).then((res) => res.json());
+};
 
-export const updateMessage = async (id: string, status: string, data: any = {}) => {
-  return fetch(
-    `/api/message?id=${id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...data, id: id, status }),
+export const updateMessage = async (
+  id: string,
+  status: string,
+  data: any = {}
+) => {
+  return fetch(`/api/message?id=${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data, id: id, status }),
+  }).then((res) => res.json());
+};
+
+export const getMessage = async (params: {
+  status?: string;
+  destination?: string;
+  origin?: string;
+}) => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (params?.status) {
+      queryParams.append("status", params.status);
     }
-  ).then((res) => res.json());
-}
+
+    if (params?.destination) {
+      queryParams.append("destination", params.destination);
+    }
+
+    if (params?.origin) {
+      queryParams.append("origin", params.origin);
+    }
+
+    const url = `/api/message?${queryParams.toString()}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch message details:", error);
+    throw error;
+  }
+};

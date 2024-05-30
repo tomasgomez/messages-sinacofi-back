@@ -8,6 +8,7 @@ import { columnsInbox, rowOptions } from "./columns";
 import { Message } from "@/app/component/inbox-table/type";
 import DataTable from "../../component/inbox-table";
 import { MyContexLayout } from "@/app/context";
+import { getMessage } from "@/app/services/common";
 
 export default function InboxScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -21,14 +22,14 @@ export default function InboxScreen() {
       // selectedInstitution = await intitutionCodeToLabel(selectedInstitution)
       // because we have to filter by label
       setIsLoading(true);
-      await fetch(`/api/message?status=06&destination=${selectedInstitution}`)
-        .then((res) => res.json())
-        .then((res) => {
-          setData(res);
-          setIsLoading(false);
-        });
+
+      const response = await getMessage({
+        status: "06",
+        destination: selectedInstitution,
+      });
+      setData(response);
+      setIsLoading(false);
     } catch (error) {
-      console.error("Error al solicitar mensajes", error);
       setIsLoading(false);
     }
   };
