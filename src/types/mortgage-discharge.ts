@@ -1,35 +1,31 @@
-import {
-  Message,
-  MortgageDischargeData,
-} from "@/app/component/inbox-table/type";
-
-export interface MortgageDischargeCard extends MortgageDischargeData {}
+import { Message } from "@/app/component/inbox-table/type";
 
 export interface CodeCardMortgageDischarge {
-  cukCode?: string;
-  foreclosureDate?: string;
-  cukStatus?: string;
-  lastMessageCode?: string;
+  cukCode: string;
+  foreclosureDate: string;
+  cukStatus: string;
+  lastMessageCode: string;
 }
 
 export interface InforCardMortgageDischarge {
-  channel?: string;
-  operationStatus?: string;
-  buyer?: string;
-  institutionDestination?: string;
-  buyerDni?: string;
-  cukStatus?: string;
+  channel: string;
+  operationStatus: string;
+  buyer: string;
+  institutionDestination: string;
+  institutionCode: string;
+  buyerDni: string;
+  cukStatus: string;
 }
 
 // TODO change after backend changes
 export interface ModalTrackingData {
-  cukCode?: string;
-  seller?: string;
-  buyer?: string;
-  debtor?: string;
-  region?: string;
-  institutionDestination?: string;
-  history?: any[];
+  cukCode: string;
+  seller: string;
+  buyer: string;
+  debtor: string;
+  region: string;
+  institutionDestination: string;
+  history: any[];
 }
 
 export interface DataMortgageDischarge {
@@ -41,10 +37,10 @@ export interface DataMortgageDischarge {
 }
 
 export interface DataHeaderInfoModal {
-  NSR?: number;
+  NSR?: number | string;
   messageCode: string;
   description: string;
-  LSN?: number;
+  LSN?: number | string;
   destination?: string;
   creationDate: string;
   creationTime: string;

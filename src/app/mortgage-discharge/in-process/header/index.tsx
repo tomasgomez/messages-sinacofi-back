@@ -25,7 +25,8 @@ export default function InboxHeader(props: {
   title: string;
   dataCodeList: string[];
 }) {
-  const { title, dataCodeList } = props;
+  const { title = "", dataCodeList = [] } = props || {};
+
   const [alignment, setAlignment] = React.useState("Personas");
   const { handleChangeAddFilter } = React.useContext(CardContext);
 
@@ -35,7 +36,7 @@ export default function InboxHeader(props: {
   ) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment);
-      handleChangeAddFilter("channel", newAlignment || "");
+      handleChangeAddFilter("channel", newAlignment);
     }
   };
 

@@ -77,6 +77,7 @@ export default function EnhancedTable(props: {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n.id as number);
       setSelected(newSelected);
+      setSelectedMessages(newSelected);
       return;
     }
     setSelected([]);

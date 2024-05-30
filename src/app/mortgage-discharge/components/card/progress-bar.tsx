@@ -11,7 +11,7 @@ import {
   StyledTypographyStatus,
   StyledLinearProgress,
 } from "./styled";
-import { getStatusText, getIsPendingStatus } from "@/utils/mortgage-discharge";
+import { getStatusText, getIsPendingStatus } from "@/utils/mortgage-discharge-utils";
 import { Message } from "@/app/component/inbox-table/type";
 
 // with status -> green

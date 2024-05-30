@@ -6,13 +6,12 @@ import Box from "@mui/material/Box/Box";
 import Grid from "@mui/material/Grid/Grid";
 import Typography from "@mui/material/Typography/Typography";
 import { StyledCapitalizedSpan } from "../../../style";
-import Button from "@mui/material/Button/Button";
 import Stack from "@mui/material/Stack/Stack";
 import { montserrat } from "@/utils/fonts";
-import { MSDetail } from "../../../type";
+import { Message } from "../../../type";
 
 export function ModalHeaderSection(props: {
-  data: MSDetail;
+  data: Message;
   isInProcess?: boolean;
 }) {
   const { data } = props;
@@ -65,7 +64,8 @@ export function ModalHeaderSection(props: {
             </Grid>
             <Grid item xs={2}>
               <Typography fontSize={"12px"}>Autenticación</Typography>
-              <StyledModalItem noWrap>No</StyledModalItem>
+             {/* TODO */}
+              <StyledModalItem noWrap></StyledModalItem>
             </Grid>
           </Grid>
         </Box>

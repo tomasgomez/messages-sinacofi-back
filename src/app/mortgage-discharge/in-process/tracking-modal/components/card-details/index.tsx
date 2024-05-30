@@ -5,8 +5,13 @@ import { Card, Divider, Typography } from "@mui/material";
 import Box from "@mui/material/Box/Box";
 
 export const CardDetails = (props: { data: any }) => {
-  const { data } = props;
-  const { seller, buyer, debtor, region, institutionDestination } = data;
+  const {
+    seller = "",
+    buyer = "",
+    debtor = "",
+    region = "",
+    institutionDestination = "",
+  } = props?.data || {};
 
   return (
     <Card sx={{ minWidth: "318px" }}>

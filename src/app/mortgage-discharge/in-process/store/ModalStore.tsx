@@ -1,4 +1,4 @@
-import { handleGenericChangeFilter } from "@/utils/mortgage-discharge";
+import { handleGenericChangeFilter } from "@/utils/mortgage-discharge-utils";
 import React, { createContext, useCallback, useState } from "react";
 import { Message } from "@/app/component/inbox-table/type";
 

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography/Typography";
 import { CloseRounded } from "@mui/icons-material";
 import { CardContext } from "@/app/mortgage-discharge/in-process/store/ModalStore";
 import { useCallback, useContext, useState } from "react";
-import { handleGenericChangeFilter } from "@/utils/mortgage-discharge";
+import { handleGenericChangeFilter } from "@/utils/mortgage-discharge-utils";
 import { FilterDropdowns } from "./form-elements/date/filtersDropdowns";
 import { ObjectsAreEquals, combineArrays } from "@/utils/functions";
 import {
@@ -17,10 +17,11 @@ import {
   optionsNotoria,
   auxFiltersConstant,
 } from "./constants";
+import { Filter } from "@/types/mortgage-discharge";
 
 export const FilterSelector = (props: { onClose: Function }) => {
   const { handleChangeAddFilter, filters } = useContext(CardContext);
-  const [auxFilters, setAuxFilters] = useState<any[]>(
+  const [auxFilters, setAuxFilters] = useState<Filter[]>(
     // combines arrays, have priority in filter elements when the label is the same
     combineArrays(auxFiltersConstant, filters)
   );
@@ -65,21 +66,22 @@ export const FilterSelector = (props: { onClose: Function }) => {
         (elem.label === "institutionDestination" && elem.value === "all") ||
         (elem.label === "notaryRepertoire" && elem.value === "all") ||
         (elem.label === "region" && elem.value === "all")
-      ) {
+      )
         handleChangeAddFilter(elem.label, "");
-      } else {
-        handleChangeAddFilter(elem.label, elem.value);
-      }
+      else handleChangeAddFilter(elem.label, elem.value);
     });
     handleClose();
   };
 
   const getValue = useCallback(
     (labelKey: string) => {
-      return auxFilters.find((filter) => filter.label === labelKey)?.value;
+      return (
+        auxFilters.find((filter) => filter.label === labelKey)?.value || ""
+      );
     },
     [auxFilters]
   );
+
   return (
     <FilterSectorCard>
       <IconButton
@@ -92,13 +94,13 @@ export const FilterSelector = (props: { onClose: Function }) => {
         Filtros
       </Typography>
       <DatePickerInput
-        onChange={(newValue: any) => handleAuxFilter("startDate", newValue)}
+        onChange={(newValue: unknown) => handleAuxFilter("startDate", newValue)}
         keyLabel="startDate"
         label="Fecha Inicial"
         value={getValue("startDate")}
       />
       <DatePickerInput
-        onChange={(newValue: any) => handleAuxFilter("endDate", newValue)}
+        onChange={(newValue: unknown) => handleAuxFilter("endDate", newValue)}
         keyLabel="endDate"
         label="Fecha Final"
         value={getValue("endDate")}
@@ -136,7 +138,7 @@ export const FilterSelector = (props: { onClose: Function }) => {
         optionSelected={getValue("notaryRepertoire")}
       />
       <DatePickerInput
-        onChange={(newValue: any) =>
+        onChange={(newValue: unknown) =>
           handleAuxFilter("repertoireDate", newValue)
         }
         keyLabel="repertoireDate"
