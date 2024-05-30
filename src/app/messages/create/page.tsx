@@ -1,7 +1,7 @@
 "use client"
 import AddFileModal from "@/app/component/modal-add-file";
 import { useAppContext } from "@/app/context";
-import { createMessage, getMessageDetails, /* getMessageDetails, */ getMessageSchema, updateMessage } from "@/app/services/common";
+import { createMessage, getMessageDetails, getMessageSchema, signMessage } from "@/app/services/common";
 import Form from "@/components/Form";
 import { useModalManager } from "@/components/Modal";
 import { Container, Typography } from "@mui/material";
@@ -256,7 +256,7 @@ const CreateMessage = () => {
         onConfirm: (document: any) => {
           onClose?.();
           setLoading(true);
-          updateMessage(messageId, statusCodes[1], { ...payload, documents: document })
+          signMessage(messageId, statusCodes[1], { ...payload, documents: document })
             .then((response) => {
               console.log("Mensaje actualizados!");
               setModalState({

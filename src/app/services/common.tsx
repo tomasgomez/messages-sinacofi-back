@@ -79,6 +79,19 @@ export const createMessage = async (data: any, status: string) => {
     .then((response) => response.json());
 };
 
+export const signMessage = async (id: string, status: string, data: any = {}) => {
+  return fetch(
+    `/api/message/sign?id=${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data, id: id, status }),
+    }
+  ).then((res) => res.json());
+}
+
 export const updateMessage = async (id: string, status: string, data: any = {}) => {
   return fetch(
     `/api/message?id=${id}`,
