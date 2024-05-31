@@ -10,6 +10,8 @@ import { SendOutlined } from "@mui/icons-material";
 import { MyContexLayout } from "@/app/context";
 import { updateMessage } from "../api-calls";
 import { getMessage } from "@/app/services/common";
+import { useModalManager } from "@/components/Modal";
+
 // import { intitutionCodeToLabel } from "@/utils/intitutions";
 
 export default function PreparedScreen() {
@@ -18,9 +20,11 @@ export default function PreparedScreen() {
   const [selected, setSelected] = React.useState<number[]>([]);
 
   // Change after add users "selectedInstitution"
-  const { setModalState, selectedInstitution } = React.useContext(
+  const { selectedInstitution } = React.useContext(
     MyContexLayout
   ) as any;
+  const { ConfirmModal } = useModalManager();
+
 
   const fetchData = async () => {
     try {
@@ -70,8 +74,8 @@ export default function PreparedScreen() {
               aria-label="expand row"
               style={{ padding: 0 }}
               onClick={() => {
-                setModalState({
-                  type: "decision",
+                console.log("ConfirmModal");
+                ConfirmModal.open({
                   title: "¿Quieres enviar esta mensaje?",
                   body: (
                     <Typography
@@ -82,7 +86,6 @@ export default function PreparedScreen() {
                       TSN: {TSN}
                     </Typography>
                   ),
-                  isOpen: true,
                   onConfirm: async () => {
                     updateMessage(id);
                   },
@@ -95,7 +98,7 @@ export default function PreparedScreen() {
         );
       },
     }),
-    [setModalState, updateMessage]
+    [ConfirmModal, updateMessage]
   );
 
   const newColumns = useMemo(() => {

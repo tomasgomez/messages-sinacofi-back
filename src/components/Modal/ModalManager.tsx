@@ -1,51 +1,95 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useState, createContext, Suspense, useMemo } from "react";
+import { ModalList, ModalListImports } from "./ModalList";
 
-type initialModalStateType = {
-  open: boolean,
-  modalProps?: object | any,
-  onOpen?: Function,
-  onClose?: Function,
-  ModalComponent: any
+type ModalStateType = {
+  id: string;
+  props: object | undefined | null;
 };
 
-const initialModalState: initialModalStateType = {
-  open: false,
-  modalProps: {},
-  onOpen: () => {},
-  onClose: () => {},
-  ModalComponent: null
+type ModalType = {
+  open: Function; // change the isOpen param as true
+  close: Function; // change the isOpen param as false
 };
 
-export const ModalManagerContext = createContext(initialModalState);
+export const ModalManagerContext = createContext({
+  openModal: (id: string, props?: any) => {},
+  closeModal: (id: string) => {},
+  SuccessModal: {
+    open: (props: any) => {}
+  },
+  ConfirmModal: {
+    open: (props: any) => {}
+  },
+  ErrorModal: {
+    open: (props: any) => {}
+  }
+});
 
-export const useModalManager = ({ component, props }: { component: any, props?: object }) => {
-  const { onOpen: onModalOpen, onClose } = useContext(ModalManagerContext);
-
-  const onOpen = useCallback((newprops?: object) => {
-    return onModalOpen && onModalOpen(component, { ...props, ...newprops });
-  }, [component, props, onModalOpen]);
+export const useModalManager = () => {
+  const { SuccessModal, ConfirmModal, ErrorModal } = useContext(ModalManagerContext);
 
   return {
-    onOpen,
-    onClose,
+    SuccessModal, ConfirmModal, ErrorModal
   };
-};
+}
+
+export const useModal = ({ id, props }: { id: string | any; props?: any }) => {
+  const { openModal, closeModal } = useContext(ModalManagerContext);
+
+  const close = useCallback(() => closeModal(id), [closeModal]);
+
+  const open = useCallback((nextProps: any) => {
+    openModal(id, { ...props, ...nextProps });
+  }, [openModal, close]);
+
+  return {
+    open,
+    close,
+  }
+}
 
 const ModalManagerProvider = ({ children }: { children: any}) => {
-  const [modalState, setModalState] = useState<initialModalStateType>(initialModalState);
+  const [modalManagerState, setModalManagerState] = useState/* <initialModalStateType> */({
+    map: {},
+  });
 
-  const onOpen = useCallback((ModalComponent: any, modalProps?: object) => {
-    setModalState((prev) => ({ ...prev, ModalComponent, open: true, modalProps }));
-  }, [setModalState]);
+  const closeModal = useCallback((id: string) => {
+    setModalManagerState((prev: any) => ({...prev, map: { ...prev.map, [id]: { open: false } }}));
+  }, [setModalManagerState]);
 
-  const onClose = useCallback(() => {
-    setModalState((prev) => ({ ...prev, ModalComponent: null, open: false }));
-  }, [setModalState]);
+  const openModal = useCallback((id: string, props?: any) => {
+    setModalManagerState((prev: any) => ({...prev, map: { ...prev.map, [id]: { ...props, open: true, onClose: () => closeModal(id) } } }));
+  }, [setModalManagerState, closeModal]);
+
+  const ConfirmModal = useMemo(() => ({
+    open: (props: any) => openModal(ModalList.ConfirmModal, props),
+    close: () => closeModal(ModalList.ConfirmModal)
+  }), [openModal, closeModal]);
+
+  const SuccessModal = useMemo(() => ({
+    open: (props: any) => openModal(ModalList.SuccessModal, props),
+    close: () => closeModal(ModalList.SuccessModal)
+  }), [openModal, closeModal]);
+
+  const ErrorModal = useMemo(() => ({
+    open: (props: any) => openModal(ModalList.ErrorModal, props),
+    close: () => closeModal(ModalList.ErrorModal)
+  }), [openModal, closeModal]);
 
   return (
-    <ModalManagerContext.Provider value={{ ...modalState, onOpen, onClose }}>
+    <ModalManagerContext.Provider value={{ openModal, closeModal, SuccessModal, ConfirmModal, ErrorModal }}>
       {children}
-      {modalState.open && <modalState.ModalComponent open={modalState.open} onClose={onClose} {...modalState.modalProps} />}
+      {Object.entries(modalManagerState.map)?.map((modal: any) => {
+        const ModalComponent = ModalListImports[modal[0]];
+        return (
+          modal[1].open && (
+            <Suspense>
+             <ModalComponent {...modal[1]} />
+            </Suspense>
+          )
+        );
+      })
+      }
     </ModalManagerContext.Provider>
   );
 };
