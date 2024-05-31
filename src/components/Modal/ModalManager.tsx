@@ -11,18 +11,25 @@ type ModalType = {
   close: Function; // change the isOpen param as false
 };
 
-export const ModalManagerContext = createContext({
+
+const modalInitialValue = {
+  open: () => {},
+  close: () => {}
+};
+type ModalManagerContextType = {
+  openModal: Function,
+  closeModal: Function, 
+  SuccessModal: ModalType,
+  ConfirmModal: ModalType,
+  ErrorModal: ModalType,
+}
+
+export const ModalManagerContext = createContext<ModalManagerContextType>({
   openModal: (id: string, props?: any) => {},
   closeModal: (id: string) => {},
-  SuccessModal: {
-    open: (props: any) => {}
-  },
-  ConfirmModal: {
-    open: (props: any) => {}
-  },
-  ErrorModal: {
-    open: (props: any) => {}
-  }
+  SuccessModal: modalInitialValue,
+  ConfirmModal: modalInitialValue,
+  ErrorModal: modalInitialValue,
 });
 
 export const useModalManager = () => {
@@ -58,7 +65,20 @@ const ModalManagerProvider = ({ children }: { children: any}) => {
   }, [setModalManagerState]);
 
   const openModal = useCallback((id: string, props?: any) => {
-    setModalManagerState((prev: any) => ({...prev, map: { ...prev.map, [id]: { ...props, open: true, onClose: () => closeModal(id) } } }));
+    setModalManagerState((prev: any) => ({
+      ...prev,
+      map: {
+        ...prev.map,
+        [id]: {
+          ...props,
+          open: true,
+          onClose: () => {
+            props.onClose && props.onClose();
+            closeModal(id)
+          }
+        }
+      } 
+    }));
   }, [setModalManagerState, closeModal]);
 
   const ConfirmModal = useMemo(() => ({
