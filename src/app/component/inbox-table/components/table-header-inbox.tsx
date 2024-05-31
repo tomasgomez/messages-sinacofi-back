@@ -9,15 +9,16 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 
 export function TableHeader(props: EnhancedTableProps) {
   const {
-    onSelectAllClick,
-    order,
+    onSelectAllClick = () => null,
+    order = "asc",
     orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-    withCheckboxAll,
+    numSelected = 0,
+    rowCount = 0,
+    onRequestSort = () => null,
+    withCheckboxAll = false,
     columns = [],
-    isExpansible,
+    isExpansible = false,
+    withRadioButton = false,
   } = props;
 
   const createSortHandler =
@@ -41,6 +42,7 @@ export function TableHeader(props: EnhancedTableProps) {
             />
           </TableCell>
         )}
+        {withRadioButton && <TableCell />}
         {columns.map((columnsData) =>
           columnsData.sortable ? (
             <StyledTableCellHeader

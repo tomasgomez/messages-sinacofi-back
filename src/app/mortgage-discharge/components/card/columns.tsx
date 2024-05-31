@@ -16,16 +16,36 @@ import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { base64ToBlob, downloadFile } from "../../utils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { SessionProviderContext } from "@/context/SessionProvider";
+import { MessageExportContext } from "@/app/component/MessageExportProvider";
 
 const AccionesColumn = ({ row }: { row: any }) => {
-  const { actions, messageCode, status } = row;
+  const {
+    actions = [],
+    messageCode = "",
+    status = "",
+    destination = "",
+    id = "",
+    cukCode = "",
+  } = row || {};
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
   const { userInfo } = React.useContext(SessionProviderContext) as any;
+  const { selectedRadioButtonMessages } =
+    React.useContext(MessageExportContext);
+
   const router = useRouter();
   const handlerOpenModal = (row: any) => {
     setSelectedMessage(row);
     setModalIsOpen(true);
   };
+
+  const checkDisabledSent = () => {
+    if (!userInfo?.permissions?.sendMessage) return true;
+    if (["678", "679"].includes(messageCode)) {
+      return selectedRadioButtonMessages !== id;
+    }
+    return false;
+  };
+
   return (
     <Box
       sx={{
@@ -36,18 +56,19 @@ const AccionesColumn = ({ row }: { row: any }) => {
     >
       {actions.includes("sing") && (
         <IconButton
-          key={`drive-icon-${row.id}`}
-          style={{ padding: 0, color: userInfo.permissions.signMortgageDischarge ? "#00B2E2" : '#CCC', margin: 2 }}
-          disabled={!userInfo.permissions.signMortgageDischarge}
-          onClick={
-            () =>
-              router.push(
-                `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}`
-              )
-            // case sent to the messagecode 670
-            // router.push(
-            //     `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&cukCode=${row.cukCode}`
-            //   )
+          key={`drive-icon-${id}`}
+          style={{
+            padding: 0,
+            color: userInfo?.permissions?.signMortgageDischarge
+              ? "#00B2E2"
+              : "#CCC",
+            margin: 2,
+          }}
+          disabled={!userInfo?.permissions?.signMortgageDischarge}
+          onClick={() =>
+            router.push(
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
+            )
           }
         >
           <DriveFileRenameOutlineIcon />
@@ -55,12 +76,16 @@ const AccionesColumn = ({ row }: { row: any }) => {
       )}
       {actions.includes("sent") && (
         <IconButton
-          key={`sent-icon-${row.id}`}
-          style={{ padding: 0, color: userInfo.permissions.sendMessage ? "#00B2E2" : '#CCC', margin: 2 }}
-          disabled={!userInfo.permissions.sendMessage}
+          key={`sent-icon-${id}`}
+          style={{
+            padding: 0,
+            color: checkDisabledSent() ? "#CCC" : "#00B2E2",
+            margin: 2,
+          }}
+          disabled={checkDisabledSent()}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}`
             )
           }
         >
@@ -69,7 +94,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       )}
       {actions.includes("details") && (
         <IconButton
-          key={`detail-icon-${row.id}`}
+          key={`detail-icon-${id}`}
           style={{ padding: 0, color: "#565656", margin: 2 }}
           onClick={() => handlerOpenModal(row)}
           disabled={!userInfo.permissions.sendMessage}
@@ -79,7 +104,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       )}
       {messageCode === "670" && status === "01" && (
         <IconButton
-          key={`edit-icon-${row.id}`}
+          key={`edit-icon-${id}`}
           style={{
             padding: 0,
             color: actions.includes("edit") ? "#00B2E2" : "#565656",
@@ -87,7 +112,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
             )
           }
         >
@@ -114,16 +139,17 @@ const documents: Columns = {
   align: Alignment.LEFT,
   sortable: false,
   render: ({ row }: { row: any }) => {
-    if (row?.documents?.length > 0) {
+    const { documents = [] } = row || {};
+    if (documents?.length > 0) {
       const handleClick = () => {
-        row?.documents.forEach((file: any) => {
+        documents.forEach((file: any) => {
           const blob = base64ToBlob(file.content);
           downloadFile(blob, file.documentName);
         });
       };
       return (
         <Link href="#" onClick={handleClick}>
-          {row?.documents?.length}
+          {documents?.length}
         </Link>
       );
     }

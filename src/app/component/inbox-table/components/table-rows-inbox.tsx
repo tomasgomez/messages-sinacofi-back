@@ -3,20 +3,45 @@ import * as React from "react";
 import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import { StyledTabCell } from "../style";
-import { TableProps } from "../type";
+import { Message, RowOptions, TableProps } from "../type";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import ExpandableTable from "./expandable-table/expandable-table-inbox";
+import Radio from "@mui/material/Radio";
+import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
+
+const isHighlightRow = (
+  highlightLastRow: boolean,
+  isLastRow: boolean,
+  isRadioButtonSelected: boolean | null,
+  withRadioButton: boolean,
+  row: Message
+) => {
+  if (withRadioButton && (row?.status === "01" || !row?.status)) {
+    return !!isRadioButtonSelected;
+  }
+  if (!withRadioButton) return row?.status === "01" || !row?.status;
+  return highlightLastRow && isLastRow;
+};
+
+const isHighlightRejected = (isLastRow: boolean, row: Message) =>
+  isLastRow && row?.status === "06" && row?.messageCode === "672";
+
+const withBorderLeft = (
+  highlightLastRow: boolean,
+  isLastRow: boolean,
+  isFirstColumn: boolean
+) => highlightLastRow && isLastRow && isFirstColumn;
 
 type CustomCellType = {
   value: any;
   render: any;
   row: any;
   rowOptions?: any;
-  highlightLastRow?: boolean;
-  isLastRow?: boolean;
-  isFirstColumn?: boolean;
+  highlightRow?: boolean;
+  highlightRowRejected?: boolean;
+  withBorderLeft?: boolean;
 };
 
 const CustomCell = ({
@@ -24,20 +49,16 @@ const CustomCell = ({
   render: Component,
   row,
   rowOptions,
-  highlightLastRow,
-  isLastRow,
-  isFirstColumn,
+  highlightRow,
+  highlightRowRejected,
+  withBorderLeft,
 }: CustomCellType) => {
   return (
     <StyledTabCell
       component="th"
-      highlightRow={
-        (highlightLastRow && isLastRow) || row.status === "01" || !row.status
-      }
-      highlightRowRejected={
-        isLastRow && row.status === "06" && row.messageCode === "672"
-      }
-      withBorderLeft={highlightLastRow && isLastRow && isFirstColumn}
+      highlightRow={highlightRow}
+      highlightRowRejected={highlightRowRejected}
+      withBorderLeft={withBorderLeft}
       scope="row"
       style={rowOptions?.style}
       align={rowOptions?.align}
@@ -49,17 +70,21 @@ const CustomCell = ({
 
 export function TableContentRows(props: TableProps) {
   const {
-    handleClick,
-    row,
-    isItemSelected,
-    labelId,
-    withCheckbox,
-    columns,
-    highlightLastRow,
-    isLastRow,
-    isExpansible,
-    rowOptions = {},
-  } = props;
+    handleClick = () => null,
+    handleRadioClick = () => null,
+    row = {} as Message,
+    isItemSelected = false,
+    labelId = "",
+    withCheckbox = false,
+    withRadioButton = false,
+    showColumnToRadioButton = false,
+    columns = [],
+    highlightLastRow = false,
+    isLastRow = false,
+    isExpansible = false,
+    rowOptions = {} as RowOptions,
+    selectedRadioButton = null,
+  } = props || {};
 
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -76,7 +101,7 @@ export function TableContentRows(props: TableProps) {
           <StyledTabCell padding="checkbox" {...rowOptions["checkbox"]}>
             <Checkbox
               onClick={(event: React.MouseEvent<HTMLElement>) =>
-                handleClick(event, row.id)
+                handleClick(event, row?.id)
               }
               color="primary"
               checked={isItemSelected}
@@ -86,25 +111,51 @@ export function TableContentRows(props: TableProps) {
             />
           </StyledTabCell>
         )}
+
+        {/* /////////////////////// RadioButton /////////////////////// */}
+        {showColumnToRadioButton && (
+          <StyledTabCell
+            padding="checkbox"
+            style={{
+              background: selectedRadioButton === row?.id ? "#EFFCFF" : "",
+            }}
+          >
+            {withRadioButton && (
+              <Radio
+                checked={selectedRadioButton === row?.id}
+                onClick={(event: React.MouseEvent<HTMLElement>) =>
+                  handleRadioClick(event, row?.id)
+                }
+                inputProps={{ "aria-labelledby": labelId }}
+              />
+            )}
+          </StyledTabCell>
+        )}
         {/* ///////////////////////  Rows /////////////////////// */}
         {columns.map((column: any, idx: number) => (
           <CustomCell
             key={`row-${column?.id}-${idx}`}
-            value={row[column?.id] || "-"}
+            value={row[column?.id as keyof Message] || "-"}
             row={row}
-            render={column.render}
-            isFirstColumn={!idx}
+            render={column?.render}
             rowOptions={rowOptions[column?.id]}
-            highlightLastRow={highlightLastRow}
-            isLastRow={isLastRow}
+            highlightRow={isHighlightRow(
+              highlightLastRow,
+              isLastRow,
+              selectedRadioButton === row?.id,
+              withRadioButton,
+              row
+            )}
+            highlightRowRejected={isHighlightRejected(isLastRow, row)}
+            withBorderLeft={withBorderLeft(highlightLastRow, isLastRow, !idx)}
           />
         ))}
         {/* ////////////////// Expandable table Icon /////////////////////// */}
         {isExpansible && (
           <StyledTabCell>
-            {row.stateProgress && (
+            {isMortgageDischargeMessage(row?.messageCode) && (
               <IconButton
-                key={`expand-icon-${row.id}`}
+                key={`expand-icon-${row?.id}`}
                 aria-label="expand row"
                 onClick={() => setIsOpen(!isOpen)}
                 style={{ padding: 0 }}

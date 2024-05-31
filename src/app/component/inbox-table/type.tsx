@@ -99,6 +99,7 @@ export interface Columns {
   sortable?: boolean;
   withCheckboxAll?: boolean;
   style?: any;
+  withRadiuButton?: boolean;
 }
 
 export interface RowOptions {
@@ -129,20 +130,28 @@ export interface EnhancedTableProps {
   columns?: Columns[];
   noExtraColumn?: boolean;
   isExpansible?: boolean;
+  withRadioButton?: boolean;
 }
 
 export interface TableProps {
   withCheckbox?: boolean;
+  withRadioButton?: boolean;
+  showColumnToRadioButton?: boolean;
   labelId: string;
-  row: Message | any;
+  row: Message;
   isItemSelected: boolean;
-  handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
+  handleClick: (event: React.MouseEvent<unknown>, id: number | string) => void;
+  handleRadioClick: (
+    event: React.MouseEvent<unknown>,
+    id: number | string
+  ) => void;
   columns: Columns[];
   highlightLastRow?: boolean;
   highlightWithBorderLeft?: boolean;
   isLastRow?: boolean;
   isExpansible?: boolean;
   rowOptions?: RowOptions;
+  selectedRadioButton?: string | number | null;
 }
 
 export interface MSParameter {

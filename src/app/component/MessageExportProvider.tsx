@@ -8,6 +8,8 @@ import { getMessageDetails } from "../services/common";
 type initialinitialMessageExportType = {
   selectedMessages: [];
   setSelectedMessages: Function;
+  selectedRadioButtonMessages: number | string | null;
+  setSelectedRadioButtonMessages: Function;
   printPDF: boolean;
   setPrintPDF: Function;
   downloadPDF: boolean;
@@ -21,6 +23,8 @@ type initialinitialMessageExportType = {
 const initialMessageExportState: initialinitialMessageExportType = {
   selectedMessages: [],
   setSelectedMessages: () => [],
+  selectedRadioButtonMessages: null,
+  setSelectedRadioButtonMessages: () => null,
   printPDF: true,
   setPrintPDF: () => {},
   downloadPDF: false,
@@ -35,6 +39,8 @@ export const MessageExportContext = createContext(initialMessageExportState);
 
 export const MessageExportProvider = ({ children }: { children: any }) => {
   const [selectedMessages, setSelectedMessages] = useState<[]>([]);
+  const [selectedRadioButtonMessages, setSelectedRadioButtonMessages] =
+    useState<string | number | null>(null);
   const [printPDF, setPrintPDF] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [details, setDetails] = useState<Message[] | []>([]);
@@ -89,6 +95,8 @@ export const MessageExportProvider = ({ children }: { children: any }) => {
 
   const contextValue = React.useMemo(
     () => ({
+      selectedRadioButtonMessages,
+      setSelectedRadioButtonMessages,
       selectedMessages,
       setSelectedMessages,
       printPDF,
@@ -101,6 +109,8 @@ export const MessageExportProvider = ({ children }: { children: any }) => {
       setDetails,
     }),
     [
+      selectedRadioButtonMessages,
+      setSelectedRadioButtonMessages,
       selectedMessages,
       setSelectedMessages,
       printPDF,

@@ -25,6 +25,7 @@ import {
 import { Message } from "@/app/component/inbox-table/type";
 import { reverseArray } from "@/utils/functions";
 import { MyContexLayout } from "@/app/context";
+import { withRadioButton } from "@/utils/mortgage-discharge-utils";
 
 const CarDischarge = ({
   data,
@@ -146,6 +147,7 @@ const CarDischarge = ({
           columns={columnsCard}
           withCheckbox={false}
           footerComponent={getFooterComponent()}
+          withRadioButton={withRadioButton}
         />
       </Collapse>
     </StyledContentCard>
