@@ -3,14 +3,14 @@ import { Box, Button, Typography } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { montserrat } from "@/utils/fonts";
 
-const DecisionModal = ({
-  isOpen,
+const ConfirmModal = ({
+  open,
   title,
   onClose,
   body,
   onConfirm,
 }: {
-  isOpen: boolean;
+  open: boolean;
   title: string;
   body: any;
   onClose: any;
@@ -18,7 +18,7 @@ const DecisionModal = ({
 }) => {
   return (
     <Box>
-      <Modal maxWidth={523} open={isOpen} onClose={onClose} withoutClose>
+      <Modal maxWidth={523} open={open} onClose={onClose} withoutClose>
         <Box
           sx={{
             display: "flex",
@@ -92,4 +92,4 @@ const DecisionModal = ({
   );
 };
 
-export default DecisionModal;
+export default ConfirmModal;

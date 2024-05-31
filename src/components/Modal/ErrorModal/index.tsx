@@ -62,3 +62,5 @@ export function ErrorModal(props: ErrorModalTypes) {
     </Modal>
   );
 }
+
+export default ErrorModal;

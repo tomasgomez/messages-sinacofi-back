@@ -42,6 +42,9 @@ export const getActions = (
   statusMessage: string,
   statusCuk: string
 ) => {
+  if (messageCode === "676") {
+    return statusMessage === "06" ? ["print"] : ["details"];
+  }
   if (statusMessage === "01") {
     if (messageCode === "670") {
       if (getOnlyTheValue(statusCuk) === "023") return ["details", "edit"];
@@ -64,6 +67,10 @@ export const getDetailsObjetToMSCode = (messageCode?: string) => {
   if (messageCode === "673") return paramsTo673;
   if (messageCode === "674") return paramsTo674;
   if (messageCode === "675") return paramsTo675;
+  if (messageCode === "676") return [];
+  if (messageCode === "677") return [];
+  if (messageCode === "678") return [];
+  if (messageCode === "679") return [];
   return [];
 };
 
@@ -132,3 +139,20 @@ export const getIsPendingStatus = (status: string | undefined) => {
   }
   return false;
 };
+
+export const isMortgageDischargeMessage = (messageCode: string) =>
+  [
+    "670",
+    "671",
+    "672",
+    "673",
+    "674",
+    "675",
+    "676",
+    "677",
+    "678",
+    "679",
+  ].includes(messageCode);
+
+export const withRadioButton = (row: Message) =>
+  ["678", "679"].includes(row?.messageCode) && row.status === "";

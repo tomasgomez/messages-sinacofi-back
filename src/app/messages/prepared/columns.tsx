@@ -12,7 +12,7 @@ export const columnsPrepared: Columns[] = [
     label: "TSN",
     sortable: true,
     render: ({ row }: { row: Message }) => {
-      return <ModalLink isInProcess={!!row.status} data={row} />;
+      return <ModalLink isInProcess={!!row?.status} data={row} />;
     },
   },
   {

@@ -9,13 +9,13 @@ import {
 
 const InfoColumn = ({ data }: { data: any }) => {
   const {
-    channel,
-    operationStatus,
-    buyer,
-    institutionDestination,
-    buyerDni,
-    cukStatus,
-    institutionCode,
+    channel = "",
+    operationStatus = "",
+    buyer = "",
+    institutionDestination = "",
+    buyerDni = "",
+    cukStatus = "",
+    institutionCode = "",
   }: {
     channel: string;
     operationStatus: string;
@@ -24,7 +24,7 @@ const InfoColumn = ({ data }: { data: any }) => {
     buyerDni: string;
     cukStatus: string;
     institutionCode: string;
-  } = data;
+  } = data || {};
 
   const getInstitutionText = (cukStatus: string) => {
     switch (cukStatus) {

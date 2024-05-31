@@ -4,19 +4,19 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { montserrat } from "@/utils/fonts";
 
 const SuccessModal = ({
-  isOpen,
+  open,
   title,
   onClose,
   body,
 }: {
-  isOpen: boolean;
+  open: boolean;
   title: string;
   body: React.ReactNode;
   onClose: any;
 }) => {
   return (
     <Box>
-      <Modal maxWidth={523} open={isOpen} onClose={onClose} withoutClose>
+      <Modal maxWidth={523} open={open} onClose={onClose} withoutClose>
         <Box
           sx={{
             display: "flex",
