@@ -32,6 +32,14 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
       status = statusFilered
             ?.sort((a, b) => parseFloat(b.id) - parseFloat(a.id)) // Descending order
             ?. [0]?.id ?? ''; // Get the first element's id or return an empty string
+
+      let documents = message.documents?.map(document => {
+          return {
+              id: document.id,
+              url: document.url,
+              documentName: document.documentName,
+          }
+      });
   
       return {
         ...message,
@@ -51,6 +59,7 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
         actions: message?.actions ?? '',
         cukCode: message?.cukCode ?? '',
         status,
+        documents,
       }});
   
       return preparedData

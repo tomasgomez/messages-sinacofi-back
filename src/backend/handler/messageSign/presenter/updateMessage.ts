@@ -28,10 +28,11 @@ export function validateUpdateMessage(data: any): Message | Error {
       let documentToStore: Document = {}
 
       if (document) {
-        documentToStore.content = document
+        documentToStore.documentName = document.documentName;
+        // documentToStore.content = document.content;
       }
 
-      documents.push(document);
+      documents.push(documentToStore);
     }
 
     message.documents = documents;

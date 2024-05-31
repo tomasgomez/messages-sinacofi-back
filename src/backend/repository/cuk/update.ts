@@ -46,14 +46,9 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
 
                 // Add the new history object to the history array
                 const updatedHistory: History = {
-                    cukCode: fetchedCuk.cukCode ?? '',
                     status: cuk.status ?? '',
                     date: new Date().toISOString()
                 };
-
-                await prisma.history.create({
-                    data: updatedHistory,
-                });
 
                 // Update the object
                 return await prisma.cUK.update({
@@ -62,6 +57,9 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
                     },
                     data: {
                         status: cuk.status,
+                        history: {
+                            create: updatedHistory
+                        }
                     },
                     include: {
                         history: true,

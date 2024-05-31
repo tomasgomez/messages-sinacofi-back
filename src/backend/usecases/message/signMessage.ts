@@ -14,7 +14,9 @@ import { CUKRepository } from "@/backend/repository/cukRepository";
 // Create message function
 export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message): Promise < Message | Error > {
     try {
-        let status = '';      
+        let status = '';  
+        let updatedCuk: CUK | Error;
+
 
         if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
             
@@ -49,11 +51,19 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
             return messageResponse;
         }
 
-        if (message.messageCode && isForeclosureMessageCode(message.messageCode)) {
+        if (messageResponse.messageCode && isForeclosureMessageCode(messageResponse.messageCode)) {
             let cuk = new CUK();
-            cuk.cukCode = message.cukCode;
+            cuk.cukCode = messageResponse.cukCode;
 
-            await updateForclosure(cukRepository, repository, cuk, message);
+            if (message.getStatus) // TODO: aca chequear segun el estado del mensaje y el codigo del mensaje en que estado deberia quedar el cuk
+            cuk.status = message.getStatus() ?? '';
+
+            updatedCuk = await updateForclosure(cukRepository, repository, cuk, message);
+
+            if (updatedCuk instanceof Error) {
+                console.error('Error updating CUK:', updatedCuk);
+                return updatedCuk;
+            }
         }
 
         return messageResponse;
