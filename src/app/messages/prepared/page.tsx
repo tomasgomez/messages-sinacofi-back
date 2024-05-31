@@ -56,6 +56,7 @@ export default function PreparedScreen() {
       id: "actions",
       label: "Acciones",
       render: ({ row }: { row: any }) => {
+        const { id = "", TSN = "" } = row || {};
         return (
           <Box
             sx={{
@@ -65,7 +66,7 @@ export default function PreparedScreen() {
             }}
           >
             <IconButton
-              key={`expand-icon-${row.id}`}
+              key={`expand-icon-${id}`}
               aria-label="expand row"
               style={{ padding: 0 }}
               onClick={() => {
@@ -78,12 +79,12 @@ export default function PreparedScreen() {
                       fontWeight={400}
                       style={{ paddingBottom: 16 }}
                     >
-                      TSN: {row?.TSN}
+                      TSN: {TSN}
                     </Typography>
                   ),
                   isOpen: true,
                   onConfirm: async () => {
-                    updateMessage(row.id);
+                    updateMessage(id);
                   },
                 });
               }}

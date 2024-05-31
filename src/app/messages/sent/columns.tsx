@@ -11,6 +11,12 @@ import { CopyAll, SendOutlined } from "@mui/icons-material";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const router = useRouter();
+  const {
+    id = "",
+    destination = "",
+    messageCode = "",
+    status = "",
+  } = row || {};
 
   return (
     <Box
@@ -21,20 +27,20 @@ const AccionesColumn = ({ row }: { row: any }) => {
       }}
     >
       <IconButton
-        key={`expand-icon-${row.id}`}
+        key={`expand-icon-${id}`}
         aria-label="expand row"
         style={{ padding: 0 }}
         onClick={() =>
           router.push(
-            `/messages/create?institutionId=${row.destination}&messageCode=${row.messageCode}&cloneId=${row.id}`
+            `/messages/create?institutionId=${destination}&messageCode=${messageCode}&cloneId=${id}`
           )
         }
       >
         <CopyAll />
       </IconButton>
-      {row.status !== "05" && (
+      {status !== "05" && (
         <IconButton
-          key={`expand-icon-${row.id}`}
+          key={`expand-icon-${id}`}
           aria-label="expand row"
           style={{ padding: 0 }}
         >
@@ -62,7 +68,8 @@ export const columnsSent: Columns[] = [
     align: Alignment.LEFT,
     sortable: true,
     render: ({ row }: { row: Message }) => {
-      return <ModalLink isInProcess={!!row.status} data={row} />;
+      const { status = "" } = row || {};
+      return <ModalLink isInProcess={!!status} data={row} />;
     },
   },
   {

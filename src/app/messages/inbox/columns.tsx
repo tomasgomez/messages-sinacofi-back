@@ -10,16 +10,20 @@ import {
   RowOptions,
   Message,
 } from "@/app/component/inbox-table/type";
+import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
 
 const descriptor: Columns = {
   id: "description",
   label: "Descripción",
   align: Alignment.LEFT,
   render: ({ row }: { row: any }) => {
+    const { description = "", messageCode = "" } = row || {};
     return (
       <StyledMessageContiner>
-        <StyledMessage>{row.description}</StyledMessage>
-        {row.stateProgress && <StyledChip label="En Proceso" />}
+        <StyledMessage>{description}</StyledMessage>
+        {isMortgageDischargeMessage(messageCode) && (
+          <StyledChip label="En Proceso" />
+        )}
       </StyledMessageContiner>
     );
   },
@@ -30,7 +34,7 @@ const ONS_COLUMN: Columns = {
   label: "OSN",
   align: Alignment.LEFT,
   render: ({ row }: { row: Message }) => {
-    return <ModalLink isInProcess={!!row.status} data={row} />;
+    return <ModalLink isInProcess={!!row?.status} data={row} />;
   },
 };
 
