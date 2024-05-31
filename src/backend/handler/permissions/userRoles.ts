@@ -14,7 +14,7 @@ export interface User {
 
 export const userRoles: Record<string, User> = {
     '18782721-3': { 
-        role: '02',
+        role: '16',
         name: "J. BUSTOS", 
         institutionCode: "0027", 
         area: "",

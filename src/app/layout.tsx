@@ -6,7 +6,7 @@ import { ThemeProvider, Box } from "@mui/material";
 import { theme } from "@/components/Theme";
 import { ErrorModal } from "@/components/Modal/ErrorModal";
 import SuccessModal from "@/components/Modal/SuccessModal";
-import DecisionModal from "@/components/Modal/DecisionModal";
+import ConfirmModal from "@/components/Modal/ConfirmModal";
 import { MyContexLayout } from "./context";
 import { useState, Suspense, useEffect, useContext } from "react";
 import ModalManagerProvider from "@/components/Modal/ModalManager";
@@ -32,6 +32,7 @@ export default function RootLayout({
 }>) {
   // Change after add users "selectedInstitution"
   const [selectedInstitution, setSelectedInsitution] = useState();
+  const [currentInstitution, setCurrentInstitution] = useState();
   const [modalState, setModalState] = useState<{
     type: "success" | "error" | "decision" | "none";
     title: string;
@@ -61,6 +62,8 @@ export default function RootLayout({
                     setModalState,
                     selectedInstitution,
                     setSelectedInsitution,
+                    currentInstitution,
+                    setCurrentInstitution
                   }}
                 >
                   <AppBar />
@@ -68,50 +71,6 @@ export default function RootLayout({
                     <SideBar />
                     <Suspense>{children}</Suspense>
                   </Box>
-                  {/* ///////////////////////Modal Error///////////////////////// */}
-                  <ErrorModal
-                    title={modalState?.title}
-                    body={modalState?.body}
-                    withoutClose
-                    onClose={() => {
-                      modalState?.onClose && modalState.onClose();
-                      setModalState(clearObjet);
-                    }}
-                    onRetry={() => {
-                      modalState?.onRetry && modalState.onRetry();
-                      setModalState(clearObjet);
-                    }}
-                    open={modalState?.isOpen && modalState.type === "error"}
-                  />
-                  {/* /////////////////////////////////////////////////////////// */}
-
-                  {/* ///////////////////////Modal Success///////////////////////// */}
-                  <SuccessModal
-                    isOpen={modalState?.isOpen && modalState.type === "success"}
-                    onClose={() => {
-                      modalState?.onConfirm && modalState.onConfirm();
-                      setModalState(clearObjet);
-                    }}
-                    title={modalState?.title}
-                    body={modalState?.body}
-                  />
-                  {/* /////////////////////////////////////////////////////////// */}
-
-                  {/* ///////////////////////Modal Decision///////////////////////// */}
-                  <DecisionModal
-                    isOpen={modalState?.isOpen && modalState.type === "decision"}
-                    onClose={() => {
-                      modalState?.onClose && modalState.onClose();
-                      setModalState(clearObjet);
-                    }}
-                    onConfirm={async () => {
-                      modalState?.onConfirm && modalState.onConfirm();
-                      setModalState(clearObjet);
-                    }}
-                    title={modalState?.title}
-                    body={modalState?.body}
-                  />
-                  {/* /////////////////////////////////////////////////////////// */}
                 </MyContexLayout.Provider>
               </ThemeProvider>
             </MessageExportProvider>
