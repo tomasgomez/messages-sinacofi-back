@@ -17,6 +17,7 @@ import { base64ToBlob, downloadFile } from "../../utils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { SessionProviderContext } from "@/context/SessionProvider";
 import { MessageExportContext } from "@/app/component/MessageExportProvider";
+import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const {
@@ -102,6 +103,17 @@ const AccionesColumn = ({ row }: { row: any }) => {
           <InfoOutlinedIcon />
         </IconButton>
       )}
+      {actions.includes("print") && (
+        <IconButton
+          key={`print-icon-${id}`}
+          style={{ padding: 0, color: "#565656", margin: 2 }}
+          // TODO: Implement print function
+          onClick={() => null}
+        >
+          <LocalPrintshopOutlinedIcon />
+        </IconButton>
+      )}
+
       {messageCode === "670" && status === "01" && (
         <IconButton
           key={`edit-icon-${id}`}

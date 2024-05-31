@@ -42,6 +42,9 @@ export const getActions = (
   statusMessage: string,
   statusCuk: string
 ) => {
+  if (messageCode === "676") {
+    return statusMessage === "06" ? ["print"] : ["details"];
+  }
   if (statusMessage === "01") {
     if (messageCode === "670") {
       if (getOnlyTheValue(statusCuk) === "023") return ["details", "edit"];
