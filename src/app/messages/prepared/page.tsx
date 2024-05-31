@@ -12,8 +12,6 @@ import { updateMessage } from "../api-calls";
 import { getMessage } from "@/app/services/common";
 import { useModalManager } from "@/components/Modal";
 
-// import { intitutionCodeToLabel } from "@/utils/intitutions";
-
 export default function PreparedScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<SentData[]>([]);
@@ -74,7 +72,6 @@ export default function PreparedScreen() {
               aria-label="expand row"
               style={{ padding: 0 }}
               onClick={() => {
-                console.log("ConfirmModal");
                 ConfirmModal.open({
                   title: "¿Quieres enviar esta mensaje?",
                   body: (
