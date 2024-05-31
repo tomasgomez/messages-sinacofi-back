@@ -9,7 +9,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import IconButton from "@mui/material/IconButton";
 import ExpandableTable from "./expandable-table/expandable-table-inbox";
 import Radio from "@mui/material/Radio";
-import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
+// import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
 
 const isHighlightRow = (
   highlightLastRow: boolean,
@@ -153,7 +153,8 @@ export function TableContentRows(props: TableProps) {
         {/* ////////////////// Expandable table Icon /////////////////////// */}
         {isExpansible && (
           <StyledTabCell>
-            {isMortgageDischargeMessage(row?.messageCode) && (
+            {/* {isMortgageDischargeMessage(row?.messageCode) && ( */}
+            {false && (
               <IconButton
                 key={`expand-icon-${row?.id}`}
                 aria-label="expand row"

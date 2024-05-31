@@ -30,6 +30,8 @@ const AccionesColumn = ({ row }: { row: any }) => {
   } = row || {};
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
   const { userInfo } = React.useContext(SessionProviderContext) as any;
+  const { setPrintPDF, setSelectedMessages } =
+    React.useContext(MessageExportContext);
   const { selectedRadioButtonMessages } =
     React.useContext(MessageExportContext);
 
@@ -45,6 +47,11 @@ const AccionesColumn = ({ row }: { row: any }) => {
       return selectedRadioButtonMessages !== id;
     }
     return false;
+  };
+
+  const handleActionPrint = async (id: string) => {
+    setSelectedMessages([id]);
+    setPrintPDF(true);
   };
 
   return (
@@ -107,8 +114,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
         <IconButton
           key={`print-icon-${id}`}
           style={{ padding: 0, color: "#565656", margin: 2 }}
-          // TODO: Implement print function
-          onClick={() => null}
+          onClick={() => handleActionPrint(id)}
         >
           <LocalPrintshopOutlinedIcon />
         </IconButton>

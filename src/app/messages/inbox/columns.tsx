@@ -10,7 +10,7 @@ import {
   RowOptions,
   Message,
 } from "@/app/component/inbox-table/type";
-import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
+// import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
 
 const descriptor: Columns = {
   id: "description",
@@ -21,9 +21,8 @@ const descriptor: Columns = {
     return (
       <StyledMessageContiner>
         <StyledMessage>{description}</StyledMessage>
-        {isMortgageDischargeMessage(messageCode) && (
-          <StyledChip label="En Proceso" />
-        )}
+        {/* {isMortgageDischargeMessage(messageCode) && ( */}
+        {false && <StyledChip label="En Proceso" />}
       </StyledMessageContiner>
     );
   },
