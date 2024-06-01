@@ -3,7 +3,7 @@ import { MessageSchemaFront, Parameter, Validations } from "@/backend/entities/s
 // Function to adapt data to Schema type
 export function adaptSchema(dataToAdapt: any, userData: any): MessageSchemaFront {
     const schema: MessageSchemaFront = new MessageSchemaFront();
-    
+
     if (dataToAdapt) {
         schema.id = dataToAdapt.id;
         schema.messageCode = dataToAdapt.messageCode;
@@ -40,6 +40,9 @@ function extractParameters(dataToAdapt: any, userData: any): Parameter[] {
         }
         return parameter;
     })
+
+    console.log(filterParams);
+
     if (filterParams.length > 0) {
         return finalParameters.filter((param) => !filterParams.includes(param.id));
     }
