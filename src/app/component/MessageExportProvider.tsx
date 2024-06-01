@@ -1,27 +1,30 @@
-import React, { useEffect, createContext, useState, useCallback  } from "react";
+import React, { useEffect, createContext, useState, useCallback } from "react";
 import { ModalPrint } from "./inbox-header/ModalPrint";
 import { pdf, usePDF } from "@react-pdf/renderer";
 import { PDFTemplate } from "./PDFTemplate";
-import { MSDetail } from "./inbox-table/type";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-// import { PDFTemplate } from "./PDFTemplate";
+import { Message } from "./inbox-table/type";
+import { getMessageDetails } from "../services/common";
 
 type initialinitialMessageExportType = {
-  selectedMessages: [],
-  setSelectedMessages: Function,
-  printPDF: boolean,
-  setPrintPDF: Function,
-  downloadPDF: boolean,
-  setDownloadPDF: Function,
-  isLoading: boolean,
-  setIsLoading: Function,
-  details: MSDetail[] | [],
-  setDetails: Function,
+  selectedMessages: [];
+  setSelectedMessages: Function;
+  selectedRadioButtonMessages: number | string | null;
+  setSelectedRadioButtonMessages: Function;
+  printPDF: boolean;
+  setPrintPDF: Function;
+  downloadPDF: boolean;
+  setDownloadPDF: Function;
+  isLoading: boolean;
+  setIsLoading: Function;
+  details: Message[] | [];
+  setDetails: Function;
 };
 
 const initialMessageExportState: initialinitialMessageExportType = {
   selectedMessages: [],
   setSelectedMessages: () => [],
+  selectedRadioButtonMessages: null,
+  setSelectedRadioButtonMessages: () => null,
   printPDF: true,
   setPrintPDF: () => {},
   downloadPDF: false,
@@ -34,72 +37,91 @@ const initialMessageExportState: initialinitialMessageExportType = {
 
 export const MessageExportContext = createContext(initialMessageExportState);
 
-export const MessageExportProvider = ({ children }: { children: any}) => {
-
+export const MessageExportProvider = ({ children }: { children: any }) => {
   const [selectedMessages, setSelectedMessages] = useState<[]>([]);
+  const [selectedRadioButtonMessages, setSelectedRadioButtonMessages] =
+    useState<string | number | null>(null);
   const [printPDF, setPrintPDF] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [details, setDetails] = useState<MSDetail[] | []>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [details, setDetails] = useState<Message[] | []>([]);
   const [downloadPDF, setDownloadPDF] = useState<boolean>(false);
 
-  const downloadPDFFiles = async (data: MSDetail | MSDetail[] ) => {
-    const instance = pdf(<PDFTemplate data={data}/>)
+  const downloadPDFFiles = async (data: Message | Message[]) => {
+    const instance = pdf(<PDFTemplate data={data} />);
     try {
       const blob = await instance.toBlob();
       const url = window.URL.createObjectURL(blob as Blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.download = 'MS-Detalles.pdf';
+      link.download = "MS-Detalles.pdf";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
       setDownloadPDF(false);
     } catch (error) {
-      console.error('Error downloading PDF:', error);
+      console.error("Error downloading PDF:", error);
     }
   };
-
   const fetchData = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const promises = selectedMessages.map(id =>
-        fetch(`/api/message/detail?id=${id}`)
-          .then(response => response.json())
-      );
 
-      const responseData = await Promise.all(promises);
-      const data = responseData.map(data => data[0]);
+      const responseData = await Promise.all(
+        selectedMessages.map((id) => getMessageDetails(id))
+      );
+      const data = responseData.map((data) => data[0]);
       setDetails(data);
       setIsLoading(false);
       if (downloadPDF) {
-        downloadPDFFiles(data)
+        downloadPDFFiles(data);
       }
     } catch (error) {
-      console.error("Error al solicitar detalle del mensajes", error);
       setIsLoading(false);
     }
   }, [downloadPDF, selectedMessages]);
 
   useEffect(() => {
-    if(printPDF) {
+    if (printPDF) {
       fetchData();
     }
-  },[fetchData, printPDF]);
+  }, [fetchData, printPDF]);
 
   useEffect(() => {
-    if(downloadPDF) {
+    if (downloadPDF) {
       fetchData();
     }
-  },[fetchData, downloadPDF]);
+  }, [fetchData, downloadPDF]);
 
   const contextValue = React.useMemo(
     () => ({
-      selectedMessages, setSelectedMessages, printPDF, setPrintPDF, downloadPDF, setDownloadPDF, isLoading, setIsLoading, details, setDetails
+      selectedRadioButtonMessages,
+      setSelectedRadioButtonMessages,
+      selectedMessages,
+      setSelectedMessages,
+      printPDF,
+      setPrintPDF,
+      downloadPDF,
+      setDownloadPDF,
+      isLoading,
+      setIsLoading,
+      details,
+      setDetails,
     }),
     [
-      selectedMessages, setSelectedMessages, printPDF, setPrintPDF, downloadPDF, setDownloadPDF, isLoading, setIsLoading, details, setDetails
-    ],
+      selectedRadioButtonMessages,
+      setSelectedRadioButtonMessages,
+      selectedMessages,
+      setSelectedMessages,
+      printPDF,
+      setPrintPDF,
+      downloadPDF,
+      setDownloadPDF,
+      isLoading,
+      setIsLoading,
+      details,
+      setDetails,
+    ]
   );
 
   return (

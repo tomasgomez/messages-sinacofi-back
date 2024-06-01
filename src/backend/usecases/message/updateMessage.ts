@@ -1,13 +1,7 @@
-import {
-    Message
-} from "@/backend/entities/message/message";
-import { prepareMessages } from "@/backend/handler/message/adapter/prepareMessages";
-import {
-    MessageRepository
-} from "@/backend/repository/messageRepository";
-
 import { docUseCase } from "../docs/usecases";
 import { Documents } from "@/backend/entities/message/interface";
+import { Message } from "@/backend/entities/message/message";
+import { MessageRepository } from "@/backend/repository/messageRepository";
 import { MessageStatus } from "@/utils/messagesStatus";
 import path from "path";
 
@@ -75,9 +69,7 @@ export async function updateMessage(repository: MessageRepository, message: Mess
             return messageResponse;
         }
 
-        let messages = prepareMessages([messageResponse]);
-
-        return messages;
+        return messageResponse;
     } catch (error: any) {
         // Handle errors appropriately
         console.error('Error fetching message:', error);

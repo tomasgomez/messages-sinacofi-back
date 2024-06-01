@@ -8,4 +8,5 @@ export interface MessageUsecases {
     createMessage(message: Message): Promise<Message | Error>;
     updateMessage(message: Message): Promise<Message | Error>;
     findDocuments(message: Message): Promise<Message | Error>;
+    signMessage(message: Message): Promise<Message | Error>;
 }

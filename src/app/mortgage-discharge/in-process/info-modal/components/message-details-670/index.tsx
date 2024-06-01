@@ -13,7 +13,7 @@ import { montserrat } from "@/utils/fonts";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { IconButton } from "@mui/material";
-import { formatModalDetailsCompleted } from "@/utils/mortgage-discharge";
+import { formatModalDetailsCompleted } from "@/utils/mortgage-discharge-format";
 import { DetailsMSInfoModal } from "@/types/mortgage-discharge";
 import { Message } from "@/app/component/inbox-table/type";
 import DocumentCard from "../document-card";

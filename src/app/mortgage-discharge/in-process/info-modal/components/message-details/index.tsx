@@ -7,9 +7,8 @@ import Grid from "@mui/material/Grid/Grid";
 import Typography from "@mui/material/Typography/Typography";
 import Stack from "@mui/material/Stack/Stack";
 import { montserrat } from "@/utils/fonts";
-import { formatModalDetailSmall } from "@/utils/mortgage-discharge";
+import { formatModalDetailSmall } from "@/utils/mortgage-discharge-format";
 import DocumentCard from "../document-card";
-// import { SmallMsDetailInfoModal } from "@/types/mortgage-discharge";
 
 export function MessageDetails({ dataMessage = [] }: { dataMessage: any }) {
   const { dataHeader, smallMsDetail, documents } =

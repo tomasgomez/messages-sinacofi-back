@@ -1,9 +1,9 @@
 "use client"
-import AddFileModal from "@/app/component/modal-add-file";
 import { useAppContext } from "@/app/context";
-import { createMessage, getMessageDetails, /* getMessageDetails, */ getMessageSchema, updateMessage } from "@/app/services/common";
+import { useModal, useModalManager } from "@/components/Modal";
+import { ModalList } from "@/components/Modal/ModalList";
+import { createMessage, getMessageDetails, getMessageSchema, signMessage } from "@/app/services/common";
 import Form from "@/components/Form";
-import { useModalManager } from "@/components/Modal";
 import { Container, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useContext } from "react";
@@ -49,11 +49,10 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
 
 }
 const CreateMessage = () => {
-  const { setModalState, selectedInstitution } = useAppContext();
+  const { selectedInstitution } = useAppContext();
   const { userInfo } = useContext(SessionProviderContext) as any;
-  const { onOpen: onSignOpen, onClose } = useModalManager({
-    component: AddFileModal
-  });
+  const { SuccessModal } = useModalManager();
+  const AddFileModal = useModal({ id: ModalList.AddFileModal });
   const [messageSchema, setMessageSchema] = useState({parameters: [], actions: { saveDraftDisabled: false, sendButtonDisabled: false }});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -252,15 +251,14 @@ const CreateMessage = () => {
     const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution, userInfo);
 
     if (messageCode === "670" || messageCode === "672") {
-      onSignOpen({
+      AddFileModal.open({
         onConfirm: (document: any) => {
-          onClose?.();
+          AddFileModal.close();
           setLoading(true);
-          updateMessage(messageId, statusCodes[1], { ...payload, documents: document })
+          signMessage(messageId, statusCodes[1], { ...payload, documents: document })
             .then((response) => {
               console.log("Mensaje actualizados!");
-              setModalState({
-                type: "success",
+              SuccessModal.open({
                 title: "Firma de mensaje y carga de Copia Maestra/GP exitosa",
                 body: (
                   <>
@@ -269,8 +267,7 @@ const CreateMessage = () => {
                     </Typography>
                   </>
                 ),
-                isOpen: true,
-                onConfirm: () => router.push("/mortgage-discharge/in-process"),
+                onClose: () => router.push("/mortgage-discharge/in-process"),
               });
             })
             .finally(() => {
@@ -285,8 +282,7 @@ const CreateMessage = () => {
     createMessage(payload, "05")
       .then((response: any) => {
         setLoading(false);
-        setModalState({
-          type: "success",
+        SuccessModal.open({
           title: "Mensaje Enviado Exitosamente",
           body: (
             <>
@@ -301,8 +297,7 @@ const CreateMessage = () => {
               </Typography>
             </>
           ),
-          isOpen: true,
-          onConfirm: () => router.push("/messages/sent"),
+          onClose: () => router.push("/messages/sent"),
         });
       });
   };
@@ -312,8 +307,7 @@ const CreateMessage = () => {
     createMessage(payload, "01")
       .then((response: any) => {
         setLoading(false);
-        setModalState({
-          type: "success",
+        SuccessModal.open({
           title: "Mensaje Grabado en Preparados Exitosamente",
           body: (
             <>
@@ -328,9 +322,8 @@ const CreateMessage = () => {
               </Typography>
             </>
           ),
-          isOpen: true,
-          onConfirm: () => router.push("/messages/prepared"),
-        });
+          onClose: () => router.push("/messages/prepared")
+        })
       });
   };
 

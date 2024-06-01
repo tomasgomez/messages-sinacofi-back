@@ -214,6 +214,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
                             'owner',
                             'borrowerDni',
                             'borrower',
+                            'beneficiaryBank',
                         ]
                     }            
                 },

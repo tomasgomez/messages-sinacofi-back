@@ -79,8 +79,16 @@ async function create(message: Message): Promise < Message | Error > {
                     }
                 }
             },
+            include: {
+                TSN: true,
+                LSN: true,
+                OSN: true,
+                NSE: true,
+                NSR: true,
+                NSQ: true,
+                status: true,
+            }
         });
-
 
         // Handle null values in the created message
         handleNullValues(newMessage);

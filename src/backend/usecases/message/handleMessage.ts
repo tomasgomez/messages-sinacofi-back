@@ -16,12 +16,6 @@ import {
 import {
     CUK
 } from "@/backend/entities/cuk/cuk";
-import {
-    Parameter
-} from "@/backend/entities/message/parameter";
-import {
-    getSchema
-} from "@/backend/usecases/schema/getSchema";
 
 // Create message function
 export async function handleMessage(repository: MessageRepository, message: Message, ): Promise < Message | Error > {
@@ -29,7 +23,6 @@ export async function handleMessage(repository: MessageRepository, message: Mess
 
         /* CUK flow */
         if (message.messageCode && isForeclosureMessageCode(message?.messageCode)) {
-            // message = await completeParameters(message);
 
             let newMessage = await messageForeclosureUseCase.handleForeclosure(new CUK, message);
 

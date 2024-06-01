@@ -8,13 +8,16 @@ import { updateMessage } from './updateMessage';
 import { handleMessage } from './handleMessage';
 import { findDocuments } from './findDocuments';
 import { FilterMessage } from '@/backend/entities/message/filter';
+import { signMessage } from './signMessage';
+import { CUKRepository } from '@/backend/repository/cukRepository';
+import { PrismaCukAdapter } from '@/backend/repository/cuk/cuk';
 
 
 /*
     Message Usecases
 */
 export class MessageUscase implements MessageUsecases  {
-    constructor(private readonly messageRepository: MessageRepository) {} 
+    constructor(private readonly messageRepository: MessageRepository, private readonly cukRepository: CUKRepository) {} 
     
     // get message
     getMessage = async (filter: FilterMessage): Promise<Message[] | Error> => 
@@ -36,9 +39,12 @@ export class MessageUscase implements MessageUsecases  {
     findDocuments = async (message: Message): Promise<Message | Error> =>
         findDocuments(message);
 
-  }
+    // sign message
+    signMessage = async (message: Message): Promise<Message | Error> => 
+        signMessage(this.messageRepository, this.cukRepository, message);
+}
 
 // message repository
 const messageRepository: MessageRepository = new PrismaAdapter();
-
-export const messageUseCase: MessageUsecases = new MessageUscase(messageRepository); // Add it on the api layer
+const cukRepository: CUKRepository = new PrismaCukAdapter();
+export const messageUseCase: MessageUsecases = new MessageUscase(messageRepository, cukRepository); // Add it on the api layer

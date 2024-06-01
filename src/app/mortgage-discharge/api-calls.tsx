@@ -1,32 +1,67 @@
-export async function getForeClosureDataCards(filters?: any[]) {
-  const baseUrl = window.location.origin;
-  let url = `${baseUrl}/api/message/foreclosure`;
-  const newFilters = filters?.slice() || [];
-  if (newFilters && newFilters.length > 0) {
-    url = url + `?${newFilters[0].label}=${newFilters[0].value}`;
-    newFilters.shift();
-    newFilters.forEach((filter) => (url += `&${filter.label}=${filter.value}`));
+import { Filter } from "@/types/mortgage-discharge";
+import { MortgageDischargeData } from "../component/inbox-table/type";
+
+export async function getForeClosureDataCards(
+  filters?: Filter[]
+): Promise<MortgageDischargeData[]> {
+  try {
+    const baseUrl = window.location.origin;
+    let url = `${baseUrl}/api/message/foreclosure`;
+
+    const newFilters = filters?.slice() || [];
+
+    if (newFilters.length > 0) {
+      const queryParams = newFilters
+        .map(
+          (filter) =>
+            `${encodeURIComponent(filter?.label)}=${encodeURIComponent(
+              filter.value ?? ""
+            )}`
+        )
+        .join("&");
+      url = `${url}?${queryParams}`;
+    }
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: Failed api call, Status: ${response.status}`);
+    }
+
+    const data: MortgageDischargeData[] = await response.json();
+
+    return data;
+  } catch (err: any) {
+    console.error("Error to get the message:", err);
+    throw err;
   }
-  const response = await fetch(url);
-  return await response.json();
 }
 
 export async function updateForeClosureMessage(
   cukCode?: string,
   status?: string
-) {
+): Promise<MortgageDischargeData> {
   try {
     const baseUrl = window.location.origin;
-    return (
-      await fetch(`${baseUrl}/api/message/foreclosure`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cukCode: cukCode, status: status }),
-      })
-    ).json();
-  } catch (error) {
-    console.error("Error al enviar el mensajes", error);
+    const url = `${baseUrl}/api/message/foreclosure`;
+    const bodyData = { cukCode, status };
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bodyData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update api call. Status: ${response.status}`);
+    }
+
+    const result: MortgageDischargeData = await response.json();
+
+    return result;
+  } catch (err) {
+    console.error("Error to update the message", err);
+    throw err;
   }
 }
