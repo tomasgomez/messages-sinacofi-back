@@ -9,11 +9,27 @@ export type ErrorModalTypes = ModalProps & {
   body: React.ReactNode;
   onClose: () => void;
   onRetry: () => void;
+  withoutRetry?: boolean;
 };
 
 export function ErrorModal(props: ErrorModalTypes) {
+  const {
+    title = "",
+    body = null,
+    onClose = () => null,
+    onRetry = () => null,
+    withoutRetry = false,
+    withoutClose = false,
+    open = false,
+  } = props || {};
+
   return (
-    <Modal withoutClose={props.withoutClose} maxWidth="500px" open={props.open}>
+    <Modal
+      withoutClose={withoutClose}
+      maxWidth="500px"
+      open={open}
+      onClose={onClose}
+    >
       <Stack
         direction={"column"}
         justifyContent={"center"}
@@ -28,13 +44,13 @@ export function ErrorModal(props: ErrorModalTypes) {
           fontSize={"18px"}
           fontFamily={montserrat.style.fontFamily}
         >
-          {props.title}
+          {title}
         </Typography>
-        {props.body}
+        {body}
       </Stack>
-      <ModalFooter placeContent="center" sx={{ px: 0, pb: 0 }}>
+      <ModalFooter placeContent="center" sx={{ px: 0, pb: 0, mt: 2 }}>
         <Button
-          onClick={props.onClose}
+          onClick={onClose}
           variant="outlined"
           sx={{
             paddingX: 2,
@@ -45,19 +61,21 @@ export function ErrorModal(props: ErrorModalTypes) {
         >
           Cancelar
         </Button>
-        <Button
-          onClick={props.onRetry}
-          variant="contained"
-          sx={{
-            color: "white",
-            paddingX: 2,
-            paddingY: 1,
-            borderRadius: 3,
-            fontFamily: montserrat.style.fontFamily,
-          }}
-        >
-          Volver a intentar
-        </Button>
+        {!withoutRetry && (
+          <Button
+            onClick={onRetry}
+            variant="contained"
+            sx={{
+              color: "white",
+              paddingX: 2,
+              paddingY: 1,
+              borderRadius: 3,
+              fontFamily: montserrat.style.fontFamily,
+            }}
+          >
+            Volver a intentar
+          </Button>
+        )}
       </ModalFooter>
     </Modal>
   );

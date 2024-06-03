@@ -18,6 +18,7 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { SessionProviderContext } from "@/context/SessionProvider";
 import { MessageExportContext } from "@/app/component/MessageExportProvider";
 import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
+import Tooltip from "@mui/material/Tooltip";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const {
@@ -28,14 +29,13 @@ const AccionesColumn = ({ row }: { row: any }) => {
     id = "",
     cukCode = "",
   } = row || {};
-  const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
-  const { userInfo } = React.useContext(SessionProviderContext) as any;
-  const { setPrintPDF, setSelectedMessages } =
-    React.useContext(MessageExportContext);
-  const { selectedRadioButtonMessages } =
-    React.useContext(MessageExportContext);
 
+  const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
+  const { userInfo } = useContext(SessionProviderContext) as any;
+  const { setPrintPDF, setSelectedMessages, selectedRadioButtonMessages } =
+    useContext(MessageExportContext);
   const router = useRouter();
+
   const handlerOpenModal = (row: any) => {
     setSelectedMessage(row);
     setModalIsOpen(true);
@@ -54,6 +54,11 @@ const AccionesColumn = ({ row }: { row: any }) => {
     setPrintPDF(true);
   };
 
+  const iconButtonStyle = { padding: 0, margin: 2 };
+  const disabledColor = "#CCC";
+  const enabledColor = "#00B2E2";
+  const defaultColor = "#565656";
+
   return (
     <Box
       sx={{
@@ -63,70 +68,104 @@ const AccionesColumn = ({ row }: { row: any }) => {
       }}
     >
       {actions.includes("sing") && (
-        <IconButton
-          key={`drive-icon-${id}`}
-          style={{
-            padding: 0,
-            color: userInfo?.permissions?.signMortgageDischarge
-              ? "#00B2E2"
-              : "#CCC",
-            margin: 2,
-          }}
-          disabled={!userInfo?.permissions?.signMortgageDischarge}
-          onClick={() =>
-            router.push(
-              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
-            )
+        <Tooltip
+          title={
+            userInfo.permissions.signMortgageDischarge
+              ? ""
+              : "No tienes permisos para realizar esta acción."
           }
         >
-          <DriveFileRenameOutlineIcon />
-        </IconButton>
+          <span>
+            <IconButton
+              key={`drive-icon-${id}`}
+              style={{
+                ...iconButtonStyle,
+                color: userInfo?.permissions?.signMortgageDischarge
+                  ? enabledColor
+                  : disabledColor,
+              }}
+              disabled={!userInfo?.permissions?.signMortgageDischarge}
+              onClick={() =>
+                router.push(
+                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
+                )
+              }
+            >
+              <DriveFileRenameOutlineIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
       )}
       {actions.includes("sent") && (
-        <IconButton
-          key={`sent-icon-${id}`}
-          style={{
-            padding: 0,
-            color: checkDisabledSent() ? "#CCC" : "#00B2E2",
-            margin: 2,
-          }}
-          disabled={checkDisabledSent()}
-          onClick={() =>
-            router.push(
-              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}`
-            )
+        <Tooltip
+          title={
+            userInfo.permissions.sendMessage
+              ? ""
+              : "No tienes permisos para realizar esta acción."
           }
         >
-          <SendOutlinedIcon />
-        </IconButton>
+          <span>
+            <IconButton
+              key={`sent-icon-${id}`}
+              style={{
+                ...iconButtonStyle,
+                color: checkDisabledSent() ? disabledColor : enabledColor,
+              }}
+              disabled={checkDisabledSent()}
+              onClick={() =>
+                router.push(
+                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}`
+                )
+              }
+            >
+              <SendOutlinedIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
       )}
       {actions.includes("details") && (
-        <IconButton
-          key={`detail-icon-${id}`}
-          style={{ padding: 0, color: "#565656", margin: 2 }}
-          onClick={() => handlerOpenModal(row)}
-          disabled={!userInfo.permissions.sendMessage}
+        <Tooltip
+          title={
+            userInfo.permissions.sendMessage
+              ? ""
+              : "No tienes permisos para realizar esta acción."
+          }
         >
-          <InfoOutlinedIcon />
-        </IconButton>
+          <span>
+            <IconButton
+              key={`detail-icon-${id}`}
+              style={{
+                ...iconButtonStyle,
+                color: userInfo.permissions.sendMessage
+                  ? defaultColor
+                  : disabledColor,
+              }}
+              onClick={() => handlerOpenModal(row)}
+              disabled={!userInfo.permissions.sendMessage}
+            >
+              <InfoOutlinedIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
       )}
       {actions.includes("print") && (
         <IconButton
           key={`print-icon-${id}`}
-          style={{ padding: 0, color: "#565656", margin: 2 }}
+          style={{
+            ...iconButtonStyle,
+            color: defaultColor,
+          }}
           onClick={() => handleActionPrint(id)}
         >
           <LocalPrintshopOutlinedIcon />
         </IconButton>
       )}
-
       {messageCode === "670" && status === "01" && (
         <IconButton
           key={`edit-icon-${id}`}
           style={{
-            padding: 0,
-            color: actions.includes("edit") ? "#00B2E2" : "#565656",
-            margin: 2,
+            ...iconButtonStyle,
+            color: actions.includes("edit") ? enabledColor : defaultColor,
           }}
           onClick={() =>
             router.push(

@@ -18,6 +18,8 @@ import {
   HistoryTrackingModal,
   MortgageDischargeData,
 } from "@/app/component/inbox-table/type";
+import { useModalManager } from "@/components/Modal";
+import basicError from "@/components/Modal/ErrorModal/basicError";
 
 export const TrackingModal = (props: {
   open: boolean;
@@ -33,6 +35,8 @@ export const TrackingModal = (props: {
   const [loading, setLoading] = useState<boolean>(false);
   const [historyList, setHistoryList] = useState<HistoryTrackingModal[]>([]);
   const [dataOptions, setDataOptions] = useState<unknown[]>([]);
+  
+  const { ErrorModal } = useModalManager();
 
   const {
     open = false,
@@ -64,20 +68,24 @@ export const TrackingModal = (props: {
   }, []);
 
   const handleChange = async () => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const newCuk: MortgageDischargeData = await updateForeClosureMessage(
-      cukCode,
-      statusSelected
-    );
+      const newCuk: MortgageDischargeData = await updateForeClosureMessage(
+        cukCode,
+        statusSelected
+      );
 
-    const newHistory = sortHistoryList(
-      newCuk?.history
-    ) as HistoryTrackingModal[];
+      const newHistory = sortHistoryList(
+        newCuk?.history
+      ) as HistoryTrackingModal[];
 
-    setDataOptions(EnabledExtraOptions(options, newHistory));
-    setHistoryList(newHistory);
-    setLoading(false);
+      setDataOptions(EnabledExtraOptions(options, newHistory));
+      setHistoryList(newHistory);
+      setLoading(false);
+    } catch (error: unknown) {
+      ErrorModal.open(basicError(error));
+    }
   };
 
   return (
