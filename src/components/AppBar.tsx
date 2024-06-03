@@ -135,34 +135,36 @@ const AppBar = () => {
           sx={{ width: "calc(100% - 180px)" }}
         >
           <Stack direction="row">
-            <Container
-              sx={{
-                flexDirection: "column",
-                margin: 0,
-                width: "210px",
-                display: "flex",
-                cursor: "default",
-                justifyContent: "center",
-                marginRight: 6,
-              }}
-            >
-              {/* <Typography color="#565656" fontWeight={500} variant="caption">Nombre de Institución</Typography>
-              <Box style={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="body1" fontWeight={600} color="#151515">0027 CORP BANCA</Typography>
-              </Box> */}
-              {/* // Delete after add users */}
-              <InstitutionDropdown
-                label="Nombre de Institución"
-                defaultValue={userInfo?.user?.institutionCode}
-                selected={selectedInstitution}
-                width={200}
-                onChange={(institutionCode: any) => {
-                  setSelectedInsitution(institutionCode)
-                  // setCurrentIntitution(intitutionData);
+            {process.env.NEXT_PUBLIC_TEST_ENV && (
+              <Container
+                sx={{
+                  flexDirection: "column",
+                  margin: 0,
+                  width: "210px",
+                  display: "flex",
+                  cursor: "default",
+                  justifyContent: "center",
+                  marginRight: 6,
                 }}
-                placeholder="Seleccione una Institución"
-              />
-            </Container>
+              >
+                {/* <Typography color="#565656" fontWeight={500} variant="caption">Nombre de Institución</Typography>
+                <Box style={{ display: "flex", alignItems: "center" }}>
+                  <Typography variant="body1" fontWeight={600} color="#151515">0027 CORP BANCA</Typography>
+                </Box> */}
+                {/* // Delete after add users */}
+                <InstitutionDropdown
+                  label="Nombre de Institución"
+                  defaultValue={userInfo?.user?.institutionCode}
+                  selected={selectedInstitution}
+                  width={200}
+                  onChange={(institutionCode: any) => {
+                    setSelectedInsitution(institutionCode)
+                    // setCurrentIntitution(intitutionData);
+                  }}
+                  placeholder="Seleccione una Institución"
+                />
+              </Container>
+            )}
             <Container
               sx={{
                 flexDirection: "column",

@@ -10,6 +10,9 @@ const deleteSession = (res: NextResponse) => {
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
+  if(process.env.NEXT_PUBLIC_TEST_ENV === "true"){
+    return NextResponse.next();
+  }
   const idcs = await iamOracleAPI.getWellKnown();
   if (idcs instanceof Error) {
     console.log('error', idcs);
