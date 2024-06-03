@@ -7,6 +7,8 @@ import { columnsSent, rowOptions } from "./columns";
 import { SentData } from "@/app/component/inbox-table/type";
 import { MyContexLayout } from "@/app/context";
 import { getMessage } from "@/app/services/common";
+import basicError from "@/components/Modal/ErrorModal/basicError";
+import { useModalManager } from "@/components/Modal";
 
 export default function SentScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -14,6 +16,7 @@ export default function SentScreen() {
 
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
+  const { ErrorModal } = useModalManager();
 
   const fetchData = async () => {
     try {
@@ -24,8 +27,10 @@ export default function SentScreen() {
       });
       setData(response);
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: unknown) {
+      setData([]);
       setIsLoading(false);
+      ErrorModal.open(basicError(error));
     }
   };
 

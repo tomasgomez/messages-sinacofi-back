@@ -32,7 +32,6 @@ export async function getForeClosureDataCards(
 
     return data;
   } catch (err: any) {
-    console.error("Error to get the message:", err);
     throw err;
   }
 }
@@ -61,7 +60,6 @@ export async function updateForeClosureMessage(
 
     return result;
   } catch (err) {
-    console.error("Error to update the message", err);
     throw err;
   }
 }

@@ -17,6 +17,8 @@ import { MyContexLayout } from "@/app/context";
 import { Message } from "@/app/component/inbox-table/type";
 import { getMessageDetails } from "@/app/services/common";
 import { getForeClosureDataCards } from "../../api-calls";
+import basicError from "@/components/Modal/ErrorModal/basicError";
+import { useModalManager } from "@/components/Modal";
 
 export const InfoModal = () => {
   const [details, setDetails] = useState<Message[]>([]);
@@ -28,6 +30,7 @@ export const InfoModal = () => {
     useContext(CardContext);
 
   const { selectedInstitution } = useContext(MyContexLayout) as any;
+  const { ErrorModal } = useModalManager() as any;
 
   const handleClose = () => {
     setModalIsOpen(false);
@@ -73,7 +76,7 @@ export const InfoModal = () => {
 
           // Save the selected message and the previous 670 message
           setDetails([
-            ...(await getMessageDetails(previousMessage670?.id)),
+            ...(await getMessageDetails(previousMessage670?.id as string)),
             ...messageSelectedDetails,
           ]);
 
@@ -83,9 +86,10 @@ export const InfoModal = () => {
 
         setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Error al solicitar detalle del mensajes", error);
+    } catch (error: unknown) {
+      setDetails([]);
       setIsLoading(false);
+      ErrorModal.open(basicError(error));
     }
   };
 
