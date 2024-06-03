@@ -32,9 +32,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         }
         
         let origin = '';
-        console.log("---");
-        console.log(schemaResponse);
-        console.log("---");
         if (filter.origin) {
           await getInstitutions().then((institutionList) => {
              origin = institutionList.find((intitution: any) => filter.origin === intitution.id);

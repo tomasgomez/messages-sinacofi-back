@@ -15,8 +15,8 @@ export const getMessageDescriptions = async () => {
   return fetch("/api/rule").then((response) => response.json());
 };
 
-export const getMessageSchema = async (messageCode: string, messageId?: string) => {
-  return fetch(`/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}`)
+export const getMessageSchema = async (messageCode: string, messageId?: string, cukCode?: string) => {
+  return fetch(`/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&cukCode=${cukCode}`)
     .then((response: any) => response.json())
 };
 

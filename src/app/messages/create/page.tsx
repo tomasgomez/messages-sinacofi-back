@@ -135,7 +135,7 @@ const CreateMessage = () => {
           });
       });
     } else {
-      getMessageSchema(messageCode, messageId)
+      getMessageSchema(messageCode, messageId, cukCode)
         .then((schema: any) => {
           setMessageSchema({
             ...schema,

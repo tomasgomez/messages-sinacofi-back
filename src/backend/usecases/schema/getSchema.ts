@@ -26,6 +26,7 @@ import {
   Filter
 } from '@/backend/entities/schema/filter';
 import { Parameter } from '@/backend/entities/message/parameter';
+import { parameterUsecase } from '../parameter/usecases';
 
 const messageRepository: MessageRepository = new PrismaAdapter();
 
@@ -48,7 +49,13 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
 
     let schemas = await get(url, path, {}, {})
 
-    
+    console.log(filter);
+
+    // check if exists cukCode
+    if (filter.cuk && filter.cuk != ''){
+      let parameters = await parameterUsecase.getParameters({cukCode: [filter.cuk]})
+      console.log(parameters);
+    }
     if (!filter.messageCode?.includes('670') && filter.messageId && filter.messageId.length>0) {
 
       let filterMessage: FilterMessage = {
