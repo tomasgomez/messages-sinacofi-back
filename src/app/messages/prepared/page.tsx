@@ -11,6 +11,7 @@ import { MyContexLayout } from "@/app/context";
 import { updateMessage } from "../api-calls";
 import { getMessage } from "@/app/services/common";
 import { useModalManager } from "@/components/Modal";
+import basicError from "@/components/Modal/ErrorModal/basicError";
 
 export default function PreparedScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -18,11 +19,8 @@ export default function PreparedScreen() {
   const [selected, setSelected] = React.useState<number[]>([]);
 
   // Change after add users "selectedInstitution"
-  const { selectedInstitution } = React.useContext(
-    MyContexLayout
-  ) as any;
-  const { ConfirmModal } = useModalManager();
-
+  const { selectedInstitution } = React.useContext(MyContexLayout) as any;
+  const { ConfirmModal, ErrorModal } = useModalManager();
 
   const fetchData = async () => {
     try {
@@ -33,8 +31,10 @@ export default function PreparedScreen() {
       });
       setData(response);
       setIsLoading(false);
-    } catch (error) {
+    } catch (error: unknown) {
+      setData([]);
       setIsLoading(false);
+      ErrorModal.open(basicError(error));
     }
   };
 
