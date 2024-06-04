@@ -19,6 +19,7 @@ import {
 import { MortgageDischargeData } from "@/app/component/inbox-table/type";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
+import EmptyScreen from "../components/empty-screen";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = useState(false);
@@ -135,11 +136,15 @@ export default function InProcessScreen() {
                   handlerTrackingModal={handlerTrackingModal}
                 />
               ))}
-              <div
-                style={{
-                  height: getHeight(),
-                }}
-              />
+              {!data || !data.length ? (
+                <EmptyScreen height={maxHeight} />
+              ) : (
+                <div
+                  style={{
+                    height: getHeight(),
+                  }}
+                />
+              )}
             </>
           )}
         </Box>

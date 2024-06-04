@@ -1,13 +1,11 @@
 import * as React from "react";
 import {
   StyledContentCard,
-  StyledCardContent,
-  StyledCard,
   StyledButton,
   StyledBoxShadow,
   StyledFooterComponent,
   StyledInfoIcon,
-} from "./styled";
+} from "./styles";
 import { Collapse, Typography } from "@mui/material";
 import CodeColumn from "./codeColumn";
 import InfoColumn from "./infoColumn";

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyledChip } from "./styled";
+import { StyledChip } from "./styles";
 
 const getChipText = (messageCode: string, status: string) => {
   if (messageCode === "672") {
