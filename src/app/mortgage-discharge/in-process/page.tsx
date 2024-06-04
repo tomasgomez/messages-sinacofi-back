@@ -89,11 +89,11 @@ export default function InProcessScreen() {
 
   const maxHeight: number = 474;
   const margin: number = 32;
-  const cardHeight: number = 88;
+  const cardHeight: number = 88.95;
 
   const getHeight = useCallback(() => {
     if (!data || !data.length) return maxHeight;
-    const espaceByRow = data.length * (cardHeight + margin) + margin;
+    const espaceByRow = data.length * (cardHeight + margin);
     if (espaceByRow < maxHeight) return maxHeight - espaceByRow;
     return 0;
   }, [data?.length]);
