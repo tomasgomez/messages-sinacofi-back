@@ -20,6 +20,7 @@ import { MortgageDischargeData } from "@/app/component/inbox-table/type";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 import EmptyScreen from "../components/empty-screen";
+import { calcDimensions } from "@/utils/dimensions";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = useState(false);
@@ -87,7 +88,7 @@ export default function InProcessScreen() {
     setModalTrackingData(data);
   };
 
-  const maxHeight: number = 474;
+  const { height: maxHeight }: { height: number } = calcDimensions(300);
   const margin: number = 32;
   const cardHeight: number = 88.95;
 
@@ -96,7 +97,7 @@ export default function InProcessScreen() {
     const espaceByRow = data.length * (cardHeight + margin);
     if (espaceByRow < maxHeight) return maxHeight - espaceByRow;
     return 0;
-  }, [data?.length]);
+  }, [data?.length, maxHeight]);
 
   return (
     <CardContextProvider filters={filters} setFilters={setFilters}>
