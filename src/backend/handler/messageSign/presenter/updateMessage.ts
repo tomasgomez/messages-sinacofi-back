@@ -1,5 +1,7 @@
 import { Message } from '@/backend/entities/message/message';
 import { Document } from '@/backend/entities/global/document';
+import { validateParameters } from '@/backend/handler/message/presenter/validateParameters';
+import { Parameter } from '@/backend/entities/message/parameter';
 
 export function validateUpdateMessage(data: any): Message | Error {
   let message: Message = new Message()
@@ -20,7 +22,16 @@ export function validateUpdateMessage(data: any): Message | Error {
   }
 
   if (data.parameters) {
-    message.parameters = data.parameters;
+    let parametersMessage: Parameter[] = [];
+    let cukCode = '';
+
+    [parametersMessage, cukCode] = validateParameters(data.messageCode, data.parameters);
+
+    if (cukCode !== '') {
+      message.cukCode = cukCode;
+    }
+
+    message.parameters = parametersMessage;
   }
 
   if (data.documents && data.documents.length > 0) {
