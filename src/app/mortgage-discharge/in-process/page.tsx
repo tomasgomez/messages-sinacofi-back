@@ -88,7 +88,9 @@ export default function InProcessScreen() {
     setModalTrackingData(data);
   };
 
-  const { height: maxHeight }: { height: number } = useCalcDimensions(300);
+  const usedHeight: number = 300;
+  const { height: maxHeight }: { height: number } =
+    useCalcDimensions(usedHeight);
   const margin: number = 32;
   const cardHeight: number = 88.95;
 
@@ -116,7 +118,8 @@ export default function InProcessScreen() {
         </Box>
         <Box
           style={{
-            maxHeight: maxHeight,
+            maxHeight:
+              maxHeight < 0 ? `calc(100vh - ${usedHeight}px)` : maxHeight,
             overflowY: "scroll",
             overflowX: "hidden",
             width: "calc(100vw - 270px)",
@@ -126,7 +129,9 @@ export default function InProcessScreen() {
           {loading ? (
             <Loader
               label="Cargando Alzamientos Hipotecarios..."
-              minHeight={maxHeight}
+              minHeight={
+                maxHeight < 0 ? `calc(100vh - ${usedHeight}px)` : maxHeight
+              }
             />
           ) : (
             <>
