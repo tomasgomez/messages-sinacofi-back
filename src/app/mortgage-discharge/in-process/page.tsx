@@ -91,7 +91,7 @@ export default function InProcessScreen() {
   const usedHeight: number = 300;
   const { height: maxHeight }: { height: number } =
     useCalcDimensions(usedHeight);
-  const margin: number = 32;
+  const margin: number = 20;
   const cardHeight: number = 88.95;
 
   const getHeight = useCallback(() => {

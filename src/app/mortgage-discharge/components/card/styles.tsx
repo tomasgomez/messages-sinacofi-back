@@ -15,7 +15,7 @@ interface StyledContentCardProps {
 export const StyledContentCard = styled(Box)<StyledContentCardProps>(
   ({ height }: StyledContentCardProps): CSSObject => ({
     background: "#fff",
-    padding: "16px 32px 16px 32px",
+    padding: "10px 32px 10px 32px",
     height: height ? `${height}px` : "auto",
     display: "flex",
     flexDirection: "column",
