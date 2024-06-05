@@ -54,7 +54,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
     setPrintPDF(true);
   };
 
-  const iconButtonStyle = { padding: 0, margin: 2 };
+  const iconButtonStyle = { padding: 0, margin: "0px 2px" };
   const disabledColor = "#CCC";
   const enabledColor = "#00B2E2";
   const defaultColor = "#565656";

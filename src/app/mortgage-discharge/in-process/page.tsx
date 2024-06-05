@@ -20,7 +20,7 @@ import { MortgageDischargeData } from "@/app/component/inbox-table/type";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 import EmptyScreen from "../components/empty-screen";
-import { calcDimensions } from "@/utils/dimensions";
+import { useCalcDimensions } from "@/utils/dimensions";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = useState(false);
@@ -88,7 +88,7 @@ export default function InProcessScreen() {
     setModalTrackingData(data);
   };
 
-  const { height: maxHeight }: { height: number } = calcDimensions(300);
+  const { height: maxHeight }: { height: number } = useCalcDimensions(300);
   const margin: number = 32;
   const cardHeight: number = 88.95;
 
