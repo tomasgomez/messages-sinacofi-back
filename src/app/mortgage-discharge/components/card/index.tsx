@@ -146,6 +146,7 @@ const CarDischarge = ({
           withCheckbox={false}
           footerComponent={getFooterComponent()}
           withRadioButton={withRadioButton}
+          rowsPerPageOptions={[]}
         />
       </Collapse>
     </StyledContentCard>

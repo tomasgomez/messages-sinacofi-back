@@ -88,7 +88,7 @@ export default function InProcessScreen() {
     setModalTrackingData(data);
   };
 
-  const usedHeight: number = 300;
+  const usedHeight: number = 316;
   const { height: maxHeight }: { height: number } =
     useCalcDimensions(usedHeight);
   const margin: number = 20;
@@ -108,7 +108,7 @@ export default function InProcessScreen() {
           width: "calc(100% - 270px)",
         }}
       >
-        <Box sx={{ m: 2 }}>
+        <Box sx={{ margin: "32px 16px 16px 16px" }}>
           <Header
             dataCodeList={data?.map(
               (elem: DataMortgageDischarge) => elem?.codeData?.cukCode

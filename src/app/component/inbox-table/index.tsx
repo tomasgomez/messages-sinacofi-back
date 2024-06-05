@@ -39,6 +39,8 @@ export default function EnhancedTable(props: {
   rowOptions?: RowOptions;
   footerComponent?: React.ReactNode;
   style?: any;
+  rowsPerPageOptions?: number[];
+  defaultRowsPerPage?: number;
 }) {
   const {
     rows = [] as Message[],
@@ -55,6 +57,8 @@ export default function EnhancedTable(props: {
     isExpansible = false,
     rowOptions = {},
     style = {},
+    rowsPerPageOptions = [5, 7, 10, 25, 50],
+    defaultRowsPerPage = 5,
   } = props || {};
 
   const [order, setOrder] = React.useState<Order>(defaultOrder);
@@ -70,7 +74,7 @@ export default function EnhancedTable(props: {
   >(null);
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(defaultRowsPerPage);
 
   const { setSelectedMessages, setSelectedRadioButtonMessages } =
     React.useContext(MessageExportContext);
@@ -237,14 +241,21 @@ export default function EnhancedTable(props: {
         }}
       >
         {footerComponent}
+
         <TablePagination
-          rowsPerPageOptions={[5, 7, 10, 25]}
+          rowsPerPageOptions={rowsPerPageOptions}
           component="div"
           count={rows?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="Registros por página:"
+          labelDisplayedRows={({ from, to, count }) => (
+            <span>
+              Página {from} - {to} de {count}
+            </span>
+          )}
         />
       </div>
     </Paper>
