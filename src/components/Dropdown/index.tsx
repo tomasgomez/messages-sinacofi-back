@@ -1,15 +1,14 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
-import { CircularProgress, Typography, styled } from "@mui/material";
-import { montserrat } from "@/utils/fonts";
+import Select from "@mui/material/Select";
+import { styled } from "@mui/material";
 import Loader from "../Loader";
 
 const StyledSelect = styled(Select)({
-  "& .MuiInputBase-root.Mui-disabled": {
+  "& .MuiInputBase-input.Mui-disabled": {
     backgroundColor: "#E5E5E5",
     color: "#000000 !important",
   },
@@ -37,6 +36,7 @@ export default function Dropdrown(props: {
   disabled?: boolean;
   loading?: boolean;
   loadingMessage?: string;
+  error?: any;
 }) {
   const {
     width,
@@ -50,12 +50,13 @@ export default function Dropdrown(props: {
     labelKey = "label",
     placeholder,
     loading,
+    error,
     loadingMessage = "Cargando...",
   } = props;
-  const [optionSelected, setOptionSelected] = React.useState(defaultValue);
-  const [isFocused, setIsFocused] = React.useState(false);
+  const [optionSelected, setOptionSelected] = useState(defaultValue);
+  const [isFocused, setIsFocused] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOptionSelected(selected || defaultValue);
   }, [defaultValue, selected]);
 
@@ -91,6 +92,7 @@ export default function Dropdrown(props: {
           label={label}
           placeholder={placeholder}
           onChange={handleChange}
+          error={error}
           onFocus={handleFocus}
           disabled={disabled}
           // displayEmpty
