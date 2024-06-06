@@ -56,7 +56,7 @@ export const MessageStatusDropdown = (props: { widthDropdown: number }) => {
           MenuProps={{
             PaperProps: {
               style: {
-                maxHeight: 150, // Ajusta este valor según tus necesidades
+                maxHeight: 150,
               },
             },
           }}
