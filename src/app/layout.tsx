@@ -12,6 +12,7 @@ import { useState, Suspense, useEffect, useContext } from "react";
 import ModalManagerProvider from "@/components/Modal/ModalManager";
 import { MessageExportProvider } from "./component/MessageExportProvider";
 import { SessionProvider, SessionProviderContext } from "@/context/SessionProvider";
+import { NextAuthProvider } from "@/context/NextAuthProvider";
 
 
 export default function RootLayout({
@@ -32,28 +33,30 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ background: "#fffffff !important" }}>
-        <SessionProvider>
-          <ModalManagerProvider>
-            <MessageExportProvider>
-              <ThemeProvider theme={theme}>
-                <MyContexLayout.Provider
-                  value={{
-                    selectedInstitution,
-                    setSelectedInsitution,
-                    currentInstitution,
-                    setCurrentInstitution
-                  }}
-                >
-                  <AppBar />
-                  <Box style={{ display: "flex", maxWidth: "100vw" }}>
-                    <SideBar />
-                    <Suspense>{children}</Suspense>
-                  </Box>
-                </MyContexLayout.Provider>
-              </ThemeProvider>
-            </MessageExportProvider>
-          </ModalManagerProvider>
-        </SessionProvider>
+        <NextAuthProvider>
+          <SessionProvider>
+            <ModalManagerProvider>
+              <MessageExportProvider>
+                <ThemeProvider theme={theme}>
+                  <MyContexLayout.Provider
+                    value={{
+                      selectedInstitution,
+                      setSelectedInsitution,
+                      currentInstitution,
+                      setCurrentInstitution
+                    }}
+                  >
+                    <AppBar />
+                    <Box style={{ display: "flex", maxWidth: "100vw" }}>
+                      <SideBar />
+                      <Suspense>{children}</Suspense>
+                    </Box>
+                  </MyContexLayout.Provider>
+                </ThemeProvider>
+              </MessageExportProvider>
+            </ModalManagerProvider>
+          </SessionProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

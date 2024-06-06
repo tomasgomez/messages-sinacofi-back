@@ -1,4 +1,5 @@
 "use client";
+import { signOut } from "next-auth/react"
 import { useContext, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import {
@@ -64,6 +65,7 @@ const AppBar = () => {
         {
           label: "Salir",
           icon: <Logout sx={{ color: "#898989" }} />,
+          onClick: () => signOut()
         },
       ];
     }, []);

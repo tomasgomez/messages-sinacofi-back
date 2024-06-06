@@ -1,22 +1,19 @@
-export const parseCookies = (name: string) => {
-    const cookies: {[key: string]: string } = {};
-    name.split(';').forEach(cookie => {
-        const [name, ...rest] = cookie.split('=');
-        const value = rest.join('=').trim();
-        if (name && value) {
-          cookies[name.trim()] = decodeURIComponent(value);
-        }
-      });
-
-    return cookies;
-}
-
 // lib/authHelpers.js
-import { Issuer, custom } from 'openid-client';
 import qs from 'qs';
 import axios from 'axios';
-import { createLocalJWKSet } from 'jose';
 
+export const parseCookies = (name: string) => {
+  const cookies: {[key: string]: string } = {};
+  name.split(';').forEach(cookie => {
+      const [name, ...rest] = cookie.split('=');
+      const value = rest.join('=').trim();
+      if (name && value) {
+        cookies[name.trim()] = decodeURIComponent(value);
+      }
+    });
+
+  return cookies;
+}
 
 // GENERATING CODE VERIFIER
 export function dec2hex(dec: any) {
@@ -56,10 +53,10 @@ export async function generateCodeChallenge(v: any) {
   }
 
 export async function getAccessToken() {
-  const url = 'https://idcs-1e0f415dd2bf423c8296ebb063528eca.identity.oraclecloud.com/oauth2/v1/token';
+  const url = process.env.IAM_VALIDATE_TOKEN_URL as string;
   const data = qs.stringify({
-    client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
+    client_id: process.env.IAM_CLIENT_ID,
+    client_secret: process.env.IAM_CLIENT_SECRET,
     grant_type: 'client_credentials',
     scope: 'urn:opc:idm:__myscopes__'
   });
@@ -80,7 +77,7 @@ export async function getAccessToken() {
 }
 
 export async function getJwkUsingToken(token: any) {
-  const jwkUrl = 'https://idcs-1e0f415dd2bf423c8296ebb063528eca.identity.oraclecloud.com:443/admin/v1/SigningCert/jwk';
+  const jwkUrl = process.env.IAM_JWK_TOKEN_URL as string;
 
   try {
     const config = {
@@ -95,60 +92,3 @@ export async function getJwkUsingToken(token: any) {
     throw error;
   }
 }
-
-export async function setupClient() {
-  const token = await getAccessToken();
-  const jwksResponse = await getJwkUsingToken(token);
-
-  if (!jwksResponse.keys) {
-    throw new Error('Invalid JWK Set response');
-  }
-
-  const jwks = {
-    keys: jwksResponse.keys.map((key:any) => {
-      let keyOps = key.key_ops;
-      if (key.alg === "RS256") {
-        keyOps = ["verify"];
-      }
-      return { ...key, key_ops: keyOps };
-    }),
-  };
-
-  const localJWKSet = createLocalJWKSet(jwks);
-
-  const oracleIAMIssuer = await Issuer.discover(process.env.OIDC_ISSUER || '');
-
-  oracleIAMIssuer[custom.http_options] = (url, options) => {
-    return {
-      ...options,
-      headers: {
-        ...options.headers,
-        Authorization: `Bearer ${token}`
-      }
-    };
-  };
-
-  const client = new oracleIAMIssuer.Client({
-    client_id: process.env.CLIENT_ID || '',
-    client_secret: process.env.CLIENT_SECRET || '',
-    redirect_uris: [`${process.env.NEXTAUTH_URL}/callback`],
-    response_types: ['code'],
-    scope: ["openid", "offline_access", "email", "profile"],
-    post_logout_redirect_uris: [`${process.env.NEXTAUTH_URL}/`],
-    id_token_signed_response_alg: 'RS256',
-    default_max_age: 3600,
-    require_auth_time: true,
-    tls_client_certificate_bound_access_tokens: false,
-    request_object_signing_alg: 'RS256',
-    introspection_endpoint_auth_signing_alg: 'RS256',
-    revocation_endpoint_auth_signing_alg: 'RS256',
-    token_endpoint_auth_signing_alg: 'RS256',
-    userinfo_signed_response_alg: 'RS256',
-    authorization_signed_response_alg: 'RS256',
-    localJWKSet
-  });
-
-  return client;
-}
-
-export const client = setupClient() 

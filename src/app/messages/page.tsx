@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     if (!loading && !session) {
       // Redirect to login page if not authenticated
-      signIn('oidc');
+      signIn('oidcs');
     }
   }, [session, loading]);
 

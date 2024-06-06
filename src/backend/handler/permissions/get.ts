@@ -24,7 +24,7 @@ export interface User {
 export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
     try {
         const { access_token } = parseCookies(req.headers.cookie as string)
-       
+      
         const idcs = await iamOracleAPI.getWellKnown();
         //@ts-ignore
         const tokenDecoded = await iamOracleAPI.validateToken(idcs, access_token!);

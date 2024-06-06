@@ -6,14 +6,14 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/messages/inbox",
+        destination: "/message",
         permanent: true,
       },
-      // {
-      //   source: '/callback',
-      //   destination: '/api/auth',
-      //   permanent: true,
-      // },
+      {
+        source: '/callback',
+        destination: '/api/auth/callback/oidc',
+        permanent: false,
+      },
     ];
   },
   // Enable standalone mode
