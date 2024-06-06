@@ -27,18 +27,6 @@ function dv(T: number): string | number {
   return S ? S - 1 : "k";
 }
 
-function formatearString(inputString: string) {
-  // Remover todos los caracteres que no sean números o letras 'k' o 'K'
-  let formattedString = inputString.replace(/[^0-9kK]/g, "");
-
-  // Aplicar la máscara
-  formattedString = formattedString.replace(
-    /([1-9])(\d{3})(\d{3})([0-9kK])/,
-    "$1.$2.$3-$4"
-  );
-
-  return formattedString;
-}
 
 const RutMask = (props: any) => {
   const { inputRef, value = "", ...other } = props;
