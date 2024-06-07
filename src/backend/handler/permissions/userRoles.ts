@@ -14,7 +14,7 @@ export interface User {
 
 export const userRoles: Record<string, User> = {
     '18782721-3': { 
-        role: '16',
+        role: 'FullAccess',
         name: "J. BUSTOS", 
         institutionCode: "0027", 
         area: "",
@@ -22,7 +22,7 @@ export const userRoles: Record<string, User> = {
         status: "Active"
     },
     '6986932-0': { 
-        role:'17', 
+        role:'FullAccess', 
         name: 'LUIS PEREIRA',
         institutionCode: "0016", 
         area: "",

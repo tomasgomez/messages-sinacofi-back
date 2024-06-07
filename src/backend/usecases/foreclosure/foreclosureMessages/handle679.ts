@@ -6,10 +6,30 @@ import { CUK } from '@/backend/entities/cuk/cuk';
 import { updateForclosure } from '../updateForeclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 import { MessageTypes } from '@/backend/entities/message/types';
+import { MessageStatus } from '@/backend/entities/message/status';
+import { FilterMessage } from '@/backend/entities/message/filter';
 
 
 export async function handle679(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
+
+    /* Find the last empty 679 message and delete it */
+    let newMessage: FilterMessage = {
+        detail: false
+    }
+
+    if (message.cukCode && message.cukCode !== '') {
+        newMessage.cukCode = [message.cukCode];
+    }
+
+    newMessage.messageCode = [MessageTypes.RECHAZO_DE_PAGO_AH];
+    newMessage.status = [MessageStatus.PREPARADO];
+
+    let messageToDelete = await messageRepository.find(newMessage);
+
+    if (messageToDelete instanceof Array && messageToDelete.length > 0) {
+        messageRepository.delete(messageToDelete[0]);
+    }
 
     /* Update the last message */
     updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
@@ -28,15 +48,10 @@ export async function handle679(cuk: CUK, message: Message, cukRepository: CUKRe
     }
 
     if (message.cukCode && message.cukCode !== ''){
+        
+        /* Update the CUK status */
         cuk.status = ForeclosureStatus.SENT_CONFIRM_PAYMENT
         cuk.cukCode = message.cukCode;
-
-        let newMessage = new Message();
-
-        newMessage.cukCode = message.cukCode;
-        newMessage.messageCode = MessageTypes.RECHAZO_DE_PAGO_AH;
-
-        messageRepository.delete(newMessage);
 
         await updateForclosure(cukRepository,messageRepository,cuk,message);
     }
