@@ -32,7 +32,7 @@ const getCreateMessagePayload = (data: any, schema: any, origin: any, userInfo: 
     // .filter((el: any) => payload[el[0]] === undefined)
     .map((el) => {
       return {
-        name: el[0] === "sign" ? "responsibleSender" : el[0],
+        name: el[0] === "sign" ? data["messageCode"] === "670" ? "responsibleSender" : "responsibleReceiver" : el[0],
         value: el[0] === "sign" ? `${userInfo.user?.name} ${userInfo.user?.rut}` : el[1],
       }
     });
