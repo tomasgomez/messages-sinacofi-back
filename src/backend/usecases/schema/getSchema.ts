@@ -27,6 +27,7 @@ import {
 } from '@/backend/entities/schema/filter';
 import { Parameter } from '@/backend/entities/message/parameter';
 import { parameterUsecase } from '../parameter/usecases';
+import { post } from '@/backend/adapters/rule/post';
 
 const messageRepository: MessageRepository = new PrismaAdapter();
 
@@ -47,54 +48,69 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
     if (filter.messageCode)
       path = `${path}/${filter.messageCode}`;
 
-    let schemas = await get(url, path, {}, {})
+    // let schemas = await get(url, path, {}, {})
 
     console.log(filter);
 
     // check if exists cukCode
     if (filter.cuk && filter.cuk != ''){
       let parameters = await parameterUsecase.getParameters({cukCode: [filter.cuk]})
-      console.log(parameters);
+      let schemas = await post(url, path, {}, {
+        user:  {
+          "fullName": "Felipe García",
+          "dni": "17604011-4",
+          "area": "05",
+          "institution": "037 - SAN"
+      },
+      parameters
+      })
+
+      return schemas
     }
-    if (!filter.messageCode?.includes('670') && filter.messageId && filter.messageId.length>0) {
 
-      let filterMessage: FilterMessage = {
-          id: filter.messageId,
-          detail: false,
-        };
+    let schemas = await get(url, path, {}, {})
 
-      let message = await messageRepository.find(filterMessage);
+    return schemas;
 
-      if (message instanceof Error) {
-        return message;
-      }
+    // if (!filter.messageCode?.includes('670') && filter.messageId && filter.messageId.length>0) {
 
-      if (!message || message.length === 0) {
-        return schemas;
-      }
+    //   let filterMessage: FilterMessage = {
+    //       id: filter.messageId,
+    //       detail: false,
+    //     };
 
-      // get message 670
-      const cuk = message.map(msg => msg.cukCode ?? '').filter(c => c != '');
+    //   let message = await messageRepository.find(filterMessage);
+
+    //   if (message instanceof Error) {
+    //     return message;
+    //   }
+
+    //   if (!message || message.length === 0) {
+    //     return schemas;
+    //   }
+
+    //   // get message 670
+    //   const cuk = message.map(msg => msg.cukCode ?? '').filter(c => c != '');
       
-      filterMessage = {
-        cukCode: cuk,
-        messageCode: ["670"],
-        detail: true
-      }
+    //   filterMessage = {
+    //     cukCode: cuk,
+    //     messageCode: ["670"],
+    //     detail: true
+    //   }
 
-      let message670 = await messageRepository.find(filterMessage);
+    //   let message670 = await messageRepository.find(filterMessage);
 
-      if (message670 instanceof Error) {
-        return message670;
-      }
+    //   if (message670 instanceof Error) {
+    //     return message670;
+    //   }
 
-      if (!message670 || message.length === 0) {
-        return schemas;
-      }
+    //   if (!message670 || message.length === 0) {
+    //     return schemas;
+    //   }
 
 
-      schemas.parameters = adaptSchema(schemas.parameters, message670[0]);
-    }
+    //   schemas.parameters = adaptSchema(schemas.parameters, message670[0]);
+    // }
  
     return schemas;
   } catch (error: any) {
