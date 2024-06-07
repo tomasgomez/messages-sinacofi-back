@@ -5,6 +5,7 @@ export interface UserInfo {
   
 export interface User {
     role:            string;
+    rut:             string;
     name:            string;
     institutionCode: string;
     area:            string;
@@ -15,6 +16,7 @@ export interface User {
 export const userRoles: Record<string, User> = {
     '18782721-3': { 
         role: '16',
+        rut: '18782721-3',
         name: "J. BUSTOS", 
         institutionCode: "0027", 
         area: "",
@@ -23,6 +25,7 @@ export const userRoles: Record<string, User> = {
     },
     '6986932-0': { 
         role:'17', 
+        rut: '6986932-0',
         name: 'LUIS PEREIRA',
         institutionCode: "0016", 
         area: "",
@@ -31,6 +34,7 @@ export const userRoles: Record<string, User> = {
     },
     '17604011-4': { 
         role: '07', 
+        rut: '17604011-4',
         name: 'NICOLAS ROCA',
         institutionCode: "0037", 
         area: "",
@@ -39,54 +43,61 @@ export const userRoles: Record<string, User> = {
     },
     '3077016': {
         role: '12',
+        rut: '3077016',
         name: "DANIEL KOKAL",
         institutionCode: "350",
         area: "",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
-    "3077015":{
+    "3077015": {
         role: '13',
+        rut: "3077015",
         name: "LUIS P. UPR1",
         institutionCode: "350",
         area: "",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
-    "16088932":{
+    "16088932": {
         role: '13',
+        rut: "16088932",
         name: "O. VÉLIZ",
         institutionCode: "0027",
         area: "",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
-    "13003450":{
+    "13003450": {
         role: '02',
+        rut: "13003450",
         name: "P.RAMÍREZ",
         institutionCode: "0049",
         area: "",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
-    "16642594":{
+    "16642594": {
         role: '12',
+        rut: "16642594",
         name: "JAVIER CANAL",
         institutionCode: "0051",
         area: "",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
-    "30077020":{
+    "30077020": {
         role: '07',
+        rut: "30077020",
         name: "MONITOREO",
         institutionCode: "0049",
         area: "",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
-    "25876655":{
+    "25876655": {
         role: '13',
+        rut: "25876655",
         name: "LUIS TOMOCHE",
         institutionCode: "0051",
         area: "",
