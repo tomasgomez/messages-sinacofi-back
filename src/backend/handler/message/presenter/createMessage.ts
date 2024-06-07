@@ -1,6 +1,7 @@
 import { Parameter } from '@/backend/entities/message/parameter';
 import { Message } from '@/backend/entities/message/message';
 import { processStringField } from '@/backend/utils/functions';
+import { validateParameters } from './validateParameters';
 
 export function validateCreateMessage(data: any): Message | Error {
   const { 
@@ -8,6 +9,7 @@ export function validateCreateMessage(data: any): Message | Error {
 
   let message: Message = new Message();
   let parametersMessage: Parameter[]  = [];
+  let cukCodeParam = '';
 
   // Set the message fields
   message.messageCode = processStringField(messageCode);
@@ -18,34 +20,14 @@ export function validateCreateMessage(data: any): Message | Error {
   message.cukCode = processStringField(cukCode);
   message.statusCode = status;
 
-  // Add parameters to the message
-  if (parameters && typeof parameters === 'object') {
-    let counter = 0;
-     parameters.forEach((element: any) => {
-      let value = (typeof element.value === 'string') ? element.value : element.value?.toString() ?? '';
+  // Validate parameters
+  [parametersMessage, cukCodeParam] = validateParameters(messageCode, parameters);
 
-      if (element.name === 'CUK') {
-        message.cukCode = value;
-      }
+  if (cukCodeParam !== '')
+    message.cukCode = cukCodeParam;
 
-      let parameter: Parameter =  {
-        name: element.name ?? '',
-        label: element.name ?? '',
-        messageCode: message.messageCode ?? '',
-        type: element.type ?? '',
-        placeholder: element.placeholder ?? '',
-        description: element.description ?? '',
-        defaultValue: element.value ?? '',
-        priority: counter,
-        value: value,
-        validations: JSON.stringify(element.validations),
-      }
-      parametersMessage.push(parameter)
-      counter++;
-     });
-
-    message.parameters = parametersMessage;
-  }
-
+  // Set the parameters
+  message.parameters = parametersMessage;
+  
   return message;
 }

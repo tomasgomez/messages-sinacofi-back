@@ -5,7 +5,7 @@ import {
   StyledDivider,
   StyledTypographyText,
   StyledTypographyData,
-} from "./styled";
+} from "./styles";
 
 const InfoColumn = ({ data }: { data: any }) => {
   const {

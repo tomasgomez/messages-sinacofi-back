@@ -63,7 +63,7 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
             PaperProps: {
               style: {
                 maxWidth: widthDropdown,
-                maxHeight: 150, // Ajusta este valor según tus necesidades
+                maxHeight: 150,
               },
             },
           }}

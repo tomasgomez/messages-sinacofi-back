@@ -1,6 +1,5 @@
 import {
   StyledContainerProgressBar,
-  StyledContainerTitleProgressBar,
   StyledTitleProgressBar,
   StyledContainerBar,
   StyledContainerBlock,
@@ -10,13 +9,12 @@ import {
   StyledTypographyCode,
   StyledTypographyStatus,
   StyledLinearProgress,
-} from "./styled";
-import { getStatusText, getIsPendingStatus } from "@/utils/mortgage-discharge-utils";
+} from "./styles";
+import {
+  getStatusText,
+  getIsPendingStatus,
+} from "@/utils/mortgage-discharge-utils";
 import { Message } from "@/app/component/inbox-table/type";
-
-// with status -> green
-// without status -> blue
-// without data -> grey
 
 const ProgressBar = ({
   data = [],

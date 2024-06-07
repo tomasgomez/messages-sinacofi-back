@@ -29,7 +29,7 @@ export class MessageUscase implements MessageUsecases  {
     
     // handle message
     handleMessage = async (message: Message): Promise<Message | Error> => 
-        handleMessage(this.messageRepository, message);
+        handleMessage(this.messageRepository, this.cukRepository, message);
 
     // update message
     updateMessage = async (message: Message): Promise<Message | Error> => 

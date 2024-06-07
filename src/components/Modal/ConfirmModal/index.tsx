@@ -1,17 +1,24 @@
 import { Modal } from "@/components/Modal";
 import { Box, Button, Typography } from "@mui/material";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { montserrat } from "@/utils/fonts";
+import { InfoOutlined, WarningAmberRounded } from "@mui/icons-material";
+
+const icons: any = {
+  warning: <WarningAmberRounded fontSize="large" style={{ color: "#FFC742", fontSize: "48px" }} />,
+  info: <InfoOutlined fontSize="large" style={{ color: "#898989", fontSize: "48px" }} />,
+};
 
 const ConfirmModal = ({
   open,
   title,
+  icon,
   onClose,
   body,
   onConfirm,
 }: {
   open: boolean;
   title: string;
+  icon: string | any;
   body: any;
   onClose: any;
   onConfirm: any;
@@ -27,7 +34,7 @@ const ConfirmModal = ({
             flexDirection: "column",
           }}
         >
-          <ErrorOutlineIcon fontSize="large" style={{ color: "#CBCBCB" }} />
+          {icons[icon] || icon || icons.warning}
           <Box
             sx={{
               display: "flex",

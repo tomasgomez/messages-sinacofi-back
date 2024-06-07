@@ -14,11 +14,9 @@ interface StyledContentCardProps {
 
 export const StyledContentCard = styled(Box)<StyledContentCardProps>(
   ({ height }: StyledContentCardProps): CSSObject => ({
-    // borderRadius: "10px",
     background: "#fff",
-    // boxShadow: "0px 2px 5px 0px rgba(0, 0, 0, 0.1)",
-    padding: "16px 32px 16px 32px",
-    height: height ? `${height}px` : "auto", // Si height existe, se establece, de lo contrario, se ajusta automáticamente
+    padding: "10px 32px 10px 32px",
+    height: height ? `${height}px` : "auto",
     display: "flex",
     flexDirection: "column",
     overflow: "scroll",
@@ -74,7 +72,7 @@ export const StyledChip = styled(Chip)<StyledChipProps>(
     fontSize: 12,
     cursor: "default",
     marginTop: 3,
-    borderRadius: "10px", // o utiliza props.theme o una variable CSS
+    borderRadius: "10px",
   })
 );
 

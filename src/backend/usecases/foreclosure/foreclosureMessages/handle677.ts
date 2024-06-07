@@ -1,11 +1,12 @@
 import { Message } from '@/backend/entities/message/message';
 import { CUKRepository } from '@/backend/repository/cukRepository';
 import { MessageRepository } from '@/backend/repository/messageRepository';
-import { MessageStatus } from '@/backend/entities/message/status';
+import { MessageTypes } from '@/backend/entities/message/types';
 import { updateLastMessage } from '@/backend/usecases/foreclosure/updateForeclosureLastMessage';
 import { CUK } from '@/backend/entities/cuk/cuk';
 import { updateForclosure } from '../updateForeclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
+import { createMessage } from '../../message/createMessage';
 
 
 export async function handle677(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
@@ -28,11 +29,20 @@ export async function handle677(cuk: CUK, message: Message, cukRepository: CUKRe
     }
 
     if (message.cukCode && message.cukCode !== ''){
+        
         cuk.status = ForeclosureStatus.PAYMENT_OPTION_REJECTION
         cuk.cukCode = message.cukCode;
+
         await updateForclosure(cukRepository,messageRepository,cuk,message);
         
         cuk.status = ForeclosureStatus.PAYMENT_OPTION_ACCEPTED
+        cuk.cukCode = message.cukCode;
+
+        await updateForclosure(cukRepository,messageRepository,cuk,message);
+        
+        cuk.status = ForeclosureStatus.PAYMENT
+        cuk.cukCode = message.cukCode;
+
         await updateForclosure(cukRepository,messageRepository,cuk,message);
     }
     

@@ -1,6 +1,7 @@
 import { Message } from "@/backend/entities/message/message";
 import { PrismaClientWrapper } from '../prismaWrapper';
 import { Document } from '@/backend/entities/global/document';
+import { Parameter } from '@/backend/entities/message/parameter';
 
 export async function update(message: Message): Promise<Message | Error> {
     try {
@@ -72,7 +73,8 @@ export async function update(message: Message): Promise<Message | Error> {
             prismaClient.parameters.updateMany({
                 where: {
                     messageId: updatedMessage.id,
-                    name: parameter.name
+                    name: parameter.name,
+                    priority: parameter.priority
                 },
                 data: {
                     value: parameter.value
@@ -81,16 +83,19 @@ export async function update(message: Message): Promise<Message | Error> {
         }
 
         // Create new parameters
-        for (const parameter of toCreate) {
-            prismaClient.parameters.create({
-                data: {
-                    name: parameter.name,
-                    value: parameter.value,
-                    messageId: updatedMessage.id,
-                    priority: parameter.priority || 0,
-                }
-            });
-        }
+        let createManyParameters = toCreate.map((parameter: any) => {
+            let createparameter: Parameter = {
+                name: parameter.name,
+                value: parameter.value,
+                messageId: updatedMessage.id,
+                priority: parameter.priority,
+            }
+            return createparameter;
+        });
+        
+        let result = await prismaClient.parameters.createMany({
+            data: createManyParameters as any
+        });
 
         return updatedMessage;
     } catch (error: any) {

@@ -19,6 +19,8 @@ import {
 import { MortgageDischargeData } from "@/app/component/inbox-table/type";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
+import EmptyScreen from "../components/empty-screen";
+import { useCalcDimensions } from "@/utils/dimensions";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = useState(false);
@@ -86,16 +88,18 @@ export default function InProcessScreen() {
     setModalTrackingData(data);
   };
 
-  const maxHeight: number = 474;
-  const margin: number = 32;
-  const cardHeight: number = 88;
+  const usedHeight: number = 316;
+  const { height: maxHeight }: { height: number } =
+    useCalcDimensions(usedHeight);
+  const margin: number = 20;
+  const cardHeight: number = 88.95;
 
   const getHeight = useCallback(() => {
     if (!data || !data.length) return maxHeight;
-    const espaceByRow = data.length * (cardHeight + margin) + margin;
+    const espaceByRow = data.length * (cardHeight + margin);
     if (espaceByRow < maxHeight) return maxHeight - espaceByRow;
     return 0;
-  }, [data?.length]);
+  }, [data?.length, maxHeight]);
 
   return (
     <CardContextProvider filters={filters} setFilters={setFilters}>
@@ -104,7 +108,7 @@ export default function InProcessScreen() {
           width: "calc(100% - 270px)",
         }}
       >
-        <Box sx={{ m: 2 }}>
+        <Box sx={{ margin: "32px 16px 16px 16px" }}>
           <Header
             dataCodeList={data?.map(
               (elem: DataMortgageDischarge) => elem?.codeData?.cukCode
@@ -114,7 +118,8 @@ export default function InProcessScreen() {
         </Box>
         <Box
           style={{
-            maxHeight: maxHeight,
+            maxHeight:
+              maxHeight < 0 ? `calc(100vh - ${usedHeight}px)` : maxHeight,
             overflowY: "scroll",
             overflowX: "hidden",
             width: "calc(100vw - 270px)",
@@ -124,7 +129,9 @@ export default function InProcessScreen() {
           {loading ? (
             <Loader
               label="Cargando Alzamientos Hipotecarios..."
-              minHeight={maxHeight}
+              minHeight={
+                maxHeight < 0 ? `calc(100vh - ${usedHeight}px)` : maxHeight
+              }
             />
           ) : (
             <>
@@ -135,11 +142,15 @@ export default function InProcessScreen() {
                   handlerTrackingModal={handlerTrackingModal}
                 />
               ))}
-              <div
-                style={{
-                  height: getHeight(),
-                }}
-              />
+              {!data || !data.length ? (
+                <EmptyScreen height={maxHeight} />
+              ) : (
+                <div
+                  style={{
+                    height: getHeight(),
+                  }}
+                />
+              )}
             </>
           )}
         </Box>
