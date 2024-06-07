@@ -56,6 +56,8 @@ const InstitutionDropdown = ({
       defaultValue={defaultValue}
       onChange={onChange}
       selected={selected}
+      disablePortal={false}
+      maxMenuHeight={190}
     />
   );
 };
