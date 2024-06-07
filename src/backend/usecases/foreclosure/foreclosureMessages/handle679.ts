@@ -13,29 +13,23 @@ import { FilterMessage } from '@/backend/entities/message/filter';
 export async function handle679(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
 
-    /* Find the last empty 679 message and delete it */
-    let newMessage = new Message();
+    /* Find the last empty 678 message and delete it */
+    let newMessage: FilterMessage = {
+        detail: false
+    }
 
-    newMessage.cukCode = message.cukCode;
-    newMessage.messageCode = MessageTypes.RECHAZO_DE_PAGO_AH;
+    if (message.cukCode && message.cukCode !== '') {
+        newMessage.cukCode = [message.cukCode];
+    }
 
-    messageRepository.delete(newMessage);
-    // let newMessage: FilterMessage = {
-    //     detail: false
-    // }
+    newMessage.messageCode = [MessageTypes.RECHAZO_DE_PAGO_AH];
+    newMessage.status = [MessageStatus.PREPARADO];
 
-    // if (message.cukCode && message.cukCode !== '') {
-    //     newMessage.cukCode = [message.cukCode];
-    // }
+    let messageToDelete = await messageRepository.find(newMessage);
 
-    // newMessage.messageCode = [MessageTypes.RECHAZO_DE_PAGO_AH];
-    // newMessage.status = [MessageStatus.PREPARADO];
-
-    // let messageToDelete = await messageRepository.find(newMessage);
-
-    // if (messageToDelete instanceof Array && messageToDelete.length > 0) {
-    //     messageRepository.delete(messageToDelete[0]);
-    // }
+    if (messageToDelete instanceof Array && messageToDelete.length > 0) {
+        messageRepository.delete(messageToDelete[0]);
+    }
 
     /* Update the last message */
     updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);

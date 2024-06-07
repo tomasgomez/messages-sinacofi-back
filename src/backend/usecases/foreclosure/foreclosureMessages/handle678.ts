@@ -14,28 +14,22 @@ export async function handle678(cuk: CUK, message: Message, cukRepository: CUKRe
     let updatedMessage: Message | Error;
 
     /* Find the last empty 679 message and delete it */
-    let newMessage = new Message();
+    let newMessage: FilterMessage = {
+        detail: false
+    }
 
-    newMessage.cukCode = message.cukCode;
-    newMessage.messageCode = MessageTypes.CONFIRMACION_DE_PAGO_AH;
+    if (message.cukCode && message.cukCode !== '') {
+        newMessage.cukCode = [message.cukCode];
+    }
 
-    messageRepository.delete(newMessage);
-    //  let newMessage: FilterMessage = {
-    //     detail: false
-    // }
+    newMessage.messageCode = [MessageTypes.CONFIRMACION_DE_PAGO_AH];
+    newMessage.status = [MessageStatus.PREPARADO];
 
-    // if (message.cukCode && message.cukCode !== '') {
-    //     newMessage.cukCode = [message.cukCode];
-    // }
+    let messageToDelete = await messageRepository.find(newMessage);
 
-    // newMessage.messageCode = [MessageTypes.CONFIRMACION_DE_PAGO_AH];
-    // newMessage.status = [MessageStatus.PREPARADO];
-
-    // let messageToDelete = await messageRepository.find(newMessage);
-
-    // if (messageToDelete instanceof Array && messageToDelete.length > 0) {
-    //     messageRepository.delete(messageToDelete[0]);
-    // }
+    if (messageToDelete instanceof Array && messageToDelete.length > 0) {
+        messageRepository.delete(messageToDelete[0]);
+    }
 
     /* Update the last message */
     updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
