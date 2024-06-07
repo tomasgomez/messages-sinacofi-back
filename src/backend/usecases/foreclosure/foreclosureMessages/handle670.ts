@@ -8,10 +8,6 @@ import {
   MessageRepository
 } from '@/backend/repository/messageRepository';
 import {
-  processMessageParameters,
-  setCukStatus,
-} from '@/backend/utils/foreclosure';
-import {
   createMessage
 } from '@/backend/usecases/message/createMessage';
 import {

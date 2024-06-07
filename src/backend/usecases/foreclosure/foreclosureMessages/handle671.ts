@@ -6,7 +6,6 @@ import { updateLastMessage } from '@/backend/usecases/foreclosure/updateForeclos
 import { updateForclosure } from '../updateForeclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 
-
 export async function handle671(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
 
     let updatedMessage: Message | Error;

@@ -44,6 +44,18 @@ export const getDescriptionByType = (type: string): string => {
             return MessageDescriptions.TRANSFERENCIA_DE_FONDOS_INDIVIDUAL;
         case MessageTypes.TEXTO_LIBRE:
             return MessageDescriptions.TEXTO_LIBRE;
+        case MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO:
+            return MessageDescriptions.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO;
+        case MessageTypes.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO:
+            return MessageDescriptions.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO;
+        case MessageTypes.DATOS_PARA_EL_PAGO_AH:
+            return MessageDescriptions.DATOS_PARA_EL_PAGO_AH;
+        case MessageTypes.AVISO_DE_PAGO_AH:
+            return MessageDescriptions.AVISO_DE_PAGO_AH;
+        case MessageTypes.RECHAZO_DE_PAGO_AH:
+            return MessageDescriptions.RECHAZO_DE_PAGO_AH;
+        case MessageTypes.CONFIRMACION_DE_PAGO_AH:
+            return MessageDescriptions.CONFIRMACION_DE_PAGO_AH;
         default:
             return '';
     }

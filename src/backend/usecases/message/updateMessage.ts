@@ -18,30 +18,14 @@ export async function updateMessage(repository: MessageRepository, message: Mess
             message.setStatus(status);
         }
 
-        console.log(message.documents);
+        // Store the documents
+        let result = await storeDocs(message);
 
-        /* Check if the message has documents */
-        if (message.documents && message.documents.length > 0) {
-
-            let docs: Documents[] = [];
-            /* Store the documents */
-            for (const doc of message.documents) {
-                let cukCode = message.parameters?.filter(d => d.name == 'CUK');
-                let messagePath = message.messageCode ? message.messageCode : ''; 
-                if (cukCode && cukCode.length > 0 && cukCode[0].value != ''){
-                    messagePath = path.join(cukCode[0].value!, messagePath);
-                }
-                const docResponse = await docUseCase.storeDoc(doc, messagePath);
-                // check response
-                if (docResponse instanceof Error) {
-                    return docResponse;
-                }
-                // push doc
-                docs.push(docResponse);
-            }
-
-            message.documents = docs;
+        if (result instanceof Error) {
+            return result;
         }
+
+        message = result;
 
         // Update the status of the message
         switch (status) {
@@ -75,4 +59,36 @@ export async function updateMessage(repository: MessageRepository, message: Mess
         console.error('Error fetching message:', error);
         return error;
     }
+}
+
+async function storeDocs(message: Message): Promise <Message | Error> {
+    let docs: Documents[] = [];
+     
+    /* Check if the message has documents */
+     if (message.documents && message.documents.length > 0) {      
+        
+        /* Store the documents */
+        for (const doc of message.documents) {
+            
+            let cukCode = message.parameters?.filter(d => d.name == 'CUK');
+            let messagePath = message.messageCode ? message.messageCode : '';
+
+            if (cukCode && cukCode.length > 0 && cukCode[0].value != ''){
+                messagePath = path.join(cukCode[0].value!, messagePath);
+            }
+
+            const docResponse = await docUseCase.storeDoc(doc, messagePath);
+            
+            // check response
+            if (docResponse instanceof Error) {
+                return docResponse;
+            }
+            // push doc
+            docs.push(docResponse);
+        }
+
+        message.documents = docs;
+    }
+
+    return message;
 }

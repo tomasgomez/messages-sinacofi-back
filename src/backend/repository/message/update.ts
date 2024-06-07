@@ -92,14 +92,10 @@ export async function update(message: Message): Promise<Message | Error> {
             }
             return createparameter;
         });
-
-        console.log('Create many parameters:', createManyParameters);
         
         let result = await prismaClient.parameters.createMany({
             data: createManyParameters as any
         });
-
-        console.log('Result:', result);
 
         return updatedMessage;
     } catch (error: any) {

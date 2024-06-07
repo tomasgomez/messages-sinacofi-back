@@ -7,7 +7,6 @@ import { Message } from '../../entities/message/message';
 import { MessageForeclosureUsecases } from "./interface";
 import { getMessageForeclosure } from './getMessageForeclosure';
 import { createForeclosure } from './createForeclosure';
-import { handleForeclosure } from './handleForeclosure';
 import { CUK } from '../../entities/cuk/cuk';
 import { updateForclosure } from "./updateForeclosure";
 import { normalization } from "./normalization";
@@ -25,9 +24,6 @@ export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
     // create foreclosure
     createForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 
         createForeclosure(this.cukRepository, cuk, message)
-
-    handleForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Message | Error > =>
-        handleForeclosure(this.cukRepository,this.messageRepository , cuk, message)
 
     updateForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 
         updateForclosure(this.cukRepository, this.messageRepository, cuk, message)

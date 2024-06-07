@@ -27,8 +27,6 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       return new Error('Invalid CUK');
     }
 
-    console.log('Cuk:', cuk);
-
     /* Set variables */
     let newMessage: Message;
     let messageType = '';

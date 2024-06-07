@@ -18,10 +18,6 @@ async function find(filter: FilterMessage): Promise<Message[] | Error> {
         if (filter.status && filter.status.length > 0) {
             status = findStatus(filter);
         }
-
-        console.log('where:', where);
-        console.log('select:', select);
-        console.log('status:', status);
         
         const messages = await prismaClient.message.findMany({
             where: {
@@ -37,9 +33,6 @@ async function find(filter: FilterMessage): Promise<Message[] | Error> {
             take: parseInt(filter.count ?? '5', 10) ?? 5,
             skip: parseInt(filter.offset ?? '0', 10) ?? 0,
         });
-
-        console.log('messages:', messages);
-        
 
         // If no messages are found, return an error
         if (messages.length === 0) {

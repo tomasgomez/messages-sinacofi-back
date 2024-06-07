@@ -41,8 +41,6 @@ function extractParameters(dataToAdapt: any, userData: any): Parameter[] {
         return parameter;
     })
 
-    console.log(filterParams);
-
     if (filterParams.length > 0) {
         return finalParameters.filter((param) => !filterParams.includes(param.id));
     }
