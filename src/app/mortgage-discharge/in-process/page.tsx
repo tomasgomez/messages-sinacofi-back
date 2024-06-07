@@ -17,6 +17,8 @@ import {
   ModalTrackingData,
 } from "@/types/mortgage-discharge";
 import { MortgageDischargeData } from "@/app/component/inbox-table/type";
+import { useModalManager } from "@/components/Modal";
+import basicError from "@/components/Modal/ErrorModal/basicError";
 
 export default function InProcessScreen() {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = useState(false);
@@ -30,27 +32,35 @@ export default function InProcessScreen() {
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
 
+  const { ErrorModal } = useModalManager();
+
   const [filters, setFilters] = useState<Filter[]>([
     { label: "channel", value: "Personas" },
   ]);
 
   const handleGetDataList = async () => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    // Add the institution destination to the filters after changing it
-    const auxFilters: Filter[] = [
-      ...filters,
-      { label: "institutionCode", value: selectedInstitution },
-      { label: "count", value: rowsPerPage },
-      { label: "offset", value: `${page * rowsPerPage}` },
-    ];
+      // Add the institution destination to the filters after changing it
+      const auxFilters: Filter[] = [
+        ...filters,
+        { label: "institutionCode", value: selectedInstitution },
+        { label: "count", value: rowsPerPage },
+        { label: "offset", value: `${page * rowsPerPage}` },
+      ];
 
-    const result: MortgageDischargeData[] = await getForeClosureDataCards(
-      auxFilters
-    );
+      const result: MortgageDischargeData[] = await getForeClosureDataCards(
+        auxFilters
+      );
 
-    setData(formatCardData(result));
-    setLoading(false);
+      setData(formatCardData(result));
+      setLoading(false);
+    } catch (error: any) {
+      setData([]);
+      setLoading(false);
+      ErrorModal.open(basicError(error));
+    }
   };
 
   useEffect(() => {
