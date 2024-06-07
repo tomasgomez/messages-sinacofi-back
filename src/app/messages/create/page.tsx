@@ -32,11 +32,8 @@ const getCreateMessagePayload = (data: any, schema: any, origin: any, userInfo: 
     // .filter((el: any) => payload[el[0]] === undefined)
     .map((el) => {
       return {
-        name: el[0],
-        label: schema?.parameters
-          .filter((field: any) => field.type !== "label" && field.type !== "linebreak")
-          .find((field: any) => field.name === el[0])?.label,
-        value: (el[0] === "sign" && el[1]) ? userInfo.user?.name : el[1],
+        name: el[0] === "sign" ? "responsibleSender" : el[0],
+        value: el[0] === "sign" ? `${userInfo.user?.name} ${userInfo.user?.rut}` : el[1],
       }
     });
   return payload;
@@ -141,7 +138,7 @@ const CreateMessage = () => {
         .then((schema: any) => {
           setMessageSchema({
             ...schema,
-            actions: { saveDraftDisabled: ["671", "672", "673", "674", "675"].includes(messageCode), sendButtonDisabled: messageCode === "670" },
+            actions: { saveDraftDisabled: ["671", "672", "673", "674", "675", "676", "677", "678", "679"].includes(messageCode), sendButtonDisabled: messageCode === "670" },
             parameters: messageCode === "670" ? schema?.parameters.map((parameter: any) => (
               parameter.id.startsWith("beneficiaryBank")
               // parameter.id === "destination" 
