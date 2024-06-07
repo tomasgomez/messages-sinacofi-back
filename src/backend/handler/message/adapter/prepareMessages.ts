@@ -43,6 +43,9 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
           statusFilered = statusFilered?.filter(d => d.id != '05' && d.id != '01')
         } else if (isReceiver && ReceiverMessageCodes.includes(message.messageCode!)) {
           statusFilered = statusFilered?.filter(d => d.id != '06')
+          if (message.messageCode == '678' || message.messageCode == '679' && statusFilered?.length == 1) { //TODO: replace this with a better condition
+            statusFilered = statusFilered?.filter(d => d.id != '01')
+          }
         }
       }
 
@@ -87,5 +90,5 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
   export { prepareMessages }
 
 
-  const SenderMessageCodes = ["670","674","676","677"];
-  const ReceiverMessageCodes = ["671", "672", "673", "675", "678", "679"];
+  const SenderMessageCodes = ["670","674","677"];
+  const ReceiverMessageCodes = ["671", "672", "673", "675","676","678", "679"];

@@ -149,6 +149,18 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       case ForeclosureStatus.INIT: // 670 enviado
         cuk.status = ForeclosureStatus.INIT;
         break;
+      
+      case ForeclosureStatus.PAYMENT: // 11
+        cuk.status = ForeclosureStatus.PAYMENT;
+        break;
+      
+      case ForeclosureStatus.SENT_REJECTION: // 12
+        cuk.status = ForeclosureStatus.SENT_REJECTION;
+        break;
+
+      case ForeclosureStatus.SENT_CONFIRM_PAYMENT: // 14
+        cuk.status = ForeclosureStatus.SENT_CONFIRM_PAYMENT;
+        break;
 
       default:
         return new Error('Invalid status');
