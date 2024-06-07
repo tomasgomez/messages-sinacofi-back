@@ -28,6 +28,10 @@ export async function getForeClosureDataCards(
       throw new Error(`Error: Failed api call, Status: ${response.status}`);
     }
 
+    if (response.status === 204) {
+      return [];
+    }
+
     const data: MortgageDischargeData[] = await response.json();
 
     return data;
