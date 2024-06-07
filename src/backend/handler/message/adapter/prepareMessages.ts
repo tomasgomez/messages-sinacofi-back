@@ -34,7 +34,7 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
 
         // Sender
         if(isSender && SenderMessageCodes.includes(message.messageCode!)) {
-          statusFilered = statusFilered?.filter(d => d.id != '06' && d.id != '01')
+          statusFilered = statusFilered?.filter(d => d.id != '06')
         } else if (isSender && ReceiverMessageCodes.includes(message.messageCode!)) {
           statusFilered = statusFilered?.filter(d => d.id != '05' && d.id != '01')
           
@@ -42,7 +42,7 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
         } else if (isReceiver && SenderMessageCodes.includes(message.messageCode!)) {
           statusFilered = statusFilered?.filter(d => d.id != '05' && d.id != '01')
         } else if (isReceiver && ReceiverMessageCodes.includes(message.messageCode!)) {
-          statusFilered = statusFilered?.filter(d => d.id != '06' && d.id != '01')
+          statusFilered = statusFilered?.filter(d => d.id != '06')
         }
       }
 
