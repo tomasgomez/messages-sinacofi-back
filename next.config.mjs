@@ -4,11 +4,11 @@ const nextConfig = {
   reactStrictMode: false,
   async redirects() {
     return [
-      {
-        source: "/",
-        destination: "/message",
-        permanent: true,
-      },
+      // {
+      //   source: "/",
+      //   destination: "/messages/inbox",
+      //   permanent: true,
+      // },
       {
         source: '/callback',
         destination: '/api/auth/callback/oidc',

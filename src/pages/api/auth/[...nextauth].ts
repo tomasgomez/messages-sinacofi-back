@@ -5,15 +5,12 @@ import { Issuer, custom } from "openid-client";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
- 
   const token = await getAccessToken();
   const code = generateCodeVerifier();
   const codeChallenge = await generateCodeChallenge(code);
  
   const iss = await Issuer.discover(process.env.IAM_BASE_URL || '');
   iss[custom.http_options] = (url, options) => {
-    console.log("url")
-    console.log(options)
     return {
       ...options,
       headers: {
@@ -72,16 +69,14 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             code_verifier: code,   
             state: context.checks.state,
           });  
-
-          console.log(tokenSet);
           return { tokens: tokenSet }
         }
       },
       async profile(profile: any) {
         return {
-          id: profile.sub,
-          name: profile.name,
-          email: profile.email
+          id: profile.user_id,
+          name: profile.user_displayname,
+          // email: profile.email
         };
       },
     },
@@ -93,15 +88,32 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       session.accessToken = token.accessToken;
       return session;
     },
+    async jwt({token, user, account}:{ token: any, user: any, account: any, profile?: any }) {
+      if (account?.id_token) {
+          token.idToken = account.id_token;
+      }
+      return token;
+    },
     async redirect({ url, baseUrl }: { url: any, baseUrl: any }) {
-      return url.startsWith(baseUrl) ? url : baseUrl;
+      console.log(url, baseUrl);
+      if(url.startsWith('https://idcs-1e0f415dd2bf423c8296ebb063528eca.identity.oraclecloud.com/oauth2/v1/userlogout')){
+        return url;
+      }
+      // if(url ==='/api/signout'){
+      //   client.revoke();
+      //   // const ssoLogoutUrl = process.env.IAM_SIGN_OUT_URL;
+      //   // const redirectUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+      //   // const signoutWithRedirectUrl = `${ssoLogoutUrl}`;
+      //   return baseUrl;
+      // }
+      return url.startsWith(baseUrl) ? `${url}` : baseUrl;
     }
   };
   
   const options: AuthOptions = {
     providers,
     callbacks,
-    pages: {signIn: '/auth/signIn'}
+    // pages: {signIn: '/auth/signIn'}
   }
   return NextAuth(req, res, options);
 

@@ -1,18 +1,20 @@
 'use client'
-// import Image from "next/image";
-// import styles from "./page.module.css";
 import { useSession, signIn } from 'next-auth/react';
+import {  useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 
 export default function Home() {
+  const router = useRouter();
   const { data: session, status } = useSession();
   const loading = status === 'loading';
 
   useEffect(() => {
     if (!loading && !session) {
-      // Redirect to login page if not authenticated
-      signIn('oidc');
+      signIn('oidc', { prompt: "login" })
+    }
+    else if (session && !loading){
+      router.push('/messages/inbox');
     }
   }, [session, loading]);
 
@@ -21,6 +23,6 @@ export default function Home() {
   }
 
   return (
-    <div>test</div>
+    <div>loading...</div>
   );
 };
