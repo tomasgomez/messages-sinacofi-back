@@ -38,6 +38,8 @@ export default function Dropdown(props: {
   error?: any;
   maxMenuHeight?: number | string;
   maxMenuWidth?: number | string;
+  disablePortal?: boolean;
+  disableScrollLock?: boolean;
 }) {
   const {
     width = "100%",
@@ -54,8 +56,11 @@ export default function Dropdown(props: {
     maxMenuHeight,
     maxMenuWidth,
     error,
+    disablePortal = true,
+    disableScrollLock = true,
   } = props;
 
+  console.log(disablePortal, disableScrollLock);
   const [optionSelected, setOptionSelected] = useState(defaultValue);
   const [isFocused, setIsFocused] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -75,6 +80,7 @@ export default function Dropdown(props: {
 
   const handleBlur = () => {
     setIsFocused(false);
+    document.documentElement.style.overflow = "";
   };
 
   // handle click to fix the problem of the menu with the scrollbar
@@ -117,8 +123,8 @@ export default function Dropdown(props: {
               },
             },
             // Necessary to fix the problem with the scrollbar
-            disablePortal: true,
-            disableScrollLock: true,
+            disablePortal: disablePortal,
+            disableScrollLock: disableScrollLock,
           }}
         >
           {loading ? (
