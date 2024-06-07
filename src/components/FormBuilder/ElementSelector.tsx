@@ -15,7 +15,14 @@ const Select = (props: any) => {
   const onChange = (value: unknown) => {
     setValue(props.id, value);
   };
-  return <Dropdown {...props} onChange={onChange} />;
+  return (
+    <Dropdown
+      {...props}
+      maxMenuHeight={190}
+      maxMenuWidth={190}
+      onChange={onChange}
+    />
+  );
 };
 const FieldTypes = {
   textField: Field,

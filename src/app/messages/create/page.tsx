@@ -4,10 +4,12 @@ import { useModal, useModalManager } from "@/components/Modal";
 import { ModalList } from "@/components/Modal/ModalList";
 import { createMessage, getMessageDetails, getMessageSchema, signMessage } from "@/app/services/common";
 import Form from "@/components/Form";
-import { Container, Typography } from "@mui/material";
+import { Container, Stack, Typography } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useContext } from "react";
 import { SessionProviderContext } from "@/context/SessionProvider";
+import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
+
 const statusCodes = ["01", "05", "pending"];
 const payloadDefault: string[] = [
   "messageCode",
@@ -51,7 +53,7 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
 const CreateMessage = () => {
   const { selectedInstitution } = useAppContext();
   const { userInfo } = useContext(SessionProviderContext) as any;
-  const { SuccessModal } = useModalManager();
+  const { SuccessModal, ConfirmModal } = useModalManager();
   const AddFileModal = useModal({ id: ModalList.AddFileModal });
   const [messageSchema, setMessageSchema] = useState({parameters: [], actions: { saveDraftDisabled: false, sendButtonDisabled: false }});
   const [error, setError] = useState("");
@@ -247,9 +249,35 @@ const CreateMessage = () => {
     }
   }, [messageCode, institutionId, cloneId, messageId, selectedInstitution, cukCode]);
 
+  const createMessageFn = (payload: any) => {
+    setLoading(true);
+    createMessage(payload, "05")
+      .then((response: any) => {
+        setLoading(false);
+        SuccessModal.open({
+          title: "Mensaje Enviado Exitosamente",
+          body: (
+            <>
+              <Typography fontSize={14} fontWeight={400}>
+                NSE: {response?.NSE || "-"}
+              </Typography>
+              <Typography fontSize={14} fontWeight={400}>
+                Fecha: {response?.creationDate || "-"}
+              </Typography>
+              <Typography fontSize={14} fontWeight={400}>
+                Hora: {response?.creationTime || "-"}
+              </Typography>
+            </>
+          ),
+          onClose: () => isMortgageDischargeMessage(messageCode)
+            ? router.push("/mortgage-discharge/in-process")
+            : router.push("/messages/sent"),
+        });
+      });
+  }
+
   const onSubmit = (data: any) => {
     const payload = getCreateMessagePayload(data, messageSchema, selectedInstitution, userInfo);
-
     if (messageCode === "670" || messageCode === "672") {
       AddFileModal.open({
         onConfirm: (document: any) => {
@@ -278,28 +306,64 @@ const CreateMessage = () => {
       });
       return ;
     }
-    setLoading(true);
-    createMessage(payload, "05")
-      .then((response: any) => {
-        setLoading(false);
-        SuccessModal.open({
-          title: "Mensaje Enviado Exitosamente",
-          body: (
-            <>
-              <Typography fontSize={14} fontWeight={400}>
-                NSE: {response?.NSE || "-"}
-              </Typography>
-              <Typography fontSize={14} fontWeight={400}>
-                Fecha: {response?.creationDate || "-"}
-              </Typography>
-              <Typography fontSize={14} fontWeight={400}>
-                Hora: {response?.creationTime || "-"}
-              </Typography>
-            </>
-          ),
-          onClose: () => router.push("/messages/sent"),
-        });
+
+    if (messageCode === "674") {
+      ConfirmModal.open({
+        title: "Está por solicitar la Liquidación de Prepago",
+        body: (
+          <Typography
+            fontSize={14}
+            fontWeight={400}
+            style={{ paddingBottom: 16, textAlign: "center" }}
+          >
+            Antes de solicitar la liquidación de prepago del alzamiento hipotecario, por favor, asegúrate de contar con los fondos necesarios. Recuerde que una vez solicitada, la liquidación deberá ser pagada en su totalidad para completar el proceso
+          </Typography>
+        ),
+        onConfirm: async () => {
+          ConfirmModal.close();
+          createMessageFn(payload);
+        },
       });
+      return;
+    }
+
+    if (messageCode === "675") {
+      ConfirmModal.open({
+        title: "Verifica el Total a Pagar de la Liquidación",
+        icon: "info",
+        body: (
+          <Stack direction="column" gap="12px" justifyContent="center" mb="24px">
+            <Stack direction="row" gap="56px" justifyContent="center">
+              <Stack direction="column">
+                <Typography variant="caption" color="#49454F">
+                  Crédito Inicial (UF / $)
+                </Typography>
+                <Typography variant="body2">
+                  3.799,59 / 221.217.265
+                </Typography>
+              </Stack>
+              <Stack direction="column">
+                <Typography variant="caption" color="#49454F">
+                  Total a Pagar (UF / $)
+                </Typography>
+                <Typography variant="body2">
+                  6.100 / 143.217.265
+                </Typography>
+              </Stack>
+            </Stack>
+            <Typography variant="body2">
+              ¿Está seguro de que desea continuar y enviar este mensaje?
+            </Typography>
+          </Stack>
+        ),
+        onConfirm: async () => {
+          ConfirmModal.close();
+          createMessageFn(payload);
+        },
+      });
+      return;
+    }
+    createMessageFn(payload)
   };
   const onPrepare = (data: any) => {
     setLoading(true);
@@ -322,7 +386,9 @@ const CreateMessage = () => {
               </Typography>
             </>
           ),
-          onClose: () => router.push("/messages/prepared")
+          onClose: () => isMortgageDischargeMessage(messageCode)
+            ? router.push("/mortgage-discharge/in-process")
+            : router.push("/messages/prepared")
         })
       });
   };

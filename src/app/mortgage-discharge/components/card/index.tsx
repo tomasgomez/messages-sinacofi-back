@@ -96,7 +96,7 @@ const CarDischarge = ({
 
   return (
     <StyledContentCard>
-      <StyledBoxShadow borderRadiusComplete={isOpen} style={{ zIndex: 3 }}>
+      <StyledBoxShadow borderRadiusComplete={isOpen}>
         <div style={{ display: "flex" }}>
           {isOpen ? (
             <IconButton
