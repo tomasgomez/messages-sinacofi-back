@@ -29,25 +29,16 @@ export async function handle677(cuk: CUK, message: Message, cukRepository: CUKRe
     }
 
     if (message.cukCode && message.cukCode !== ''){
-
-        let rejectMessage, confirmMessage: Message;
         
-        rejectMessage = new Message();
-        confirmMessage = new Message();
+        cuk.status = ForeclosureStatus.PAYMENT_OPTION_REJECTION
+        cuk.cukCode = message.cukCode;
 
-        rejectMessage.origin = message.destination;
-        rejectMessage.destination = message.origin;
-        rejectMessage.cukCode = cuk.cukCode;
-        rejectMessage.messageCode = MessageTypes.RECHAZO_DE_PAGO_AH
-  
-        await createMessage(messageRepository, rejectMessage);
+        await updateForclosure(cukRepository,messageRepository,cuk,message);
+        
+        cuk.status = ForeclosureStatus.PAYMENT_OPTION_ACCEPTED
+        cuk.cukCode = message.cukCode;
 
-        confirmMessage.origin = message.destination;
-        confirmMessage.destination = message.origin;
-        confirmMessage.cukCode = cuk.cukCode;
-        confirmMessage.messageCode = MessageTypes.CONFIRMACION_DE_PAGO_AH
-
-        await createMessage(messageRepository, confirmMessage);
+        await updateForclosure(cukRepository,messageRepository,cuk,message);
         
         cuk.status = ForeclosureStatus.PAYMENT
         cuk.cukCode = message.cukCode;
