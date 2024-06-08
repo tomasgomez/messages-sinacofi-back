@@ -36,7 +36,8 @@ const getCreateMessagePayload = (data: any, schema: any, origin: any, userInfo: 
         label: schema?.parameters
           .filter((field: any) => field.type !== "label" && field.type !== "linebreak")
           .find((field: any) => field.name === el[0])?.label,
-        value: (el[0] === "sign" && el[1]) ? userInfo.user?.name : el[1],
+        
+        value: el[1],
       }
     });
   return payload;

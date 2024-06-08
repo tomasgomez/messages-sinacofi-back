@@ -18,7 +18,6 @@ export default function InboxScreen() {
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
   const { ErrorModal } = useModalManager();
-
   const fetchData = async () => {
     try {
       // after backend change yo have to this change to this

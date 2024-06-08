@@ -20,9 +20,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   };
 
   const client = new iss.Client({
-    client_id: 'b78f033d556e47bda9dc206a0830f14b',
-    client_secret: '0d5f753f-6618-4d51-ae96-f727afbced35',
-    redirect_uris: [process.env.IAM_REDIRECT_URL as string],
+    client_id: process.env.IAM_CLIENT_ID as string,
+    client_secret: process.env.IAM_CLIENT_SECRET,
+    // redirect_uris: [process.env.IAM_REDIRECT_URL as string, process.env.NEXTAUTH_URL as string],
+    // post_logout_redirect_uris: [process.env.IAM_REDIRECT_URL as string, process.env.NEXTAUTH_URL as string],
     response_types: ['code'],
     scope: ["openid", "offline_access", "email", "profile"],
     id_token_signed_response_alg: 'RS256',
@@ -46,6 +47,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       wellKnown: process.env.IAM_BASE_URL,
       clientId: process.env.IAM_CLIENT_ID,
       clientSecret: process.env.IAM_CLIENT_SECRET,
+      // client:{
+      //   redirect_uris: [process.env.IAM_REDIRECT_URL as string, process.env.NEXTAUTH_URL as string],
+      //   post_logout_redirect_uris: [process.env.IAM_REDIRECT_URL as string, process.env.NEXTAUTH_URL as string],
+      // },
       authorization: {
         url: process.env.IAM_AUTHORIZATION_URL,
         params: {
@@ -72,13 +77,13 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           return { tokens: tokenSet }
         }
       },
-      async profile(profile: any) {
+      profile(profile:any){
         return {
           id: profile.user_id,
           name: profile.user_displayname,
-          // email: profile.email
+          dni: profile.sub
         };
-      },
+      }
     },
   ];
 
@@ -86,17 +91,27 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     async session({ session, token }: { session: any, token: any }) {
       session.user.id = token.id;
       session.accessToken = token.accessToken;
+      // added to session
+      session.user.dni = token.dni;
       return session;
     },
     async jwt({token, user, account}:{ token: any, user: any, account: any, profile?: any }) {
+      // added to session
+      if (user) {
+        token.id = user.id;
+        token.dni = user.dni;
+        // Otras propiedades personalizadas
+      }
+      
       if (account?.id_token) {
           token.idToken = account.id_token;
+          token.refreshToken = account.refresh_token;
+          token.accessToken = account.access_token;
       }
       return token;
     },
     async redirect({ url, baseUrl }: { url: any, baseUrl: any }) {
-      console.log(url, baseUrl);
-      if(url.startsWith('https://idcs-1e0f415dd2bf423c8296ebb063528eca.identity.oraclecloud.com/oauth2/v1/userlogout')){
+      if(url.startsWith(process.env.IAM_SIGN_OUT_URL)){        
         return url;
       }
       // if(url ==='/api/signout'){

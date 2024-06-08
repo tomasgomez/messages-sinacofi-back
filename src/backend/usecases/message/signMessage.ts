@@ -23,10 +23,22 @@ import {
     ForeclosureStatus
 } from "@/backend/entities/cuk/codes";
 
+import { validateToken } from "@/backend/adapters/iam/oracle/validateToken";
+
 
 // Create message function
-export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message): Promise < Message | Error > {
-    try {
+export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, dni: string, name: string): Promise < Message | Error > {
+    try {        
+        const sign = message.parameters?.find(param=> param.name ==='sign');
+        await validateToken(dni, sign?.value ? sign.value: '');
+        
+        message.parameters = message.parameters?.map(param=> {
+            if(param.name === 'sign'){
+                return { ...param, value: name };
+            }
+            return param;
+        })
+
         let status = '';
         let updatedCuk: CUK | Error;
 

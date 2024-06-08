@@ -63,10 +63,10 @@ const AppBar = () => {
           label: "Salir",
           icon: <Logout sx={{ color: "#898989" }} />,
           onClick: () => {
-            fetch('/api/signout')
+            fetch('/api/logout')
               .then((res) =>res.json())
-              .then(res => {                
-                signOut({ callbackUrl: res.url, redirect: true })//.then(()=> router.push('/'))
+              .then(res => {                         
+                  signOut({callbackUrl: res.url, redirect: true});
               })
           }
         },
