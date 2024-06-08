@@ -2,7 +2,7 @@ import { useFormContext, Controller } from "react-hook-form";
 import { Box, Typography } from "@mui/material";
 import { DatePickerInput } from "@/app/mortgage-discharge/in-process/header/components/filters/filter-selector/form-elements/date";
 import Dropdown from "../Dropdown";
-import RutField from "./fields/RutField";
+import RutField, { validaRut } from "./fields/RutField";
 import Checkbox from "./fields/Checkbox";
 import AmountField from "./fields/AmountField";
 import Field from "./fields/Field";
@@ -102,7 +102,10 @@ const ElementSelector = ({ type, props }: { type: any; props: any }) => {
       name={inputProps.id}
       control={inputProps.control}
       defaultValue={inputProps.defaultValue}
-      rules={rules}
+      rules={{ ...rules, ...(type === "dni" ? { validate: (value, _) => {
+        return !validaRut(value) ? "Rut invalido"
+        : null
+      }} : {})}}
       render={({ field }) => {
         return (
           <FieldGotten

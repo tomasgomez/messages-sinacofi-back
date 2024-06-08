@@ -142,7 +142,7 @@ const CreateMessage = () => {
         .then((schema: any) => {
           setMessageSchema({
             ...schema,
-            actions: { saveDraftDisabled: ["671", "672", "673", "674", "675"].includes(messageCode), sendButtonDisabled: messageCode === "670" },
+            actions: { saveDraftDisabled: ["671", "672", "673", "674", "675", "676", "677", "678", "679"].includes(messageCode), sendButtonDisabled: messageCode === "670" },
             parameters: messageCode === "670" ? schema?.parameters.map((parameter: any) => (
               parameter.id.startsWith("beneficiaryBank")
               // parameter.id === "destination" 

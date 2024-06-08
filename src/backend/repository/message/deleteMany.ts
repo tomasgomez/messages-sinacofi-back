@@ -1,7 +1,7 @@
 import { Message } from "@/backend/entities/message/message";
 import { PrismaClientWrapper } from '../prismaWrapper';
 
-async function deleteMessage(message: Message): Promise<Message | Error> {
+async function deleteMany(message: Message): Promise<Message | Error> {
     try {
         const prisma = new PrismaClientWrapper();
         const prismaClient = prisma.getClient();
@@ -12,11 +12,14 @@ async function deleteMessage(message: Message): Promise<Message | Error> {
             where = {
                 id: message.id,
             };
-        } else {
-            return new Error('Message ID is required to delete a message');
+        } else if (message.messageCode && message.cukCode) {
+            where = {
+                messageCode: message.messageCode,
+                cukCode: message.cukCode,
+            };
         }
     
-        const deletedMessage = await prismaClient.message.delete({
+        const deletedMessage = await prismaClient.message.deleteMany({
             where,
         });
 
@@ -27,4 +30,4 @@ async function deleteMessage(message: Message): Promise<Message | Error> {
     }
 }
 
-export { deleteMessage };
+export { deleteMany };

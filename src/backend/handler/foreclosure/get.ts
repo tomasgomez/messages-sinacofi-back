@@ -17,13 +17,8 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
         let messageResponse = await messageForeclosureUseCase.getMessageForeclosure(filter)
 
         /* If the message is not found, return a 204 error */
-        if (!messageResponse) {
+        if (!messageResponse || messageResponse instanceof Error) {
           res.status(204).json([]);
-          return;
-        }
-
-        if (messageResponse instanceof Error) {
-          res.status(400).json([]);
           return;
         }
 

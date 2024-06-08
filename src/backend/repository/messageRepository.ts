@@ -10,5 +10,6 @@ export interface MessageRepository {
     create(message: Message): Promise < Message | Error >
     update(message: Message): Promise < Message | Error >
     delete(message: Message): Promise < Message | Error >
+    deleteMany(message: Message): Promise < Message | Error >
     findBy(filter: FilterMessage): Promise < Message[] | Error >
 }

@@ -9,7 +9,7 @@ const MessageTypesDropdown = ({
   value,
   placeholder,
   onChange = () => {},
-} : {
+}: {
   label: string;
   defaultValue?: any;
   width?: number | string;
@@ -23,10 +23,12 @@ const MessageTypesDropdown = ({
   useEffect(() => {
     setLoading(true);
     getMessageDescriptions().then((messageTypes: any) => {
-      const formattedMessageTypes = (messageTypes || [])?.map((messageType: any) => ({
-        value: messageType.messageCode,
-        label: `${messageType.messageCode} - ${messageType.description}`
-      }));
+      const formattedMessageTypes = (messageTypes || [])?.map(
+        (messageType: any) => ({
+          value: messageType.messageCode,
+          label: `${messageType.messageCode} - ${messageType.description}`,
+        })
+      );
       setMessageTypes(formattedMessageTypes);
       setLoading(false);
     });
@@ -43,6 +45,8 @@ const MessageTypesDropdown = ({
       placeholder={placeholder}
       defaultValue={defaultValue}
       onChange={onChange}
+      disablePortal={false}
+      maxMenuHeight={190}
     />
   );
 };

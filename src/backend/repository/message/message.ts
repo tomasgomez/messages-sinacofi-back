@@ -4,6 +4,7 @@ import { find } from './find';
 import { create } from './create';
 import { update } from './update';
 import { deleteMessage } from '@/backend/repository/message/deleteMessage';
+import { deleteMany } from '@/backend/repository/message/deleteMany';
 import { FilterMessage } from '@/backend/entities/message/filter';
 export class PrismaMessageAdapter implements MessageRepository {
   // find message
@@ -17,6 +18,9 @@ export class PrismaMessageAdapter implements MessageRepository {
 
   // delete message
   delete = async(message: Message): Promise<Message | Error> => deleteMessage(message);
+  
+  // delete message
+  deleteMany = async(message: Message): Promise<Message | Error> => deleteMany(message);
 
   // find by filter
   findBy = async(filter: FilterMessage): Promise<Message[] | Error> => {
