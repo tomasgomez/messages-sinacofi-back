@@ -12,7 +12,7 @@ export async function sign(req: NextApiRequest, res: NextApiResponse < any > ) {
             res.status(400).json(message);
             return;
         }
-        let messageResponse = await messageUseCase.signMessage(message,'');
+        let messageResponse = await messageUseCase.signMessage(message,'', '');
         
         if (messageResponse instanceof Error) {
             res.status(400).json(messageResponse);

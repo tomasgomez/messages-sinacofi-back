@@ -8,7 +8,7 @@ export async function validateToken(dni: string, password: string): Promise<any>
     try {
         /* Set the axios config */
         const axiosConfig = {
-            method: Methods.GET,
+            method: Methods.POST,
             url: process.env.IAM_VALIDATE_TOKEN_URL,
             headers:  {
               'Content-Type': 'application/x-www-form-urlencoded', 

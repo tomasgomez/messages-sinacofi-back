@@ -31,11 +31,12 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
     try {        
         const sign = message.parameters?.find(param=> param.name ==='sign');
 
-        // let signValidation = await validateToken(dni, sign?.value ? sign.value: '');
+        let signValidation = await validateToken(dni, sign?.value ? sign.value: '');
 
-        // if (signValidation instanceof Error) {
-        //     return signValidation;
-        // }
+        if (signValidation instanceof Error) {
+            console.log("error", signValidation)
+            return signValidation;
+        }
         
         message.parameters = message.parameters?.map(param=> {
             if(param.name === 'sign'){
