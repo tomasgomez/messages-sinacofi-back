@@ -69,7 +69,7 @@ function sortParametersByPriority(parameters: any[]): any[] {
     return parameters.sort((a: any, b: any) => (a.priority || 0) - (b.priority || 0));
 }
 
-function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiverId?: any, sender?: any } = {}) {
+function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiverId?: any, sender?: any, name?: any } = {}) {
     if (defaultValue === "Current Date" || defaultValue === "currentDate") {
         return new Date();
     }
@@ -84,9 +84,13 @@ function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiver
 
 // Adapt parameter object
 function adaptParameter(parameter: any, userData: any): Parameter {
-    const { name, messageCode, label, type, placeholder, priority, rules, optionValues, row, column, defaultValue } = parameter;
+    let { name, messageCode, label, type, placeholder, priority, rules, optionValues, row, column, defaultValue } = parameter;
     const multiple = optionValues && optionValues.length > 0;
     const validations: Validations = extractValidations(rules);
+
+    if (name == 'authname') {
+       defaultValue = userData.name;
+    }
 
     return {
         id: name,
