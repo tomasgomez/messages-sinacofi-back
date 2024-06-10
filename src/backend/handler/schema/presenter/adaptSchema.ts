@@ -33,9 +33,26 @@ function extractParameters(dataToAdapt: any, userData: any): Parameter[] {
                 parameter.parameters = [];
                 return parameter;
             }
+            const parameterChildren = adaptedParameters.map((param: any) => {
+                console.log(param.validations)
+                if (param.validations){
+                    console.log(param.validations.condition)
+                    console.log(param.validations.value)
+                    console.log(parameter.id)
+                    
+                    if ('accordion' in param.validations && param.validations['accordion'] == parameter.id){
+                        console.log(param)
+                        return param
+                    }
+                    
+                }
+            })
+
+            console.log(parameterChildren)
+
             // const parameterChildren = parameter.defaultValue.split(",").map((el) => ({ [el]: true }));
-            const parameterChildren = parameter.defaultValue.split(",");
-            parameter.parameters = parameterChildren.map((child: any) => adaptedParameters.find(el => el.id === child));
+            // const parameterChildren = parameter.defaultValue.split(",");
+            // parameter.parameters = parameterChildren.map((child: any) => adaptedParameters.find(el => el.id === child));
             filterParams = [...filterParams, ...parameterChildren];
         }
         return parameter;
