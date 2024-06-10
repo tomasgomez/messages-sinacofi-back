@@ -40,8 +40,8 @@ export class MessageUscase implements MessageUsecases  {
         findDocuments(message);
 
     // sign message
-    signMessage = async (message: Message, dni: string): Promise<Message | Error> => 
-        signMessage(this.messageRepository, this.cukRepository, message, dni);
+    signMessage = async (message: Message, dni: string, name:string): Promise<Message | Error> => 
+        signMessage(this.messageRepository, this.cukRepository, message, dni, name);
 }
 
 // message repository

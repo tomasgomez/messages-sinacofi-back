@@ -24,10 +24,12 @@ export async function validateToken(dni: string, password: string): Promise<any>
             })
         };
 
+        console.log('axiosConfig', axiosConfig);
+
         let response = await axios.request(axiosConfig);
 
         if (response.status !== 200) {
-            console.error('Error validate sign:', response.statusText);
+            console.error('Error validate sign');
             return new InternalError("Error validate sign", ErrorCode.INTERNAL_SERVER_ERROR, response.data, response.status);
         }
 

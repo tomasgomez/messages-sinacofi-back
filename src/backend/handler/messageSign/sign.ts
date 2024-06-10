@@ -8,7 +8,6 @@ import { getToken } from "next-auth/jwt";
 export async function sign(req: NextApiRequest, res: NextApiResponse < any > ) {
     try {
         const token = await getToken({req});
-        console.log('TOKEN', token);
         
         let dni: string='';
         let name: string='';
