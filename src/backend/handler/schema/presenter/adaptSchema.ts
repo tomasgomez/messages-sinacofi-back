@@ -26,41 +26,33 @@ function extractParameters(dataToAdapt: any, userData: any): Parameter[] {
     const sortedParameters = sortParametersByPriority(parameters);
 
     const adaptedParameters = sortedParameters.map((parameter: any) => adaptParameter(parameter, userData));
-    let filterParams: any[]= [];
-    const finalParameters = adaptedParameters.map((parameter) => {
+    let finalParameters: any[]= [];
+    
+    adaptedParameters.forEach((parameter) => {
+        
         if (parameter.type === "accordion") {
-            if (parameter.defaultValue === "") {
-                parameter.parameters = [];
-                return parameter;
-            }
-            const parameterChildren = adaptedParameters.map((param: any) => {
-                console.log(param.validations)
-                if (param.validations){
-                    console.log(param.validations.condition)
-                    console.log(param.validations.value)
-                    console.log(parameter.id)
-                    
-                    if ('accordion' in param.validations && param.validations['accordion'] == parameter.id){
-                        console.log(param)
-                        return param
-                    }
-                    
+        const parameterChildren = adaptedParameters.filter((param: any) => {
+            if (param.validations){
+                if ('accordion' in param.validations && param.type !='accordion' && param.validations.accordion == parameter.id){
+                    return true
                 }
-            })
+            }
+            return false
+        })
 
-            console.log(parameterChildren)
-
-            // const parameterChildren = parameter.defaultValue.split(",").map((el) => ({ [el]: true }));
-            // const parameterChildren = parameter.defaultValue.split(",");
-            // parameter.parameters = parameterChildren.map((child: any) => adaptedParameters.find(el => el.id === child));
-            filterParams = [...filterParams, ...parameterChildren];
+        if (!parameterChildren || parameterChildren.length == 0){
+            parameter.parameters = []
+            return parameter;
         }
-        return parameter;
+        parameter.parameters = parameterChildren
+
+        finalParameters.push(parameter);
+        }else if(!('accordion' in parameter.validations)){
+            finalParameters.push(parameter);
+        }
+
     })
 
-    if (filterParams.length > 0) {
-        return finalParameters.filter((param) => !filterParams.includes(param.id));
-    }
     return finalParameters;
 }
 

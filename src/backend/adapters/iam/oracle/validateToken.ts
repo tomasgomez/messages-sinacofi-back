@@ -23,9 +23,6 @@ export async function validateToken(dni: string, password: string): Promise<any>
               'client_secret': process.env.IAM_CLIENT_SECRET
             })
         };
-
-        console.log('axiosConfig', axiosConfig);
-
         let response = await axios.request(axiosConfig);
 
         if (response.status !== 200) {
