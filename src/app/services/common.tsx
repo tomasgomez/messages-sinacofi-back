@@ -46,13 +46,27 @@ export const signMessage = async (
   status: string,
   data: any = {}
 ) => {
-  return fetch(`/api/message/sign?id=${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ...data, id: id, status }),
-  }).then((res) => res.json());
+  try {
+    const response = await fetch(`/api/message/sign?id=${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...data, id: id, status }),
+    });
+
+    if (!response.ok) {
+      let err = new Error(`Error: ${response.status} ${response.statusText}`) as any;
+      err.status = response.status;
+      throw err;
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error signing message:", error);
+    throw error;
+  }
 };
 
 export const updateMessage = async (

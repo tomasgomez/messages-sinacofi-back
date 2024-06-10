@@ -35,7 +35,6 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
         let signValidation = await validateToken(dni, sign?.value ? sign.value: '');
 
         if (signValidation instanceof Error) {
-            console.log("error", signValidation)
             return signValidation;
         }
         
