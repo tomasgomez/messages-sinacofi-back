@@ -19,6 +19,7 @@ import { getMessageDetails } from "@/app/services/common";
 import { getForeClosureDataCards } from "../../api-calls";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 import { useModalManager } from "@/components/Modal";
+import { reverseArray } from "@/utils/functions";
 
 export const InfoModal = () => {
   const [details, setDetails] = useState<Message[]>([]);
@@ -44,6 +45,7 @@ export const InfoModal = () => {
   const fetchData = async () => {
     try {
       if (modalIsOpen && selectedMessage) {
+        setShowOnlyOneMessage(true);
         setIsLoading(true);
 
         // Get the cuck and save only the messages and sort oldest to newest
@@ -124,7 +126,7 @@ export const InfoModal = () => {
               Previsualización de impresión
             </Typography>
             <PDFViewer width="100%" height="450px">
-              <PDFTemplate data={details} />
+              <PDFTemplate data={reverseArray(details)} />
             </PDFViewer>
           </>
         ) : (
