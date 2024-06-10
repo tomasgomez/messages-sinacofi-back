@@ -40,9 +40,9 @@ export function validateUpdateMessage(data: any): Message | Error {
 
       if (document) {
         documentToStore.documentName = document.documentName;
-        // documentToStore.content = document.content;
+        documentToStore.content = document.content;
       }
-
+      // console.log("here", documentToStore)
       documents.push(documentToStore);
     }
 

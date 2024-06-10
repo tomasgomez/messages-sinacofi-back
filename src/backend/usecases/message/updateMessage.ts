@@ -61,7 +61,7 @@ export async function updateMessage(repository: MessageRepository, message: Mess
     }
 }
 
-async function storeDocs(message: Message): Promise <Message | Error> {
+export async function storeDocs(message: Message): Promise <Message | Error> {
     let docs: Documents[] = [];
      
     /* Check if the message has documents */

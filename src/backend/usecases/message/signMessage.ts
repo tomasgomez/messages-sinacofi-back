@@ -24,6 +24,7 @@ import {
 } from "@/backend/entities/cuk/codes";
 
 import { validateToken } from "@/backend/adapters/iam/oracle/validateToken";
+import { storeDocs } from "./updateMessage";
 
 
 // Create message function
@@ -44,6 +45,13 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
             }
             return param;
         })
+
+        // Store the documents
+        let result = await storeDocs(message);
+
+        if (result instanceof Error) {
+            return result;
+        }
 
         let status = '';
         let updatedCuk: CUK | Error;
