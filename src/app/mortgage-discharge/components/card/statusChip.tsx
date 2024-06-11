@@ -2,10 +2,10 @@ import * as React from "react";
 import { StyledChip } from "./styles";
 
 const getChipText = (messageCode: string, status: string) => {
-  if (messageCode === "672") {
+  if (messageCode === "672" && status !== "01") {
     return "Alzamiento Hipotecario Rechazado";
   }
-  if (messageCode === "673") {
+  if (messageCode === "673" && status !== "01") {
     return "Cliente en Normalización";
   }
   if (status === "01") {
@@ -19,11 +19,11 @@ const getChipText = (messageCode: string, status: string) => {
   }
 };
 const getChipColor = (messageCode: string, status: string) => {
-  if (messageCode === "672") {
+  if (messageCode === "672" && status !== "01") {
     return "#E23232";
     // #FCEBEB
   }
-  if (messageCode === "673") {
+  if (messageCode === "673" && status !== "01") {
     return "#FFC600";
     //#FFF9E6 backgorun
   }
@@ -38,10 +38,10 @@ const getChipColor = (messageCode: string, status: string) => {
   }
 };
 const getChipBackgroundColor = (messageCode: string, status: string) => {
-  if (messageCode === "672") {
+  if (messageCode === "672" && status !== "01") {
     return "#FCEBEB";
   }
-  if (messageCode === "673") {
+  if (messageCode === "673" && status !== "01") {
     return "#FFF9E6";
   }
   if (status === "01") {

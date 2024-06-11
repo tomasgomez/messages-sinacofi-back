@@ -68,7 +68,7 @@ export const PDFTemplate = ({ data }: { data?: Message | Message[] }) => {
         {parameters.map((field) => (
           <React.Fragment key={field.id}>
             <Text>
-              {field?.label || field?.name} : {field.value}
+              {field?.label} : {field.value}
             </Text>
           </React.Fragment>
         ))}

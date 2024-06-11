@@ -119,15 +119,15 @@ export function MessageDetails670({
             Contenido del Mensaje
           </StyledMoalSection>
           <Box display="flex">
-            <Box borderRight="1px solid #E5E5E5">
-              {detailsMS.slice(0, 10)?.map((field: DetailsMSInfoModal) => {
+            <Box pr={8}>
+              {detailsMS.slice(0, 11)?.map((field: DetailsMSInfoModal) => {
                 return (
                   <Stack
                     display="flex"
                     flexDirection="row"
                     mr="24px"
                     mb={1}
-                    key={`${field.accessor}-${field.value}`}
+                    key={`${field.label}-${field.value}`}
                   >
                     <Typography fontSize={"12px"} color="#49454F" mr={1.5}>
                       {field.label}:
@@ -139,7 +139,7 @@ export function MessageDetails670({
                 );
               })}
             </Box>
-            <Box>
+            <Box borderLeft="1px solid #E5E5E5">
               {detailsMS.slice(11)?.map((field: DetailsMSInfoModal) => {
                 return (
                   <Stack
@@ -147,7 +147,7 @@ export function MessageDetails670({
                     flexDirection="row"
                     mb={1}
                     ml="24px"
-                    key={`${field.accessor}-${field.value}`}
+                    key={`${field.label}-${field.value}`}
                   >
                     <Typography fontSize={"12px"} color="#49454F" mr={1.5}>
                       {field.label}:

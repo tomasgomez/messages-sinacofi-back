@@ -49,7 +49,8 @@ export interface DataHeaderInfoModal {
 }
 
 interface ObjectInfoModal {
-  accessor?: string;
+  name?: string;
+  text?: string;
   label?: string;
   value?: string;
 }

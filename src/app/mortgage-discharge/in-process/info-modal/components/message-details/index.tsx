@@ -95,7 +95,8 @@ export function MessageDetails({ dataMessage = [] }: { dataMessage: any }) {
                       style={{ display: "flex", flexDirection: "column" }}
                       borderLeft={colIndex ? "1px solid #E5E5E5" : "none"}
                       key={colIndex}
-                      justifyContent="center"
+                      pl={colIndex ? 8 : 0}
+                      pr={8}
                     >
                       {column.map((field: any, fieldIndex: number) => (
                         <Stack
@@ -104,14 +105,32 @@ export function MessageDetails({ dataMessage = [] }: { dataMessage: any }) {
                           mb={1}
                           key={`${colIndex}-${fieldIndex}`}
                           ml={colIndex ? "24px" : "0px"}
-                          mr={"24px"}
+                          // mr={colIndex ? "24px" : "32px"}
                         >
-                          <Typography fontSize="12px" color="#49454F" mr={1.5}>
-                            {field.label}:
-                          </Typography>
-                          <StyledModalItem noWrap>
-                            {field.value || "-"}
-                          </StyledModalItem>
+                          {field?.text ? (
+                            <Typography
+                              fontSize="12px"
+                              color="#49454F"
+                              mr={1.5}
+                            >
+                              {field?.text}
+                            </Typography>
+                          ) : (
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <Typography
+                                fontSize="12px"
+                                color="#49454F"
+                                mr={1.5}
+                              >
+                                {field?.label || field?.name}:
+                              </Typography>
+                              <StyledModalItem noWrap>
+                                {field?.value || "-"}
+                              </StyledModalItem>
+                            </div>
+                          )}
                         </Stack>
                       ))}
                     </Box>

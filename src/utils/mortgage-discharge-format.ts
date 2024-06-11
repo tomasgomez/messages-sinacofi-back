@@ -171,7 +171,7 @@ export const formatModalDetailsCompleted = (
 
   const dataHeader = formatModalInfoHeader(message);
 
-  const detailsMS: DetailsMSInfoModal[] = paramsTo670;
+  const detailsMS: DetailsMSInfoModal[] = [];
 
   const bankDetailsMS: BankDetailsMSInfoModal = {
     bank: "",
@@ -179,16 +179,16 @@ export const formatModalDetailsCompleted = (
     sign_2: "",
   };
 
-  parameters?.forEach((parameter) => {
+  parameters.forEach((parameter) => {
     if (parameter?.name in bankDetailsMS) {
       (bankDetailsMS as any)[parameter?.name] = parameter?.value;
     }
-    detailsMS.forEach((detailElem: any) => {
-      if (detailElem.accessor === parameter?.name) {
-        detailElem.value = parameter?.value;
-        return;
-      }
-    });
+    if (paramsTo670.includes(parameter.name)) {
+      detailsMS.push({
+        label: parameter?.label,
+        value: parameter?.value || "",
+      });
+    }
   });
 
   return { dataHeader, detailsMS, bankDetailsMS, documents };
@@ -200,6 +200,7 @@ export const formatModalDetailSmall = (
   const { messageCode = undefined, parameters = [], documents = [] } = message;
 
   const dataHeader = formatModalInfoHeader(message);
+
   // Get all data necessary of the parameters
   const smallMsDetail: any[] = getDetailsObjetToMSCode(messageCode);
 
@@ -211,10 +212,13 @@ export const formatModalDetailSmall = (
       // while by  element
       columnsElements.forEach((column: any) => {
         const parameter = parameters?.find(
-          (param) => param.name === column.accessor
+          (param) => param.name === column.name
         );
         if (parameter) {
           column.value = parameter.value;
+          if (parameter?.label) column.label = parameter?.label;
+          //Delete after backend fix
+          // else column.label = parameter.name;
         }
       });
     });
