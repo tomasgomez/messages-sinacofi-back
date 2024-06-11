@@ -1,13 +1,11 @@
 import * as React from "react";
 import {
   StyledContentCard,
-  StyledCardContent,
-  StyledCard,
   StyledButton,
   StyledBoxShadow,
   StyledFooterComponent,
   StyledInfoIcon,
-} from "./styled";
+} from "./styles";
 import { Collapse, Typography } from "@mui/material";
 import CodeColumn from "./codeColumn";
 import InfoColumn from "./infoColumn";
@@ -25,6 +23,7 @@ import {
 import { Message } from "@/app/component/inbox-table/type";
 import { reverseArray } from "@/utils/functions";
 import { MyContexLayout } from "@/app/context";
+import { withRadioButton } from "@/utils/mortgage-discharge-utils";
 
 const CarDischarge = ({
   data,
@@ -44,7 +43,7 @@ const CarDischarge = ({
   const {
     codeData,
     infoData,
-    messages,
+    messages = [],
     buttonDisabled,
     modalTrackingData,
   }: {
@@ -53,17 +52,16 @@ const CarDischarge = ({
     messages: Message[];
     buttonDisabled: boolean;
     modalTrackingData: ModalTrackingData;
-  } = data;
+  } = data || {};
 
   const handlerColapseCard = () => {
     setIsOpen(!isOpen);
   };
-
   const handleFilterMessages = React.useCallback(
     (messages: Message[]): Message[] => {
       if (selectedMessage) {
-        return messages.filter(
-          (message: Message) => message.id === selectedMessage
+        return messages?.filter(
+          (message: Message) => message?.id === selectedMessage
         );
       } else {
         return messages;
@@ -87,7 +85,7 @@ const CarDischarge = ({
       );
     } else {
       // Si sos el que envio el 670 y recibiste un 672 mostras el footer
-      if (codeData.lastMessageCode === "672") {
+      if (codeData?.lastMessageCode === "672") {
         return footerComponent(
           "Operación Rechazada. Puedes editar el mensaje 670 para reenviar esta solicitud. Motivo del Rechazo: Reparo Legal, Cláusula de Escritura",
           12
@@ -98,7 +96,7 @@ const CarDischarge = ({
 
   return (
     <StyledContentCard>
-      <StyledBoxShadow borderRadiusComplete={isOpen} style={{ zIndex: 3 }}>
+      <StyledBoxShadow borderRadiusComplete={isOpen}>
         <div style={{ display: "flex" }}>
           {isOpen ? (
             <IconButton
@@ -142,12 +140,13 @@ const CarDischarge = ({
           selectedMessage={selectedMessage}
         />
         <DataTable
-          // style={{ overflow: "initial" }}
           maxHeight={350}
           rows={handleFilterMessages(reverseArray(messages))}
           columns={columnsCard}
           withCheckbox={false}
           footerComponent={getFooterComponent()}
+          withRadioButton={withRadioButton}
+          rowsPerPageOptions={[]}
         />
       </Collapse>
     </StyledContentCard>

@@ -1,40 +1,36 @@
 "use client";
-import React, { useContext, useEffect, useMemo } from "react";
-import { Box, Grid, IconButton, Paper, Typography } from "@mui/material";
+import React, { useContext, useEffect } from "react";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
 import { columnsSent, rowOptions } from "./columns";
-import { Columns, SentData } from "@/app/component/inbox-table/type";
-import { CopyAll, SendOutlined } from "@mui/icons-material";
-import { useRouter } from "next/navigation";
+import { SentData } from "@/app/component/inbox-table/type";
 import { MyContexLayout } from "@/app/context";
-// import { intitutionCodeToLabel } from "@/utils/intitutions";
+import { getMessage } from "@/app/services/common";
+import basicError from "@/components/Modal/ErrorModal/basicError";
+import { useModalManager } from "@/components/Modal";
 
 export default function SentScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const router = useRouter();
   const [data, setData] = React.useState<SentData[]>([]);
-  const [selected, setSelected] = React.useState<number[]>([]);
 
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
+  const { ErrorModal } = useModalManager();
 
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      // Backend have the origin like a label not a code
-      // const selectedInstitutionLabel = await intitutionCodeToLabel(
-      //   selectedInstitution
-      // );
-      await fetch(`/api/message?status=05&origin=${selectedInstitution}`)
-        .then((res) => res.json())
-        .then((res) => {
-          setData(res);
-          setIsLoading(false);
-        });
-    } catch (error) {
-      console.error("Error al solicitar mensajes", error);
+      const response = await getMessage({
+        status: "05",
+        origin: selectedInstitution,
+      });
+      setData(response);
       setIsLoading(false);
+    } catch (error: unknown) {
+      setData([]);
+      setIsLoading(false);
+      ErrorModal.open(basicError(error));
     }
   };
 

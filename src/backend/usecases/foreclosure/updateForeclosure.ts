@@ -55,15 +55,14 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       destination = fetchedMessage[0].origin ?? '';
     }
 
-
     /* Check if is updating cuk status and set the new status with new message values */
     switch (cuk.status) {
       case ForeclosureStatus.SIGNED: // 671
-        messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
-        cuk.status = ForeclosureStatus.SIGNED;
-        hasToUpdateMessage = true;
-        newMessage.origin = origin;
-        newMessage.destination = destination;
+      messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
+      cuk.status = ForeclosureStatus.SIGNED;
+      hasToUpdateMessage = true;
+      newMessage.origin = origin;
+      newMessage.destination = destination;
         break;
 
       case ForeclosureStatus.REJECTED: // 672
@@ -114,6 +113,54 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         newMessage.origin = origin;
         newMessage.destination = destination;
         break;
+      
+      case ForeclosureStatus.PAYMENT_DATA: // 676
+        messageType = MessageTypes.DATOS_PARA_EL_PAGO_AH
+        cuk.status = ForeclosureStatus.SEND_LIQUIDATION_PAYMENT;
+        hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
+        break;
+
+      case ForeclosureStatus.SEND_LIQUIDATION_PAYMENT: // 677
+        messageType = MessageTypes.AVISO_DE_PAGO_AH
+        cuk.status = ForeclosureStatus.SEND_LIQUIDATION_PAYMENT;
+        hasToUpdateMessage = true;
+        newMessage.origin = destination;
+        newMessage.destination = origin;
+        break;
+      
+      case ForeclosureStatus.PAYMENT_OPTION_REJECTION: // 678
+        messageType = MessageTypes.RECHAZO_DE_PAGO_AH
+        cuk.status = ForeclosureStatus.PAYMENT_OPTION_REJECTION;
+        hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
+        break;
+      
+      case ForeclosureStatus.PAYMENT_OPTION_ACCEPTED: // 679
+        messageType = MessageTypes.CONFIRMACION_DE_PAGO_AH
+        cuk.status = ForeclosureStatus.PAYMENT_OPTION_ACCEPTED;
+        hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
+        break;
+      
+      case ForeclosureStatus.INIT: // 670 enviado
+        cuk.status = ForeclosureStatus.INIT;
+        break;
+      
+      case ForeclosureStatus.PAYMENT: // 11
+        cuk.status = ForeclosureStatus.PAYMENT;
+        break;
+      
+      case ForeclosureStatus.SENT_REJECTION: // 12
+        cuk.status = ForeclosureStatus.SENT_REJECTION;
+        break;
+
+      case ForeclosureStatus.SENT_CONFIRM_PAYMENT: // 14
+        cuk.status = ForeclosureStatus.SENT_CONFIRM_PAYMENT;
+        break;
 
       default:
         return new Error('Invalid status');
@@ -125,61 +172,18 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       newMessage.cukCode = cuk.cukCode;
       newMessage.messageCode = messageType;
       
-      await updateLastMessage(newMessage, messageRepository, cukRepository);
+      await createMessage(messageRepository, newMessage);   
     }
 
-    const createdCuk = await cukRepository.update(cuk);
+    const updatedCuk = await cukRepository.update(cuk);
 
-    if (createdCuk instanceof Error) {
-      return createdCuk;
+    if (updatedCuk instanceof Error) {
+      return updatedCuk;
     }
 
-    return createdCuk;
+    return updatedCuk;
   } catch (error: any) {
     console.error('Error creating foreclosure:', error);
     return error;
   }
-}
-
-/* When the cuk status is being updated, an empty message is created or updated the last empty message */
-async function updateLastMessage(message: Message, messageRepository: MessageRepository, cukRepository: CUKRepository) {
-  
-  // if (!message.cukCode) {
-  //   return;
-  // }
-  
-  // /* Get Cuk */
-  // let fetchedCuk = await cukRepository.find({
-  //   cukCode: [message.cukCode],
-  //   // mesageCode: [MessageTypes.ALZAMIENTO_HIPOTECARIO],
-  // });  
-  
-  // /* Check last message attached to the CUK */
-  // if (fetchedCuk instanceof Error || fetchedCuk.length === 0) {
-  //   return;
-  // }
-
-  // /* Set the receiver of the message */
-  // let fetchedMessages = fetchedCuk[0].messages;
-
-  // if (!fetchedMessages) {
-  //   fetchedMessages = [];
-  // }
-
-  // /* Sorts from newest to oldest */
-  // fetchedMessages = fetchedMessages.sort((a, b) => {
-  //   if (!a.createdAt || !b.createdAt) {
-  //     return 0;
-  //   } else if (a.createdAt === b.createdAt) {
-  //     return 0;
-  //   } else if (a.createdAt > b.createdAt) {
-  //     return -1; 
-  //   } else {
-  //     return 1;
-  //   }
-  // });
-
-  // console.log('fetchedMessages', fetchedMessages[0])
-
-  createMessage(messageRepository, message);   
 }

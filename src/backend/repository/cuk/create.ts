@@ -19,12 +19,6 @@ async function create(cuk: CUK): Promise < CUK | Error > {
 
         let cukData: Partial<CUK> = {};
 
-        /* Set the history for the CUK */
-        let history: History = {
-            status: cuk.status ?? '' +' '+ getDescriptionByStatus(cuk.status ?? ''),
-            date: cuk.creationDate ?? '',
-        }
-
         /* Add all the attributes to the new CUK */
         if (Object.keys(cuk).length > 0) {
             for (const [key, value] of Object.entries(cuk)) {
@@ -37,9 +31,7 @@ async function create(cuk: CUK): Promise < CUK | Error > {
         let newCUK = await prismaClient.cUK.create({
             data: {
                 ...cukData,
-                history: {
-                    create: history
-                },
+                history: {},
                 parameters: {},
                 messages: {}
             },

@@ -1,16 +1,23 @@
 import { Search } from "@mui/icons-material";
 import { Autocomplete, InputAdornment, TextField } from "@mui/material";
 
-const SearchField = ({ data, label = "", placeholder }: { data: any; label?: string, placeholder?: string }) => {
+const SearchField = ({
+  data = [],
+  label = "",
+  placeholder = "",
+}: {
+  data: string[];
+  label?: string;
+  placeholder?: string;
+}) => {
   return (
     <Autocomplete
       freeSolo
       id="free-solo-2-demo"
       disableClearable
-      options={data.map((option: any) => option.title)}
+      options={data?.map((option: any) => option?.title || "")}
       sx={{
-        width: "481px",
-        height: "48px",
+        width: 481,
       }}
       renderInput={(params) => (
         <TextField

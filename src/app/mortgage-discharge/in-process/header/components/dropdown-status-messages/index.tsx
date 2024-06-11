@@ -18,13 +18,17 @@ const options = [
 export const MessageStatusDropdown = (props: { widthDropdown: number }) => {
   const { handleChangeAddFilter } = React.useContext(CardContext);
 
-  const { widthDropdown } = props;
+  const { widthDropdown = 300 } = props || {};
   const [optionSelected, setOptionSelected] = React.useState(options[0].value);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setOptionSelected(event.target.value as string);
-    if (event.target.value === "all") handleChangeAddFilter("status", "");
-    else handleChangeAddFilter("status", event.target.value);
+    const value = event?.target?.value;
+
+    if (value !== null) {
+      setOptionSelected(value as string);
+      if (value === "all") handleChangeAddFilter("status", "");
+      else handleChangeAddFilter("status", value);
+    }
   };
 
   return (
@@ -52,7 +56,7 @@ export const MessageStatusDropdown = (props: { widthDropdown: number }) => {
           MenuProps={{
             PaperProps: {
               style: {
-                maxHeight: 150, // Ajusta este valor según tus necesidades
+                maxHeight: 150,
               },
             },
           }}

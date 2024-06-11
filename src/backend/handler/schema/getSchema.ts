@@ -3,6 +3,7 @@ import { schemaUseCase } from "@/backend/usecases/schema/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 import { adaptSchema } from "./presenter/adaptSchema";
 import { getInstitutions } from "../institution/get";
+import { getToken } from "next-auth/jwt";
 
 
 // get Schema function
@@ -11,6 +12,13 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         /* Validate the query params and get the Schema */
         let filter = validateGetSchema(req.query);
 
+        const token = await getToken({req});
+
+        let name: string='';
+
+        if(token?.name){
+            name= token.name;
+        } 
 
         if (filter instanceof Error) {
           res.status(400).json([]);
@@ -32,7 +40,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         }
         
         let origin = '';
-
         if (filter.origin) {
           await getInstitutions().then((institutionList) => {
              origin = institutionList.find((intitution: any) => filter.origin === intitution.id);
@@ -43,7 +50,8 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
           senderId: filter.origin,
           receiverId: filter.destination,
           sender: origin,
-          cuk: filter.cuk
+          cuk: filter.cuk,
+          name: name
         });
 
         /* Return the Schema */

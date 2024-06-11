@@ -16,16 +16,49 @@ import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { base64ToBlob, downloadFile } from "../../utils";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { SessionProviderContext } from "@/context/SessionProvider";
+import { MessageExportContext } from "@/app/component/MessageExportProvider";
+import LocalPrintshopOutlinedIcon from "@mui/icons-material/LocalPrintshopOutlined";
+import Tooltip from "@mui/material/Tooltip";
 
 const AccionesColumn = ({ row }: { row: any }) => {
-  const { actions, messageCode, status } = row;
+  const {
+    actions = [],
+    messageCode = "",
+    status = "",
+    destination = "",
+    id = "",
+    cukCode = "",
+  } = row || {};
+
   const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
-  const { userInfo } = React.useContext(SessionProviderContext) as any;
+  const { userInfo } = useContext(SessionProviderContext) as any;
+  const { setPrintPDF, setSelectedMessages, selectedRadioButtonMessages } =
+    useContext(MessageExportContext);
   const router = useRouter();
+
   const handlerOpenModal = (row: any) => {
     setSelectedMessage(row);
     setModalIsOpen(true);
   };
+
+  const checkDisabledSent = () => {
+    if (!userInfo?.permissions?.sendMessage) return true;
+    if (["678", "679"].includes(messageCode)) {
+      return selectedRadioButtonMessages !== id;
+    }
+    return false;
+  };
+
+  const handleActionPrint = async (id: string) => {
+    setSelectedMessages([id]);
+    setPrintPDF(true);
+  };
+
+  const iconButtonStyle = { padding: 0, margin: "0px 2px" };
+  const disabledColor = "#CCC";
+  const enabledColor = "#00B2E2";
+  const defaultColor = "#565656";
+
   return (
     <Box
       sx={{
@@ -35,59 +68,108 @@ const AccionesColumn = ({ row }: { row: any }) => {
       }}
     >
       {actions.includes("sing") && (
-        <IconButton
-          key={`drive-icon-${row.id}`}
-          style={{ padding: 0, color: userInfo.permissions.signMortgageDischarge ? "#00B2E2" : '#CCC', margin: 2 }}
-          disabled={!userInfo.permissions.signMortgageDischarge}
-          onClick={
-            () =>
-              router.push(
-                `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}`
-              )
-            // case sent to the messagecode 670
-            // router.push(
-            //     `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&cukCode=${row.cukCode}`
-            //   )
+        <Tooltip
+          title={
+            userInfo.permissions.signMortgageDischarge
+              ? ""
+              : "No tienes permisos para realizar esta acción."
           }
         >
-          <DriveFileRenameOutlineIcon />
-        </IconButton>
+          <span>
+            <IconButton
+              key={`drive-icon-${id}`}
+              style={{
+                ...iconButtonStyle,
+                color: userInfo?.permissions?.signMortgageDischarge
+                  ? enabledColor
+                  : disabledColor,
+              }}
+              disabled={!userInfo?.permissions?.signMortgageDischarge}
+              onClick={() =>
+                router.push(
+                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
+                )
+              }
+            >
+              <DriveFileRenameOutlineIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
       )}
       {actions.includes("sent") && (
-        <IconButton
-          key={`sent-icon-${row.id}`}
-          style={{ padding: 0, color: userInfo.permissions.sendMessage ? "#00B2E2" : '#CCC', margin: 2 }}
-          disabled={!userInfo.permissions.sendMessage}
-          onClick={() =>
-            router.push(
-              `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}&cukCode=${row.cukCode}`
-            )
+        <Tooltip
+          title={
+            userInfo.permissions.sendMessage
+              ? ""
+              : "No tienes permisos para realizar esta acción."
           }
         >
-          <SendOutlinedIcon />
-        </IconButton>
+          <span>
+            <IconButton
+              key={`sent-icon-${id}`}
+              style={{
+                ...iconButtonStyle,
+                color: checkDisabledSent() ? disabledColor : enabledColor,
+              }}
+              disabled={checkDisabledSent()}
+              onClick={() =>
+                router.push(
+                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}`
+                )
+              }
+            >
+              <SendOutlinedIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
       )}
       {actions.includes("details") && (
-        <IconButton
-          key={`detail-icon-${row.id}`}
-          style={{ padding: 0, color: "#565656", margin: 2 }}
-          onClick={() => handlerOpenModal(row)}
-          disabled={!userInfo.permissions.sendMessage}
+        <Tooltip
+          title={
+            userInfo.permissions.sendMessage
+              ? ""
+              : "No tienes permisos para realizar esta acción."
+          }
         >
-          <InfoOutlinedIcon />
+          <span>
+            <IconButton
+              key={`detail-icon-${id}`}
+              style={{
+                ...iconButtonStyle,
+                color: userInfo.permissions.sendMessage
+                  ? defaultColor
+                  : disabledColor,
+              }}
+              onClick={() => handlerOpenModal(row)}
+              disabled={!userInfo.permissions.sendMessage}
+            >
+              <InfoOutlinedIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
+      )}
+      {actions.includes("print") && (
+        <IconButton
+          key={`print-icon-${id}`}
+          style={{
+            ...iconButtonStyle,
+            color: defaultColor,
+          }}
+          onClick={() => handleActionPrint(id)}
+        >
+          <LocalPrintshopOutlinedIcon />
         </IconButton>
       )}
       {messageCode === "670" && status === "01" && (
         <IconButton
-          key={`edit-icon-${row.id}`}
+          key={`edit-icon-${id}`}
           style={{
-            padding: 0,
-            color: actions.includes("edit") ? "#00B2E2" : "#565656",
-            margin: 2,
+            ...iconButtonStyle,
+            color: actions.includes("edit") ? enabledColor : defaultColor,
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${row.destination}&messageCode=${messageCode}&messageId=${row.id}`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
             )
           }
         >
@@ -114,16 +196,17 @@ const documents: Columns = {
   align: Alignment.LEFT,
   sortable: false,
   render: ({ row }: { row: any }) => {
-    if (row?.documents?.length > 0) {
+    const { documents = [] } = row || {};
+    if (documents?.length > 0) {
       const handleClick = () => {
-        row?.documents.forEach((file: any) => {
+        documents.forEach((file: any) => {
           const blob = base64ToBlob(file.content);
           downloadFile(blob, file.documentName);
         });
       };
       return (
         <Link href="#" onClick={handleClick}>
-          {row?.documents?.length}
+          {documents?.length}
         </Link>
       );
     }

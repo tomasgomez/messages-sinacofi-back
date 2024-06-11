@@ -48,6 +48,12 @@ export interface SentData {
   parameters?: any[];
 }
 
+export interface HistoryTrackingModal {
+  id: string;
+  cukCode: string;
+  status: string;
+  date: string;
+}
 export interface MortgageDischargeData {
   id?: string;
   name?: string;
@@ -68,7 +74,7 @@ export interface MortgageDischargeData {
   buyer?: string;
   borrowerDni?: string;
   borrower?: string;
-  history?: any[];
+  history?: HistoryTrackingModal[];
   messages?: Message[];
 }
 
@@ -93,6 +99,7 @@ export interface Columns {
   sortable?: boolean;
   withCheckboxAll?: boolean;
   style?: any;
+  withRadiuButton?: boolean;
 }
 
 export interface RowOptions {
@@ -123,38 +130,28 @@ export interface EnhancedTableProps {
   columns?: Columns[];
   noExtraColumn?: boolean;
   isExpansible?: boolean;
+  withRadioButton?: boolean;
 }
 
 export interface TableProps {
   withCheckbox?: boolean;
+  withRadioButton?: boolean;
+  showColumnToRadioButton?: boolean;
   labelId: string;
-  row: Message | any;
+  row: Message;
   isItemSelected: boolean;
-  handleClick: (event: React.MouseEvent<unknown>, id: number) => void;
+  handleClick: (event: React.MouseEvent<unknown>, id: number | string) => void;
+  handleRadioClick: (
+    event: React.MouseEvent<unknown>,
+    id: number | string
+  ) => void;
   columns: Columns[];
   highlightLastRow?: boolean;
   highlightWithBorderLeft?: boolean;
   isLastRow?: boolean;
   isExpansible?: boolean;
   rowOptions?: RowOptions;
-}
-
-export interface MSDetail {
-  id: string;
-  TSN: string;
-  OSN: string;
-  NSE: string;
-  messageCode: string;
-  destination: string;
-  description: string;
-  priority: string;
-  status: string;
-  origin: string;
-  creationDate: string;
-  creationTime: string;
-  receivedDate: string;
-  receivedTime: string;
-  parameters: MSParameter[];
+  selectedRadioButton?: string | number | null;
 }
 
 export interface MSParameter {

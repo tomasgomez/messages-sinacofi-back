@@ -1,6 +1,7 @@
 import { messageUseCase } from "@/backend/usecases/message/usecases";
 import { validateUpdateMessage } from "@/backend/handler/message/presenter/updateMessage";
 import { NextApiRequest, NextApiResponse } from "next";
+import { prepareMessages } from "./adapter/prepareMessages";
 
 
 // put message function
@@ -14,7 +15,22 @@ export async function put(req: NextApiRequest, res: NextApiResponse < any > ) {
             return;
         }
         let messageResponse = await messageUseCase.updateMessage(message);
-        res.status(200).json(messageResponse);
+
+        if (messageResponse instanceof Error) {
+            res.status(400).json(messageResponse);
+            return;
+        }
+        let messages = prepareMessages([messageResponse]);
+
+        if (messages instanceof Error) {
+            res.status(400).json(messages);
+            return;
+        } else if (messages.length === 0) {
+            res.status(400).json(new Error('No message returned'));
+            return;
+        }
+
+        res.status(200).json(messages[0]);
         return;
 
     } catch (error) {

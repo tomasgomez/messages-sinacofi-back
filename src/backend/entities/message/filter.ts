@@ -27,9 +27,11 @@ export interface FilterMessage {
 
 export interface FilterParameter {
   [key: string]: unknown;
-
   id ? : string[]
   name ? : string[]
   messageCode ? : string[]
   messageId ? : string[]
+  cukCode? : string[]
+  count ? : string;
+  offset ? : string;
 }

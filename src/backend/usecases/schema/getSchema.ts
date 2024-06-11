@@ -48,7 +48,6 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
 
     let schemas = await get(url, path, {}, {})
 
-    
     if (!filter.messageCode?.includes('670') && filter.messageId && filter.messageId.length>0) {
 
       let filterMessage: FilterMessage = {
@@ -84,7 +83,6 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
       if (!message670 || message.length === 0) {
         return schemas;
       }
-
 
       schemas.parameters = adaptSchema(schemas.parameters, message670[0]);
     }

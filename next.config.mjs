@@ -4,16 +4,16 @@ const nextConfig = {
   reactStrictMode: false,
   async redirects() {
     return [
-      {
-        source: "/",
-        destination: "/messages/inbox",
-        permanent: true,
-      },
       // {
-      //   source: '/callback',
-      //   destination: '/api/auth',
+      //   source: "/",
+      //   destination: "/messages/inbox",
       //   permanent: true,
       // },
+      {
+        source: '/callback',
+        destination: '/api/auth/callback/oidc',
+        permanent: false,
+      },
     ];
   },
   // Enable standalone mode

@@ -12,82 +12,112 @@ export const getInstitutions = async () => {
 };
 
 export const getMessageDescriptions = async () => {
-  // return new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     resolve(messagesTypes as []);
-  //   }, 1000);
-  // });
-  // return fetch("/api/messageDescriptions").then((response) => response.json());
   return fetch("/api/rule").then((response) => response.json());
 };
 
-export const getMessageSchema = async (messageCode: string, messageId?: string) => {
-  // return new Promise((resolve, reject) => {
-  //   setTimeout(() => {
-  //     const schema = messageSchemas.find((messageSchema) => messageSchema.messageCode === messageCode);
-  //     if (!schema) {
-  //       reject("Couln't find the form schema");
-  //     }
-  //     resolve({
-  //       ...schema,
-  //       parameters: schema?.parameters.map((parameter) => (
-  //         parameter.id === "institutionDestination" 
-  //         ? { ...parameter, defaultValue: institutionId } 
-  //         : parameter
-  //       ))
-  //     } as unknown as []);
-  //   }, 1000);
-  // });
-  return fetch(`/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}`)
-    .then((response: any) => response.json())
-  //   .then((response) => response.json())
-  //   .then((schemas) => {
-  //     console.log({ schemas });
-  //     return schemas.messageSchemas.find((el: any) => el.messageCode === messageCode)
-  //   });
+export const getMessageSchema = async (
+  messageCode: string,
+  messageId?: string,
+  cukCode?: string
+) => {
+  return fetch(
+    `/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&cukCode=${cukCode}`
+  ).then((response: any) => response.json());
 };
 
-
 export const getMessageDetails = async (messageId: number | string) => {
-  return await fetch(`/api/message/detail?id=${messageId}`)
-    .then(res => res.json())
-
+  return await fetch(`/api/message/detail?id=${messageId}`).then((res) =>
+    res.json()
+  );
 };
 export const createMessage = async (data: any, status: string) => {
   const payload = JSON.stringify({ ...data, status });
-  // return new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     const schema = messageSchemas.find((messageSchema) => messageSchema.messageCode === messageCode);
-  //     resolve({
-  //       ...schema,
-  //       parameters: schema?.parameters.map((parameter) => (
-  //         parameter.id === "institutionDestination" 
-  //         ? { ...parameter, defaultValue: institutionId } 
-  //         : parameter
-  //       ))
-  //     } as unknown as []);
-  //   }, 1000);
-  // });
   return fetch(`/api/message`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      // 'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: payload
-  })
-    .then((response) => response.json());
+    body: payload,
+  }).then((response) => response.json());
 };
 
-export const updateMessage = async (id: string, status: string, data: any = {}) => {
-  return fetch(
-    `/api/message?id=${id}`,
-    {
+export const signMessage = async (
+  id: string,
+  status: string,
+  data: any = {}
+) => {
+  try {
+    const response = await fetch(`/api/message/sign?id=${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ...data, id: id, status }),
+    });
+
+    if (!response.ok) {
+      let err = new Error(`Error: ${response.status} ${response.statusText}`) as any;
+      err.status = response.status;
+      throw err;
     }
-  ).then((res) => res.json());
-}
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error signing message:", error);
+    throw error;
+  }
+};
+
+export const updateMessage = async (
+  id: string,
+  status: string,
+  data: any = {}
+) => {
+  return fetch(`/api/message?id=${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data, id: id, status }),
+  }).then((res) => res.json());
+};
+
+export const getMessage = async (params: {
+  status?: string;
+  destination?: string;
+  origin?: string;
+}) => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (params?.status) {
+      queryParams.append("status", params.status);
+    }
+
+    if (params?.destination) {
+      queryParams.append("destination", params.destination);
+    }
+
+    if (params?.origin) {
+      queryParams.append("origin", params.origin);
+    }
+
+    const url = `/api/message?${queryParams.toString()}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data = await response?.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch message details:", error);
+    throw error;
+  }
+};

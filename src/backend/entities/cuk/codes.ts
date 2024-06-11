@@ -12,6 +12,7 @@ const foreclosureMessageCodes = [
  ]
 
 export enum ForeclosureStatus {
+    INIT = "01",
     IN_PROCESS = "021",
     APPROVED = "022",
     REJECTED = "023",
@@ -24,7 +25,13 @@ export enum ForeclosureStatus {
     RECEIVED = "06",
     ACCEPTED = "07",
     SENT_LIQUIDATION = "09",
+    SEND_LIQUIDATION_PAYMENT = "10",
     PAYMENT = "11",
+    SENT_REJECTION = "12",
+    SENT_CONFIRM_PAYMENT = "14",
+    PAYMENT_DATA = "999",
+    PAYMENT_OPTION_REJECTION = "1000",
+    PAYMENT_OPTION_ACCEPTED = "1001",
   }
 
  export function isForeclosureMessageCode(code?: string ): boolean {
@@ -64,7 +71,7 @@ export enum ForeclosureStatus {
         case ForeclosureStatus.SIGN_IN_PROGRESS:
             return MessageDescriptions.ALZAMIENTO_HIPOTECARIO
         case ForeclosureStatus.SIGNED:
-            return MessageDescriptions.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO;
+            return MessageDescriptions.ESCRITURA_FIRMADA;
         default:
             return '';
     }

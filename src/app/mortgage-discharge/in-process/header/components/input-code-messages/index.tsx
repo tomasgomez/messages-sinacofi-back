@@ -7,6 +7,7 @@ import Field from "@/components/Field";
 import { CardContext } from "../../../store/ModalStore";
 
 export const InputCode = (props: { title: string; options: string[] }) => {
+  const { title = "", options = [] } = props || {};
   const [code, setCode] = React.useState("");
   const { handleChangeAddFilter } = React.useContext(CardContext);
 
@@ -20,11 +21,11 @@ export const InputCode = (props: { title: string; options: string[] }) => {
       }}
       clearOnBlur={false}
       clearOnEscape={false}
-      options={props.options || []}
+      options={options}
       renderInput={(params) => (
         <TextField
           {...params}
-          label={props.title}
+          label={title}
           placeholder="Ingrese Código..."
           InputLabelProps={{ shrink: true, style: { background: "#DFF8FF" } }}
           InputProps={{

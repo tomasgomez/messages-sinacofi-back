@@ -3,7 +3,7 @@ import { MessageSchemaFront, Parameter, Validations } from "@/backend/entities/s
 // Function to adapt data to Schema type
 export function adaptSchema(dataToAdapt: any, userData: any): MessageSchemaFront {
     const schema: MessageSchemaFront = new MessageSchemaFront();
-    
+
     if (dataToAdapt) {
         schema.id = dataToAdapt.id;
         schema.messageCode = dataToAdapt.messageCode;
@@ -26,23 +26,33 @@ function extractParameters(dataToAdapt: any, userData: any): Parameter[] {
     const sortedParameters = sortParametersByPriority(parameters);
 
     const adaptedParameters = sortedParameters.map((parameter: any) => adaptParameter(parameter, userData));
-    let filterParams: any[]= [];
-    const finalParameters = adaptedParameters.map((parameter) => {
+    let finalParameters: any[]= [];
+    
+    adaptedParameters.forEach((parameter) => {
+        
         if (parameter.type === "accordion") {
-            if (parameter.defaultValue === "") {
-                parameter.parameters = [];
-                return parameter;
+        const parameterChildren = adaptedParameters.filter((param: any) => {
+            if (param.validations){
+                if ('accordion' in param.validations && param.type !='accordion' && param.validations.accordion == parameter.id){
+                    return true
+                }
             }
-            // const parameterChildren = parameter.defaultValue.split(",").map((el) => ({ [el]: true }));
-            const parameterChildren = parameter.defaultValue.split(",");
-            parameter.parameters = parameterChildren.map((child: any) => adaptedParameters.find(el => el.id === child));
-            filterParams = [...filterParams, ...parameterChildren];
+            return false
+        })
+
+        if (!parameterChildren || parameterChildren.length == 0){
+            parameter.parameters = []
+            return parameter;
         }
-        return parameter;
+        parameter.parameters = parameterChildren
+
+        finalParameters.push(parameter);
+        }else if(!('accordion' in parameter.validations)){
+            finalParameters.push(parameter);
+        }
+
     })
-    if (filterParams.length > 0) {
-        return finalParameters.filter((param) => !filterParams.includes(param.id));
-    }
+
     return finalParameters;
 }
 
@@ -51,7 +61,7 @@ function sortParametersByPriority(parameters: any[]): any[] {
     return parameters.sort((a: any, b: any) => (a.priority || 0) - (b.priority || 0));
 }
 
-function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiverId?: any, sender?: any } = {}) {
+function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiverId?: any, sender?: any, name?: any } = {}) {
     if (defaultValue === "Current Date" || defaultValue === "currentDate") {
         return new Date();
     }
@@ -66,9 +76,13 @@ function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiver
 
 // Adapt parameter object
 function adaptParameter(parameter: any, userData: any): Parameter {
-    const { name, messageCode, label, type, placeholder, priority, rules, optionValues, row, column, defaultValue } = parameter;
+    let { name, messageCode, label, type, placeholder, priority, rules, optionValues, row, column, defaultValue } = parameter;
     const multiple = optionValues && optionValues.length > 0;
     const validations: Validations = extractValidations(rules);
+
+    if (name == 'authname') {
+       defaultValue = userData.name;
+    }
 
     return {
         id: name,

@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import { useState, useContext } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -22,15 +22,19 @@ const options = [
 ];
 
 export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
-  const { handleChangeAddFilter } = React.useContext(CardContext);
+  const { widthDropdown = 300 } = props || {};
+  const { handleChangeAddFilter } = useContext(CardContext);
 
-  const { widthDropdown } = props;
-  const [optionSelected, setOptionSelected] = React.useState(options[0].value);
+  const [optionSelected, setOptionSelected] = useState(options[0].value);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setOptionSelected(event.target.value as string);
-    if (event.target.value === "all") handleChangeAddFilter("messageType", "");
-    else handleChangeAddFilter("messageType", event.target.value);
+    const value = event?.target?.value;
+
+    if (value !== null) {
+      setOptionSelected(value as string);
+      if (value === "all") handleChangeAddFilter("messageType", "");
+      else handleChangeAddFilter("messageType", value);
+    }
   };
 
   return (
@@ -59,7 +63,7 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
             PaperProps: {
               style: {
                 maxWidth: widthDropdown,
-                maxHeight: 150, // Ajusta este valor según tus necesidades
+                maxHeight: 150,
               },
             },
           }}

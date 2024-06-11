@@ -12,8 +12,14 @@ import { useEffect, useState, useContext } from "react";
 import { updateForeClosureMessage } from "../../api-calls";
 import { options } from "./constants";
 import { EnabledExtraOptions } from "@/utils/tracking-modal";
-import { sortHistoryList } from "@/utils/mortgage-discharge";
+import { sortHistoryList } from "@/utils/mortgage-discharge-utils";
 import { SessionProviderContext } from "@/context/SessionProvider";
+import {
+  HistoryTrackingModal,
+  MortgageDischargeData,
+} from "@/app/component/inbox-table/type";
+import { useModalManager } from "@/components/Modal";
+import basicError from "@/components/Modal/ErrorModal/basicError";
 
 export const TrackingModal = (props: {
   open: boolean;
@@ -27,12 +33,25 @@ export const TrackingModal = (props: {
     undefined
   );
   const [loading, setLoading] = useState<boolean>(false);
-  const [historyList, setHistoryList] = useState<any[]>([]);
-  const [dataOptions, setDataOptions] = useState<any[]>([]);
+  const [historyList, setHistoryList] = useState<HistoryTrackingModal[]>([]);
+  const [dataOptions, setDataOptions] = useState<unknown[]>([]);
+  
+  const { ErrorModal } = useModalManager();
 
-  const { open, onClose, data, handleGetDataList, selectedInstitution } = props;
-  const { cukCode, history, institutionDestination, ...restOfData } =
-    data || {};
+  const {
+    open = false,
+    onClose = () => null,
+    data,
+    handleGetDataList = () => null,
+    selectedInstitution = "",
+  } = props || {};
+
+  const {
+    cukCode = "",
+    history = [],
+    institutionDestination = "",
+    ...restOfData
+  } = data || {};
 
   const { userInfo } = useContext(SessionProviderContext);
 
@@ -43,18 +62,30 @@ export const TrackingModal = (props: {
 
   useEffect(() => {
     if (history) {
-      setHistoryList(history || []);
-      setDataOptions(EnabledExtraOptions(options, history || []));
+      setHistoryList(history);
+      setDataOptions(EnabledExtraOptions(options, history));
     }
-  }, [history]);
+  }, []);
 
   const handleChange = async () => {
-    setLoading(true);
-    const newCuk = await updateForeClosureMessage(cukCode, statusSelected);
-    const newHistory = sortHistoryList(JSON.parse(newCuk?.history));
-    setDataOptions(EnabledExtraOptions(options, newHistory));
-    setHistoryList(newHistory);
-    setLoading(false);
+    try {
+      setLoading(true);
+
+      const newCuk: MortgageDischargeData = await updateForeClosureMessage(
+        cukCode,
+        statusSelected
+      );
+
+      const newHistory = sortHistoryList(
+        newCuk?.history
+      ) as HistoryTrackingModal[];
+
+      setDataOptions(EnabledExtraOptions(options, newHistory));
+      setHistoryList(newHistory);
+      setLoading(false);
+    } catch (error: unknown) {
+      ErrorModal.open(basicError(error));
+    }
   };
 
   return (
@@ -109,7 +140,7 @@ export const TrackingModal = (props: {
             value={statusSelected}
             onChange={setStatusSelected}
             options={dataOptions}
-            // disabled={selectedInstitution !== institutionDestination}
+            disabled={selectedInstitution !== institutionDestination}
           />
         </Box>
       </Box>
@@ -125,16 +156,16 @@ export const TrackingModal = (props: {
           sx={buttonUpdateStateSecondarySx}
           onClick={handleChange}
           variant="contained"
-          // disabled={
-          //   loading ||
-          //   !statusSelected ||
-          //   // if you aren't the institution Destination you can change the status
-          //   selectedInstitution !== institutionDestination ||
-          //   (statusSelected == "022" &&
-          //     !userInfo?.permissions.acceptMortgageDischarge) ||
-          //   (statusSelected == "023" &&
-          //     !userInfo?.permissions.rejectMortgageDischarge)
-          // }
+          disabled={
+            loading ||
+            !statusSelected ||
+            // if you aren't the institution Destination you can change the status
+            selectedInstitution !== institutionDestination ||
+            (statusSelected == "022" &&
+              !userInfo?.permissions.acceptMortgageDischarge) ||
+            (statusSelected == "023" &&
+              !userInfo?.permissions.rejectMortgageDischarge)
+          }
         >
           Actualizar Estado
         </Button>

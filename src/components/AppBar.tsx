@@ -1,4 +1,5 @@
 "use client";
+import { signOut } from "next-auth/react"
 import { useContext, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import {
@@ -20,6 +21,7 @@ import SearchField from "./SearchField";
 import InstitutionDropdown from "./FieldTypes/InstitutionDropdown";
 import { MyContexLayout } from "@/app/context";
 import { SessionProviderContext } from "@/context/SessionProvider";
+import { completeInstitutions } from "@/utils/intitutions";
 
 const Time = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -28,8 +30,6 @@ const Time = () => {
       setCurrentTime(new Date());
       console.log({ updateTime: new Date() });
     }, 1000);
-    console.log("TIMER:", { timer });
-
     return () => {
       clearTimeout(timer);
     };
@@ -40,8 +40,6 @@ const Time = () => {
     </Typography>
   );
 };
-
-
 
 const AppBar = () => {
   // Delete after add users
@@ -64,10 +62,17 @@ const AppBar = () => {
         {
           label: "Salir",
           icon: <Logout sx={{ color: "#898989" }} />,
+          onClick: () => {
+            fetch('/api/logout')
+              .then((res) =>res.json())
+              .then(res => {                         
+                  signOut({callbackUrl: res.url, redirect: true});
+              })
+          }
         },
       ];
     }, []);
-  
+
     return (
       <Menu options={options}>
         <Typography color="#565656" fontWeight={500} variant="body1">
@@ -84,10 +89,10 @@ const AppBar = () => {
   };
 
   useEffect(() => {
-    if(userInfo?.user){
-      setSelectedInsitution(userInfo?.user?.institutionCode)
+    if (userInfo?.user) {
+      setSelectedInsitution(userInfo?.user?.institutionCode);
     }
-  },[userInfo?.user]);
+  }, [userInfo?.user]);
 
   return (
     <AppBarMui
@@ -132,37 +137,54 @@ const AppBar = () => {
         <Stack
           direction="row"
           justifyContent="space-between"
+          alignItems="center"
           sx={{ width: "calc(100% - 180px)" }}
         >
           <Stack direction="row">
-            <Container
-              sx={{
-                flexDirection: "column",
-                margin: 0,
-                width: "210px",
-                display: "flex",
-                cursor: "default",
-                justifyContent: "center",
-                marginRight: 6,
-              }}
-            >
-              {/* <Typography color="#565656" fontWeight={500} variant="caption">Nombre de Institución</Typography>
-              <Box style={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="body1" fontWeight={600} color="#151515">0027 CORP BANCA</Typography>
-              </Box> */}
-              {/* // Delete after add users */}
-              <InstitutionDropdown
-                label="Nombre de Institución"
-                defaultValue={userInfo?.user?.institutionCode}
-                selected={selectedInstitution}
-                width={200}
-                onChange={(institutionCode: any) => {
-                  setSelectedInsitution(institutionCode)
-                  // setCurrentIntitution(intitutionData);
+            {process.env.NEXT_PUBLIC_TEST_ENV ? (
+              <Container
+                sx={{
+                  flexDirection: "column",
+                  margin: 0,
+                  width: "210px",
+                  display: "flex",
+                  cursor: "default",
+                  justifyContent: "center",
+                  marginRight: 6,
                 }}
-                placeholder="Seleccione una Institución"
-              />
-            </Container>
+              >
+                <InstitutionDropdown
+                  label="Nombre de Institución"
+                  defaultValue={userInfo?.user?.institutionCode}
+                  selected={selectedInstitution}
+                  width={200}
+                  onChange={(institutionCode: any) => {
+                    setSelectedInsitution(institutionCode);
+                  }}
+                  placeholder="Seleccione una Institución"
+                />
+              </Container>
+            ) : (
+              <Container
+                sx={{
+                  flexDirection: "column",
+                  margin: 0,
+                  width: "210px",
+                  display: "flex",
+                  cursor: "default",
+                  justifyContent: "center",
+                }}
+              >
+                <Typography color="#565656" fontWeight={500} variant="caption">
+                  Nombre de Institución
+                </Typography>
+                <Box style={{ display: "flex", alignItems: "center" }}>
+                  <Typography variant="body1" fontWeight={600} color="#151515">
+                    {completeInstitutions(selectedInstitution)}
+                  </Typography>
+                </Box>
+              </Container>
+            )}
             <Container
               sx={{
                 flexDirection: "column",
@@ -182,7 +204,8 @@ const AppBar = () => {
                 </Typography>
               </Box>
             </Container>
-            <SearchField data={[]} placeholder="Buscar..." />
+            {/* // Comment until the next MVP */}
+            {/* <SearchField data={[]} placeholder="Buscar..." /> */}
           </Stack>
           <Container
             sx={{

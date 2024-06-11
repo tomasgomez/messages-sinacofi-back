@@ -8,28 +8,33 @@ import { columnsInbox, rowOptions } from "./columns";
 import { Message } from "@/app/component/inbox-table/type";
 import DataTable from "../../component/inbox-table";
 import { MyContexLayout } from "@/app/context";
+import { getMessage } from "@/app/services/common";
+import basicError from "@/components/Modal/ErrorModal/basicError";
+import { useModalManager } from "@/components/Modal";
 
 export default function InboxScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<Message[]>([]);
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
-
+  const { ErrorModal } = useModalManager();
   const fetchData = async () => {
     try {
       // after backend change yo have to this change to this
       // selectedInstitution = await intitutionCodeToLabel(selectedInstitution)
       // because we have to filter by label
       setIsLoading(true);
-      await fetch(`/api/message?status=06&destination=${selectedInstitution}`)
-        .then((res) => res.json())
-        .then((res) => {
-          setData(res);
-          setIsLoading(false);
-        });
-    } catch (error) {
-      console.error("Error al solicitar mensajes", error);
+
+      const response = await getMessage({
+        status: "06",
+        destination: selectedInstitution,
+      });
+      setData(response);
       setIsLoading(false);
+    } catch (error: unknown) {
+      setData([]);
+      setIsLoading(false);
+      ErrorModal.open(basicError(error));
     }
   };
 

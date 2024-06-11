@@ -1,11 +1,16 @@
 import * as React from "react";
 import { Box, Typography } from "@mui/material";
 import { montserrat } from "@/utils/fonts";
-import { StyledCode } from "./styled";
+import { StyledCode } from "./styles";
 import StatusChip from "./statusChip";
 
 const CodeColumn = ({ data }: { data: any }) => {
-  const { cukCode, foreclosureDate, cukStatus, lastMessageCode } = data;
+  const {
+    cukCode = "",
+    foreclosureDate = "",
+    cukStatus = "",
+    lastMessageCode = "",
+  } = data || {};
   return (
     <StyledCode>
       <Typography

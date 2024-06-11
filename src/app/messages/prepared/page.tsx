@@ -9,7 +9,9 @@ import { Columns, SentData } from "@/app/component/inbox-table/type";
 import { SendOutlined } from "@mui/icons-material";
 import { MyContexLayout } from "@/app/context";
 import { updateMessage } from "../api-calls";
-// import { intitutionCodeToLabel } from "@/utils/intitutions";
+import { getMessage } from "@/app/services/common";
+import { useModalManager } from "@/components/Modal";
+import basicError from "@/components/Modal/ErrorModal/basicError";
 
 export default function PreparedScreen() {
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
@@ -17,26 +19,22 @@ export default function PreparedScreen() {
   const [selected, setSelected] = React.useState<number[]>([]);
 
   // Change after add users "selectedInstitution"
-  const { setModalState, selectedInstitution } = React.useContext(
-    MyContexLayout
-  ) as any;
+  const { selectedInstitution } = React.useContext(MyContexLayout) as any;
+  const { ConfirmModal, ErrorModal } = useModalManager();
 
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      // Backend have the origin like a label not a code
-      // const selectedInstitutionLabel = await intitutionCodeToLabel(
-      //   selectedInstitution
-      // );
-      await fetch(`/api/message?status=01&origin=${selectedInstitution}`)
-        .then((res) => res.json())
-        .then((res) => {
-          setData(res);
-          setIsLoading(false);
-        });
-    } catch (error) {
-      console.error("Error al solicitar mensajes", error);
+      const response = await getMessage({
+        status: "01",
+        origin: selectedInstitution,
+      });
+      setData(response);
       setIsLoading(false);
+    } catch (error: unknown) {
+      setData([]);
+      setIsLoading(false);
+      ErrorModal.open(basicError(error));
     }
   };
 
@@ -60,6 +58,7 @@ export default function PreparedScreen() {
       id: "actions",
       label: "Acciones",
       render: ({ row }: { row: any }) => {
+        const { id = "", TSN = "" } = row || {};
         return (
           <Box
             sx={{
@@ -69,12 +68,11 @@ export default function PreparedScreen() {
             }}
           >
             <IconButton
-              key={`expand-icon-${row.id}`}
+              key={`expand-icon-${id}`}
               aria-label="expand row"
               style={{ padding: 0 }}
               onClick={() => {
-                setModalState({
-                  type: "decision",
+                ConfirmModal.open({
                   title: "¿Quieres enviar esta mensaje?",
                   body: (
                     <Typography
@@ -82,12 +80,11 @@ export default function PreparedScreen() {
                       fontWeight={400}
                       style={{ paddingBottom: 16 }}
                     >
-                      TSN: {row?.TSN}
+                      TSN: {TSN}
                     </Typography>
                   ),
-                  isOpen: true,
                   onConfirm: async () => {
-                    updateMessage(row.id);
+                    updateMessage(id);
                   },
                 });
               }}
@@ -98,7 +95,7 @@ export default function PreparedScreen() {
         );
       },
     }),
-    [setModalState, updateMessage]
+    [ConfirmModal, updateMessage]
   );
 
   const newColumns = useMemo(() => {

@@ -1,104 +1,60 @@
-import {
-    Message
-} from "@/backend/entities/message/message";
-import {
-    MessageRepository
-} from "@/backend/repository/messageRepository";
-import {
-    messageForeclosureUseCase
-} from "../foreclosure/usecases";
-import {
-    isForeclosureMessageCode
-} from "@/backend/entities/cuk/codes";
-import {
-    createMessage
-} from "./createMessage";
-import {
-    CUK
-} from "@/backend/entities/cuk/cuk";
-import {
-    Parameter
-} from "@/backend/entities/message/parameter";
-import {
-    getSchema
-} from "@/backend/usecases/schema/getSchema";
+import { Message } from "@/backend/entities/message/message";
+import { MessageRepository } from "@/backend/repository/messageRepository";
+import { isForeclosureMessageCode } from "@/backend/entities/cuk/codes";
+import { createMessage } from "./createMessage";
+import { CUK } from "@/backend/entities/cuk/cuk";
+import { MessageTypes } from '@/backend/entities/message/types';
+import { handle670 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle670';
+import { handle671 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle671';
+import { handle672 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle672';
+import { handle673 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle673';
+import { handle674 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle674';
+import { handle675 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle675';
+import { handle676 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle676';
+import { handle677 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle677';
+import { handle678 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle678';
+import { handle679 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle679';
+import { CUKRepository } from "@/backend/repository/cukRepository";
 
 // Create message function
-export async function handleMessage(repository: MessageRepository, message: Message, ): Promise < Message | Error > {
+export async function handleMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, ): Promise < Message | Error > {
     try {
-
-        /* CUK flow */
-        if (message.messageCode && isForeclosureMessageCode(message?.messageCode)) {
-            // message = await completeParameters(message);
-
-            let newMessage = await messageForeclosureUseCase.handleForeclosure(new CUK, message);
-
-            if (newMessage instanceof Error)
-                return newMessage;
-
-            // Check if newMessage is type of the interface ICUK
-            if (newMessage instanceof CUK) {
-                return Error('Error creating message');
-            }
-
-            return newMessage;
+        /* Normal flow */
+        if (!message.messageCode || !isForeclosureMessageCode(message?.messageCode)) {
+            return await createMessage(repository, message);
         }
 
-        /* Normal flow */
-        return await createMessage(repository, message);
+        /* CUK flow */
+        let cuk = new CUK();
+
+        /* Depending on the message code, process the message */
+        switch (message.messageCode) {
+            /* 670 */
+            case (MessageTypes.ALZAMIENTO_HIPOTECARIO): { return handle670(cuk, message, cukRepository, repository) }
+            /* 671 */
+            case (MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO): { return handle671(cuk, message, cukRepository, repository) }
+            /* 672 */
+            case (MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO): { return handle672(cuk, message, cukRepository, repository) }
+            /* 673 */
+            case (MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION): { return handle673(cuk, message, cukRepository, repository) }
+            /* 674 */
+            case (MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO): { return handle674(cuk, message, cukRepository, repository) }
+            /* 675 */
+            case (MessageTypes.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO): { return handle675(cuk, message, cukRepository, repository) }
+            /* 676 */
+            case (MessageTypes.DATOS_PARA_EL_PAGO_AH): { return handle676(cuk, message, cukRepository, repository) }
+            /* 677 */
+            case (MessageTypes.AVISO_DE_PAGO_AH): { return handle677(cuk, message, cukRepository, repository) }
+            /* 678 */
+            case (MessageTypes.RECHAZO_DE_PAGO_AH): { return handle678(cuk, message, cukRepository, repository) }
+            /* 679 */
+            case (MessageTypes.CONFIRMACION_DE_PAGO_AH): { return handle679(cuk, message, cukRepository, repository) }
+            /* Default */
+            default: { return new Error('Invalid message code')}
+        }
 
     } catch (error: any) {
         console.error('Error creating message:', error);
         return error;
     }
 }
-
-// async function completeParameters(message: Message): Promise<Message> {
-//     if (!message.parameters || message.parameters.length === 0 || !message.messageCode) {
-//         return message;
-//     }
-
-//     // Get schema
-//     let schemas = await getSchema(message.messageCode);
-
-//     if (schemas instanceof Error) {
-//         return message;
-//     }
-
-//     if (!schemas || schemas.length === 0 || schemas instanceof Error) {
-//         return message;
-//     }
-
-//     let schema = schemas[0];
-
-//     if (!schema || !schema.parameters || schema.parameters.length === 0) {
-//         return message;
-//     }
-
-//     // Traverse through the message parameters and match them with the schema
-//     message.parameters.forEach((param: Parameter) => {
-//         if (!schema.parameters)
-//             return;
-
-//         const matchedParam = schema.parameters.find((paramSchema: Parameter) => paramSchema.name === param.name);
-
-//         if (matchedParam) {
-//             // Update parameter with schema data
-//             param.id = matchedParam.id;
-//             param.messageCode = matchedParam.messageCode;
-//             param.label = matchedParam.label;
-//             param.type = matchedParam.type;
-//             param.defaultValue = matchedParam.defaultValue;
-//             param.priority = matchedParam.priority;
-//             param.description = matchedParam.description;
-//             param.placeholder = matchedParam.placeholder;
-
-//             // Set default value if the parameter is 'CUK'
-//             if (param.name === 'CUK') {
-//                 param.defaultValue = message.cukCode;
-//             }
-//         }
-//     });
-
-//     return message;
-// }
