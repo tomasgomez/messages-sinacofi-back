@@ -23,20 +23,12 @@ import {
     ForeclosureStatus
 } from "@/backend/entities/cuk/codes";
 
-import { validateToken } from "@/backend/adapters/iam/oracle/validateToken";
 import { storeDocs } from "./updateMessage";
 
 
 // Create message function
 export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, dni: string, name: string): Promise < Message | Error > {
     try {        
-        const sign = message.parameters?.find(param=> param.name ==='sign');
-
-        let signValidation = await validateToken(dni, sign?.value ? sign.value: '');
-
-        if (signValidation instanceof Error) {
-            return signValidation;
-        }
         
         message.parameters = message.parameters?.map(param=> {
             if(param.name === 'sign'){

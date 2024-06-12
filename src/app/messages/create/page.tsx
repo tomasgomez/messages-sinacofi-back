@@ -7,6 +7,7 @@ import {
   getMessageDetails,
   getMessageSchema,
   signMessage,
+  validatePassword,
 } from "@/app/services/common";
 import Form from "@/components/Form";
 import { Container, Stack, Typography } from "@mui/material";
@@ -349,30 +350,32 @@ const CreateMessage = () => {
       userInfo
     );
     if (messageCode === "670" || messageCode === "672") {
-      AddFileModal.open({
-        onConfirm: (document: any) => {
-          AddFileModal.close();
+      /// # TODOOO uncomment this
+      // AddFileModal.open({
+      //   onConfirm: (document: any) => {
+      //     AddFileModal.close();
           setLoading(true);
-          signMessage(messageId, statusCodes[1], {
-            ...payload,
-            documents: document,
-          })
-            .then((response) => {
-              SuccessModal.open({
-                title: "Firma de mensaje y carga de Copia Maestra/GP exitosa",
-                body: (
-                  <>
-                    <Typography fontSize={14} fontWeight={400}>
-                      Codigo Interno Asignado al nuevo Mensaje:{" "}
-                      {response?.cukCode}
-                    </Typography>
-                  </>
-                ),
-                onClose: () => router.push("/mortgage-discharge/in-process"),
-              });
-            })
-            .catch((error) => {
-              if (error.status === 400) {
+          validatePassword(payload.parameters.find((p: any) => p.name === "sign")?.value)
+          // signMessage(messageId, statusCodes[1], {
+          //   ...payload,
+          //   documents: document,
+          // })
+          //   .then((response) => {
+          //     SuccessModal.open({
+          //       title: "Firma de mensaje y carga de Copia Maestra/GP exitosa",
+          //       body: (
+          //         <>
+          //           <Typography fontSize={14} fontWeight={400}>
+          //             Codigo Interno Asignado al nuevo Mensaje:{" "}
+          //             {response?.cukCode}
+          //           </Typography>
+          //         </>
+          //       ),
+          //       onClose: () => router.push("/mortgage-discharge/in-process"),
+          //     });
+          //   })
+          //   .catch((error) => {
+          //     if (error.status === 400) {
                 ErrorModal.open({
                   title: "Firma Electrónica Incorrecta",
                   withoutRetry: true,
@@ -387,13 +390,13 @@ const CreateMessage = () => {
                     </Typography>
                   ),
                 });
-              } else ErrorModal.open(basicError(error));
-            })
-            .finally(() => {
-              setLoading(false);
-            });
-        },
-      });
+          //     } else ErrorModal.open(basicError(error));
+          //   })
+          //   .finally(() => {
+          //     setLoading(false);
+          //   });
+        // },
+      // });
       return;
     }
 
