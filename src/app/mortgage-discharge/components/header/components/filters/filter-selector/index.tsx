@@ -6,7 +6,7 @@ import Button from "@mui/material/Button/Button";
 import IconButton from "@mui/material/IconButton/IconButton";
 import Typography from "@mui/material/Typography/Typography";
 import { CloseRounded } from "@mui/icons-material";
-import { CardContext } from "@/app/mortgage-discharge/in-process/store/ModalStore";
+import { CardContext } from "@/app/mortgage-discharge/components/store/ModalStore";
 import { useCallback, useContext, useState } from "react";
 import { handleGenericChangeFilter } from "@/utils/mortgage-discharge-utils";
 import { FilterDropdowns } from "./form-elements/date/filtersDropdowns";

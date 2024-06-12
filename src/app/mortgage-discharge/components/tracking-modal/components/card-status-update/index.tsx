@@ -26,13 +26,15 @@ export const CardStatusUpdate = (props: { data?: any[]; loading: boolean }) => {
         <Loader label="Cargando Historial..." minHeight={388} />
       ) : (
         <EnhancedTable
-          maxHeight={342}
+          maxHeight={280}
           withCheckbox={false}
           rows={data}
           columns={columnData}
           rowOptions={rowOptions}
           footerComponent={footerComponent}
           highlightLastRow
+          rowsPerPageOptions={[]}
+          defaultRowsPerPage={4}
         />
       )}
     </Card>

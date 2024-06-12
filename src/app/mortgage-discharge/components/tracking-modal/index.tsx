@@ -35,7 +35,7 @@ export const TrackingModal = (props: {
   const [loading, setLoading] = useState<boolean>(false);
   const [historyList, setHistoryList] = useState<HistoryTrackingModal[]>([]);
   const [dataOptions, setDataOptions] = useState<unknown[]>([]);
-  
+
   const { ErrorModal } = useModalManager();
 
   const {
@@ -90,7 +90,12 @@ export const TrackingModal = (props: {
 
   return (
     <Modal
-      sx={{ color: "black", p: "40px", maxWidth: "960px" }}
+      sx={{
+        color: "black",
+        p: "40px",
+        maxWidth: "960px",
+        height: "calc(100% - 80px)",
+      }}
       open={open}
       onClose={handleClose}
     >

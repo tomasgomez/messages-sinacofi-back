@@ -10,22 +10,25 @@ export const columnData: Columns[] = [
     label: "Estado",
     align: Alignment.LEFT,
     sortable: false,
+    style: { padding: 14 },
   },
   {
     id: "date",
     align: Alignment.LEFT,
     label: "Fecha de Estado",
     sortable: false,
-    style: { width: 270 },
+    style: { width: 270, padding: 14 },
   },
 ];
 
 export const rowOptions: RowOptions = {
   status: {
     align: Alignment.LEFT,
+    style: { padding: 14 },
   },
   date: {
     align: Alignment.LEFT,
+    style: { padding: 14 },
   },
 };
 

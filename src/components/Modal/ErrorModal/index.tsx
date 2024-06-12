@@ -10,6 +10,7 @@ export type ErrorModalTypes = ModalProps & {
   onClose: () => void;
   onRetry: () => void;
   withoutRetry?: boolean;
+  sx?: any;
 };
 
 export function ErrorModal(props: ErrorModalTypes) {
@@ -21,12 +22,14 @@ export function ErrorModal(props: ErrorModalTypes) {
     withoutRetry = false,
     withoutClose = false,
     open = false,
+    sx = {},
   } = props || {};
 
   return (
     <Modal
       withoutClose={withoutClose}
-      maxWidth="500px"
+      maxWidth={500}
+      sx={{ margin: 0, height: 300, top: "calc((100% - 300px)/4)", ...sx }}
       open={open}
       onClose={onClose}
     >
@@ -59,7 +62,7 @@ export function ErrorModal(props: ErrorModalTypes) {
             fontFamily: montserrat.style.fontFamily,
           }}
         >
-          Cancelar
+          Cerrar
         </Button>
         {!withoutRetry && (
           <Button

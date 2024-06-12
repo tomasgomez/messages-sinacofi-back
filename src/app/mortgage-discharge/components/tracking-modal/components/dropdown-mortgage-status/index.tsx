@@ -25,7 +25,7 @@ export const MortgageStatusDropdown = (props: {
   useEffect(() => {
     onChange(options.find((option) => !option?.disabled)?.value);
   }, [options]);
-  
+
   return (
     <Box sx={{ width: 480 }}>
       <FormControl fullWidth>
@@ -54,7 +54,8 @@ export const MortgageStatusDropdown = (props: {
             },
             PaperProps: {
               style: {
-                maxWidth: 480, // Ajusta este valor según tus necesidades
+                maxHeight: 125,
+                maxWidth: 480,
               },
             },
           }}

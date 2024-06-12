@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import {
   StyledMoalSection,
@@ -6,17 +6,17 @@ import {
 } from "@/app/component/inbox-header/style";
 import Box from "@mui/material/Box/Box";
 import Grid from "@mui/material/Grid/Grid";
-import Typography from "@mui/material/Typography/Typography";
 import Stack from "@mui/material/Stack/Stack";
 import { montserrat } from "@/utils/fonts";
-
+import { Collapse, Typography, IconButton } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { IconButton } from "@mui/material";
 import { formatModalDetailsCompleted } from "@/utils/mortgage-discharge-format";
 import { DetailsMSInfoModal } from "@/types/mortgage-discharge";
 import { Message } from "@/app/component/inbox-table/type";
 import DocumentCard from "../document-card";
+
+const COLLAPSE_TIMEOUT = 1000;
 
 export function MessageDetails670({
   dataMessage,
@@ -26,16 +26,29 @@ export function MessageDetails670({
   showOnlyOneMessage: boolean;
 }) {
   const [showContent, setShowContent] = React.useState(false);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const { dataHeader, detailsMS, bankDetailsMS, documents } =
     formatModalDetailsCompleted(dataMessage);
 
   const handleShowContent = () => {
-    setShowContent(!showContent);
+    const next = !showContent;
+    setShowContent(next);
+    if (next) {
+      const intervalId = setInterval(() => {
+        contentRef.current?.scrollIntoView?.({
+          behavior: "instant",
+          block: "start",
+        });
+      }, 1);
+      setTimeout(() => {
+        clearInterval(intervalId);
+      }, COLLAPSE_TIMEOUT * 0.5);
+    }
   };
 
   return (
-    <Box mb={0.75} mt="24px">
+    <Box mb={0.75} ref={contentRef}>
       <Grid>
         <Grid
           item
@@ -44,7 +57,7 @@ export function MessageDetails670({
           justifyContent="space-between"
           alignItems="center"
         >
-          <Box>
+          <Box mt="24px">
             <StyledModalItem noWrap>
               NSR {dataHeader?.NSR || "-"}
             </StyledModalItem>
@@ -60,7 +73,6 @@ export function MessageDetails670({
           </Box>
           {!showOnlyOneMessage && (
             <IconButton onClick={handleShowContent}>
-              {" "}
               {showContent ? (
                 <KeyboardArrowUpIcon />
               ) : (
@@ -70,7 +82,10 @@ export function MessageDetails670({
           )}
         </Grid>
       </Grid>
-      {(showOnlyOneMessage || showContent) && (
+      <Collapse
+        in={showContent || showOnlyOneMessage}
+        timeout={COLLAPSE_TIMEOUT}
+      >
         <Stack spacing={2} mt={2}>
           <Box>
             <StyledMoalSection variant="h6">
@@ -210,7 +225,7 @@ export function MessageDetails670({
             ))}
           </Stack>
         </Stack>
-      )}
+      </Collapse>
     </Box>
   );
 }

@@ -60,7 +60,6 @@ export default function Dropdown(props: {
     disableScrollLock = true,
   } = props;
 
-  console.log(disablePortal, disableScrollLock);
   const [optionSelected, setOptionSelected] = useState(defaultValue);
   const [isFocused, setIsFocused] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);

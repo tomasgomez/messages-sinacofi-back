@@ -7,7 +7,7 @@ import PrintOutlinedIcon from "@mui/icons-material/PrintOutlined";
 import Loader from "@/components/Loader";
 import { PDFViewer } from "@react-pdf/renderer";
 import { PDFTemplate } from "@/app/component/PDFTemplate";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { MessageDetails } from "./components/message-details";
 import { MessageDetails670 } from "./components/message-details-670";
 import { CardContext } from "../store/ModalStore";
@@ -26,9 +26,10 @@ export const InfoModal = () => {
   const [pdfView, setPdfView] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showOnlyOneMessage, setShowOnlyOneMessage] = useState<boolean>(true);
-
   const { modalIsOpen, setModalIsOpen, selectedMessage } =
     useContext(CardContext);
+
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const { selectedInstitution } = useContext(MyContexLayout) as any;
   const { ErrorModal } = useModalManager() as any;
@@ -99,9 +100,20 @@ export const InfoModal = () => {
     fetchData();
   }, [modalIsOpen]);
 
+  const height = Math.max(0.8 * window.innerHeight, 650);
+
   return (
     <Modal
-      sx={{ color: "black", p: "40px", maxWidth: "960px" }}
+      innerRef={contentRef}
+      sx={{
+        color: "black",
+        p: "40px",
+        maxWidth: "960px",
+        height: height,
+        overflow: "auto",
+        margin: 0,
+        top: `calc((100% - ${height}px) / 2)`,
+      }}
       open={modalIsOpen}
       onClose={handleClose}
     >
@@ -113,7 +125,7 @@ export const InfoModal = () => {
       </IconButton>
       {!!details ? (
         isLoading ? (
-          <Loader label="Cargando Detalle..." />
+          <Loader label="Cargando Detalle..." minHeight="100%" />
         ) : pdfView ? (
           <>
             <Typography
@@ -158,12 +170,10 @@ export const InfoModal = () => {
                 )}
               </Box>
             )}
-            <Box>
-              <MessageDetails670
-                showOnlyOneMessage={showOnlyOneMessage}
-                dataMessage={details[0]}
-              />
-            </Box>
+            <MessageDetails670
+              showOnlyOneMessage={showOnlyOneMessage}
+              dataMessage={details[0]}
+            />
             <Box display={"flex"} justifyContent={"flex-end"} mt={3}>
               <Button
                 variant="contained"

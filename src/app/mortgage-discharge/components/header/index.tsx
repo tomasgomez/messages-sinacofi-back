@@ -18,7 +18,7 @@ import {
 import { MessageTypeDropdown } from "./components/dropdown-type-messages";
 import { InputCode } from "./components/input-code-messages";
 import { Filter } from "./components/filters";
-import { CardContext } from "../store/ModalStore";
+import { CardContext } from "../../components/store/ModalStore";
 import { MessageStatusDropdown } from "./components/dropdown-status-messages";
 
 export default function InboxHeader(props: {

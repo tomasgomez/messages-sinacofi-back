@@ -2,6 +2,9 @@ import * as React from "react";
 import { StyledChip } from "./styles";
 
 const getChipText = (messageCode: string, status: string) => {
+  if (messageCode === "679" && status !== "01") {
+    return "Alzamiento Hipotecario Completado";
+  }
   if (messageCode === "672" && status !== "01") {
     return "Alzamiento Hipotecario Rechazado";
   }
@@ -19,6 +22,9 @@ const getChipText = (messageCode: string, status: string) => {
   }
 };
 const getChipColor = (messageCode: string, status: string) => {
+  if (messageCode === "679" && status !== "01") {
+    return "#00BC70";
+  }
   if (messageCode === "672" && status !== "01") {
     return "#E23232";
     // #FCEBEB
@@ -38,6 +44,9 @@ const getChipColor = (messageCode: string, status: string) => {
   }
 };
 const getChipBackgroundColor = (messageCode: string, status: string) => {
+  if (messageCode === "679" && status !== "01") {
+    return "#e4f9f1";
+  }
   if (messageCode === "672" && status !== "01") {
     return "#FCEBEB";
   }

@@ -16,7 +16,7 @@ export const StyledFooterComponent = styled("div")`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 16px;
+  margin-left: 16px;
 `;
 
 export const StyledCircle = styled("div")`
