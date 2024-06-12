@@ -94,7 +94,10 @@ export const TrackingModal = (props: {
         color: "black",
         p: "40px",
         maxWidth: "960px",
-        height: "calc(100% - 80px)",
+        height: "678px",
+        // height: "calc(100% - 80px)",
+        top: "calc((100% - 678px)/2)",
+        margin: 0,
       }}
       open={open}
       onClose={handleClose}

@@ -142,8 +142,16 @@ export const InfoModal = () => {
             </PDFViewer>
           </>
         ) : (
-          <>
-            <Grid item xs={4} position="absolute" right={40}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Grid item xs={4} position="absolute" right={40} top={45}>
               <Button
                 onClick={handlePrint}
                 variant="contained"
@@ -184,7 +192,7 @@ export const InfoModal = () => {
                 Cerrar
               </Button>
             </Box>
-          </>
+          </div>
         )
       ) : (
         <Loader label="Cargando Detalle..." />
