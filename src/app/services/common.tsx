@@ -125,10 +125,6 @@ export const getMessage = async (params: {
 
 export const validatePassword = async (password: string) => {
   try {
-    console.log(password);
-    console.log("HOLISS?");
-    
-    
     const response = await fetch(`/api/message/${password}`, {
       method: "GET",
       headers: {

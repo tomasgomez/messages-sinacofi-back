@@ -2,13 +2,13 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 import { validateTokenIamOracle } from "@/backend/adapters/iam/oracle/validateTokenIamOracle";
 import { TokenInvalidError } from "@/backend/exceptions/validateSign/TokenInvalidError";
-// import { BaseError } from "@/backend/exceptions/BaseError";
 
 type Request = NextApiRequest & {
   query:{
     password: string
   }
 }
+
 // put message function
 export async function validate(req: Request, res: NextApiResponse < any > ) {
     try {
@@ -34,7 +34,7 @@ export async function validate(req: Request, res: NextApiResponse < any > ) {
           status: error.status, 
           message: error.message,
           exception: error.exception,
-          name: error.name
+          stack: error.stack
         });
         res.status(error.status || 500).json(error.message);
     }

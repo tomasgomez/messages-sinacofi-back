@@ -3,7 +3,6 @@ export class BaseError extends Error {
   exception: string;
   constructor(message?: string, exception?: string, status:number = 500) {
     super(message);
-    this.name = this.message;
     this.status = status || 500;
     this.exception = exception || 'INTERNAL_SERVER_ERROR';
 
