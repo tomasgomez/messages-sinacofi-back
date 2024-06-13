@@ -97,6 +97,7 @@ const navList = [
       "completed",
       "search",
       "normalization",
+      "deeds-reports",
       // "mortgage-rejected",
       // "informs",
     ],
@@ -121,11 +122,11 @@ const navList = [
         label: "Búsqueda",
         url: "/mortgage-discharge/search",
       },
-      // {
-      //   key: "deeds-liens",
-      //   label: "Escrituras y Reparos",
-      //   url: "/mortgage-discharge/deeds-liens",
-      // },
+      {
+        key: "deeds-reports",
+        label: "Escrituras y Reparos",
+        url: "/mortgage-discharge/deeds-reports",
+      },
       // {
       //   key: "informs",
       //   label: "Informes AH",

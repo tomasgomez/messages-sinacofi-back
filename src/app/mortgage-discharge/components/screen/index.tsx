@@ -49,7 +49,6 @@ export default function MortgageDischargeScreen({
   const handleGetDataList = async () => {
     try {
       setLoading(true);
-      console.log(...extraFilter, extraFilter);
       // Add the institution destination to the filters after changing it
       const auxFilters: Filter[] = [
         ...filters,

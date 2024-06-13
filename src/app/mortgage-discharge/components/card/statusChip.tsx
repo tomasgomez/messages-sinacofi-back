@@ -1,5 +1,7 @@
 import * as React from "react";
 import { StyledChip } from "./styles";
+import LinearProgress from "@mui/material/LinearProgress";
+import { Box } from "@mui/material";
 
 const getChipText = (messageCode: string, status: string) => {
   if (messageCode === "679" && status !== "01") {
@@ -71,7 +73,21 @@ const StatusChip = ({
   status: string;
   messageCode: string;
 }) => {
-  return (
+  return !status && !messageCode ? (
+    <Box
+      sx={{
+        width: "100%",
+        marginBottom: "7px",
+        marginTop: "10px",
+      }}
+    >
+      <LinearProgress
+        sx={{
+          borderRadius: 3,
+        }}
+      />
+    </Box>
+  ) : (
     <StyledChip
       label={getChipText(messageCode, status)}
       colorText={getChipColor(messageCode, status)}

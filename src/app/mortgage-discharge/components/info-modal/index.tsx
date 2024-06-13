@@ -20,6 +20,7 @@ import { getForeClosureDataCards } from "../../api-calls";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 import { useModalManager } from "@/components/Modal";
 import { reverseArray } from "@/utils/functions";
+import { useCalcDimensions } from "@/utils/dimensions";
 
 export const InfoModal = () => {
   const [details, setDetails] = useState<Message[]>([]);
@@ -100,7 +101,8 @@ export const InfoModal = () => {
     fetchData();
   }, [modalIsOpen]);
 
-  const height = Math.max(0.8 * window.innerHeight, 650);
+  const windowsHeight = useCalcDimensions()?.height;
+  const height = Math.max(0.8 * windowsHeight, 650);
 
   return (
     <Modal
