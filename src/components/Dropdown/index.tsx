@@ -79,14 +79,9 @@ export default function Dropdown(props: {
 
   const handleBlur = () => {
     setIsFocused(false);
-    document.documentElement.style.overflow = "";
   };
 
-  // handle click to fix the problem of the menu with the scrollbar
   const handleClick = () => {
-    isMenuOpen
-      ? (document.documentElement.style.overflow = "")
-      : (document.documentElement.style.overflow = "hidden");
     setIsMenuOpen(!isMenuOpen);
   };
 

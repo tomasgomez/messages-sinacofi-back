@@ -109,12 +109,8 @@ export default function MortgageDischargeScreen({
 
   return (
     <CardContextProvider filters={filters} setFilters={setFilters}>
-      <Paper
-        sx={{
-          width: "calc(100% - 270px)",
-        }}
-      >
-        <Box sx={{ margin: "32px 16px 16px 16px" }}>
+      <Paper sx={{ width: "100%", height: "100%" }}>
+        <Box sx={{ padding: "16px 16px 6px 16px" }}>
           <Header
             dataCodeList={data?.map(
               (elem: DataMortgageDischarge) => elem?.codeData?.cukCode
@@ -128,7 +124,6 @@ export default function MortgageDischargeScreen({
               maxHeight < 0 ? `calc(100vh - ${usedHeight}px)` : maxHeight,
             overflowY: "scroll",
             overflowX: "hidden",
-            width: "calc(100vw - 270px)",
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
           }}
         >

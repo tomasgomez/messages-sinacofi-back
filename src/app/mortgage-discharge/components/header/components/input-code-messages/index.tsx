@@ -3,8 +3,7 @@
 import * as React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import Field from "@/components/Field";
-import { CardContext } from "../../../../components/store/ModalStore";
+import { CardContext } from "../../../store/ModalStore";
 
 export const InputCode = (props: { title: string; options: string[] }) => {
   const { title = "", options = [] } = props || {};

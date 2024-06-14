@@ -5,7 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { CardContext } from "../../../../components/store/ModalStore";
+import { CardContext } from "../../../store/ModalStore";
 
 const options = [
   { label: "Todos", value: "all" },
