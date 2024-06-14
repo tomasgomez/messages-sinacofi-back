@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Filter } from "@/types/mortgage-discharge";
 import DataTable from "@/app/component/inbox-table";
 import InboxHeaderSearch from "../components/header-search";
-import { columnsSearch } from "./columns";
+import { columnsDeedsReports } from "./columns";
 import {
   ScrollableDiv,
   StyledBox,
@@ -22,7 +22,7 @@ export default function SearchScreen() {
     <StyledPaper>
       <ScrollableDiv>
         <InboxHeaderSearch
-          title="Búsqueda de Alzamientos Hipotecarios"
+          title="Escrituras y Reparos"
           filters={filters}
           setFilters={setFilters}
         />
@@ -33,7 +33,7 @@ export default function SearchScreen() {
           <DataTable
             maxHeight={350}
             rows={data}
-            columns={columnsSearch}
+            columns={columnsDeedsReports}
             emptyDataComponent={NoContent}
           />
         </StyledBox>
