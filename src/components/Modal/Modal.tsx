@@ -21,7 +21,8 @@ export interface ModalProps {
 
 export function Modal(
   props: React.PropsWithChildren<
-    Omit<ModalOwnProps, "children" | "onClose" | "open" | "sx"> & ModalProps
+    Omit<ModalOwnProps, "children" | "onClose" | "open" | "sx"> &
+      ModalProps
   >
 ) {
   return (

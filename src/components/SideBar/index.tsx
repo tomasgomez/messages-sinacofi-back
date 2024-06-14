@@ -26,11 +26,11 @@ const navList = [
       "inbox",
       "sent",
       "prepared",
-      "prending-reviews",
-      "rejected",
-      "mortgage-processes",
-      "recovered",
-      "create",
+      // "prending-reviews",
+      // "rejected",
+      // "mortgage-processes",
+      // "recovered",
+      // "create",
     ],
     children: [
       {
@@ -48,26 +48,26 @@ const navList = [
         label: "Preparados",
         url: "/messages/prepared",
       },
-      {
-        key: "prending-reviews",
-        label: "Críticos Pendientes",
-        url: "/messages/prending-reviews",
-      },
-      {
-        key: "rejected",
-        label: "Rechazados",
-        url: "/messages/rejected",
-      },
-      {
-        key: "mortgage-processes",
-        label: "Procesos Hipotecarios",
-        url: "/messages/mortgage-processes",
-      },
-      {
-        key: "recovered",
-        label: "Recuperados",
-        url: "/messages/recovered",
-      },
+      // {
+      //   key: "prending-reviews",
+      //   label: "Críticos Pendientes",
+      //   url: "/messages/prending-reviews",
+      // },
+      // {
+      //   key: "rejected",
+      //   label: "Rechazados",
+      //   url: "/messages/rejected",
+      // },
+      // {
+      //   key: "mortgage-processes",
+      //   label: "Procesos Hipotecarios",
+      //   url: "/messages/mortgage-processes",
+      // },
+      // {
+      //   key: "recovered",
+      //   label: "Recuperados",
+      //   url: "/messages/recovered",
+      // },
     ],
   },
   // {
@@ -96,9 +96,10 @@ const navList = [
       "in-process",
       "completed",
       "search",
-      "deeds-liens",
-      "mortgage-rejected",
-      "informs",
+      "normalization",
+      "deeds-reports",
+      // "mortgage-rejected",
+      // "informs",
     ],
     children: [
       {
@@ -112,20 +113,25 @@ const navList = [
         url: "/mortgage-discharge/completed",
       },
       {
+        key: "normalization",
+        label: "Clientes en Normalización",
+        url: "/mortgage-discharge/normalization",
+      },
+      {
         key: "search",
         label: "Búsqueda",
         url: "/mortgage-discharge/search",
       },
       {
-        key: "deeds-liens",
+        key: "deeds-reports",
         label: "Escrituras y Reparos",
-        url: "/mortgage-discharge/deeds-liens",
+        url: "/mortgage-discharge/deeds-reports",
       },
-      {
-        key: "informs",
-        label: "Informes AH",
-        url: "/mortgage-discharge/informs",
-      },
+      // {
+      //   key: "informs",
+      //   label: "Informes AH",
+      //   url: "/mortgage-discharge/informs",
+      // },
     ],
   },
   // {

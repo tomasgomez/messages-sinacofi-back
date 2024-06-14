@@ -8,15 +8,23 @@ const SuccessModal = ({
   title,
   onClose,
   body,
+  sx,
 }: {
   open: boolean;
   title: string;
   body: React.ReactNode;
   onClose: any;
+  sx?: any;
 }) => {
   return (
     <Box>
-      <Modal maxWidth={523} open={open} onClose={onClose} withoutClose>
+      <Modal
+        maxWidth={500}
+        sx={{ margin: 0, height: 300, top: "calc((100% - 300px)/4)", ...sx }}
+        open={open}
+        onClose={onClose}
+        withoutClose
+      >
         <Box
           sx={{
             display: "flex",

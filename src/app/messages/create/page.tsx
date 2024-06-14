@@ -493,33 +493,26 @@ const CreateMessage = () => {
   };
 
   return (
-    <Container
-      sx={{
-        width: "calc(100vw - 270px)",
-        maxWidth: "calc(100vw ) !important",
-        marginTop: "22px",
-      }} /* maxWidth={"100vw"} */
-    >
-      <Form
-        title="Nuevo Mensaje"
-        onBack={router.back}
-        loading={loading}
-        schema={messageSchema}
-        error={error}
-        onSubmit={onSubmit}
-        onPrepare={onPrepare}
-        actions={{
-          submit: {
-            onClick: onSubmit,
-            disabled: messageSchema?.actions?.sendButtonDisabled,
-          },
-          prepared: {
-            onClick: onPrepare,
-            disabled: messageSchema?.actions?.saveDraftDisabled,
-          },
-        }}
-      />
-    </Container>
+    <Form
+      styles={{ padding: 16 }}
+      title="Nuevo Mensaje"
+      onBack={router.back}
+      loading={loading}
+      schema={messageSchema}
+      error={error}
+      onSubmit={onSubmit}
+      onPrepare={onPrepare}
+      actions={{
+        submit: {
+          onClick: onSubmit,
+          disabled: messageSchema?.actions?.sendButtonDisabled,
+        },
+        prepared: {
+          onClick: onPrepare,
+          disabled: messageSchema?.actions?.saveDraftDisabled,
+        },
+      }}
+    />
   );
 };
 

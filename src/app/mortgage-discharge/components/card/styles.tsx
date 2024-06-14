@@ -66,7 +66,7 @@ interface StyledChipProps {
 
 export const StyledChip = styled(Chip)<StyledChipProps>(
   ({ colorText, background }: StyledChipProps): CSSObject => ({
-    height: 14,
+    height: 18,
     color: colorText || "inherit",
     backgroundColor: background || "inherit",
     fontSize: 12,
@@ -299,7 +299,7 @@ export const StyledLinearProgress = styled(
     borderRight,
   }: StyledLinearProgressProps): CSSObject => ({
     height: 8,
-    width: `calc((100vw - 462px) / 8)`,
+    width: `calc((100vw - 462px) / 7)`,
     borderRadius: getBorderRadius(borderRadius),
     borderRight: borderRight ? "1px solid #FFF" : "none",
     backgroundColor: "#d9d9d9",
