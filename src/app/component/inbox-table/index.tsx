@@ -22,6 +22,7 @@ import { getComparator, stableSort } from "./utils";
 
 import { TableContentLoader } from "./components/table-content-loader";
 import { MessageExportContext } from "../MessageExportProvider";
+import { TableContentNoDataBasic } from "./components/table-content-no-data-basic";
 
 export default function EnhancedTable(props: {
   tableTitle?: React.ReactNode;
@@ -37,10 +38,11 @@ export default function EnhancedTable(props: {
   isExpansible?: boolean;
   endDetailsText?: string;
   rowOptions?: RowOptions;
-  footerComponent?: React.ReactNode;
   style?: any;
   rowsPerPageOptions?: number[];
   defaultRowsPerPage?: number;
+  footerComponent?: React.ReactNode;
+  emptyDataComponent?: React.ReactNode;
 }) {
   const {
     rows = [] as Message[],
@@ -53,12 +55,13 @@ export default function EnhancedTable(props: {
     defaultOrder = "asc",
     defaultOrderBy,
     highlightLastRow = false,
-    footerComponent = null,
     isExpansible = false,
     rowOptions = {},
     style = {},
     rowsPerPageOptions = [5, 7, 10, 25, 50],
     defaultRowsPerPage = 5,
+    footerComponent = null,
+    emptyDataComponent = null,
   } = props || {};
 
   const [order, setOrder] = React.useState<Order>(defaultOrder);
@@ -221,15 +224,22 @@ export default function EnhancedTable(props: {
                 );
               })
             )}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: 57 * emptyRows,
-                }}
-              >
-                <StyledTabCell colSpan={11} />
-              </TableRow>
-            )}
+            {emptyRows > 0 ? (
+              visibleRows.length === 0 ? (
+                <TableContentNoDataBasic
+                  height={57 * emptyRows}
+                  component={emptyDataComponent}
+                />
+              ) : (
+                <TableRow
+                  style={{
+                    height: 57 * emptyRows,
+                  }}
+                >
+                  <StyledTabCell colSpan={11} />
+                </TableRow>
+              )
+            ) : null}
           </TableBody>
         </Table>
       </TableContainer>
