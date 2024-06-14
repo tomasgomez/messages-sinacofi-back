@@ -30,7 +30,7 @@ import { Parameter } from '@/backend/entities/message/parameter';
 const messageRepository: MessageRepository = new PrismaAdapter();
 
 // Get message function
-export async function getSchema(filter: Filter): Promise < MessageSchema[] | Error > {
+export async function getSchema(filter: Filter): Promise < MessageSchema | Error > {
   try {
 
     let url = getEnvVariable(envVariables.RULE_CLIENT_URL);
@@ -86,7 +86,7 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
 
       schemas.parameters = adaptSchema(schemas.parameters, message670[0]);
     }
- 
+    
     return schemas;
   } catch (error: any) {
     console.error('Error updating message:', error);
