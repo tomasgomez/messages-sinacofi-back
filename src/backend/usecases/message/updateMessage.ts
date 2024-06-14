@@ -19,13 +19,15 @@ export async function updateMessage(repository: MessageRepository, message: Mess
         }
 
         // Store the documents
-        let result = await storeDocs(message);
+        if(process.env.NEXT_PUBLIC_TEST_ENV !== "true"){
+            let result = await storeDocs(message);
 
-        if (result instanceof Error) {
-            return result;
+            if (result instanceof Error) {
+                return result;
+            }
+
+            message = result;
         }
-
-        message = result;
 
         // Update the status of the message
         switch (status) {

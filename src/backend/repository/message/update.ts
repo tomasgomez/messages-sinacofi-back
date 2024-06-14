@@ -11,9 +11,22 @@ export async function update(message: Message): Promise<Message | Error> {
         let documentsToUpdate: Document[] = [];
 
         if (message.status && message.id !== undefined && message.status.length > 0 && message.id !== '') {
-            await prismaClient.status.createMany({
-                data: message.status
-            });
+            for (const status of message.status) {
+                const existingStatus = await prismaClient.status.findUnique({
+                    where: {
+                        messageId_id: {
+                            messageId: message.id,
+                            id: status.id,
+                        },
+                    },
+                });
+
+                if (!existingStatus) {
+                    await prismaClient.status.create({
+                    data: status,
+                    });
+                }
+            }
         }
 
         /* Filter out empty values from the message object */
@@ -26,7 +39,6 @@ export async function update(message: Message): Promise<Message | Error> {
         if (message.documents && message.documents.length > 0) {
             documentsToUpdate = message.documents;
         }
-
 
         delete dataWithoutParameters.status;
 
@@ -70,12 +82,13 @@ export async function update(message: Message): Promise<Message | Error> {
         
         // Update existing parameters
         for await (const parameter of toUpdate) {
+            console.log('Updating parameter:', parameter);
             await prismaClient.parameters.update({
                 where: {
                     messageId_name_priority: {
                         messageId: updatedMessage.id,
                         name: parameter.name,
-                        priority: parameter.priority, // Asegúrate de que este sea un número si `priority` es de tipo `Int`
+                        priority: parameter.priority,
                     }
                 },
                 data: {
