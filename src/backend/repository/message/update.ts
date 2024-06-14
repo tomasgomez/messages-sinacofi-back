@@ -61,20 +61,22 @@ export async function update(message: Message): Promise<Message | Error> {
 
         // Separate parameters into toUpdate and toCreate lists
         const toUpdate = message.parameters?.filter((p: any) => 
-            existingParameters.some(ep => ep.name === p.name)
+            existingParameters.some(ep => ep.name === p.name && ep.value !== p.value && p.value !== '')
         ) || [];
 
         const toCreate = message.parameters?.filter((p: any) => 
             !existingParameters.some(ep => ep.name === p.name)
         ) || [];
-
+        
         // Update existing parameters
-        for (const parameter of toUpdate) {
-            prismaClient.parameters.updateMany({
+        for await (const parameter of toUpdate) {
+            await prismaClient.parameters.update({
                 where: {
-                    messageId: updatedMessage.id,
-                    name: parameter.name,
-                    priority: parameter.priority
+                    messageId_name_priority: {
+                        messageId: updatedMessage.id,
+                        name: parameter.name,
+                        priority: parameter.priority, // Asegúrate de que este sea un número si `priority` es de tipo `Int`
+                    }
                 },
                 data: {
                     value: parameter.value

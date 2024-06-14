@@ -7,6 +7,7 @@ import {
   getMessageDetails,
   getMessageSchema,
   signMessage,
+  validatePassword,
 } from "@/app/services/common";
 import Form from "@/components/Form";
 import { Container, Stack, Typography } from "@mui/material";
@@ -349,10 +350,13 @@ const CreateMessage = () => {
       userInfo
     );
     if (messageCode === "670" || messageCode === "672") {
+      // / # TODOOO uncomment this
       AddFileModal.open({
         onConfirm: (document: any) => {
           AddFileModal.close();
           setLoading(true);
+          // TODO validate sign
+          //validatePassword(payload.parameters.find((p: any) => p.name === "sign")?.value)
           signMessage(messageId, statusCodes[1], {
             ...payload,
             documents: document,

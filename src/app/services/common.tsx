@@ -121,3 +121,28 @@ export const getMessage = async (params: {
     throw error;
   }
 };
+
+
+export const validatePassword = async (password: string) => {
+  try {
+    const response = await fetch(`/api/message/${password}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify({ ...data, id: id, status }),
+    });
+
+    if (!response.ok) {
+      let err = new Error(`Error: ${response.status} ${response.statusText}`) as any;
+      err.status = response.status;
+      throw err;
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error with password:", error);
+    throw error;
+  }
+};

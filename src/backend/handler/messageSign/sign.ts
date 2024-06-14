@@ -11,12 +11,14 @@ export async function sign(req: NextApiRequest, res: NextApiResponse < any > ) {
         
         let dni: string='';
         let name: string='';
+
         if(token?.dni){
             dni = token.dni;
         } 
         if(token?.name){
             name= token.name;
-        } 
+        }
+
         let message = validateUpdateMessage(req.body);
 
         if (message instanceof Error) {
