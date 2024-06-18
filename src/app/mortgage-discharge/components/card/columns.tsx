@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import { IconButton, Box } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { CardContext } from "../../in-process/store/ModalStore";
+import { CardContext } from "../store/ModalStore";
 import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";

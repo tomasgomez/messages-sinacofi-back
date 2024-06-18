@@ -6,6 +6,10 @@ import {
   paramsTo673,
   paramsTo674,
   paramsTo675,
+  paramsTo676,
+  paramsTo677,
+  paramsTo678,
+  paramsTo679,
 } from "./mortgage-discharge-constants";
 import { Filter } from "@/types/mortgage-discharge";
 import { Message } from "@/app/component/inbox-table/type";
@@ -67,10 +71,10 @@ export const getDetailsObjetToMSCode = (messageCode?: string) => {
   if (messageCode === "673") return paramsTo673;
   if (messageCode === "674") return paramsTo674;
   if (messageCode === "675") return paramsTo675;
-  if (messageCode === "676") return [];
-  if (messageCode === "677") return [];
-  if (messageCode === "678") return [];
-  if (messageCode === "679") return [];
+  if (messageCode === "676") return paramsTo676;
+  if (messageCode === "677") return paramsTo677;
+  if (messageCode === "678") return paramsTo678;
+  if (messageCode === "679") return paramsTo679;
   return [];
 };
 

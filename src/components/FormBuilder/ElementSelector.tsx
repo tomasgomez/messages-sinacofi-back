@@ -1,6 +1,6 @@
 import { useFormContext, Controller } from "react-hook-form";
 import { Box, Typography } from "@mui/material";
-import { DatePickerInput } from "@/app/mortgage-discharge/in-process/header/components/filters/filter-selector/form-elements/date";
+import { DatePickerInput } from "@/app/mortgage-discharge/components/headers/form-elements/date";
 import Dropdown from "../Dropdown";
 import RutField, { validaRut } from "./fields/RutField";
 import Checkbox from "./fields/Checkbox";
@@ -86,7 +86,7 @@ const ElementSelector = ({ type, props }: { type: any; props: any }) => {
     return <Accordion {...props} />;
   }
 
-  if (type === "linebreak" || type === "label") {
+  if (type === "linebreak" || type === "label" || type === "blankSpace") {
     const Label =
       LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.label;
     return <Label {...props} />;

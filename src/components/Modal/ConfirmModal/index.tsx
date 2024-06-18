@@ -4,8 +4,18 @@ import { montserrat } from "@/utils/fonts";
 import { InfoOutlined, WarningAmberRounded } from "@mui/icons-material";
 
 const icons: any = {
-  warning: <WarningAmberRounded fontSize="large" style={{ color: "#FFC742", fontSize: "48px" }} />,
-  info: <InfoOutlined fontSize="large" style={{ color: "#898989", fontSize: "48px" }} />,
+  warning: (
+    <WarningAmberRounded
+      fontSize="large"
+      style={{ color: "#FFC742", fontSize: "48px" }}
+    />
+  ),
+  info: (
+    <InfoOutlined
+      fontSize="large"
+      style={{ color: "#898989", fontSize: "48px" }}
+    />
+  ),
 };
 
 const ConfirmModal = ({
@@ -15,6 +25,7 @@ const ConfirmModal = ({
   onClose,
   body,
   onConfirm,
+  sx,
 }: {
   open: boolean;
   title: string;
@@ -22,10 +33,17 @@ const ConfirmModal = ({
   body: any;
   onClose: any;
   onConfirm: any;
+  sx: any;
 }) => {
   return (
     <Box>
-      <Modal maxWidth={523} open={open} onClose={onClose} withoutClose>
+      <Modal
+        maxWidth={523}
+        sx={{ margin: 0, height: 320, top: "calc((100% - 320px)/4)", ...sx }}
+        open={open}
+        onClose={onClose}
+        withoutClose
+      >
         <Box
           sx={{
             display: "flex",

@@ -68,7 +68,6 @@ function adaptParameters(message: Message, messageSchema: any): any {
             return {
                 ...parameter,
                 label: schema.label,
-                priority: schema.priority,
                 value: optionValue.label,
             }
         }
@@ -76,7 +75,6 @@ function adaptParameters(message: Message, messageSchema: any): any {
         return {
             ...parameter,
             label: schema.label,
-            priority: schema.priority,
         }
     });
 }

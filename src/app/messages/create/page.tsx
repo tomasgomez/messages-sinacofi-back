@@ -61,7 +61,7 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
   const currentField = fieldList?.find(
     (field: any) => fieldName === field.name
   );
-  if (fieldName === "sign" && currentField?.value === "-") {
+  if ((fieldName === "sign" || fieldName === "senderSign") && currentField?.value === "-") {
     return "";
   }
   return currentField?.value || null;
@@ -129,7 +129,7 @@ const CreateMessage = () => {
                       disabled: true,
                     }
                   : // : { ...parameter, disabled: true }
-                  parameter.id === "sign"
+                  parameter.id === "sign" || parameter.id === "senderSign"
                   ? {
                       ...parameter,
                       type: "password",
@@ -352,6 +352,7 @@ const CreateMessage = () => {
     if (messageCode === "670" || messageCode === "672") {
       // / # TODOOO uncomment this
       AddFileModal.open({
+        isRejected: messageCode === "672",
         onConfirm: (document: any) => {
           AddFileModal.close();
           setLoading(true);
@@ -497,33 +498,26 @@ const CreateMessage = () => {
   };
 
   return (
-    <Container
-      sx={{
-        width: "calc(100vw - 270px)",
-        maxWidth: "calc(100vw ) !important",
-        marginTop: "22px",
-      }} /* maxWidth={"100vw"} */
-    >
-      <Form
-        title="Nuevo Mensaje"
-        onBack={router.back}
-        loading={loading}
-        schema={messageSchema}
-        error={error}
-        onSubmit={onSubmit}
-        onPrepare={onPrepare}
-        actions={{
-          submit: {
-            onClick: onSubmit,
-            disabled: messageSchema?.actions?.sendButtonDisabled,
-          },
-          prepared: {
-            onClick: onPrepare,
-            disabled: messageSchema?.actions?.saveDraftDisabled,
-          },
-        }}
-      />
-    </Container>
+    <Form
+      styles={{ padding: 16 }}
+      title="Nuevo Mensaje"
+      onBack={router.back}
+      loading={loading}
+      schema={messageSchema}
+      error={error}
+      onSubmit={onSubmit}
+      onPrepare={onPrepare}
+      actions={{
+        submit: {
+          onClick: onSubmit,
+          disabled: messageSchema?.actions?.sendButtonDisabled,
+        },
+        prepared: {
+          onClick: onPrepare,
+          disabled: messageSchema?.actions?.saveDraftDisabled,
+        },
+      }}
+    />
   );
 };
 

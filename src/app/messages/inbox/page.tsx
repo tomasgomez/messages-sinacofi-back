@@ -54,8 +54,8 @@ export default function InboxScreen() {
   );
 
   return (
-    <Paper sx={{ width: "calc(100% - 270px)" }}>
-      <Box sx={{ m: 2 }}>
+    <Paper sx={{ width: "100%", height: "100%" }}>
+      <Box sx={{ p: 2 }}>
         <InboxHeader
           amountMessages={data.length}
           title={"Bandeja de Entrada"}

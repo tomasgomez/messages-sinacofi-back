@@ -18,11 +18,11 @@ const StyledTextField = styled(TextField)({
   },
 });
 
-export default function Field (
+export default function Field(
   props: {
     value?: any;
     label: string;
-    width?: number;
+    width?: number | string;
     options?: any;
     onChange?: any;
   } & TextFieldProps
@@ -51,7 +51,8 @@ export default function Field (
         width,
         color: "#000000",
         "& #outlined-basic-label": {
-          backgroundColor: isFocused || value || defaultValue ? "#DFF8FF" : "transparent",
+          backgroundColor:
+            isFocused || value || defaultValue ? "#DFF8FF" : "transparent",
         },
       }}
       onFocus={handleFocus}

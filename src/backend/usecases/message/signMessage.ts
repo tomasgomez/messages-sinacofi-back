@@ -38,10 +38,12 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
         })
 
         // Store the documents
-        let result = await storeDocs(message);
+        if(process.env.NEXT_PUBLIC_TEST_ENV !== "true"){
+            let result = await storeDocs(message);
 
-        if (result instanceof Error) {
-            return result;
+            if (result instanceof Error) {
+                return result;
+            }
         }
 
         let status = '';
