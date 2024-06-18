@@ -3,17 +3,13 @@ import {
   Columns,
   RowOptions,
 } from "@/app/component/inbox-table/type";
-// import { base64ToBlob, downloadFile } from "../utils";
 import Image from "next/image";
-// import { useContext } from "react";
 
 const DocumentAction = ({ row }: { row: any }) => {
-  const { documents } = row || {};
+  const { id = "", documents } = row || {};
 
-  // const { setPrintPDF, setSelectedMessages } = useContext(MessageExportContext);
-
-  const handleActionPrint = () => {
-    console.log("open documents", documents);
+  const handleActionPrint = async () => {
+    window.open(`/pdf-viewer?id=${encodeURIComponent(id)}`, "_blank");
   };
 
   return (
@@ -24,7 +20,7 @@ const DocumentAction = ({ row }: { row: any }) => {
       loading="lazy"
       width="30"
       height="30"
-      onClick={() => handleActionPrint()}
+      onClick={handleActionPrint}
     />
   );
 };

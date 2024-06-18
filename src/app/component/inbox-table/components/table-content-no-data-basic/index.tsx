@@ -1,5 +1,4 @@
 import React from "react";
-
 import TableCell from "@mui/material/TableCell/TableCell";
 import TableRow from "@mui/material/TableRow/TableRow";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
@@ -11,7 +10,7 @@ export const TableContentNoDataBasic = ({
   height,
   component,
 }: {
-  height?: number;
+  height?: number | string;
   component: React.ReactNode;
 }) => {
   return (

@@ -1,5 +1,5 @@
 "use client";
-import { signOut } from "next-auth/react"
+import { signOut } from "next-auth/react";
 import { useContext, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import {
@@ -17,7 +17,7 @@ import {
   SettingsOutlined,
 } from "@mui/icons-material";
 import Menu from "./Menu";
-import SearchField from "./SearchField";
+// import SearchField from "./SearchField";
 import InstitutionDropdown from "./FieldTypes/InstitutionDropdown";
 import { MyContexLayout } from "@/app/context";
 import { SessionProviderContext } from "@/context/SessionProvider";
@@ -63,12 +63,12 @@ const AppBar = () => {
           label: "Salir",
           icon: <Logout sx={{ color: "#898989" }} />,
           onClick: () => {
-            fetch('/api/logout')
-              .then((res) =>res.json())
-              .then(res => {                         
-                  signOut({callbackUrl: res.url, redirect: true});
-              })
-          }
+            fetch("/api/logout")
+              .then((res) => res.json())
+              .then((res) => {
+                signOut({ callbackUrl: res.url, redirect: true });
+              });
+          },
         },
       ];
     }, []);
@@ -102,6 +102,7 @@ const AppBar = () => {
         fontFamily: "Roboto",
         boxShadow: "none",
         flexDirection: "row",
+        maxHeight: "67px",
       }}
     >
       <Stack
