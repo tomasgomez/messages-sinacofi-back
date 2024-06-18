@@ -97,7 +97,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // FILTER MESSAGES BY institutionDestination
     if (filter.institutionDestination && filter.institutionDestination.length > 0) {
         messagesWhere.destination = { in: filter.institutionDestination };
-        messagesWhere.status = { some:{ id: { in: ["06"] } } };            
+        messagesWhere.status = { some:{ id: { in: ["05"] } } };            
     }
 
     // FILTER MESSAGES BY messageCode
@@ -222,7 +222,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         history: true
     };
 
-    query.include = include;    
+    query.include = include;  
     return query;
 }
 
