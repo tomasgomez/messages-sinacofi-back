@@ -1,6 +1,6 @@
 import { useFormContext, Controller } from "react-hook-form";
 import { Box, Typography } from "@mui/material";
-import { DatePickerInput } from "@/app/mortgage-discharge/components/header/components/filters/filter-selector/form-elements/date";
+import { DatePickerInput } from "@/app/mortgage-discharge/components/headers/form-elements/date";
 import Dropdown from "../Dropdown";
 import RutField, { validaRut } from "./fields/RutField";
 import Checkbox from "./fields/Checkbox";

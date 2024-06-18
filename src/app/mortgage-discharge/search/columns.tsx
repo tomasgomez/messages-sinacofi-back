@@ -3,24 +3,76 @@ import {
   Columns,
   RowOptions,
 } from "@/app/component/inbox-table/type";
-import Link from "@mui/material/Link";
+import { IconButton, Tooltip } from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import TrackChangesIcon from "@mui/icons-material/TrackChanges";
+import { SessionProviderContext } from "@/context/SessionProvider";
+import { useContext } from "react";
+
+const AccionesColumn = ({ row }: { row: any }) => {
+  const { id = "" } = row || {};
+  const { userInfo } = useContext(SessionProviderContext) as any;
+
+  const handlerOpenModal = (row: any) => {};
+  const handlerOpenModalTracking = (row: any) => {};
+
+  const iconButtonStyle = { padding: 0, margin: "0px 2px" };
+  const disabledColor = "#CCC";
+  const defaultColor = "#565656";
+
+  return (
+    <div
+      style={{
+        justifyContent: "center",
+        display: "flex",
+        gap: "10px",
+        alignItems: "center",
+      }}
+    >
+      <Tooltip
+        title={
+          userInfo?.permissions?.sendMessage
+            ? ""
+            : "No tienes permisos para realizar esta acción."
+        }
+      >
+        <span>
+          <IconButton
+            key={`detail-icon-${id}`}
+            style={{
+              ...iconButtonStyle,
+              color: userInfo?.permissions?.sendMessage
+                ? defaultColor
+                : disabledColor,
+            }}
+            onClick={() => handlerOpenModal(row)}
+            disabled={!userInfo?.permissions?.sendMessage}
+          >
+            <InfoOutlinedIcon />
+          </IconButton>
+        </span>
+      </Tooltip>
+      <IconButton
+        key={`tracking-icon-${id}`}
+        style={{
+          ...iconButtonStyle,
+          color: defaultColor,
+        }}
+        onClick={() => handlerOpenModalTracking(row)}
+      >
+        <TrackChangesIcon />
+      </IconButton>
+    </div>
+  );
+};
 
 const actions: Columns = {
   id: "actions",
   label: "Acciones",
-  align: Alignment.LEFT,
+  align: Alignment.CENTER,
   sortable: false,
   render: ({ row }: { row: any }) => {
-    // const { id = "" } = row || {};
-    const handleClick = () => {
-      console.log("open details");
-    };
-
-    return (
-      <Link href="#" onClick={handleClick}>
-        Ver Detalle
-      </Link>
-    );
+    return <AccionesColumn row={row} />;
   },
 };
 

@@ -2,7 +2,7 @@
 
 import React, { useState, useContext, useCallback, useEffect } from "react";
 import { Box, Paper, TablePagination } from "@mui/material";
-import Header from "../header";
+import Header from "@/app/mortgage-discharge/components/headers/header-screen-cards";
 import CarDischarge from "@/app/mortgage-discharge/components/card";
 import { TrackingModal } from "../tracking-modal";
 import { InfoModal } from "../info-modal";

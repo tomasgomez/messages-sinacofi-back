@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Filter } from "@/types/mortgage-discharge";
 import DataTable from "@/app/component/inbox-table";
-import InboxHeaderSearch from "../components/header-search";
+import InboxHeaderSearch from "../components/headers/header-search";
 import { columnsSearch } from "./columns";
 import {
   ScrollableDiv,
@@ -15,7 +15,9 @@ import NoContent from "../components/no-content";
 export default function SearchScreen() {
   const [filters, setFilters] = useState<Filter[]>([]);
 
-  const data: unknown[] = [];
+  const data: unknown[] = [
+    // { NSR: "123", id: "9792ae71-24c2-4d15-8c9b-15c9b87f74ca" },
+  ];
   const amountRows: number = data.length;
 
   return (

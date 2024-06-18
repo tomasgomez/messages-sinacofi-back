@@ -177,9 +177,9 @@ export default function EnhancedTable(props: {
   }, [visibleRows, withRadioButton]);
 
   return (
-    <Paper style={{ overflow: "inherit" }}>
-      <TableContainer style={{ maxHeight, ...style }}>
-        {tableTitle}
+    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      {tableTitle}
+      <TableContainer sx={{ maxHeight: maxHeight, ...style }}>
         <Table aria-labelledby="tableTitle" size="medium" stickyHeader>
           <TableHeader
             withRadioButton={showColumnToRadioButton()}
@@ -224,22 +224,23 @@ export default function EnhancedTable(props: {
                 );
               })
             )}
-            {emptyRows > 0 ? (
-              visibleRows.length === 0 ? (
+            {!loading &&
+              emptyRows > 0 &&
+              (visibleRows.length === 0 ? (
                 <TableContentNoDataBasic
-                  height={57 * emptyRows}
+                  height={Math.min(
+                    // 57 => rows height, emptyRows => number of empty rows, 32 => padding (16 * 2)
+                    57 * emptyRows - 32,
+                    // 57 => header height, 32 => padding (16 * 2), 1 => border line
+                    (maxHeight as number) - 57 - 32 - 1
+                  )}
                   component={emptyDataComponent}
                 />
               ) : (
-                <TableRow
-                  style={{
-                    height: 57 * emptyRows,
-                  }}
-                >
+                <TableRow style={{ height: 57 * emptyRows }}>
                   <StyledTabCell colSpan={11} />
                 </TableRow>
-              )
-            ) : null}
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

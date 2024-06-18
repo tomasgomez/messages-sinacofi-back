@@ -98,8 +98,8 @@ const navList = [
       "search",
       "normalization",
       "deeds-reports",
+      "informs",
       // "mortgage-rejected",
-      // "informs",
     ],
     children: [
       {
@@ -127,11 +127,11 @@ const navList = [
         label: "Escrituras y Reparos",
         url: "/mortgage-discharge/deeds-reports",
       },
-      // {
-      //   key: "informs",
-      //   label: "Informes AH",
-      //   url: "/mortgage-discharge/informs",
-      // },
+      {
+        key: "informs",
+        label: "Informes AH",
+        url: "/mortgage-discharge/informs",
+      },
     ],
   },
   // {
