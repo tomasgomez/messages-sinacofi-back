@@ -15,8 +15,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
 
         let filter = result;
 
-        filter.detail = true;
-
         /* Use the PrismaAreaAdapter to get the Message from the database */
         let messageResponse = await messageDetailUseCase.getMessageDetail(filter)
 

@@ -32,7 +32,7 @@ export enum ForeclosureStatus {
     PAYMENT_DATA = "999",
     PAYMENT_OPTION_REJECTION = "1000",
     PAYMENT_OPTION_ACCEPTED = "1001",
-  }
+}
 
  export function isForeclosureMessageCode(code?: string ): boolean {
 
@@ -76,3 +76,32 @@ export enum ForeclosureStatus {
             return '';
     }
   }
+
+export type Status = 'completed'|'in_progress'|'normalization';
+
+export function getForeclosureStatusCodesByStatus(status: Status): string[] {
+    switch (status) {
+        case 'completed':
+            return [ForeclosureStatus.SENT_CONFIRM_PAYMENT];
+        case 'in_progress':
+            return [
+                ForeclosureStatus.END_NORMALIZATION,
+                ForeclosureStatus.SIGN_IN_PROGRESS,
+                ForeclosureStatus.SIGNED,
+                ForeclosureStatus.PREPARED,
+                ForeclosureStatus.SENT,
+                ForeclosureStatus.RECEIVED,
+                ForeclosureStatus.ACCEPTED,
+                ForeclosureStatus.SENT_LIQUIDATION,
+                ForeclosureStatus.SEND_LIQUIDATION_PAYMENT,
+                ForeclosureStatus.PAYMENT,
+                ForeclosureStatus.SENT_REJECTION,
+                ForeclosureStatus.SENT_CONFIRM_PAYMENT,
+            ];
+        case 'normalization':
+            return [ForeclosureStatus.START_NORMALIZATION];
+        default:
+            return [];
+    }
+}
+

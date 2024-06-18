@@ -6,13 +6,17 @@ import { findSelect } from "@/backend/repository/message/presenter/findSelect";
 import { findWhere } from "@/backend/repository/message/presenter/findWhere";
 import { findStatus } from "./presenter/findStatus";
 
-async function find(filter: FilterMessage): Promise<Message[] | Error> {
+async function find(
+    filter: FilterMessage, 
+    includeParameters: boolean = false, 
+    includeDocuments: boolean = false
+): Promise<Message[] | Error> {
     try {
         const prisma = new PrismaClientWrapper();
         const prismaClient = prisma.getClient();
         
         let where = findWhere(filter)
-        let select: any = findSelect(filter);
+        let select: any = findSelect(includeParameters,includeDocuments);
         let status: any = {};
         
         if (filter.status && filter.status.length > 0) {

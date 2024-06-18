@@ -3,7 +3,7 @@ import { messageForeclosureUseCase } from "@/backend/usecases/foreclosure/usecas
 import { NextApiRequest, NextApiResponse } from "next";
 import { prepareForclosure } from "./adapter/prepareForeclosure";
 
-export async function get(req: NextApiRequest, res: NextApiResponse < any >, detail: boolean = false){
+export async function get(req: NextApiRequest, res: NextApiResponse < any >){
     try {
         /* Validate the query params and get the Message */
         let filter = validateGetMessageForeclosure(req.query);

@@ -16,8 +16,7 @@ import {
 import { Prisma } from '@prisma/client';
 import { MessageTypes } from '@/backend/entities/message/types';
 
-
-async function find(filter: Filter): Promise < CUK[] | Error > {
+export async function find(filter: Filter): Promise < CUK[] | Error > {
     try {
         let cuks: CUK[];
 
@@ -32,7 +31,7 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
 
         // Find all messages if count is not provided or is 0
         cuks = await prismaClient.cUK.findMany(query);
-
+        
         // If the messages are not found, return an error
         if (cuks.length === 0) {
             return new Error('Message not found');
@@ -46,11 +45,6 @@ async function find(filter: Filter): Promise < CUK[] | Error > {
     }
 }
 
-export {
-    find
-};
-
-
 const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma.CUKFindManyArgs => {
 
     // Create the response object
@@ -59,143 +53,145 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         skip: offset,
         orderBy: { createdAt: 'desc' },
     }
-    
-    // defune MessageArgs
-    let messageArgs: Prisma.CUK$messagesArgs = {
-        select: findSelect(),
-    };
 
-    // check if filter has institutionCode
-    if (filter.institutionCode) {
-        messageArgs.where = {
-            OR: [
-                {
-                    AND: [
-                        {
-                            origin: {
-                                in: filter.institutionCode
-                            }
-                        }, 
-                    {
-                    status: { 
-                        
-                        some: 
-                        { 
-                            id: {
-                                in: ["01", "05"] 
-                        }
-                    }
-                }       
-            }
-        ]}, {
-            AND: [
-                {
-                    destination: {
-                        in: filter.institutionCode
-                    }
-                }, {
-                    OR: [
-                        { 
-                            status: { 
-                                some:{
-                                    id: { 
-                                        in: ["06"]
-                                }
-                            } 
-                        } 
-                    } 
-                ]
-            }
-        ]}]}
-        // where.messages = {
-        //     some: {
-        //         OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {some: {id: {in: ["01", "05",""]}}}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some: {id: {in: ["06"]}} } }]}]}]
-        //     }
-        // }
+    let cukWhere: Prisma.CUKWhereInput = {
+        ...createDateRangeFilter(filter.startDate, filter.endDate),
+    };
+    
+    // FILTERS CUK by cukCode
+    if(filter.cukCode && filter.cukCode.length > 0){
+        cukWhere.cukCode = { in: filter.cukCode };
     }
 
+    // FILTERS CUK BY status 
+    if(filter.status && filter.status.length > 0){
+        cukWhere.status = { in: filter.status };
+    }
 
-    const dateRangeFilter =  createDateRangeFilter(filter.startDate, filter.endDate);
-    // create where from filter
-    let where: Prisma.CUKWhereInput = {
-        ...dateRangeFilter
-    };
+    // FILTERS CUK by id
+    if(filter.id && filter.id.length > 0){
+        cukWhere.id = { in: filter.id };
+    }
 
-    if(filter.id && filter.id.length > 0)
-    where.id = {
-        in: filter.id
-    };
+    let messagesWhere: Prisma.MessageWhereInput = {};
 
-    if(filter.cukCode && filter.cukCode.length > 0)
-    where.cukCode = {
-        in: filter.cukCode
-    };
-
-    if(filter.status && filter.status.length > 0)
-    where.status = {
-        in: filter.status
-    };
-    if (filter.institutionCode?.length != 0){
-        where.messages = { 
-            some: {    
-                OR: [
-                    {
-                        AND: [
-                            {
-                                origin: {
-                                    in: filter.institutionCode
-                                }
-                            }, 
-                    {
-                        status: { 
-                            some: { 
-                                id: {
-                                    in: ["01", "05"] 
-                                } 
-                            }
-                        }
-                    
-            }
-        ]}, {
-            AND: [
-                {
-                    destination: {
-                        in: 
-                        filter.institutionCode
-                    }
-                }, 
-                { 
-                    OR: [
-                        { 
-                            status: { 
-                                some:{
-                                    id: { 
-                                        in: ["06"]
-                                    }
-                                } 
-                            } 
-                        } 
-                    ]
+    // FILTER MESSAGES BY institutionCode
+    if (filter.institutionCode && filter.institutionCode.length > 0) {
+        messagesWhere.OR = [{
+            origin: { in: filter.institutionCode },
+            status: { 
+                some: { 
+                    id: { in: ["01", "05"] }
                 }
-            ]
+            }       
+        }, {
+            destination: { in: filter.institutionCode },
+            status: { 
+                some:{
+                    id: { in: ["06"] }
+                } 
+            }
         }]
-        }
-        }
-}
-    // where.messages = {
-    //     some: {
-    //         OR: [{AND: [{origin: {in: filter.institutionCode}}, {status: {some: {id: {in: ["01", "05",""]}}}}]}, {AND: [{destination: {in: filter.institutionCode}}, { OR: [{ status: { some: {id: {in: ["06"]}} } }]}]}]
-    //     }
-    // }
+    }
 
+    // FILTER MESSAGES BY institutionDestination
+    if (filter.institutionDestination && filter.institutionDestination.length > 0) {
+        messagesWhere.destination = { in: filter.institutionDestination };
+        messagesWhere.status = { some:{ id: { in: ["06"] } } };            
+    }
+
+    // FILTER MESSAGES BY messageCode
+    if (filter.messageCode && filter.messageCode.length > 0) {
+        messagesWhere.messageCode = { in: filter.messageCode };
+    }
+    
+    let parametersWhere: Prisma.ParametersWhereInput = {};
+    parametersWhere.AND=[];
+
+    // FILTER PARAMETERS BY description
+    if(filter.description && filter.description.length > 0){
+        parametersWhere.description ={ in: filter.description };
+    }
+
+    // FILTER PARAMETERS BY channel
+    if(filter.channel && filter.channel.length > 0){
+        parametersWhere.AND.push({
+            name: 'channel',
+            value: { in: filter.channel}
+        })
+    }
+
+    // FILTER PARAMETERS BY region    
+    if(filter.region && filter.region.length > 0){        
+        parametersWhere.AND.push({
+            name: 'region',
+            value: { in: filter.region }
+        })
+    }
+    
+    // FILTER PARAMETERS BY buyerDni
+    if(filter.buyerDni && filter.buyerDni.length > 0){
+        parametersWhere.AND.push({
+            name: 'buyerDni',
+            value: { in: filter.buyerDni}
+        })
+    }
+
+    // FILTER PARAMETERS BY buyer
+    if(filter.buyer && filter.buyer.length > 0){
+        parametersWhere.AND.push({
+            name: 'buyer',
+            value: { in: filter.buyer}
+        })
+    }
+
+    // FILTER PARAMETERS BY ownerDni
+    if(filter.ownerDni && filter.ownerDni.length > 0){
+        parametersWhere.AND.push({
+            name: 'ownerDni',
+            value: { in: filter.ownerDni}
+        })
+    }
+
+    // FILTER PARAMETERS BY owner
+    if(filter.owner && filter.owner.length > 0){
+        parametersWhere.AND.push({
+            name: 'owner',
+            value: { in: filter.owner}
+        })
+    }
+
+    // FILTER PARAMETERS BY borrowerDni
+    if(filter.borrowerDni && filter.borrowerDni.length > 0){
+        parametersWhere.AND.push({
+            name: 'borrowerDni',
+            value: { in: filter.borrowerDni}
+        })
+    }
+
+    // FILTER PARAMETERS BY borrower
+    if(filter.borrower && filter.borrower.length > 0){
+        parametersWhere.AND.push({
+            name: 'borrower',
+            value: { in: filter.borrower}
+        })
+    }
+        
     // set values to query
-    query.where = where;
+    query.where = {
+        ...cukWhere, 
+        parameters:{ some: {...parametersWhere} }, 
+        messages: { some: {...messagesWhere} } 
+    };
     // define include
     let include: Prisma.CUKInclude = { 
-        messages: messageArgs, 
+        messages: { 
+            select: findSelect(),
+        }, 
         parameters: {
             where: {
-                messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO,
+                // CHECK, cuando se filtra por institutionDestination, no esta tomando los otros mensajes
+                messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO, 
                 name: {
                         in: [
                             'id',
@@ -216,8 +212,8 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
                             'borrower',
                             'beneficiaryBank',
                         ]
-                    }            
-                },
+                    }
+            },
             select: {
                 name: true,
                 value: true
@@ -226,9 +222,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         history: true
     };
 
-    // set include to query
-    query.include = include;
-
+    query.include = include;    
     return query;
 }
 
