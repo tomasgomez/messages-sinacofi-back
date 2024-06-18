@@ -61,7 +61,7 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
   const currentField = fieldList?.find(
     (field: any) => fieldName === field.name
   );
-  if (fieldName === "sign" && currentField?.value === "-") {
+  if ((fieldName === "sign" || fieldName === "senderSign") && currentField?.value === "-") {
     return "";
   }
   return currentField?.value || null;
@@ -129,7 +129,7 @@ const CreateMessage = () => {
                       disabled: true,
                     }
                   : // : { ...parameter, disabled: true }
-                  parameter.id === "sign"
+                  parameter.id === "sign" || parameter.id === "senderSign"
                   ? {
                       ...parameter,
                       type: "password",
@@ -352,6 +352,7 @@ const CreateMessage = () => {
     if (messageCode === "670" || messageCode === "672") {
       // / # TODOOO uncomment this
       AddFileModal.open({
+        isRejected: messageCode === "672",
         onConfirm: (document: any) => {
           AddFileModal.close();
           setLoading(true);

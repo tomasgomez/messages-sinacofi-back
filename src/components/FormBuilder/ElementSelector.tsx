@@ -86,7 +86,7 @@ const ElementSelector = ({ type, props }: { type: any; props: any }) => {
     return <Accordion {...props} />;
   }
 
-  if (type === "linebreak" || type === "label") {
+  if (type === "linebreak" || type === "label" || type === "blankSpace") {
     const Label =
       LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.label;
     return <Label {...props} />;

@@ -87,6 +87,8 @@ const Form = ({
     });
   };
 
+  console.log({ errors: methods.formState.errors })
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} style={{ ...styles }}>
