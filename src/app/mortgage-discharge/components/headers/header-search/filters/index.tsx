@@ -25,13 +25,11 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { TextInputFilters } from "../../form-elements/text-input-filters";
 
-export const Filters = (props: {
-  filters: Filter[];
-  setFilters: Dispatch<SetStateAction<Filter[]>>;
-}) => {
+export const Filters = (props: { handleGetData: Function }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [filters, setFilters] = useState<Filter[]>([]);
 
-  const { filters = [], setFilters = () => null } = props;
+  const { handleGetData = () => null } = props;
 
   const handleChangeFilter = (label: string, value: any) => {
     handleGenericChangeFilter(label, value, setFilters);
@@ -50,7 +48,7 @@ export const Filters = (props: {
           ) && elem.value === "all"
         )
     );
-    console.log("filters", returnFilters);
+    handleGetData(returnFilters);
   };
 
   const getValue = useCallback(

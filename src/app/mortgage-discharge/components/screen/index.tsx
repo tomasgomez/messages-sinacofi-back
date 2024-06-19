@@ -7,7 +7,7 @@ import CarDischarge from "@/app/mortgage-discharge/components/card";
 import { TrackingModal } from "../tracking-modal";
 import { InfoModal } from "../info-modal";
 import { CardContextProvider } from "../store/ModalStore";
-import { getForeClosureDataCards } from "../../api-calls";
+import { getForeClosureData } from "../../api-calls";
 import Loader from "@/components/Loader";
 import { formatCardData } from "@/utils/mortgage-discharge-format";
 import { MyContexLayout } from "@/app/context";
@@ -25,9 +25,11 @@ import { useCalcDimensions } from "@/utils/dimensions";
 export default function MortgageDischargeScreen({
   title = "",
   extraFilter = [],
+  isNormalizationScreen = false,
 }: {
   title: string;
   extraFilter?: any[];
+  isNormalizationScreen?: boolean;
 }) {
   const [isOpenTrackingModal, setIsOpenTrackingModal] = useState(false);
   const [modalTrackingData, setModalTrackingData] =
@@ -58,7 +60,7 @@ export default function MortgageDischargeScreen({
         { label: "offset", value: `${page * rowsPerPage}` },
       ];
 
-      const result: MortgageDischargeData[] = await getForeClosureDataCards(
+      const result: MortgageDischargeData[] = await getForeClosureData(
         auxFilters
       );
 
@@ -141,6 +143,7 @@ export default function MortgageDischargeScreen({
                   key={`key-card-${i}`}
                   data={elemCard}
                   handlerTrackingModal={handlerTrackingModal}
+                  isNormalizationScreen={isNormalizationScreen}
                 />
               ))}
               {!data || !data.length ? (

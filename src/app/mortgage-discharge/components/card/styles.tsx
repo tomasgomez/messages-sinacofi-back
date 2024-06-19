@@ -92,7 +92,7 @@ export const StyledButton = styled(Button)`
   border: ${(props) =>
     props.disabled ? "1px solid #bdbdbd" : "1px solid #00b2e2"};
   border-radius: 8px;
-  color: #00b2e2;
+  color: ${(props) => (props.variant === "contained" ? "white" : "#00b2e2")};
   text-align: center;
   font-family: ${montserrat.style.fontFamily};
   font-size: 14px;
