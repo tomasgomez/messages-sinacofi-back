@@ -1,7 +1,5 @@
 import { MessageRepository } from '../../repository/messageRepository';
 import { Message } from '../../entities/message/message';
-import { docUseCase } from '../docs/usecases';
-import { Documents } from '@/backend/entities/message/interface';
 import { findDocuments } from './findDocuments';
 import { FilterMessage } from '@/backend/entities/message/filter';
 

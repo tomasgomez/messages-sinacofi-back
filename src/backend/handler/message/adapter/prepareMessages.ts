@@ -62,7 +62,7 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
               documentName: document.documentName,
           }
       });
-  
+
       return {
         ...message,
         TSN: message?.TSN?.id,

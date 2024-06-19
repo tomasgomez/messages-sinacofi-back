@@ -6,6 +6,7 @@ import {
 } from "@/backend/repository/messageRepository";
 import { getSchema } from "../schema/getSchema";
 import { Filter } from "@/backend/entities/schema/filter";
+import { adaptParameters } from "@/backend/entities/message/parameter";
 
 // Create message function
 export async function createMessage(repository: MessageRepository, message: Message, ): Promise < Message | Error > {
@@ -44,37 +45,4 @@ export async function createMessage(repository: MessageRepository, message: Mess
         console.error('Error creating message:', error);
         return error;
     }
-}
-
-function adaptParameters(message: Message, messageSchema: any): any {
-    return message.parameters?.map((parameter) => {
-
-        if (messageSchema.parameters === undefined || messageSchema.parameters.length === 0) {
-            return parameter;
-        }
-
-        let schema = messageSchema.parameters?.find((schema: any) => schema.name === parameter.name);
-    
-        if (schema === undefined) {
-            return parameter;
-        }
-
-        if (schema.optionValues !== undefined && schema.optionValues.length > 0) {
-            let optionValue = schema.optionValues.find((option: any) => option.value === parameter.value);
-            if (optionValue === undefined) {
-                return parameter;
-            }
-
-            return {
-                ...parameter,
-                label: schema.label,
-                value: optionValue.label,
-            }
-        }
-    
-        return {
-            ...parameter,
-            label: schema.label,
-        }
-    });
 }
