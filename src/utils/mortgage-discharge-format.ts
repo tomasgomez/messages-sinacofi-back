@@ -141,6 +141,7 @@ export const formatCardData = (
       region: elem?.region || "",
       institutionDestination: elem?.institutionDestination || "",
       history: sortHistoryList(elem?.history || []),
+      lastMessage: messages[messages?.length - 1] || {},
     };
 
     const newMessaje = messages.map((message) => {

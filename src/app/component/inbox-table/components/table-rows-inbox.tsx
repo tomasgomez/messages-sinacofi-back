@@ -18,11 +18,11 @@ const isHighlightRow = (
   withRadioButton: boolean,
   row: Message
 ) => {
+  if (highlightLastRow) return isLastRow;
   if (withRadioButton && (row?.status === "01" || !row?.status)) {
     return !!isRadioButtonSelected;
   }
   if (!withRadioButton) return row?.status === "01" || !row?.status;
-  return highlightLastRow && isLastRow;
 };
 
 const isHighlightRejected = (isLastRow: boolean, row: Message) =>
@@ -49,7 +49,7 @@ const CustomCell = ({
   render: Component,
   row,
   rowOptions,
-  highlightRow,
+  highlightRow = false,
   highlightRowRejected,
   withBorderLeft,
 }: CustomCellType) => {

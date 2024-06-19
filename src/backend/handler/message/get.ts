@@ -24,9 +24,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
           return;
         }
 
-
         let preparedData = prepareMessages(messageResponse, filter);
- 
 
         /* Return the message */
         res.status(200).json(preparedData);

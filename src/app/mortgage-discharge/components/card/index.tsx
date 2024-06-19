@@ -28,9 +28,11 @@ import { withRadioButton } from "@/utils/mortgage-discharge-utils";
 const CarDischarge = ({
   data,
   handlerTrackingModal,
+  isNormalizationScreen = false,
 }: {
   data: any;
   handlerTrackingModal: (data?: ModalTrackingData) => void;
+  isNormalizationScreen?: boolean;
 }) => {
   const [selectedMessage, setSelectorMessage] = React.useState<string | null>(
     null
@@ -120,8 +122,11 @@ const CarDischarge = ({
         <StyledButton
           onClick={() => handlerTrackingModal(modalTrackingData)}
           disabled={buttonDisabled}
+          variant={isNormalizationScreen ? "contained" : "outlined"}
         >
-          Base de Seguimiento
+          {isNormalizationScreen
+            ? "Fin de Normalización"
+            : "Base de Seguimiento"}
         </StyledButton>
       </StyledBoxShadow>
       <Collapse
