@@ -94,8 +94,8 @@ export const TrackingModal = (props: {
 
     if (selectedInstitution !== institutionDestination)
       return "Solo la institución destino puede cambiar el estado de la base de seguimiento";
-
-    if (dataOptions.length === 0)
+    
+    if (dataOptions.every((elem: any) => elem?.disabled))
       return "No hay más opciones de cambio de estado";
 
     if (!statusSelected) return "Seleccione un estado";

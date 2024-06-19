@@ -18,7 +18,7 @@ const isHighlightRow = (
   withRadioButton: boolean,
   row: Message
 ) => {
-  if (highlightLastRow && isLastRow) return true;
+  if (highlightLastRow) return isLastRow;
   if (withRadioButton && (row?.status === "01" || !row?.status)) {
     return !!isRadioButtonSelected;
   }
