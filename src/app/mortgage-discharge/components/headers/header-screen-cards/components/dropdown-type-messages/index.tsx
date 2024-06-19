@@ -32,8 +32,8 @@ export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
 
     if (value !== null) {
       setOptionSelected(value as string);
-      if (value === "all") handleChangeAddFilter("messageType", "");
-      else handleChangeAddFilter("messageType", value);
+      if (value === "all") handleChangeAddFilter("messageCode", "");
+      else handleChangeAddFilter("messageCode", value);
     }
   };
 

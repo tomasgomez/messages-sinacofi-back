@@ -31,7 +31,10 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
     count,
     offset,
     region,
-    messageCode
+    messageCode,
+    statusCategory,
+    sellerDni,
+    seller
   } = data;
 
   /* Set all the possible filters */
@@ -42,7 +45,7 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   filter.startDate = processDateField(startDate) ?? new Date;
   filter.endDate = processDateField(endDate) ?? new Date;
   filter.channel = processStringArrayField(channel);
-  filter.status = getForeclosureStatusCodesByStatus(status);
+  filter.status = processStringArrayField(status);
   filter.institutionCode = processStringArrayField(institutionCode);
   filter.institutionDestination = processStringArrayField(institutionDestination);
   filter.buyerDni = processStringArrayField(buyerDni);
@@ -54,6 +57,9 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   filter.messageStatus = processStringArrayField(messageStatus);
   filter.region = processStringArrayField(region);
   filter.messageCode = processStringArrayField(messageCode);
+  filter.statusCategory = getForeclosureStatusCodesByStatus(statusCategory);
+  filter.sellerDni = processStringArrayField(sellerDni);
+  filter.seller = processStringArrayField(seller);
   
   filter.count = count;
   filter.offset = offset;

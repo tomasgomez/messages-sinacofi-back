@@ -14,12 +14,15 @@ export interface Filter{
   buyer ? : string[]; 
   ownerDni ? : string[]; 
   owner ? : string[];  
-  borrowerDni ? : string[]; 
+  sellerDni ? : string[];
+  seller ? : string[];
+  borrowerDni ? : string[]; // debtorDni
   borrower ? : string[];
   messageStatus ? : string[]; 
   institutionCode ? : string[];
   institutionDestination ? : string[];
   count ? : string; 
   offset ? : string; 
-  status ? : string[]; 
+  status ? : string[];
+  statusCategory ? : string[]; 
 }

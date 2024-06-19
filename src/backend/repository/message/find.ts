@@ -17,6 +17,7 @@ async function find(
         
         let where = findWhere(filter)
         let select: any = findSelect(includeParameters,includeDocuments);
+        
         let status: any = {};
         
         if (filter.status && filter.status.length > 0) {

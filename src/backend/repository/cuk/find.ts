@@ -63,20 +63,51 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         cukWhere.cukCode = { in: filter.cukCode };
     }
 
-    // FILTERS CUK BY status 
-    if(filter.status && filter.status.length > 0){
-        cukWhere.status = { in: filter.status };
-    }
-
     // FILTERS CUK by id
     if(filter.id && filter.id.length > 0){
         cukWhere.id = { in: filter.id };
     }
 
     let messagesWhere: Prisma.MessageWhereInput = {};
+    messagesWhere.AND=[];
 
+
+
+    // FILTER MESSAGES BY institutionDestination
+    if (filter.institutionDestination && filter.institutionDestination.length > 0) {
+        messagesWhere.destination = { in: filter.institutionDestination };
+        messagesWhere.status = { some:{ id: { in: ["05"] } } };            
+    }
+
+
+    // const SenderMessageCodes = ["670","674","677"];
+    // const ReceiverMessageCodes = ["671", "672", "673", "675","676","678", "679"];
+
+    // FILTER MESSAGES BY messageCode
+    if ((filter.messageCode && filter.messageCode.length > 0)&& (filter.status && filter.status.length > 0)) {
+        const messageCode = {
+            messageCode: { in: filter.messageCode },
+            status:{},
+            origin:{}
+        }
+        // messagesWhere.messageCode = { in: filter.messageCode };
+
+        // FILTERS CUK BY status 
+        if(filter.status && filter.status.length > 0){
+            messageCode.status = { 
+                some:{ 
+                    id: { in: filter.status }
+                }
+            };
+        }
+
+        if (filter.institutionCode && filter.institutionCode.length > 0) {
+            messageCode.origin = { in: filter.institutionCode };
+        }
+
+        messagesWhere.AND.push(messageCode);
     // FILTER MESSAGES BY institutionCode
-    if (filter.institutionCode && filter.institutionCode.length > 0) {
+    }else if (filter.institutionCode && filter.institutionCode.length > 0) {
         messagesWhere.OR = [{
             origin: { in: filter.institutionCode },
             status: { 
@@ -93,17 +124,6 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
             }
         }]
     }
-
-    // FILTER MESSAGES BY institutionDestination
-    if (filter.institutionDestination && filter.institutionDestination.length > 0) {
-        messagesWhere.destination = { in: filter.institutionDestination };
-        messagesWhere.status = { some:{ id: { in: ["05"] } } };            
-    }
-
-    // FILTER MESSAGES BY messageCode
-    if (filter.messageCode && filter.messageCode.length > 0) {
-        messagesWhere.messageCode = { in: filter.messageCode };
-    }
     
     let parametersWhere: Prisma.ParametersWhereInput = {};
     parametersWhere.AND=[];
@@ -113,68 +133,93 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         parametersWhere.description ={ in: filter.description };
     }
 
+    if(filter.sellerDni && filter.sellerDni.length > 0){
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'sellerDni',
+                value: { in: filter.sellerDni}
+            }
+        }})
+    }
+
     // FILTER PARAMETERS BY channel
     if(filter.channel && filter.channel.length > 0){
-        parametersWhere.AND.push({
-            name: 'channel',
-            value: { in: filter.channel}
-        })
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'channel',
+                value: { in: filter.channel}
+            }
+        }})
     }
 
     // FILTER PARAMETERS BY region    
     if(filter.region && filter.region.length > 0){        
-        parametersWhere.AND.push({
-            name: 'region',
-            value: { in: filter.region }
-        })
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'region',
+                value: { in: filter.region }
+            }
+        }})
     }
     
     // FILTER PARAMETERS BY buyerDni
     if(filter.buyerDni && filter.buyerDni.length > 0){
-        parametersWhere.AND.push({
-            name: 'buyerDni',
-            value: { in: filter.buyerDni}
-        })
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'buyerDni',
+                value: { in: filter.buyerDni}
+            }
+        }})
     }
 
     // FILTER PARAMETERS BY buyer
     if(filter.buyer && filter.buyer.length > 0){
-        parametersWhere.AND.push({
-            name: 'buyer',
-            value: { in: filter.buyer}
-        })
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'buyer',
+                value: { in: filter.buyer}
+            }
+        }})
     }
 
     // FILTER PARAMETERS BY ownerDni
     if(filter.ownerDni && filter.ownerDni.length > 0){
-        parametersWhere.AND.push({
-            name: 'ownerDni',
-            value: { in: filter.ownerDni}
-        })
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'ownerDni',
+                value: { in: filter.ownerDni}
+            }
+        }})
     }
 
     // FILTER PARAMETERS BY owner
     if(filter.owner && filter.owner.length > 0){
-        parametersWhere.AND.push({
-            name: 'owner',
-            value: { in: filter.owner}
-        })
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'owner',
+                value: { in: filter.owner}
+            }
+        }})
     }
 
     // FILTER PARAMETERS BY borrowerDni
     if(filter.borrowerDni && filter.borrowerDni.length > 0){
-        parametersWhere.AND.push({
-            name: 'borrowerDni',
-            value: { in: filter.borrowerDni}
-        })
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'borrowerDni',
+                value: { in: filter.borrowerDni}
+            }
+        }})
     }
 
     // FILTER PARAMETERS BY borrower
     if(filter.borrower && filter.borrower.length > 0){
-        parametersWhere.AND.push({
-            name: 'borrower',
-            value: { in: filter.borrower}
-        })
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'borrower',
+                value: { in: filter.borrower}
+            }
+        }})
     }
         
     // set values to query
@@ -222,7 +267,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         history: true
     };
 
-    query.include = include;  
+    query.include = include;      
     return query;
 }
 
