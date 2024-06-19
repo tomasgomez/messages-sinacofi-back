@@ -3,7 +3,7 @@ import { SchemaUsecases } from "./interface";
 import { getSchemaTypes } from './getSchemaTypes';
 import { MessageSchema } from '../../entities/schema/messageSchema';
 import { getSchema } from './getSchema';
-
+import { User } from '@/backend/entities/user/user';
 // Schema Detail usecases
 export class SchemaUsecase implements SchemaUsecases {
 
@@ -12,8 +12,8 @@ export class SchemaUsecase implements SchemaUsecases {
         getSchemaTypes(filter)
 
     // get Schema
-    getSchema = async (filter: Filter): Promise<MessageSchema| Error> => 
-        getSchema(filter)
+    getSchema = async (filter: Filter, user: User): Promise<MessageSchema| Error> => 
+        getSchema(filter, user)
 
 }
 

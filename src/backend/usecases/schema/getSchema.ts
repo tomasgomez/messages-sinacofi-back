@@ -26,11 +26,13 @@ import {
   Filter
 } from '@/backend/entities/schema/filter';
 import { Parameter } from '@/backend/entities/message/parameter';
+import { post } from '@/backend/adapters/rule/post';
+import { User } from '@/backend/entities/user/user';
 
 const messageRepository: MessageRepository = new PrismaAdapter();
 
 // Get message function
-export async function getSchema(filter: Filter): Promise < MessageSchema | Error > {
+export async function getSchema(filter: Filter, user: User): Promise < MessageSchema | Error > {
   try {
 
     let url = getEnvVariable(envVariables.RULE_CLIENT_URL);
@@ -46,7 +48,10 @@ export async function getSchema(filter: Filter): Promise < MessageSchema | Error
     if (filter.messageCode)
       path = `${path}/${filter.messageCode}`;
 
-    let schemas = await get(url, path, {}, {})
+    let schemas = await post(url, path, {
+      user: user,
+      parameters: []
+    }, {})
 
     if (!filter.messageCode?.includes('670') && filter.messageId && filter.messageId.length>0) {
 

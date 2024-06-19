@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { adaptSchema } from "./presenter/adaptSchema";
 import { getInstitutions } from "../institution/get";
 import { getToken } from "next-auth/jwt";
-
+import { getUser } from "../user/get";
 
 // get Schema function
 export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
@@ -13,11 +13,22 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         let filter = validateGetSchema(req.query);
 
         const token = await getToken({req});
+        if (!token || token.dni ==''){
+          res.status(400).json([]);
+          return;
+        }
+        console.log({ token });
 
         let name: string='';
 
         if(token?.name){
             name= token.name;
+        } 
+
+        let dni: string='';
+
+        if(token?.userDni){
+            dni = token.userDni;
         } 
 
         if (filter instanceof Error) {
@@ -31,7 +42,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         }
 
         /* Use the PrismaAreaAdapter to get the Schema from the database */
-        let schemaResponse = await schemaUseCase.getSchema(filter)
+        let schemaResponse = await schemaUseCase.getSchema(filter, { name, dni })
 
         /* If the Schema is not found, return a 204 error */
         if (schemaResponse instanceof Error) {
