@@ -1,7 +1,7 @@
 import { Filter } from "@/types/mortgage-discharge";
 import { MortgageDischargeData } from "../component/inbox-table/type";
 
-export async function getForeClosureDataCards(
+export async function getForeClosureData(
   filters?: Filter[]
 ): Promise<MortgageDischargeData[]> {
   try {

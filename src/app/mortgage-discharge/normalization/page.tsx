@@ -4,6 +4,9 @@ import MortgageDischargeScreen from "../components/screen";
 
 export default function NormalizationScreen() {
   return (
-    <MortgageDischargeScreen title="Alzamientos Hipotecarios con Clientes Normalizacion" />
+    <MortgageDischargeScreen
+      title="Alzamientos Hipotecarios con Clientes Normalizacion"
+      isNormalizationScreen
+    />
   );
 }
