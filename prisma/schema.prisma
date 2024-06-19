@@ -6,7 +6,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model CUK {
@@ -95,7 +95,7 @@ model Status {
   createdAt DateTime? @default(now())
 
   messageId String
-  message   Message @relation(fields: [messageId], references: [id])
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
 
   @@id([messageId, id])
 }
@@ -106,7 +106,7 @@ model TSN {
   areaCode        String   @default("05")
   createdAt       DateTime @default(now())
 
-  message   Message @relation(fields: [messageId], references: [id])
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String  @unique
 
   @@id([id, institutionCode, areaCode])
@@ -119,7 +119,7 @@ model LSN {
   areaCode        String
   createdAt       DateTime @default(now())
 
-  message   Message @relation(fields: [messageId], references: [id])
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String  @unique
 
   @@id([id, institutionCode, areaCode])
@@ -131,7 +131,7 @@ model OSN {
   institutionCode String
   createdAt       DateTime @default(now())
 
-  message   Message @relation(fields: [messageId], references: [id])
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String  @unique
 
   @@id([id, institutionCode])
@@ -144,7 +144,7 @@ model NSE {
   areaCode        String
   createdAt       DateTime @default(now())
 
-  message   Message @relation(fields: [messageId], references: [id])
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String  @unique
 
   @@id([id, institutionCode, areaCode])
@@ -157,7 +157,7 @@ model NSR {
   areaCode        String
   createdAt       DateTime @default(now())
 
-  message   Message @relation(fields: [messageId], references: [id])
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String  @unique
 
   @@id([id, institutionCode, areaCode])
@@ -170,7 +170,7 @@ model NSQ {
   areaCode        String   @default("05")
   createdAt       DateTime @default(now())
 
-  message   Message @relation(fields: [messageId], references: [id])
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String  @unique
 
   @@id([id, institutionCode, areaCode])
@@ -185,7 +185,7 @@ model Documents {
   createdAt    DateTime @default(now())
 
   messageId String
-  Message   Message @relation(fields: [messageId], references: [id])
+  Message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
 }
 
 model Properties {

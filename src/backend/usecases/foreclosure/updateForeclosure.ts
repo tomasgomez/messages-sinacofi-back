@@ -27,8 +27,6 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       return new Error('Invalid CUK');
     }
 
-    console.log('Cuk:', cuk);
-
     /* Set variables */
     let newMessage: Message;
     let messageType = '';
@@ -151,6 +149,18 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       case ForeclosureStatus.INIT: // 670 enviado
         cuk.status = ForeclosureStatus.INIT;
         break;
+      
+      case ForeclosureStatus.PAYMENT: // 11
+        cuk.status = ForeclosureStatus.PAYMENT;
+        break;
+      
+      case ForeclosureStatus.SENT_REJECTION: // 12
+        cuk.status = ForeclosureStatus.SENT_REJECTION;
+        break;
+
+      case ForeclosureStatus.SENT_CONFIRM_PAYMENT: // 14
+        cuk.status = ForeclosureStatus.SENT_CONFIRM_PAYMENT;
+        break;
 
       default:
         return new Error('Invalid status');
@@ -166,8 +176,6 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     }
 
     const updatedCuk = await cukRepository.update(cuk);
-
-    console.log('Updated cuk:', updatedCuk);
 
     if (updatedCuk instanceof Error) {
       return updatedCuk;

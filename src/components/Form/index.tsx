@@ -55,6 +55,7 @@ const Form = ({
   onPrepare,
   error,
   actions,
+  styles,
 }: {
   title: string;
   onBack?: any;
@@ -64,6 +65,7 @@ const Form = ({
   onPrepare: any;
   error: any;
   actions: any;
+  styles?: any;
 }) => {
   // const { handleSubmit, register, control, reset, getValues, trigger, formState: { errors } } = useForm({
   const methods = useForm({
@@ -85,9 +87,11 @@ const Form = ({
     });
   };
 
+  console.log({ errors: methods.formState.errors })
+
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
+      <form onSubmit={methods.handleSubmit(onSubmit)} style={{ ...styles }}>
         <Card>
           <Container
             sx={{

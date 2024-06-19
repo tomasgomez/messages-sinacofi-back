@@ -52,7 +52,6 @@ export const PDFTemplate = ({ data }: { data?: Message | Message[] }) => {
       parameters = [],
       creationDate = "",
     } = dataElem || {};
-
     return (
       <View style={styles.section}>
         <Text>==== S I N A F O C I TID-WEB ==== TID: </Text>
@@ -69,7 +68,7 @@ export const PDFTemplate = ({ data }: { data?: Message | Message[] }) => {
         {parameters.map((field) => (
           <React.Fragment key={field.id}>
             <Text>
-              {field.label} : {field.value}
+              {field?.label} : {field.value}
             </Text>
           </React.Fragment>
         ))}
@@ -93,8 +92,10 @@ export const PDFTemplate = ({ data }: { data?: Message | Message[] }) => {
     <Document
       title={
         Array.isArray(data)
-        ? (data.length > 1 ? "Imprimir Mensajes" : `MS ${data[0]?.messageCode} - ${data[0]?.description}`)
-        : `MS ${data?.messageCode} - ${data?.description}`
+          ? data.length > 1
+            ? "Imprimir Mensajes"
+            : `MS ${data[0]?.messageCode} - ${data[0]?.description}`
+          : `MS ${data?.messageCode} - ${data?.description}`
       }
     >
       <Page size="A4" style={styles.page}>

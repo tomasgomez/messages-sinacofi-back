@@ -1,13 +1,11 @@
 import * as React from "react";
 import {
   StyledContentCard,
-  StyledCardContent,
-  StyledCard,
   StyledButton,
   StyledBoxShadow,
   StyledFooterComponent,
   StyledInfoIcon,
-} from "./styled";
+} from "./styles";
 import { Collapse, Typography } from "@mui/material";
 import CodeColumn from "./codeColumn";
 import InfoColumn from "./infoColumn";
@@ -98,7 +96,7 @@ const CarDischarge = ({
 
   return (
     <StyledContentCard>
-      <StyledBoxShadow borderRadiusComplete={isOpen} style={{ zIndex: 3 }}>
+      <StyledBoxShadow borderRadiusComplete={isOpen}>
         <div style={{ display: "flex" }}>
           {isOpen ? (
             <IconButton
@@ -148,6 +146,7 @@ const CarDischarge = ({
           withCheckbox={false}
           footerComponent={getFooterComponent()}
           withRadioButton={withRadioButton}
+          rowsPerPageOptions={[]}
         />
       </Collapse>
     </StyledContentCard>

@@ -1,8 +1,8 @@
 import { useFormContext, Controller } from "react-hook-form";
 import { Box, Typography } from "@mui/material";
-import { DatePickerInput } from "@/app/mortgage-discharge/in-process/header/components/filters/filter-selector/form-elements/date";
+import { DatePickerInput } from "@/app/mortgage-discharge/components/headers/form-elements/date";
 import Dropdown from "../Dropdown";
-import RutField from "./fields/RutField";
+import RutField, { validaRut } from "./fields/RutField";
 import Checkbox from "./fields/Checkbox";
 import AmountField from "./fields/AmountField";
 import Field from "./fields/Field";
@@ -15,7 +15,14 @@ const Select = (props: any) => {
   const onChange = (value: unknown) => {
     setValue(props.id, value);
   };
-  return <Dropdown {...props} onChange={onChange} />;
+  return (
+    <Dropdown
+      {...props}
+      maxMenuHeight={190}
+      maxMenuWidth={190}
+      onChange={onChange}
+    />
+  );
 };
 const FieldTypes = {
   textField: Field,
@@ -79,7 +86,7 @@ const ElementSelector = ({ type, props }: { type: any; props: any }) => {
     return <Accordion {...props} />;
   }
 
-  if (type === "linebreak" || type === "label") {
+  if (type === "linebreak" || type === "label" || type === "blankSpace") {
     const Label =
       LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.label;
     return <Label {...props} />;
@@ -95,7 +102,10 @@ const ElementSelector = ({ type, props }: { type: any; props: any }) => {
       name={inputProps.id}
       control={inputProps.control}
       defaultValue={inputProps.defaultValue}
-      rules={rules}
+      rules={{ ...rules, ...(type === "dni" ? { validate: (value, _) => {
+        return !validaRut(value) ? "Rut invalido"
+        : null
+      }} : {})}}
       render={({ field }) => {
         return (
           <FieldGotten

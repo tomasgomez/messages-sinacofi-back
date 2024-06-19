@@ -10,7 +10,7 @@ Mesasage Handler
 class MessageHandler extends Handler implements APICalls {
     
     // Put message
-    PUT = async (req: NextApiRequest, res: NextApiResponse < any > ) => sign(req, res);
+    PUT = async (req: NextApiRequest, res: NextApiResponse < any > ) => sign(req, res);  
 }
 
 // export calls

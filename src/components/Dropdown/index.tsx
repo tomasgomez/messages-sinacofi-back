@@ -1,15 +1,14 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
-import { CircularProgress, Typography, styled } from "@mui/material";
-import { montserrat } from "@/utils/fonts";
+import Select from "@mui/material/Select";
+import { styled } from "@mui/material";
 import Loader from "../Loader";
 
 const StyledSelect = styled(Select)({
-  "& .MuiInputBase-root.Mui-disabled": {
+  "& .MuiInputBase-input.Mui-disabled": {
     backgroundColor: "#E5E5E5",
     color: "#000000 !important",
   },
@@ -19,12 +18,11 @@ const StyledSelect = styled(Select)({
   },
   "& .MuiFormLabel-root": {
     color: "#565656 !important",
-    backgroundColor: "#DFF8FF"
+    backgroundColor: "#DFF8FF",
   },
 });
 
-
-export default function Dropdrown(props: {
+export default function Dropdown(props: {
   label: string;
   width?: number | string;
   options: any;
@@ -37,25 +35,36 @@ export default function Dropdrown(props: {
   disabled?: boolean;
   loading?: boolean;
   loadingMessage?: string;
+  error?: any;
+  maxMenuHeight?: number | string;
+  maxMenuWidth?: number | string;
+  disablePortal?: boolean;
+  disableScrollLock?: boolean;
 }) {
   const {
-    width,
+    width = "100%",
     label,
-    options,
+    options = [],
     defaultValue = "",
     selected,
-    disabled,
-    onChange,
+    disabled = false,
+    onChange = () => null,
     valueKey = "value",
     labelKey = "label",
     placeholder,
-    loading,
-    loadingMessage = "Cargando...",
+    loading = false,
+    maxMenuHeight,
+    maxMenuWidth,
+    error,
+    disablePortal = true,
+    disableScrollLock = true,
   } = props;
-  const [optionSelected, setOptionSelected] = React.useState(defaultValue);
-  const [isFocused, setIsFocused] = React.useState(false);
 
-  React.useEffect(() => {
+  const [optionSelected, setOptionSelected] = useState(defaultValue);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
     setOptionSelected(selected || defaultValue);
   }, [defaultValue, selected]);
 
@@ -72,11 +81,15 @@ export default function Dropdrown(props: {
     setIsFocused(false);
   };
 
+  const handleClick = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <Box sx={{ width }}>
       <FormControl fullWidth>
         <InputLabel
-          id="simple-select-label"
+          id="dropdown-select-label"
           style={{
             backgroundColor:
               isFocused || !!optionSelected ? "#DFF8FF" : "transparent",
@@ -85,24 +98,32 @@ export default function Dropdrown(props: {
           {label}
         </InputLabel>
         <StyledSelect
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
+          labelId="dopdown-select-basic"
+          id="dopdown-select-basic-id"
           value={optionSelected}
           label={label}
           placeholder={placeholder}
           onChange={handleChange}
+          error={error}
           onFocus={handleFocus}
           disabled={disabled}
-          // displayEmpty
           onBlur={handleBlur}
+          onClick={handleClick}
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: maxMenuHeight,
+                maxWidth: maxMenuWidth,
+              },
+            },
+            // Necessary to fix the problem with the scrollbar
+            disablePortal: disablePortal,
+            disableScrollLock: disableScrollLock,
+          }}
         >
           {loading ? (
             <Loader />
           ) : (
-            // <MenuItem disabled value="">
-            //   {placeholder}
-            //   {/* <em>Placeholder</em> */}
-            // </MenuItem>
             options.map((option: any, index: number) => (
               <MenuItem
                 key={`${option[labelKey]}-${index}`}

@@ -18,7 +18,6 @@ export default function InboxScreen() {
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
   const { ErrorModal } = useModalManager();
-
   const fetchData = async () => {
     try {
       // after backend change yo have to this change to this
@@ -55,8 +54,8 @@ export default function InboxScreen() {
   );
 
   return (
-    <Paper sx={{ width: "calc(100% - 270px)" }}>
-      <Box sx={{ m: 2 }}>
+    <Paper sx={{ width: "100%", height: "100%" }}>
+      <Box sx={{ p: 2 }}>
         <InboxHeader
           amountMessages={data.length}
           title={"Bandeja de Entrada"}

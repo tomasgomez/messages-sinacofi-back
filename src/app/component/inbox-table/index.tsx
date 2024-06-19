@@ -22,6 +22,7 @@ import { getComparator, stableSort } from "./utils";
 
 import { TableContentLoader } from "./components/table-content-loader";
 import { MessageExportContext } from "../MessageExportProvider";
+import { TableContentNoDataBasic } from "./components/table-content-no-data-basic";
 
 export default function EnhancedTable(props: {
   tableTitle?: React.ReactNode;
@@ -37,8 +38,11 @@ export default function EnhancedTable(props: {
   isExpansible?: boolean;
   endDetailsText?: string;
   rowOptions?: RowOptions;
-  footerComponent?: React.ReactNode;
   style?: any;
+  rowsPerPageOptions?: number[];
+  defaultRowsPerPage?: number;
+  footerComponent?: React.ReactNode;
+  emptyDataComponent?: React.ReactNode;
 }) {
   const {
     rows = [] as Message[],
@@ -51,10 +55,13 @@ export default function EnhancedTable(props: {
     defaultOrder = "asc",
     defaultOrderBy,
     highlightLastRow = false,
-    footerComponent = null,
     isExpansible = false,
     rowOptions = {},
     style = {},
+    rowsPerPageOptions = [5, 7, 10, 25, 50],
+    defaultRowsPerPage = 5,
+    footerComponent = null,
+    emptyDataComponent = null,
   } = props || {};
 
   const [order, setOrder] = React.useState<Order>(defaultOrder);
@@ -70,7 +77,7 @@ export default function EnhancedTable(props: {
   >(null);
 
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(defaultRowsPerPage);
 
   const { setSelectedMessages, setSelectedRadioButtonMessages } =
     React.useContext(MessageExportContext);
@@ -170,9 +177,9 @@ export default function EnhancedTable(props: {
   }, [visibleRows, withRadioButton]);
 
   return (
-    <Paper style={{ overflow: "inherit" }}>
-      <TableContainer style={{ maxHeight, ...style }}>
-        {tableTitle}
+    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      {tableTitle}
+      <TableContainer sx={{ maxHeight: maxHeight, ...style }}>
         <Table aria-labelledby="tableTitle" size="medium" stickyHeader>
           <TableHeader
             withRadioButton={showColumnToRadioButton()}
@@ -217,15 +224,23 @@ export default function EnhancedTable(props: {
                 );
               })
             )}
-            {emptyRows > 0 && (
-              <TableRow
-                style={{
-                  height: 57 * emptyRows,
-                }}
-              >
-                <StyledTabCell colSpan={11} />
-              </TableRow>
-            )}
+            {!loading &&
+              emptyRows > 0 &&
+              (visibleRows.length === 0 ? (
+                <TableContentNoDataBasic
+                  height={Math.min(
+                    // 57 => rows height, emptyRows => number of empty rows, 32 => padding (16 * 2)
+                    57 * emptyRows - 32,
+                    // 57 => header height, 32 => padding (16 * 2), 1 => border line
+                    (maxHeight as number) - 57 - 32 - 1
+                  )}
+                  component={emptyDataComponent}
+                />
+              ) : (
+                <TableRow style={{ height: 57 * emptyRows }}>
+                  <StyledTabCell colSpan={11} />
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -237,14 +252,21 @@ export default function EnhancedTable(props: {
         }}
       >
         {footerComponent}
+
         <TablePagination
-          rowsPerPageOptions={[5, 7, 10, 25]}
+          rowsPerPageOptions={rowsPerPageOptions}
           component="div"
           count={rows?.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="Registros por página:"
+          labelDisplayedRows={({ from, to, count }) => (
+            <span>
+              Página {from} - {to} de {count}
+            </span>
+          )}
         />
       </div>
     </Paper>

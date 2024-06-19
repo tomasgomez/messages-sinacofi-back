@@ -2,28 +2,14 @@ import { useState } from "react";
 import { Modal } from "../Modal";
 import { Button, Grid, Stack } from "@mui/material";
 import Field from "../Field";
-import Dropdrown from "../Dropdown";
 import { useRouter } from "next/navigation";
 import InstitutionDropdown from "../FieldTypes/InstitutionDropdown";
-import { messagesTypes } from "@/utils/messagesSchemaTypes";
 import MessageTypesDropdown from "../FieldTypes/MessageDescriptionDropdown";
 
 const CreateIndividualMessageModal = ({ open, onClose } : { open: boolean; onClose: any }) => {
   const [selectedInstitution, setSelectedInstitution] = useState(null);
   const [messageCode, setMessageCode] = useState(null);
   const router = useRouter();
-  // useEffect(() => {
-  //   setLoading(true);
-  //   getMessageDescriptions().then((messageTypes: any) => {
-  //     console.log({ messageTypes});
-  //     const formattedMessageTypes = (messageTypes || [])?.map((messageType: any) => ({
-  //       value: messageType.id,
-  //       label: `${messageType.id} - ${messageType.name}`
-  //     }));
-  //     setMessageTypes(formattedMessageTypes);
-  //     setLoading(false);
-  //   });
-  // }, []);
   return (
     <Modal
       open={open}
@@ -52,18 +38,6 @@ const CreateIndividualMessageModal = ({ open, onClose } : { open: boolean; onClo
               setMessageCode(value);
             }}
           />
-          {/* <Message
-            options={messagesTypes}
-            selected={messageCode}
-            label="Descripción"
-            placeholder="Seleccione el tipo de mensaje"
-            valueKey="messageCode"
-            labelKey="description"
-            onChange={(value: any) => {
-              // console.log({ value });
-              setMessageCode(value)
-            }}
-          /> */}
         </Grid>
         <Grid item xs={12}>
           <InstitutionDropdown

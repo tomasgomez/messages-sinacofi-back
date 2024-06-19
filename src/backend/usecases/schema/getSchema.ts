@@ -28,11 +28,12 @@ import {
 import { Parameter } from '@/backend/entities/message/parameter';
 import { parameterUsecase } from '../parameter/usecases';
 import { post } from '@/backend/adapters/rule/post';
+import { User } from '@/backend/entities/user/user';
 
 const messageRepository: MessageRepository = new PrismaAdapter();
 
 // Get message function
-export async function getSchema(filter: Filter): Promise < MessageSchema[] | Error > {
+export async function getSchema(filter: Filter, user: User): Promise < MessageSchema | Error > {
   try {
 
     let url = getEnvVariable(envVariables.RULE_CLIENT_URL);
@@ -56,20 +57,19 @@ export async function getSchema(filter: Filter): Promise < MessageSchema[] | Err
     if (filter.cuk && filter.cuk != ''){
       let parameters = await parameterUsecase.getParameters({cukCode: [filter.cuk]})
       let schemas = await post(url, path, {}, {
-        user:  {
-          "fullName": "Felipe García",
-          "dni": "17604011-4",
-          "area": "05",
-          "institution": "037 - SAN"
-      },
+        user: user,
       parameters
       })
 
       return schemas
     }
 
-    let schemas = await get(url, path, {}, {})
+    let schemas = await post(url, path, {}, {
+      user: user,
+    parameters: []
+    })
 
+    console.log(schemas);
     return schemas;
 
     // if (!filter.messageCode?.includes('670') && filter.messageId && filter.messageId.length>0) {

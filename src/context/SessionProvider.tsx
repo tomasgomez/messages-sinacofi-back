@@ -1,7 +1,7 @@
 'use client';
 
+import { useSession } from "next-auth/react";
 import React, { useEffect, createContext, useState, useCallback  } from "react";
-
 
 
 export interface User {
@@ -35,11 +35,13 @@ export const SessionProviderContext = createContext<SessionContextType>(initialU
 export const SessionProvider = ({ children }: { children: any}) => {
 
     const [userInfo, setUserInfo] = useState<initialUserInfoType | undefined>(undefined);
-
+    const {data: session, status} = useSession();
     useEffect(() => {
+    
+      if(status==='authenticated'){
         const fetchData = async () => {
           try {
-            const response = await fetch('/api/permissions');
+            const response = await fetch(`/api/permissions`);
             const fetchedData = await response.json();
             setUserInfo(fetchedData);
           } catch (err) {
@@ -48,7 +50,9 @@ export const SessionProvider = ({ children }: { children: any}) => {
         };
     
         fetchData();
-      }, []);
+
+      }  
+      }, [status, session]);
 
     const contextValue = React.useMemo(
         () => ({

@@ -23,10 +23,29 @@ import {
     ForeclosureStatus
 } from "@/backend/entities/cuk/codes";
 
+import { storeDocs } from "./updateMessage";
+
 
 // Create message function
-export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message): Promise < Message | Error > {
-    try {
+export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, dni: string, name: string): Promise < Message | Error > {
+    try {        
+        
+        message.parameters = message.parameters?.map(param=> {
+            if(param.name === 'sign'){
+                return { ...param, value: name };
+            }
+            return param;
+        })
+
+        // Store the documents
+        if(process.env.NEXT_PUBLIC_TEST_ENV !== "true"){
+            let result = await storeDocs(message);
+
+            if (result instanceof Error) {
+                return result;
+            }
+        }
+
         let status = '';
         let updatedCuk: CUK | Error;
 
