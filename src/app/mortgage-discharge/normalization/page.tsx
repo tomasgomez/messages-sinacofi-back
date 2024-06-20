@@ -4,6 +4,12 @@ import MortgageDischargeScreen from "../components/screen";
 
 export default function NormalizationScreen() {
   return (
-    <MortgageDischargeScreen title="Alzamientos Hipotecarios con Clientes Normalizacion" />
+    <MortgageDischargeScreen
+      extraFilter={[{
+        label: 'statusCategory', 
+        value:'normalization'
+      }]} 
+      title="Alzamientos Hipotecarios con Clientes Normalizacion" 
+    />
   );
 }

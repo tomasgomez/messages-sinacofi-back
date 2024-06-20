@@ -50,7 +50,7 @@ export const FilterSelector = (props: { onClose: Function }) => {
       // save the filter if not is a dropdown with the value all
       if (
         (elem.label === "institutionDestination" && elem.value === "all") ||
-        (elem.label === "notaryRepertoire" && elem.value === "all") ||
+        (elem.label === "notary" && elem.value === "all") ||
         (elem.label === "region" && elem.value === "all")
       )
         handleChangeAddFilter(elem.label, "");
@@ -122,9 +122,9 @@ export const FilterSelector = (props: { onClose: Function }) => {
       <FilterDropdowns
         title="Notoria"
         handleChange={handleAuxFilter}
-        keyLabel="notaryRepertoire"
+        keyLabel="notary"
         options={optionsNotoria}
-        optionSelected={getValue("notaryRepertoire")}
+        optionSelected={getValue("notary")}
       />
       <DatePickerInput
         onChange={handleAuxFilter}
