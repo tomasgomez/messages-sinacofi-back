@@ -56,6 +56,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         params: {
           scope: 'openid profile email offline_access',
           redirect_uri: process.env.IAM_REDIRECT_URL,
+          max_age: 7200,
+          prompt: "login" 
         },
         request(context){
           context.client.authorizationUrl({

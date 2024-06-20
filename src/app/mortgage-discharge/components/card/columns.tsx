@@ -87,7 +87,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
               disabled={!userInfo?.permissions?.signMortgageDischarge}
               onClick={() =>
                 router.push(
-                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
+                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=sign`
                 )
               }
             >
