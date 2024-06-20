@@ -26,7 +26,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { TextInputFilters } from "../../form-elements/text-input-filters";
 
 export const Filters = (props: { handleGetData: Function }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [filters, setFilters] = useState<Filter[]>([]);
 
   const { handleGetData = () => null } = props;
