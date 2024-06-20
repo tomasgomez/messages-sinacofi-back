@@ -124,7 +124,7 @@ export default function MortgageDischargeScreen({
           style={{
             maxHeight:
               maxHeight < 0 ? `calc(100vh - ${usedHeight}px)` : maxHeight,
-            overflowY: "scroll",
+            overflowY: "auto",
             overflowX: "hidden",
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
           }}

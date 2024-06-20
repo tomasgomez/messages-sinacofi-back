@@ -19,7 +19,7 @@ export const StyledContentCard = styled(Box)<StyledContentCardProps>(
     height: height ? `${height}px` : "auto",
     display: "flex",
     flexDirection: "column",
-    overflow: "scroll",
+    overflow: "auto",
     width: "100%",
   })
 );
@@ -166,7 +166,7 @@ export const StyledTitleProgressBar = styled(Typography)`
 
 export const StyledContainerBar = styled(Box)`
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
 `;
 
 interface StyledStyledContainerBlockProps {

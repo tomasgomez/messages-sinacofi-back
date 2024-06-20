@@ -21,7 +21,7 @@ export const FilterSectorCard = styled(Card)`
   flex-direction: column;
   gap: 16px;
   // Delete if you don't want to limit in the card filter
-  overflow: scroll;
+  overflow: auto;
   height: calc(100% - 225px);
   max-height: 800px;
   ////////////
