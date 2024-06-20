@@ -59,6 +59,7 @@ export default function SearchScreen() {
             rows={data}
             columns={columnsSearch}
             emptyDataComponent={NoContent}
+            highlightRowDisabled
           />
         </StyledBox>
       </ScrollableDiv>
