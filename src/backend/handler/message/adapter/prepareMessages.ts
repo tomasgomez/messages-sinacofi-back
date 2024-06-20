@@ -60,6 +60,7 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
               id: document.id,
               url: document.url,
               documentName: document.documentName,
+              document: document.content
           }
       });
 

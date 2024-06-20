@@ -21,7 +21,9 @@ export async function findDoc(doc: Documents): Promise <Documents | Error> {
         const docResponse: Documents = {
             documentName: doc.documentName,
             content: content,
-            messageId: doc.messageId
+            messageId: doc.messageId,
+            url: doc.url,
+            id: doc.id
         }
 
         return docResponse;
