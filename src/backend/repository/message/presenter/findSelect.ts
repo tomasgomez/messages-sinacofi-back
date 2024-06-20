@@ -24,7 +24,7 @@ function findSelect(parameters: boolean=false, documents:boolean=false): any {
         OSN: true,
         NSE: true,
         NSR: true,
-        NSQ: true
+        NSQ: true,
     };
     
     // Always include 'detail' related properties

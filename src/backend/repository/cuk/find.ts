@@ -259,7 +259,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // define include
     let include: Prisma.CUKInclude = { 
         messages: { 
-            select: findSelect(),
+            select: findSelect(false, true),
         }, 
         parameters: {
             where: {
