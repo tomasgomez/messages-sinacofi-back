@@ -9,6 +9,7 @@ import {
 } from "@/backend/utils/functions";
 import { MessageStatus } from "@/backend/entities/message/status";
 import { createData } from "@/backend/repository/message/presenter/createData"; 
+import { Parameter } from "@/backend/entities/message/parameter";
 
 async function create(message: Message): Promise < Message | Error > {
     try {
@@ -90,10 +91,63 @@ async function create(message: Message): Promise < Message | Error > {
             }
         });
 
-        // Handle null values in the created message
-        handleNullValues(newMessage);
+        // TODO: FIX please correlative
+        let correlativesParams: Parameter[] = [
+            {
+                name:"OSN",
+                label: "OSN",
+                priority: 0,
+                value: newMessage.OSN?.id.toString(),
+                cukCode: newMessage.cukCode ?? null,
+                messageCode: newMessage.messageCode
+            },
+            {
+                name:"TSN",
+                label: "TSN",
+                priority: 0,
+                value: newMessage.TSN?.id.toString(),
+                cukCode: newMessage.cukCode ?? null,
+                messageCode: newMessage.messageCode
+            },
+            {
+                name:"NSE",
+                label: "NSE",
+                priority: 0,
+                value: newMessage.NSE?.id.toString(),
+                cukCode: newMessage.cukCode ?? null,
+                messageCode: newMessage.messageCode
+            }
+        ]
 
-        return newMessage as Message;
+        const updatedMessage = await prismaClient.message.update({
+            where: {
+              id: newMessage.id
+            },
+            data: {
+              parameters: {
+                createMany: {
+                  data: correlativesParams
+                }
+              }
+            },
+            include: {
+            //   parameters: true,
+                  TSN: true,
+                LSN: true,
+                OSN: true,
+                NSE: true,
+                NSR: true,
+                NSQ: true,
+                status: true,
+            }
+        });
+       
+
+
+        // Handle null values in the created message
+        handleNullValues(updatedMessage);
+
+        return updatedMessage as Message;
     } catch (error: any) {
         console.error('Error creating message:', error);
         return new Error(error.message);

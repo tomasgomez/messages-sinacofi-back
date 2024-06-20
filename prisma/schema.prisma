@@ -71,6 +71,7 @@ model Parameters {
   placeholder  String?
   description  String?
   defaultValue String?
+  displayValue String?
   priority     Int
   value        String?
 

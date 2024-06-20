@@ -4,12 +4,6 @@ import {
 import {
     CUK
 } from '@/backend/entities/cuk/cuk';
-import {
-    History
-} from '@/backend/entities/cuk/history';
-import {
-    getDescriptionByStatus
-} from '@/backend/entities/cuk/codes';
 
 async function create(cuk: CUK): Promise < CUK | Error > {
     try {

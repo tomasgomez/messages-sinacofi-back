@@ -5,97 +5,102 @@ import {
 } from "@/app/component/inbox-table/type";
 import Image from "next/image";
 
-const DocumentAction = ({ row }: { row: any }) => {
-  const { id = "", documents } = row || {};
+const DocumentAction = ({ document }: { document: any }) => {
+  const { documentName, documentSize, content } = document;
 
   const handleActionPrint = async () => {
-    window.open(`/pdf-viewer?id=${encodeURIComponent(id)}`, "_blank");
+    window.open(`/pdf-viewer?id=${encodeURIComponent("")}`, "_blank");
   };
 
   return (
-    <Image
-      style={{ cursor: "pointer" }}
-      src="/imagenPDF.png"
-      alt="pdf-image.png"
-      loading="lazy"
-      width="30"
-      height="30"
-      onClick={handleActionPrint}
-    />
+    <div
+      style={{
+        maxHeight: 25,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Image
+        style={{ cursor: "pointer" }}
+        src="/imagenPDF.png"
+        alt="pdf-image.png"
+        loading="lazy"
+        width="25"
+        height="25"
+        onClick={handleActionPrint}
+      />
+    </div>
   );
 };
 
 const documentsGP: Columns = {
   id: "documents",
   label: "Documento GP",
-  align: Alignment.LEFT,
+  align: Alignment.CENTER,
   sortable: false,
   render: ({ row }: { row: any }) => {
-    return <DocumentAction row={row} />;
+    const { documents = [] } = row || {};
+    return <DocumentAction document={documents[0] || []} />;
   },
 };
 
 const documentsCM: Columns = {
   id: "documents",
   label: "Copia Maestra",
-  align: Alignment.LEFT,
+  align: Alignment.CENTER,
   sortable: false,
   render: ({ row }: { row: any }) => {
-    return <DocumentAction row={row} />;
+    const { documents = [] } = row || {};
+    return <DocumentAction document={documents[1] || []} />;
   },
 };
 
 export const columnsDeedsReports: Columns[] = [
   {
-    id: "NSR",
+    id: "cukCode",
     label: "Codigo Interno",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "institutionDestination",
     label: "Inst. Destino",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
-    label: "Último Estado AH",
-    align: Alignment.LEFT,
-    sortable: false,
-  },
-  {
-    id: "NSR",
+    id: "buyerDni",
     label: "RUT Comprador",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "ownerDni",
     label: "RUT Vendedor",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "creationDate",
     label: "Fecha",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "creationTime",
     label: "Hora",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "NSE",
     label: "NSE",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "messageCode",
     label: "MS",
     align: Alignment.LEFT,
     sortable: false,
@@ -105,7 +110,7 @@ export const columnsDeedsReports: Columns[] = [
 ];
 
 export const rowOptions: RowOptions = {
-  NSR: {
+  documents: {
     align: Alignment.CENTER,
   },
 };

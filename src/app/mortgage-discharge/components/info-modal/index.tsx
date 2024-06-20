@@ -16,7 +16,7 @@ import { sortMessagesOldToNew } from "@/utils/messagesFuntions";
 import { MyContexLayout } from "@/app/context";
 import { Message } from "@/app/component/inbox-table/type";
 import { getMessageDetails } from "@/app/services/common";
-import { getForeClosureDataCards } from "../../api-calls";
+import { getForeClosureData } from "../../api-calls";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 import { useModalManager } from "@/components/Modal";
 import { reverseArray } from "@/utils/functions";
@@ -52,7 +52,7 @@ export const InfoModal = () => {
 
         // Get the cuck and save only the messages and sort oldest to newest
         // If we have to do a Dropdown, we can save all messages in a state and with the dropdown select the message
-        const cukData = await getForeClosureDataCards([
+        const cukData = await getForeClosureData([
           { label: "cukCode", value: selectedMessage?.cukCode || "" },
           { label: "institutionCode", value: selectedInstitution || "" },
         ]);

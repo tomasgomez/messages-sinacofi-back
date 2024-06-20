@@ -19,7 +19,7 @@ export const userRoles: Record<string, User> = {
         rut: '18782721-3',
         name: "J. BUSTOS", 
         institutionCode: "0027", 
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
@@ -28,7 +28,7 @@ export const userRoles: Record<string, User> = {
         rut: '6986932-0',
         name: 'LUIS PEREIRA',
         institutionCode: "0016", 
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active" 
     },
@@ -37,7 +37,7 @@ export const userRoles: Record<string, User> = {
         rut: '17604011-4',
         name: 'NICOLAS ROCA',
         institutionCode: "0037", 
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
@@ -46,7 +46,7 @@ export const userRoles: Record<string, User> = {
         rut: '3077016',
         name: "DANIEL KOKAL",
         institutionCode: "350",
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
@@ -55,7 +55,7 @@ export const userRoles: Record<string, User> = {
         rut: "3077015",
         name: "LUIS P. UPR1",
         institutionCode: "350",
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
@@ -64,7 +64,7 @@ export const userRoles: Record<string, User> = {
         rut: "16088932",
         name: "O. VÉLIZ",
         institutionCode: "0027",
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
@@ -73,7 +73,7 @@ export const userRoles: Record<string, User> = {
         rut: "13003450",
         name: "P.RAMÍREZ",
         institutionCode: "0049",
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
@@ -82,7 +82,7 @@ export const userRoles: Record<string, User> = {
         rut: "16642594",
         name: "JAVIER CANAL",
         institutionCode: "0051",
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
@@ -91,7 +91,7 @@ export const userRoles: Record<string, User> = {
         rut: "30077020",
         name: "MONITOREO",
         institutionCode: "0049",
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },
@@ -100,7 +100,7 @@ export const userRoles: Record<string, User> = {
         rut: "25876655",
         name: "LUIS TOMOCHE",
         institutionCode: "0051",
-        area: "",
+        area: "05",
         email: "felipe.garcia@coddde.com",
         status: "Active"
     },   

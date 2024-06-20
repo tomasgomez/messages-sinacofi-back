@@ -26,6 +26,7 @@ export interface ModalTrackingData {
   region: string;
   institutionDestination: string;
   history: any[];
+  lastMessage: Message;
 }
 
 export interface DataMortgageDischarge {
