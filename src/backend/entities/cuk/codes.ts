@@ -159,7 +159,6 @@ export function getForeclosureStatusCodesByStatus(status: Status): string[] {
                 ForeclosureStatus.SEND_LIQUIDATION_PAYMENT,
                 ForeclosureStatus.PAYMENT,
                 ForeclosureStatus.SENT_REJECTION,
-                ForeclosureStatus.SENT_CONFIRM_PAYMENT,
             ];
         case 'normalization':
             return [ForeclosureStatus.START_NORMALIZATION];

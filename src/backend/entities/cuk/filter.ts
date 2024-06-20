@@ -25,4 +25,6 @@ export interface Filter{
   offset ? : string; 
   status ? : string[];
   statusCategory ? : string[]; 
+  notary ? : string[];
+  repertoireDate ? : string[]
 }

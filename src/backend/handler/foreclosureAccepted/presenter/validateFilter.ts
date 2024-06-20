@@ -7,7 +7,7 @@ import {
   processStringArrayField
 } from '@/backend/utils/functions';
 
-export function validateGetMessageForeclosure(data: any): Filter | Error {
+export function validateFilterForeclosureAccepted(data: any): Filter | Error {
   let filter: Filter = {};
 
   const {

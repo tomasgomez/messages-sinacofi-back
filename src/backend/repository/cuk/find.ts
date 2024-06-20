@@ -68,6 +68,10 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         cukWhere.id = { in: filter.id };
     }
 
+    if(filter.statusCategory && filter.statusCategory.length > 0){
+        cukWhere.status = { in: filter.statusCategory };
+    }
+
     let messagesWhere: Prisma.MessageWhereInput = {};
     messagesWhere.AND=[];
 
@@ -75,8 +79,12 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
 
     // FILTER MESSAGES BY institutionDestination
     if (filter.institutionDestination && filter.institutionDestination.length > 0) {
-        messagesWhere.destination = { in: filter.institutionDestination };
-        messagesWhere.status = { some:{ id: { in: ["05"] } } };            
+        messagesWhere.AND.push({
+            destination:{ in: filter.institutionDestination },
+            messageCode: '670'
+        })
+        // messagesWhere.destination = { in: filter.institutionDestination };
+        // messagesWhere.status = { some:{ id: { in: ["05"] } } };            
     }
 
 
@@ -221,6 +229,26 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
             }
         }})
     }
+
+    // FILTER PARAMETERS BY notary
+    if(filter.notary && filter.notary.length > 0){
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'notary',
+                value: { in: filter.notary}
+            }
+        }})
+    }
+
+    // FILTER PARAMETERS BY notary
+    if(filter.repertoireDate && filter.repertoireDate.length > 0){
+        messagesWhere.AND.push({parameters:{
+            some:{
+                name: 'repertoireDate',
+                value: { in: filter.repertoireDate}
+            }
+        }})
+    }
         
     // set values to query
     query.where = {
@@ -267,7 +295,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         history: true
     };
 
-    query.include = include;      
+    query.include = include;          
     return query;
 }
 
