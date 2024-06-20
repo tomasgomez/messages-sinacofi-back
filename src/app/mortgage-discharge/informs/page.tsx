@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Filter } from "@/types/mortgage-discharge";
 import { StyledPaper, StyledBox, StyledTableTitle } from "./styles";
 import NoContent from "../components/no-content";
@@ -8,18 +8,37 @@ import HeaderInforms from "@/app/mortgage-discharge/components/headers/header-in
 import { columnsInforms } from "./columns";
 import { Button, Tab, Tabs } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import { useModalManager } from "@/components/Modal";
+import basicError from "@/components/Modal/ErrorModal/basicError";
 
 export default function SearchScreen() {
   const [filters, setFilters] = useState<Filter[]>([]);
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState<number>(0);
+
+  const { ErrorModal } = useModalManager();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setSelectedTab(newValue);
   };
 
-  const data: unknown[] = [
-    // { NSR: "DATA" }
-  ];
+  const handleGetData = async () => {
+    try {
+      setLoading(true);
+      console.log("filters: ", filters);
+      // TODO: add api call
+      setLoading(false);
+    } catch (error: any) {
+      setData([]);
+      setLoading(false);
+      ErrorModal.open(basicError(error));
+    }
+  };
+
+  useEffect(() => {
+    handleGetData();
+  }, [filters]);
 
   const TableTitle = ({
     selectedTab,
@@ -69,6 +88,7 @@ export default function SearchScreen() {
       />
       <StyledBox>
         <DataTable
+          loading={loading}
           maxHeight={350}
           rows={data}
           columns={columnsInforms}

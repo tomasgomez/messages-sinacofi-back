@@ -38,8 +38,6 @@ async function find(filter: FilterParameter): Promise<Parameter[] | Error> {
         console.log("Error fetching parameters: ", error);
         return error;
     }
-
-    return new Error('errror')
 }
 
 export { find };

@@ -9,7 +9,8 @@ export default function NormalizationScreen() {
         label: 'statusCategory', 
         value:'normalization'
       }]} 
-      title="Alzamientos Hipotecarios con Clientes Normalizacion" 
+      title="Alzamientos Hipotecarios con Clientes Normalizacion"
+      isNormalizationScreen
     />
   );
 }

@@ -11,6 +11,7 @@ import { FilterMessage } from '@/backend/entities/message/filter';
 import { signMessage } from './signMessage';
 import { CUKRepository } from '@/backend/repository/cukRepository';
 import { PrismaCukAdapter } from '@/backend/repository/cuk/cuk';
+import { User } from '@/backend/entities/user/user';
 
 
 /*
@@ -24,7 +25,7 @@ export class MessageUscase implements MessageUsecases  {
         getMessage(this.messageRepository, filter);
     
     // create message
-    createMessage = async (message: Message): Promise<Message | Error> => 
+    createMessage = async (message: Message, user: User): Promise<Message | Error> => 
         createMessage(this.messageRepository, message);
     
     // handle message

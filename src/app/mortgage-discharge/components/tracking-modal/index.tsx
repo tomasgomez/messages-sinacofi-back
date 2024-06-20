@@ -1,7 +1,7 @@
 import { Modal } from "@/app/component/Modal/Modal";
 import { montserrat } from "@/utils/fonts";
 import { CloseRounded } from "@mui/icons-material";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import Typography from "@mui/material/Typography/Typography";
 import { CardDetails } from "./components/card-details";
 import { CardStatusUpdate } from "./components/card-status-update";
@@ -50,6 +50,7 @@ export const TrackingModal = (props: {
     cukCode = "",
     history = [],
     institutionDestination = "",
+    lastMessage,
     ...restOfData
   } = data || {};
 
@@ -88,6 +89,38 @@ export const TrackingModal = (props: {
     }
   };
 
+  const getTextTooltip = () => {
+    if (loading) return "Cargando...";
+
+    if (selectedInstitution !== institutionDestination)
+      return "Solo la institución destino puede cambiar el estado de la base de seguimiento";
+    
+    if (dataOptions.every((elem: any) => elem?.disabled))
+      return "No hay más opciones de cambio de estado";
+
+    if (!statusSelected) return "Seleccione un estado";
+
+    if (
+      statusSelected === "022" &&
+      !userInfo?.permissions.acceptMortgageDischarge
+    )
+      return "No tienes permiso para aceptar el alzamiento hipotecario";
+
+    if (
+      statusSelected === "023" &&
+      !userInfo?.permissions.rejectMortgageDischarge
+    )
+      return "No tienes permiso para rechazar el alzamiento hipotecario";
+
+    if (
+      historyList[0]?.status === "XXX" &&
+      (lastMessage?.messageCode !== "673" || !(lastMessage?.status === "05"))
+    )
+      return "Debe enviar primero el mensaje de normalización para poder finalizarlo";
+
+    return "";
+  };
+
   return (
     <Modal
       sx={{
@@ -95,7 +128,6 @@ export const TrackingModal = (props: {
         p: "40px",
         maxWidth: "960px",
         height: "678px",
-        // height: "calc(100% - 80px)",
         top: "calc((100% - 678px)/2)",
         margin: 0,
       }}
@@ -160,23 +192,31 @@ export const TrackingModal = (props: {
         >
           Cerrar
         </Button>
-        <Button
-          sx={buttonUpdateStateSecondarySx}
-          onClick={handleChange}
-          variant="contained"
-          disabled={
-            loading ||
-            !statusSelected ||
-            // if you aren't the institution Destination you can change the status
-            selectedInstitution !== institutionDestination ||
-            (statusSelected == "022" &&
-              !userInfo?.permissions.acceptMortgageDischarge) ||
-            (statusSelected == "023" &&
-              !userInfo?.permissions.rejectMortgageDischarge)
-          }
-        >
-          Actualizar Estado
-        </Button>
+        <Tooltip title={getTextTooltip()}>
+          <span>
+            <Button
+              sx={buttonUpdateStateSecondarySx}
+              onClick={handleChange}
+              variant="contained"
+              disabled={
+                loading ||
+                !statusSelected ||
+                // if you aren't the institution Destination you can change the status
+                selectedInstitution !== institutionDestination ||
+                (statusSelected == "022" &&
+                  !userInfo?.permissions.acceptMortgageDischarge) ||
+                (statusSelected == "023" &&
+                  !userInfo?.permissions.rejectMortgageDischarge) ||
+                // If the last history is 'XXX' (normalization), then the last message must be 673 and have a status of 05.
+                (historyList[0]?.status === "XXX" &&
+                  (lastMessage?.messageCode !== "673" ||
+                    !(lastMessage?.status === "05")))
+              }
+            >
+              Actualizar Estado
+            </Button>
+          </span>
+        </Tooltip>
       </Box>
     </Modal>
   );

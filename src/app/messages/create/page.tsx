@@ -102,13 +102,7 @@ const CreateMessage = () => {
                       defaultValue: institutionId,
                       disabled: true,
                     }
-                  : parameter.id === "bank" || parameter.id.startsWith("bank")
-                  ? // parameter.id === "destination"
-                    {
-                      ...parameter,
-                      defaultValue: "BANCO",
-                      disabled: true,
-                    }
+                  
                   : parameter.id === "CUK"
                   ? {
                       ...parameter,

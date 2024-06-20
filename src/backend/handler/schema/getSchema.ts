@@ -4,6 +4,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { adaptSchema } from "./presenter/adaptSchema";
 import { getInstitutions } from "../institution/get";
 import { getToken } from "next-auth/jwt";
+import { User } from "@/backend/entities/user/user";
+import { getUser } from "../user/get";
 
 
 // get Schema function
@@ -13,12 +15,16 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         let filter = validateGetSchema(req.query);
 
         const token = await getToken({req});
+        if (!token || token.dni ==''){
+          res.status(400).json([]);
+          return;
+        }
 
-        let name: string='';
-
-        if(token?.name){
-            name= token.name;
-        } 
+        let user = await getUser(token.dni!);
+        if (user instanceof Error){
+          res.status(400).json([]);
+          return; 
+        }
 
         if (filter instanceof Error) {
           res.status(400).json([]);
@@ -31,7 +37,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         }
 
         /* Use the PrismaAreaAdapter to get the Schema from the database */
-        let schemaResponse = await schemaUseCase.getSchema(filter)
+        let schemaResponse = await schemaUseCase.getSchema(filter, user)
 
         /* If the Schema is not found, return a 204 error */
         if (schemaResponse instanceof Error) {
@@ -49,9 +55,9 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
         let adaptedSchema = adaptSchema(schemaResponse, {
           senderId: filter.origin,
           receiverId: filter.destination,
-          sender: origin,
+          sender: user.institutionCode,
           cuk: filter.cuk,
-          name: name
+          name: user.name
         });
 
         /* Return the Schema */
