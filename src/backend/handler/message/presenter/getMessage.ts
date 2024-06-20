@@ -32,7 +32,7 @@ export function validateGetMessage(request: any): FilterMessage | Error {
   filter.count = count;
   filter.offset = offset;
 
-  filter.detail = false;
+  filter.detail = true;
 
   return filter;
 }

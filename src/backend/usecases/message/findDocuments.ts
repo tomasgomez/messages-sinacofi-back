@@ -19,7 +19,7 @@ export async function findDocuments(message: Message): Promise<Message | Error> 
         // get document
         const docResponse = await docUseCase.findDoc(doc);
         if (docResponse instanceof Error) {
-            throw docResponse;
+            return message
         }
         return docResponse;
         });
