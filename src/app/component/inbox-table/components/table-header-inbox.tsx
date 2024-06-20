@@ -22,7 +22,7 @@ export function TableHeader(props: EnhancedTableProps) {
   } = props;
 
   const createSortHandler =
-    (property: KeyOfData) => (event: React.MouseEvent<unknown>) => {
+    (property: KeyOfData | string) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 

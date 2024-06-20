@@ -84,7 +84,7 @@ export default function EnhancedTable(props: {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: KeyOfData
+    property: KeyOfData | string,
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -195,7 +195,8 @@ export default function EnhancedTable(props: {
           />
           <TableBody>
             {loading ? (
-              <TableContentLoader loadingMessage="Cargando Registros..." />
+              <TableContentLoader loadingMessage="Cargando Registros..." minHeight={(maxHeight as number) - 57
+                 - 32 - 1} />
             ) : (
               visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row.id as number);
