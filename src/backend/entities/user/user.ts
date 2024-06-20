@@ -10,4 +10,5 @@ export interface UserInfo {
     area:            string;
     email:           string;
     status:          string;
+    dni:             string;
   }

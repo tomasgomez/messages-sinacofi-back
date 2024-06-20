@@ -60,7 +60,6 @@ export async function getSchema(filter: Filter, user: User): Promise < MessageSc
         user: user,
       parameters
       })
-
       return schemas
     }
 
@@ -69,7 +68,6 @@ export async function getSchema(filter: Filter, user: User): Promise < MessageSc
     parameters: []
     })
 
-    console.log(schemas);
     return schemas;
 
     // if (!filter.messageCode?.includes('670') && filter.messageId && filter.messageId.length>0) {

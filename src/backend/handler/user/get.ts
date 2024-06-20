@@ -35,7 +35,9 @@ export async function getUser(dni: string): Promise<User | Error> {
       institutionCode: response.data[0].institutionCode,
       area: response.data[0].areaCode,
       email: response.data[0].email,
-      status: response.data[0].status
+      status: response.data[0].status,
+      dni: dni,
+
     }
 
     return userAdated;
