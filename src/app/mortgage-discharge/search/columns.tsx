@@ -78,32 +78,38 @@ const actions: Columns = {
 
 export const columnsSearch: Columns[] = [
   {
-    id: "NSR",
+    id: "cukCode",
     label: "Codigo Interno",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "receivedDate",
     label: "Fecha de Recepción",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "historyStatus",
     label: "Último Estado AH",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "dateHistory",
     label: "Fecha de Último Estado AH",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "NSR",
+    id: "OSN",
     label: "OSN",
+    align: Alignment.LEFT,
+    sortable: false,
+  },
+  {
+    id: "status670",
+    label: "Estado MS670",
     align: Alignment.LEFT,
     sortable: false,
   },

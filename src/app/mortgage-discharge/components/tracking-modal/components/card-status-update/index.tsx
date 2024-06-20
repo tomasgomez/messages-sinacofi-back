@@ -22,21 +22,18 @@ export const CardStatusUpdate = (props: { data?: any[]; loading: boolean }) => {
         Actualización de Estados de Alzamiento Hipotecario
       </Typography>
       <Divider />
-      {loading ? (
-        <Loader label="Cargando Historial..." minHeight={388} />
-      ) : (
-        <EnhancedTable
-          maxHeight={280}
-          withCheckbox={false}
-          rows={data}
-          columns={columnData}
-          rowOptions={rowOptions}
-          footerComponent={footerComponent}
-          highlightLastRow
-          rowsPerPageOptions={[]}
-          defaultRowsPerPage={4}
-        />
-      )}
+      <EnhancedTable
+        loading={loading}
+        maxHeight={280}
+        withCheckbox={false}
+        rows={data}
+        columns={columnData}
+        rowOptions={rowOptions}
+        footerComponent={footerComponent}
+        highlightLastRow
+        rowsPerPageOptions={[]}
+        defaultRowsPerPage={4}
+      />
     </Card>
   );
 };

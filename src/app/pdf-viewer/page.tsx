@@ -6,7 +6,7 @@ import { getMessageDetails } from "../services/common";
 import Loader from "@/components/Loader";
 
 const PDFScreenView = () => {
-  const [dataDetails, setDataDetails] = useState([]);
+  // const [dataDetails, setDataDetails] = useState([]);
   const [isloading, setIsLoading] = useState(true);
   const [id, setId] = useState<string>("");
 
@@ -21,8 +21,8 @@ const PDFScreenView = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (id) {
-        const details = await getMessageDetails(id as string);
-        setDataDetails(details);
+        // const details = await getMessageDetails(id as string);
+        // setDataDetails(details);
         setIsLoading(false);
       }
     };
@@ -35,7 +35,7 @@ const PDFScreenView = () => {
         <Loader label="Cargando Archivo…" minHeight={"100vh"} />
       ) : (
         <PDFViewer width="100%" height="100%">
-          <PDFTemplate data={dataDetails} />
+          {/* <PDFTemplate data={dataDetails} /> */}
         </PDFViewer>
       )}
     </div>
