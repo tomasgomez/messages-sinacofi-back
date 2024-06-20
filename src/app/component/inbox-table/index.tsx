@@ -35,6 +35,7 @@ export default function EnhancedTable(props: {
   defaultOrderBy?: keyof Message;
   defaultOrder?: Order;
   highlightLastRow?: boolean;
+  highlightRowDisabled?: boolean;
   isExpansible?: boolean;
   endDetailsText?: string;
   rowOptions?: RowOptions;
@@ -62,6 +63,7 @@ export default function EnhancedTable(props: {
     defaultRowsPerPage = 5,
     footerComponent = null,
     emptyDataComponent = null,
+    highlightRowDisabled = false,
   } = props || {};
 
   const [order, setOrder] = React.useState<Order>(defaultOrder);
@@ -221,6 +223,7 @@ export default function EnhancedTable(props: {
                     isLastRow={!index}
                     isExpansible={isExpansible}
                     rowOptions={rowOptions}
+                    highlightRowDisabled={highlightRowDisabled}
                   />
                 );
               })

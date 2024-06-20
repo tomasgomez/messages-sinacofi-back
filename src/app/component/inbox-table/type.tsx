@@ -134,6 +134,7 @@ export interface EnhancedTableProps {
 }
 
 export interface TableProps {
+  highlightRowDisabled?: boolean;
   withCheckbox?: boolean;
   withRadioButton?: boolean;
   showColumnToRadioButton?: boolean;
