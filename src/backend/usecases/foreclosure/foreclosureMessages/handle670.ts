@@ -18,6 +18,7 @@ import {
 } from '@/backend/entities/message/status';
 import { MessageActions } from '@/backend/entities/message/actions';
 import { updateMessage } from '../../message/updateMessage';
+import { Parameter } from '@/backend/entities/message/parameter';
 
 
 export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
@@ -61,6 +62,14 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
         }
 
         message.cukCode = cuk.cukCode;
+      
+      message.parameters = message?.parameters?.map((parameter: Parameter) => {
+        if (parameter.name === 'CUK') {
+          parameter.value = cuk.cukCode;
+        }
+        return parameter;
+      });
+
       } else {
         message.cukCode = cuk.cukCode;
       }
