@@ -25,6 +25,14 @@ export const getMessageSchema = async (
   ).then((response: any) => response.json());
 };
 
+export const getIndCurrencies = async (
+  index?: string,
+) => {
+  return fetch(
+    `/api/ind?${index ? `index=${index}` : ""}`
+  ).then((response: any) => response.json());
+};
+
 export const getMessageDetails = async (messageId: number | string) => {
   return await fetch(`/api/message/detail?id=${messageId}`).then((res) =>
     res.json()

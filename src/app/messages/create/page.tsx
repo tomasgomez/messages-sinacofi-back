@@ -397,7 +397,7 @@ const CreateMessage = () => {
                 <Typography variant="caption" color="#49454F">
                   Total a Pagar (UF / $)
                 </Typography>
-                <Typography variant="body2">6.100 / 143.217.265</Typography>
+                <Typography variant="body2">{data.totalPrepaidToPayUF} / {data.totalPrepaidToPayCLP}</Typography>
               </Stack>
             </Stack>
             <Typography variant="body2">

@@ -5,6 +5,7 @@ export const MyContexLayout = createContext({});
 
 type AppContextType = {
   selectedInstitution: any;
+  currencies: any
 }
 
 export const useAppContext = (): AppContextType => {
