@@ -1,4 +1,5 @@
 import { Documents } from "@/backend/entities/message/interface";
+import { PrismaClientWrapper } from "@/backend/repository/prismaWrapper";
 import fs from 'fs/promises';
 import path from "path";
 
@@ -6,10 +7,22 @@ import path from "path";
 export async function findDoc(doc: Documents): Promise <Documents | Error> {
     
 
+    if(!doc.url && doc.id){
+        const prisma = new PrismaClientWrapper();
+        const prismaClient = prisma.getClient();
+        let newDoc = await prismaClient.documents.findUnique({where: { id: doc.id }})
+        
+        if (!newDoc){
+            return new Error('errror getting doc')
+        }
+        doc = newDoc
+    }
+
     // check if the url is missing
-    if (!doc.url) {
+    if (!doc.url || !doc.id) {
         return new Error('Url is required');
     }
+
     const FILES_PATH = process.env["FILES_HOST"] || '/files';
     const filePath = path.join(FILES_PATH, doc.url);
     // read the file
