@@ -84,10 +84,43 @@ const CreateMessage = () => {
   const cloneId = searchParams?.get("cloneId") || "";
   const messageId = searchParams?.get("messageId") || "";
   const cukCode = searchParams?.get("cukCode") || "";
+  const action = searchParams?.get("action") || "";
   useEffect(() => {
     setLoading(true);
-    if ((cloneId || messageId) && !cukCode) {
+    if (action == 'sign' && messageCode == '670'){
+      getMessageSchema(messageCode, messageId, cukCode)
+      .then((schema: any) => {
+        setMessageSchema({
+          ...schema,
+          actions: { saveDraftDisabled: true, sendButtonDisabled: false },
+          parameters: schema?.parameters.map((parameter: any) =>(
+              parameter.id === "sign" || parameter.id === "senderSign"
+              ? {
+                  ...parameter,
+                  type: "password",
+                  // label: parameter.label
+                  required: true,
+                  disabled: false,
+                }
+              : {
+                  ...parameter,
+                  disabled: true,
+                }
+          )),
+        });
+      })
+      .catch((error) => {
+        console.log({ error });
+        setError("El schema de formulario no fue encontrado");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    }
+    else if ((cloneId || messageId) && !cukCode) {
       getMessageDetails(cloneId || messageId).then((data) => {
+        
         getMessageSchema(messageCode, messageId)
           .then((schema: any) => {
             setMessageSchema({
@@ -161,7 +194,9 @@ const CreateMessage = () => {
           .finally(() => {
             setLoading(false);
           });
-      });
+      
+      
+        });
     } else {
       getMessageSchema(messageCode, messageId, cukCode)
         .then((schema: any) => {
@@ -200,94 +235,15 @@ const CreateMessage = () => {
                           defaultValue: selectedInstitution,
                           disabled: true,
                         }
-                      : parameter
-                  )
-                : messageCode === "675"
-                ? schema?.parameters.map((parameter: any) =>
-                    parameter.type === "accordion"
-                      ? {
-                          ...parameter,
-                          open:
-                            parameter.label !== "Datos de Hipoteca" &&
-                            parameter.label !== "Detalle Otros Créditos",
-                          parameters: parameter?.parameters.map(
-                            (parameter: any) =>
-                              parameter.id === "bank" ||
-                              parameter.id === "currentBank" ||
-                              parameter.id.startsWith("bank")
-                                ? {
-                                    ...parameter,
-                                    defaultValue: selectedInstitution,
-                                    disabled: true,
-                                  }
-                                : parameter.id === "typeOfObligation"
-                                ? {
-                                    ...parameter,
-                                    properties: {
-                                      ...parameter.properties,
-                                      options: [
-                                        {
-                                          label: "Credito Complementario",
-                                          value: "Credito Complementario",
-                                        },
-                                      ],
-                                    },
-                                    defaultValue: "Credito Complementario",
-                                  }
-                                : parameter.id === "typeOfDebt"
-                                ? {
-                                    ...parameter,
-                                    properties: {
-                                      ...parameter.properties,
-                                      options: [
-                                        {
-                                          label: "Directo",
-                                          value: "Directo",
-                                        },
-                                      ],
-                                    },
-                                    defaultValue: "Directo",
-                                  }
-                                : parameter.id === "typeOfCurrency"
-                                ? {
-                                    ...parameter,
-                                    properties: {
-                                      ...parameter.properties,
-                                      options: [
-                                        {
-                                          label: "UF",
-                                          value: "uf",
-                                        },
-                                        {
-                                          label: "Pesos $ -",
-                                          value: "pesos",
-                                        },
-                                      ],
-                                    },
-                                    defaultValue: "uf",
-                                  }
-                                : parameter.id === "typeOfCurrency_2"
-                                ? {
-                                    ...parameter,
-                                    properties: {
-                                      ...parameter.properties,
-                                      options: [
-                                        {
-                                          label: "UF",
-                                          value: "uf",
-                                        },
-                                        {
-                                          label: "Pesos $ -",
-                                          value: "pesos",
-                                        },
-                                      ],
-                                    },
-                                    defaultValue: "pesos",
-                                  }
-                                : parameter
-                          ),
-                        }
-                      : parameter
+                      : parameter.id == 'senderAHName' && action !== 'sign' ? {
+                        ...parameter,
+                        defaultValue:"",
+                        disabled: true
+                      } : parameter.id == "senderAHDni" && action !== 'sign' ? {
+                        ...parameter,
+                        defaultValue: "",
+                        disabled: true
+                      }: parameter
                   )
                 : schema?.parameters,
           });

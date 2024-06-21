@@ -6,10 +6,12 @@ import {
 import Image from "next/image";
 
 const DocumentAction = ({ document }: { document: any }) => {
-  const { documentName, documentSize, content } = document;
+  if (!document) return "-";
+
+  const { id } = document;
 
   const handleActionPrint = async () => {
-    window.open(`/pdf-viewer?id=${encodeURIComponent("")}`, "_blank");
+    window.open(`/pdf-viewer?id=${encodeURIComponent(id)}`, "_blank");
   };
 
   return (
@@ -34,25 +36,36 @@ const DocumentAction = ({ document }: { document: any }) => {
   );
 };
 
-const documentsGP: Columns = {
-  id: "documents",
+const documentGP: Columns = {
+  id: "documentGP",
   label: "Documento GP",
   align: Alignment.CENTER,
   sortable: false,
   render: ({ row }: { row: any }) => {
-    const { documents = [] } = row || {};
-    return <DocumentAction document={documents[0] || []} />;
+    const { documentGP } = row || {};
+    return <DocumentAction document={documentGP} />;
   },
 };
 
-const documentsCM: Columns = {
-  id: "documents",
+const documentCM: Columns = {
+  id: "documentCM",
   label: "Copia Maestra",
   align: Alignment.CENTER,
   sortable: false,
   render: ({ row }: { row: any }) => {
-    const { documents = [] } = row || {};
-    return <DocumentAction document={documents[1] || []} />;
+    const { documentCM } = row || {};
+    return <DocumentAction document={documentCM} />;
+  },
+};
+
+const documentR: Columns = {
+  id: "documentR",
+  label: "Documento Reparo",
+  align: Alignment.CENTER,
+  sortable: false,
+  render: ({ row }: { row: any }) => {
+    const { documentR } = row || {};
+    return <DocumentAction document={documentR} />;
   },
 };
 
@@ -93,20 +106,9 @@ export const columnsDeedsReports: Columns[] = [
     align: Alignment.LEFT,
     sortable: false,
   },
-  {
-    id: "NSE",
-    label: "NSE",
-    align: Alignment.LEFT,
-    sortable: false,
-  },
-  {
-    id: "messageCode",
-    label: "MS",
-    align: Alignment.LEFT,
-    sortable: false,
-  },
-  documentsCM,
-  documentsGP,
+  documentCM,
+  documentGP,
+  documentR,
 ];
 
 export const rowOptions: RowOptions = {

@@ -35,7 +35,9 @@ const getDefaultValues = (schema: any) => {
         if (parameter.type === "accordion") {
           parameter.parameters.forEach(
             (parameterChild: { defaultValue: any; id: string }) => {
-              defaultValues[parameterChild.id] = parameterChild.defaultValue;
+              if(parameterChild) {
+                defaultValues[parameterChild.id] = parameterChild.defaultValue;
+              }
             }
           );
         } else {

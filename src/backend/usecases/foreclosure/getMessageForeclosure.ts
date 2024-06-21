@@ -38,10 +38,8 @@ export async function getMessageForeclosure(messageRepository: MessageRepository
       const messages = cuk.messages.map(async (message) => {
         // get message
         const messageResponse = await messageUseCase.findDocuments(message);
-
-        console.log("message",messageResponse);
         if (messageResponse instanceof Error) {
-          throw messageResponse;
+          return message;
         }
         return messageResponse;
       });

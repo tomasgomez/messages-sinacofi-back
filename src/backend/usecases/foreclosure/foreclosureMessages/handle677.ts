@@ -7,10 +7,15 @@ import { CUK } from '@/backend/entities/cuk/cuk';
 import { updateForclosure } from '../updateForeclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 import { createMessage } from '../../message/createMessage';
+import { MessageActions } from '@/backend/entities/message/actions';
 
 
 export async function handle677(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
+    
+    let actions = []
+    actions.push(MessageActions.SHOW_DETAIL)
+    message.actions = actions.join(',')
 
     /* Update the last message */
     updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);

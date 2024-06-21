@@ -51,16 +51,19 @@ const formatModalInfoHeader = (
   return dataHeader;
 };
 
-const SortAndGetLast670 = (messages: Message[]) => {
+const SortAndGetLastMessage = (
+  messages: Message[],
+  filterMessageCode: string
+) => {
   let sortedMessages = sortMessagesOldToNew(messages);
-  const ListMessages670 = messages.filter(
-    (message) => message?.messageCode === "670"
+  const ListMessages = messages.filter(
+    (message) => message?.messageCode === filterMessageCode
   );
 
   // The order of the messages is oldest to newest, (1,2,3,4) with respect to creation identifiers
-  const mostRecent670 = ListMessages670[ListMessages670.length - 1];
+  const mostRecentMessage = ListMessages[ListMessages.length - 1];
 
-  return { sortedMessages, mostRecent670 };
+  return { sortedMessages, mostRecentMessage };
 };
 
 export const formatCardData = (
@@ -69,10 +72,10 @@ export const formatCardData = (
   if (!data) return [];
 
   const formattedData = data?.map((elem) => {
-    let { messages: unSortedMessages = [] } = elem;
+    let { messages: unSortedMessages = [], status: cukStatus } = elem;
 
-    const { sortedMessages, mostRecent670 } =
-      SortAndGetLast670(unSortedMessages);
+    const { sortedMessages, mostRecentMessage: mostRecent670 } =
+      SortAndGetLastMessage(unSortedMessages, "670");
 
     const buttonDisabled = mostRecent670?.status === "01";
 
@@ -90,7 +93,8 @@ export const formatCardData = (
     const codeData = {
       cukCode: elem?.cukCode || "",
       foreclosureDate: elem?.creationDate?.split(" ")[0] || "",
-      cukStatus: lastMessageStatusWithStatus,
+      lasMessageStatus: lastMessageStatusWithStatus,
+      cukStatus: cukStatus || "",
       lastMessageCode: lastMessageCodeWithStatus,
     };
 
@@ -115,20 +119,20 @@ export const formatCardData = (
       lastMessage: sortedMessages[sortedMessages?.length - 1] || {},
     };
 
-    const newMessaje = sortedMessages.map((message) => {
-      return {
-        ...message,
-        actions: getActions(
-          message?.messageCode || "",
-          message?.status || "",
-          elem?.status || ""
-        ),
-      };
-    });
+    // const newMessaje = sortedMessages.map((message) => {
+    //   return {
+    //     ...message,
+    //     actions: getActions(
+    //       message?.messageCode || "",
+    //       message?.status || "",
+    //       elem?.status || ""
+    //     ),
+    //   };
+    // });
     return {
       codeData,
       infoData,
-      messages: newMessaje,
+      messages: sortedMessages,
       buttonDisabled,
       modalTrackingData,
     };
@@ -150,10 +154,29 @@ export const formatDeedsReportsData = (
       ownerDni = "",
     } = elem || {};
 
-    const { mostRecent670 } = SortAndGetLast670(unSortedMessages);
+    const { mostRecentMessage: mostRecent670 } = SortAndGetLastMessage(
+      unSortedMessages,
+      "670"
+    );
+    const { mostRecentMessage: mostRecent672 } = SortAndGetLastMessage(
+      unSortedMessages,
+      "672"
+    );
 
-    const { creationDate, creationTime, NSE, messageCode, documents } =
-      mostRecent670 || {};
+    const { documents: documents672 } = mostRecent672 || {};
+    const { creationDate, creationTime, documents } = mostRecent670 || {};
+
+    const documentGP = documents?.find((doc) => {
+      return doc?.documentName?.startsWith("GP-");
+    });
+
+    const documentCM = documents?.find((doc) => {
+      return doc?.documentName?.startsWith("CM-");
+    });
+
+    const documentR = documents672?.find((doc) => {
+      return doc?.documentName?.startsWith("R-");
+    });
 
     return {
       cukCode,
@@ -162,9 +185,9 @@ export const formatDeedsReportsData = (
       ownerDni,
       creationDate,
       creationTime,
-      NSE,
-      messageCode,
-      documents,
+      documentGP: documentGP,
+      documentCM: documentCM,
+      documentR: documentR,
     };
   });
 
@@ -184,7 +207,10 @@ export const formatSearchData = (
       id = "",
     } = elem || {};
 
-    const { mostRecent670 } = SortAndGetLast670(unSortedMessages);
+    const { mostRecentMessage: mostRecent670 } = SortAndGetLastMessage(
+      unSortedMessages,
+      "670"
+    );
 
     const sorttedHistory = sortHistoryList(history);
 
@@ -193,7 +219,7 @@ export const formatSearchData = (
 
     const { OSN, receivedDate, status: status670 } = mostRecent670 || {};
     const { status: historyStatus = "", date: dateTime } = lastHistory || {};
-    
+
     let dateHistory = "";
 
     if (dateTime) {

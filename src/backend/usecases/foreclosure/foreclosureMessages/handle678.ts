@@ -8,10 +8,16 @@ import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 import { MessageTypes } from '@/backend/entities/message/types';
 import { MessageStatus } from '@/backend/entities/message/status';
 import { FilterMessage } from '@/backend/entities/message/filter';
+import { MessageActions } from '@/backend/entities/message/actions';
 
 
 export async function handle678(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
+
+    let actions = []
+    actions.push(MessageActions.SHOW_DETAIL)
+    actions.push(MessageActions.CHECK_OPTIONS)
+    message.actions = actions.join(',')
 
     /* Find the last empty 679 message and delete it */
     let newMessage: FilterMessage = {
@@ -25,7 +31,7 @@ export async function handle678(cuk: CUK, message: Message, cukRepository: CUKRe
     newMessage.messageCode = [MessageTypes.CONFIRMACION_DE_PAGO_AH];
     newMessage.status = [MessageStatus.PREPARADO];
 
-    let messageToDelete = await messageRepository.find(newMessage);
+    let messageToDelete = await messageRepository.find(newMessage, false, false);
 
     if (messageToDelete instanceof Array && messageToDelete.length > 0) {
         messageRepository.delete(messageToDelete[0]);

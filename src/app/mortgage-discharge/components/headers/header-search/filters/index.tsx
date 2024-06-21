@@ -24,9 +24,14 @@ import {
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { TextInputFilters } from "../../form-elements/text-input-filters";
+import {
+  optionsNotaria,
+  // optionsStatus,
+  optionsInstitutions,
+} from "./constants";
 
 export const Filters = (props: { handleGetData: Function }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [filters, setFilters] = useState<Filter[]>([]);
 
   const { handleGetData = () => null } = props;
@@ -140,9 +145,9 @@ export const Filters = (props: { handleGetData: Function }) => {
               sx={{ width: "calc((100% / 3) - 10px)" }}
               title="Institución Emisora"
               handleChange={handleChangeFilter}
-              keyLabel="institutionSender"
-              options={[{ label: "Todos", value: "all" }]}
-              optionSelected={getValue("institutionSender", "all")}
+              keyLabel="institutionCode"
+              options={optionsInstitutions}
+              optionSelected={getValue("institutionCode", "all")}
             />
             <DatePickerInput
               sx={{ width: "calc((100% / 3) - 10px)" }}
@@ -189,9 +194,9 @@ export const Filters = (props: { handleGetData: Function }) => {
               placeholder="Ingrese el Codigo Interno..."
               width={`calc( 100%  / 4 - 12px)`}
               handleChange={handleChangeFilter}
-              keyLabel="internalCode"
+              keyLabel="cukCode"
               label="Codigo Interno"
-              value={getValue("internalCode")}
+              value={getValue("cukCode")}
             />
           </FilterGroup>
           <FilterGroup>
@@ -199,16 +204,16 @@ export const Filters = (props: { handleGetData: Function }) => {
               sx={{ width: "calc((100% / 3) - 10px)" }}
               title="Notaria"
               handleChange={handleChangeFilter}
-              keyLabel="notaria"
-              options={[{ label: "Todos", value: "all" }]}
-              optionSelected={getValue("notaria", "all")}
+              keyLabel="notary"
+              options={optionsNotaria}
+              optionSelected={getValue("notary", "all")}
             />
             <DatePickerInput
               sx={{ width: "calc((100% / 3) - 10px)" }}
               onChange={handleChangeFilter}
-              keyLabel="repertoiredate"
+              keyLabel="repertoireDate"
               label="Fecha de Repertorio"
-              value={getValue("repertoiredate")}
+              value={getValue("repertoireDate")}
             />
             <FilterDropdowns
               sx={{ width: "calc((100% / 3) - 10px)" }}

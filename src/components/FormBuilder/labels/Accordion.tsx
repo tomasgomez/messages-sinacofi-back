@@ -43,7 +43,7 @@ const Accordion = ({ parameters, label, control, errors, open }: {parameters: an
         {label}
       </StyledAccordionSummary>
       <AccordionDetails>
-        <ParamenterListBuilder parameters={parameters} register={register} control={control} errors={errors} />
+        {/* <ParamenterListBuilder parameters={parameters} register={register} control={control} errors={errors} /> */}
       </AccordionDetails>
     </StyledAccordionMUI>
   );

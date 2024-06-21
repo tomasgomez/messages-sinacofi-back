@@ -27,6 +27,14 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
   
   switch (message.statusCode) {
     case MessageStatus.ENVIADO: {
+      actions.push(MessageActions.SHOW_DETAIL);
+      actions.push(MessageActions.EDIT);
+      actions.push(MessageActions.DELETE);
+        
+      message.actions = actions.join(',');
+
+      console.log('Message:', message)
+
       updateMessage(messageRepository, message);
 
       cuk.status = MessageStatus.ENVIADO;
@@ -41,11 +49,12 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
           cuk.setCukCode(message.origin ?? '');
 
         actions.push(MessageActions.SIGN);
-        actions.push(MessageActions.CANCEL);
-
-        cuk.status = '-'
+        actions.push(MessageActions.EDIT);
+        actions.push(MessageActions.DELETE);
 
         message.actions = actions.join(',');
+
+        cuk.status = '-'
 
         const createdCuk = await cukRepository.create(cuk);
         

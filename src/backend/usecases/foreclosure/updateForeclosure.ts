@@ -19,6 +19,7 @@ import {
 import {
   MessageRepository
 } from '@/backend/repository/messageRepository';
+import { MessageActions } from '@/backend/entities/message/actions';
 
 export async function updateForclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message): Promise < CUK | Error > {
   try {
@@ -33,6 +34,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     let hasToUpdateMessage = false;
     let origin = '';
     let destination = '';
+    let actions = [];
 
     if (!cuk.cukCode || cuk.cukCode === '') {
       return new Error('Invalid CUK');
@@ -57,11 +59,11 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     /* Check if is updating cuk status and set the new status with new message values */
     switch (cuk.status) {
       case ForeclosureStatus.SIGNED: // 671
-      messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
-      cuk.status = ForeclosureStatus.SIGNED;
-      hasToUpdateMessage = true;
-      newMessage.origin = origin;
-      newMessage.destination = destination;
+        messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
+        cuk.status = ForeclosureStatus.SIGNED;
+        hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
         break;
 
       case ForeclosureStatus.REJECTED: // 672
@@ -135,6 +137,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         hasToUpdateMessage = true;
         newMessage.origin = origin;
         newMessage.destination = destination;
+        actions.push(MessageActions.CHECK_OPTIONS);
         break;
       
       case ForeclosureStatus.PAYMENT_OPTION_ACCEPTED: // 679 no
@@ -143,6 +146,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         hasToUpdateMessage = true;
         newMessage.origin = origin;
         newMessage.destination = destination;
+        actions.push(MessageActions.CHECK_OPTIONS);
         break;
       
       case ForeclosureStatus.INIT: // 670 enviado
@@ -170,6 +174,11 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
 
       newMessage.cukCode = cuk.cukCode;
       newMessage.messageCode = messageType;
+
+      actions.push(MessageActions.SIGN);
+              
+      message.actions = actions.join(',');      
+
       
       await createMessage(messageRepository, newMessage);   
     }
