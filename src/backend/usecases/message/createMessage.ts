@@ -4,7 +4,6 @@ import {
 import {
     MessageRepository
 } from "@/backend/repository/messageRepository";
-import { getSchema } from "../schema/getSchema";
 import { Filter } from "@/backend/entities/schema/filter";
 import { adaptParameters } from "@/backend/entities/message/parameter";
 import { getEnvVariable } from "@/backend/utils/functions";
