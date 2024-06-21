@@ -5,6 +5,7 @@ export interface CodeCardMortgageDischarge {
   foreclosureDate: string;
   cukStatus: string;
   lastMessageCode: string;
+  lasMessageStatus: string;
 }
 
 export interface InforCardMortgageDischarge {

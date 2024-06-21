@@ -10,6 +10,7 @@ const CodeColumn = ({ data }: { data: any }) => {
     foreclosureDate = "",
     cukStatus = "",
     lastMessageCode = "",
+    lasMessageStatus = "",
   } = data || {};
   return (
     <StyledCode>
@@ -29,7 +30,11 @@ const CodeColumn = ({ data }: { data: any }) => {
       >
         Fecha de Alzamiento: {foreclosureDate}
       </Typography>
-      <StatusChip status={cukStatus} messageCode={lastMessageCode} />
+      <StatusChip
+        status={lasMessageStatus}
+        messageCode={lastMessageCode}
+        cukStatus={cukStatus}
+      />
     </StyledCode>
   );
 };

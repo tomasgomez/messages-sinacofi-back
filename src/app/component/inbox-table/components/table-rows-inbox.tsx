@@ -17,9 +17,9 @@ const isHighlightRow = (
   isRadioButtonSelected: boolean | null,
   withRadioButton: boolean,
   row: Message,
-  highlightRowDisabled: boolean,
+  highlightRowDisabled: boolean
 ) => {
-  if(highlightRowDisabled) return false;
+  if (highlightRowDisabled) return false;
   if (highlightLastRow) return isLastRow;
   if (withRadioButton && (row?.status === "01" || !row?.status)) {
     return !!isRadioButtonSelected;
@@ -55,7 +55,6 @@ const CustomCell = ({
   highlightRowRejected,
   withBorderLeft,
 }: CustomCellType) => {
-  console.log("highlightRow", highlightRow);
   return (
     <StyledTabCell
       component="th"
@@ -149,7 +148,7 @@ export function TableContentRows(props: TableProps) {
               selectedRadioButton === row?.id,
               withRadioButton,
               row,
-              highlightRowDisabled,
+              highlightRowDisabled
             )}
             highlightRowRejected={isHighlightRejected(isLastRow, row)}
             withBorderLeft={withBorderLeft(highlightLastRow, isLastRow, !idx)}
