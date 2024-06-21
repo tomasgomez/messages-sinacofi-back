@@ -33,6 +33,7 @@ export const CardStatusUpdate = (props: { data?: any[]; loading: boolean }) => {
         highlightLastRow
         rowsPerPageOptions={[]}
         defaultRowsPerPage={4}
+        rowHeight={50}
       />
     </Card>
   );

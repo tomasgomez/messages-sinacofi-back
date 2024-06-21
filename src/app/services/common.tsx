@@ -1,5 +1,5 @@
 import institutions from "./mock-instititutions.json";
-import { messagesTypes } from "../../utils/messagesSchemaTypes";
+import { Filter } from "@/types/mortgage-discharge";
 // import { messageSchemas } from "@/utils/messagesSchema";
 
 export const getInstitutions = async () => {
@@ -57,6 +57,83 @@ export const getDocument = async (documentId: string) => {
     throw error;
   }
 };
+
+
+export async function getInformsAccepted(
+  filters?: Filter[]
+) {
+  try {
+    let url = `/api/informs/accepted`;
+
+    const newFilters = filters?.slice() || [];
+
+    if (newFilters.length > 0) {
+      const queryParams = newFilters
+        .map(
+          (filter) =>
+            `${encodeURIComponent(filter?.label)}=${encodeURIComponent(
+              filter.value ?? ""
+            )}`
+        )
+        .join("&");
+      url = `${url}?${queryParams}`;
+    }
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: Failed api call, Status: ${response.status}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data: any[] = await response.json();
+
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+}
+
+export async function getInformsRejected(
+  filters?: Filter[]
+) {
+  try {
+    let url = `/api/informs/rejected`;
+
+    const newFilters = filters?.slice() || [];
+
+    if (newFilters.length > 0) {
+      const queryParams = newFilters
+        .map(
+          (filter) =>
+            `${encodeURIComponent(filter?.label)}=${encodeURIComponent(
+              filter.value ?? ""
+            )}`
+        )
+        .join("&");
+      url = `${url}?${queryParams}`;
+    }
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: Failed api call, Status: ${response.status}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data: any[] = await response.json();
+
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+}
 
 export const createMessage = async (data: any, status: string) => {
   const payload = JSON.stringify({ ...data, status });
