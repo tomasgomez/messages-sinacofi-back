@@ -44,6 +44,8 @@ export default function EnhancedTable(props: {
   defaultRowsPerPage?: number;
   footerComponent?: React.ReactNode;
   emptyDataComponent?: React.ReactNode;
+  rowHeight?: number;
+  loadingColums?: boolean;
 }) {
   const {
     rows = [] as Message[],
@@ -64,6 +66,8 @@ export default function EnhancedTable(props: {
     footerComponent = null,
     emptyDataComponent = null,
     highlightRowDisabled = false,
+    rowHeight = 57,
+    loadingColums = false,
   } = props || {};
 
   const [order, setOrder] = React.useState<Order>(defaultOrder);
@@ -86,7 +90,7 @@ export default function EnhancedTable(props: {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: KeyOfData | string,
+    property: KeyOfData | string
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -183,69 +187,81 @@ export default function EnhancedTable(props: {
       {tableTitle}
       <TableContainer sx={{ maxHeight: maxHeight, ...style }}>
         <Table aria-labelledby="tableTitle" size="medium" stickyHeader>
-          <TableHeader
-            withRadioButton={showColumnToRadioButton()}
-            withCheckboxAll={withCheckbox}
-            numSelected={selected?.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={handleSelectAllClick}
-            onRequestSort={handleRequestSort}
-            rowCount={rows?.length}
-            columns={columns}
-            isExpansible={isExpansible}
-          />
-          <TableBody>
-            {loading ? (
-              <TableContentLoader loadingMessage="Cargando Registros..." minHeight={(maxHeight as number) - 57
-                 - 32 - 1} />
-            ) : (
-              visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id as number);
-                const labelId = `enhanced-table-checkbox-${index}`;
-                return (
-                  <TableContentRows
-                    key={row.id}
-                    withCheckbox={withCheckbox}
-                    withRadioButton={shouldShowRadioButton(
-                      withRadioButton,
-                      row
-                    )}
-                    showColumnToRadioButton={showColumnToRadioButton()}
-                    row={row}
-                    labelId={labelId}
-                    isItemSelected={isItemSelected}
-                    selectedRadioButton={selectedRadioButton}
-                    handleClick={handleClick}
-                    handleRadioClick={handleRadioClick}
-                    columns={columns}
-                    highlightLastRow={highlightLastRow}
-                    isLastRow={!index}
-                    isExpansible={isExpansible}
-                    rowOptions={rowOptions}
-                    highlightRowDisabled={highlightRowDisabled}
+          {loading && loadingColums ? (
+            <TableContentLoader
+              loadingMessage="Cargando Registros..."
+              minHeight={(maxHeight as number) - rowHeight}
+            />
+          ) : (
+            <>
+              <TableHeader
+                withRadioButton={showColumnToRadioButton()}
+                withCheckboxAll={withCheckbox}
+                numSelected={selected?.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={rows?.length}
+                columns={columns}
+                isExpansible={isExpansible}
+              />
+              <TableBody>
+                {loading ? (
+                  <TableContentLoader
+                    loadingMessage="Cargando Registros..."
+                    minHeight={(maxHeight as number) - rowHeight - 32 - 1}
                   />
-                );
-              })
-            )}
-            {!loading &&
-              emptyRows > 0 &&
-              (visibleRows.length === 0 ? (
-                <TableContentNoDataBasic
-                  height={Math.min(
-                    // 57 => rows height, emptyRows => number of empty rows, 32 => padding (16 * 2)
-                    57 * emptyRows - 32,
-                    // 57 => header height, 32 => padding (16 * 2), 1 => border line
-                    (maxHeight as number) - 57 - 32 - 1
-                  )}
-                  component={emptyDataComponent}
-                />
-              ) : (
-                <TableRow style={{ height: 57 * emptyRows }}>
-                  <StyledTabCell colSpan={11} />
-                </TableRow>
-              ))}
-          </TableBody>
+                ) : (
+                  visibleRows.map((row, index) => {
+                    const isItemSelected = isSelected(row.id as number);
+                    const labelId = `enhanced-table-checkbox-${index}`;
+                    return (
+                      <TableContentRows
+                        rowHeight={rowHeight}
+                        key={row.id}
+                        withCheckbox={withCheckbox}
+                        withRadioButton={shouldShowRadioButton(
+                          withRadioButton,
+                          row
+                        )}
+                        showColumnToRadioButton={showColumnToRadioButton()}
+                        row={row}
+                        labelId={labelId}
+                        isItemSelected={isItemSelected}
+                        selectedRadioButton={selectedRadioButton}
+                        handleClick={handleClick}
+                        handleRadioClick={handleRadioClick}
+                        columns={columns}
+                        highlightLastRow={highlightLastRow}
+                        isLastRow={!index}
+                        isExpansible={isExpansible}
+                        rowOptions={rowOptions}
+                        highlightRowDisabled={highlightRowDisabled}
+                      />
+                    );
+                  })
+                )}
+                {!loading &&
+                  emptyRows > 0 &&
+                  (visibleRows.length === 0 ? (
+                    <TableContentNoDataBasic
+                      height={Math.min(
+                        // 57 => rows height, emptyRows => number of empty rows, 32 => padding (16 * 2)
+                        rowHeight * emptyRows - 32,
+                        // 57 => header height, 32 => padding (16 * 2), 1 => border line
+                        (maxHeight as number) - rowHeight - 32 - 1
+                      )}
+                      component={emptyDataComponent}
+                    />
+                  ) : (
+                    <TableRow style={{ height: rowHeight * emptyRows }}>
+                      <StyledTabCell colSpan={11} />
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </>
+          )}
         </Table>
       </TableContainer>
       <div

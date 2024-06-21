@@ -44,6 +44,7 @@ type CustomCellType = {
   highlightRow?: boolean;
   highlightRowRejected?: boolean;
   withBorderLeft?: boolean;
+  rowHeight: number;
 };
 
 const CustomCell = ({
@@ -54,6 +55,7 @@ const CustomCell = ({
   highlightRow = false,
   highlightRowRejected,
   withBorderLeft,
+  rowHeight,
 }: CustomCellType) => {
   return (
     <StyledTabCell
@@ -62,7 +64,7 @@ const CustomCell = ({
       highlightRowRejected={highlightRowRejected}
       withBorderLeft={withBorderLeft}
       scope="row"
-      style={rowOptions?.style}
+      style={{ height: rowHeight, ...rowOptions?.style }}
       align={rowOptions?.align}
     >
       {Component ? <Component value={value} row={row} /> : value}
@@ -87,6 +89,7 @@ export function TableContentRows(props: TableProps) {
     rowOptions = {} as RowOptions,
     selectedRadioButton = null,
     highlightRowDisabled = false,
+    rowHeight = 57,
   } = props || {};
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -137,6 +140,7 @@ export function TableContentRows(props: TableProps) {
         {/* ///////////////////////  Rows /////////////////////// */}
         {columns.map((column: any, idx: number) => (
           <CustomCell
+            rowHeight={rowHeight}
             key={`row-${column?.id}-${idx}`}
             value={row[column?.id as keyof Message] || "-"}
             row={row}
