@@ -116,20 +116,20 @@ export const formatCardData = (
       lastMessage: sortedMessages[sortedMessages?.length - 1] || {},
     };
 
-    const newMessaje = sortedMessages.map((message) => {
-      return {
-        ...message,
-        actions: getActions(
-          message?.messageCode || "",
-          message?.status || "",
-          elem?.status || ""
-        ),
-      };
-    });
+    // const newMessaje = sortedMessages.map((message) => {
+    //   return {
+    //     ...message,
+    //     actions: getActions(
+    //       message?.messageCode || "",
+    //       message?.status || "",
+    //       elem?.status || ""
+    //     ),
+    //   };
+    // });
     return {
       codeData,
       infoData,
-      messages: newMessaje,
+      messages: sortedMessages,
       buttonDisabled,
       modalTrackingData,
     };
@@ -194,7 +194,7 @@ export const formatSearchData = (
 
     const { OSN, receivedDate, status: status670 } = mostRecent670 || {};
     const { status: historyStatus = "", date: dateTime } = lastHistory || {};
-    
+
     let dateHistory = "";
 
     if (dateTime) {
