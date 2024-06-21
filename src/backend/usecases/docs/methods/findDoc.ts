@@ -18,6 +18,10 @@ export async function findDoc(doc: Documents): Promise <Documents | Error> {
         doc = newDoc
     }
 
+    if (doc.content){
+        return doc;
+    }
+
     // check if the url is missing
     if (!doc.url || !doc.id) {
         return new Error('Url is required');

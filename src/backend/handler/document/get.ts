@@ -19,7 +19,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >){
 
         /* If the message is not found, return a 204 error */
         if (!document || document instanceof Error) {
-          res.status(204).json([]);
+          res.status(204).json({});
           return;
         }
 
