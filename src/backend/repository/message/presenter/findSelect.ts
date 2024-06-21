@@ -1,6 +1,3 @@
-import {
-    FilterMessage
-} from '@/backend/entities/message/filter';
 
 function findSelect(parameters: boolean=false, documents:boolean=false): any {
     const select: any = {

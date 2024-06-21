@@ -11,6 +11,7 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
   let preparedData = messages.map((message) => {
       let status = '';
 
+      console.log('actions', message.actions)
       
       /* If the filter has a status then filter the messages statuses */
       if (filter.status && filter.status.length > 0) {
@@ -24,7 +25,6 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
       }
       
       let statusFilered = message.status;
-      console.log('messageCode', message.messageCode, 'status', statusFilered)
 
       if (message670.length > 0 && (filter.origin?.length > 0 || filter.institutionCode?.length > 0)){
 
@@ -52,14 +52,13 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
           let actions = []
           if (message.messageCode != MessageTypes.DATOS_PARA_EL_PAGO_AH) {
             actions.push(MessageActions.SHOW_DETAIL)
+          } else {
+            actions.push(MessageActions.PRINT)
           }
 
           message.actions = actions.join(',')
         }
       }
-
-      console.log('statusFilered', statusFilered)
-      console.log('-------------------')
 
       // Sort the statuses by id and get the last one
       status = statusFilered
