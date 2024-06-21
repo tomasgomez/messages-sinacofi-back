@@ -53,8 +53,8 @@ const documentCM: Columns = {
   align: Alignment.CENTER,
   sortable: false,
   render: ({ row }: { row: any }) => {
-    const { documentGP } = row || {};
-    return <DocumentAction document={documentGP} />;
+    const { documentCM } = row || {};
+    return <DocumentAction document={documentCM} />;
   },
 };
 
