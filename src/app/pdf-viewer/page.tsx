@@ -43,16 +43,27 @@ const PDFScreenView = () => {
         try {
           const dataDocument = await getDocument(id as string);
           // const dataDocument = mockDocument;
-          if (
-            dataDocument.length === 0 ||
-            dataDocument[0].document === undefined
-          ) {
+          console.log(dataDocument);
+          if (!dataDocument) {
             throw new Error("El documento no tiene contenido");
           }
+
+          if (!dataDocument.url && !dataDocument.content) {
+            throw new Error("El documento no tiene contenido");
+          }
+
           setPdfName(dataDocument?.documentName || "");
-          const blob = base64ToBlob(dataDocument?.document || "");
-          const url = URL.createObjectURL(blob);
-          setPdfUrl(url);
+
+          if (dataDocument.url) {
+            setPdfUrl(dataDocument[0].url);
+          }
+
+          if (!dataDocument.url && dataDocument.content) {
+            const blob = base64ToBlob(dataDocument?.content || "");
+            const url = URL.createObjectURL(blob);
+            setPdfUrl(url);
+          }
+
           setIsLoading(false);
         } catch (error) {
           setIsLoading(false);
