@@ -30,6 +30,34 @@ export const getMessageDetails = async (messageId: number | string) => {
     res.json()
   );
 };
+
+export const getDocument = async (documentId: string) => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (documentId) {
+      queryParams.append("id", documentId);
+    }
+
+    const url = `/api/documents?${queryParams.toString()}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data = await response?.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch message details:", error);
+    throw error;
+  }
+};
+
 export const createMessage = async (data: any, status: string) => {
   const payload = JSON.stringify({ ...data, status });
   return fetch(`/api/message`, {
@@ -56,7 +84,9 @@ export const signMessage = async (
     });
 
     if (!response.ok) {
-      let err = new Error(`Error: ${response.status} ${response.statusText}`) as any;
+      let err = new Error(
+        `Error: ${response.status} ${response.statusText}`
+      ) as any;
       err.status = response.status;
       throw err;
     }
@@ -122,7 +152,6 @@ export const getMessage = async (params: {
   }
 };
 
-
 export const validatePassword = async (password: string) => {
   try {
     const response = await fetch(`/api/message/${password}`, {
@@ -134,7 +163,9 @@ export const validatePassword = async (password: string) => {
     });
 
     if (!response.ok) {
-      let err = new Error(`Error: ${response.status} ${response.statusText}`) as any;
+      let err = new Error(
+        `Error: ${response.status} ${response.statusText}`
+      ) as any;
       err.status = response.status;
       throw err;
     }

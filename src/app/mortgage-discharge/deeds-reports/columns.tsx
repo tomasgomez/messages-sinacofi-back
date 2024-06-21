@@ -6,10 +6,10 @@ import {
 import Image from "next/image";
 
 const DocumentAction = ({ document }: { document: any }) => {
-  const { documentName, documentSize, content } = document;
+  const { id } = document;
 
   const handleActionPrint = async () => {
-    window.open(`/pdf-viewer?id=${encodeURIComponent("")}`, "_blank");
+    window.open(`/pdf-viewer?id=${encodeURIComponent(id)}`, "_blank");
   };
 
   return (
