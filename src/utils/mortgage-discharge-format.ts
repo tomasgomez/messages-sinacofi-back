@@ -51,16 +51,19 @@ const formatModalInfoHeader = (
   return dataHeader;
 };
 
-const SortAndGetLast670 = (messages: Message[]) => {
+const SortAndGetLastMessage = (
+  messages: Message[],
+  filterMessageCode: string
+) => {
   let sortedMessages = sortMessagesOldToNew(messages);
-  const ListMessages670 = messages.filter(
-    (message) => message?.messageCode === "670"
+  const ListMessages = messages.filter(
+    (message) => message?.messageCode === filterMessageCode
   );
 
   // The order of the messages is oldest to newest, (1,2,3,4) with respect to creation identifiers
-  const mostRecent670 = ListMessages670[ListMessages670.length - 1];
+  const mostRecentMessage = ListMessages[ListMessages.length - 1];
 
-  return { sortedMessages, mostRecent670 };
+  return { sortedMessages, mostRecentMessage };
 };
 
 export const formatCardData = (
@@ -69,10 +72,10 @@ export const formatCardData = (
   if (!data) return [];
 
   const formattedData = data?.map((elem) => {
-    let { messages: unSortedMessages = [], status: cukStatus} = elem;
+    let { messages: unSortedMessages = [], status: cukStatus } = elem;
 
-    const { sortedMessages, mostRecent670 } =
-      SortAndGetLast670(unSortedMessages);
+    const { sortedMessages, mostRecentMessage: mostRecent670 } =
+      SortAndGetLastMessage(unSortedMessages, "670");
 
     const buttonDisabled = mostRecent670?.status === "01";
 
@@ -151,10 +154,33 @@ export const formatDeedsReportsData = (
       ownerDni = "",
     } = elem || {};
 
-    const { mostRecent670 } = SortAndGetLast670(unSortedMessages);
+    const { mostRecentMessage: mostRecent670 } = SortAndGetLastMessage(
+      unSortedMessages,
+      "670"
+    );
+    const { mostRecentMessage: mostRecent672 } = SortAndGetLastMessage(
+      unSortedMessages,
+      "672"
+    );
 
-    const { creationDate, creationTime, NSE, messageCode, documents } =
-      mostRecent670 || {};
+    const { documents: documents672 } = mostRecent672 || {};
+    const { creationDate, creationTime, documents } = mostRecent670 || {};
+
+    // const documentGP = documents?.find((doc) => {
+    //   // console.log(doc.documentName, "docGP");
+    //   return doc?.documentName?.startswith("GP-");
+    // });
+
+    // const documentCM = documents?.find((doc) => {
+    //   // console.log(doc, "docCM");
+    //   return doc?.documentName?.startswith("CM-");
+    // });
+
+    // const documentR = documents672?.find((doc) => {
+    //   // console.log(doc, "docR");
+
+    //   return doc?.documentName?.startswith("R-");
+    // });
 
     return {
       cukCode,
@@ -163,9 +189,9 @@ export const formatDeedsReportsData = (
       ownerDni,
       creationDate,
       creationTime,
-      NSE,
-      messageCode,
-      documents,
+      documentGP: undefined,
+      documentCM: undefined,
+      documentR: undefined,
     };
   });
 
@@ -185,7 +211,10 @@ export const formatSearchData = (
       id = "",
     } = elem || {};
 
-    const { mostRecent670 } = SortAndGetLast670(unSortedMessages);
+    const { mostRecentMessage: mostRecent670 } = SortAndGetLastMessage(
+      unSortedMessages,
+      "670"
+    );
 
     const sorttedHistory = sortHistoryList(history);
 

@@ -75,7 +75,12 @@ const AddFileModal = ({
       const selectedFile = event.target.files[0];
       setTempFile(selectedFile);
       const base64 = await blobToBase64(selectedFile);
-      const document = { content: base64, documentName: selectedFile.name };
+      const document = {
+        content: base64,
+        documentName: isRejected
+          ? "R-" + selectedFile.name
+          : fileOrder[step].type + "-" + selectedFile.name,
+      };
       if (step === 0) {
         setCmFile(document);
       } else {

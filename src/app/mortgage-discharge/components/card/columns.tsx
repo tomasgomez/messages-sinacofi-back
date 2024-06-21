@@ -114,7 +114,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
               disabled={checkDisabledSent()}
               onClick={() =>
                 router.push(
-                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}`
+                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=sent`
                 )
               }
             >
@@ -169,7 +169,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&action=edit`
             )
           }
         >
@@ -185,7 +185,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&action=duplicate`
             )
           }
         >
