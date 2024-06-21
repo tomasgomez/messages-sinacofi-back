@@ -37,7 +37,6 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
     const lastdate = formatBCChDate(currentDate);
     const initDate = formatBCChDate(pastDays);
     let url: string = baseUrl + "?user="+ user +"&pass="+ pass + "&firstdate=" + initDate + "&lastdate=" + lastdate + "&timeseries=" + serie
-
     let response = await axios.get(url);
     /* Check if the response status is not 200 */
     if (response.status !== 200 || response.data.length == 0) {
