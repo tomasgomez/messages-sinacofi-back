@@ -259,11 +259,10 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // define include
     let include: Prisma.CUKInclude = { 
         messages: { 
-            select: findSelect(false, true),
+            select: findSelect(filter.include?.parameters, filter.include?.parameters),
         }, 
         parameters: {
             where: {
-                // CHECK, cuando se filtra por institutionDestination, no esta tomando los otros mensajes
                 messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO, 
                 name: {
                         in: [
@@ -276,6 +275,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
                             'issuedDate',
                             'channel',
                             'bank',
+                            'notary',
                             'region',
                             'buyerDni',
                             'buyer',
@@ -284,6 +284,12 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
                             'borrowerDni',
                             'borrower',
                             'beneficiaryBank',
+                            'repertoireNumber',
+                            'repertoireDate',
+                            'sellerDNI',
+                            'borrowerDni',
+                            'rejectionReason',
+                            'observations',
                         ]
                     }
             },
