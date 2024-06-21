@@ -69,7 +69,7 @@ export const formatCardData = (
   if (!data) return [];
 
   const formattedData = data?.map((elem) => {
-    let { messages: unSortedMessages = [] } = elem;
+    let { messages: unSortedMessages = [], status: cukStatus} = elem;
 
     const { sortedMessages, mostRecent670 } =
       SortAndGetLast670(unSortedMessages);
@@ -90,7 +90,8 @@ export const formatCardData = (
     const codeData = {
       cukCode: elem?.cukCode || "",
       foreclosureDate: elem?.creationDate?.split(" ")[0] || "",
-      cukStatus: lastMessageStatusWithStatus,
+      lasMessageStatus: lastMessageStatusWithStatus,
+      cukStatus: cukStatus || "",
       lastMessageCode: lastMessageCodeWithStatus,
     };
 

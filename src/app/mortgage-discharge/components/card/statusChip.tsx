@@ -3,14 +3,18 @@ import { StyledChip } from "./styles";
 import LinearProgress from "@mui/material/LinearProgress";
 import { Box } from "@mui/material";
 
-const getChipText = (messageCode: string, status: string) => {
+const getChipText = (
+  messageCode: string,
+  status: string,
+  cukStatus: string
+) => {
   if (messageCode === "679" && status !== "01") {
     return "Alzamiento Hipotecario Completado";
   }
   if (messageCode === "672" && status !== "01") {
     return "Alzamiento Hipotecario Rechazado";
   }
-  if (messageCode === "673" && status !== "01") {
+  if (messageCode === "673" && status !== "01" && cukStatus === "XXX") {
     return "Cliente en Normalización";
   }
   if (status === "01") {
@@ -23,7 +27,11 @@ const getChipText = (messageCode: string, status: string) => {
     return "Alzamiento Hipotecario Recibido";
   }
 };
-const getChipColor = (messageCode: string, status: string) => {
+const getChipColor = (
+  messageCode: string,
+  status: string,
+  cukStatus: string
+) => {
   if (messageCode === "679" && status !== "01") {
     return "#00BC70";
   }
@@ -31,7 +39,7 @@ const getChipColor = (messageCode: string, status: string) => {
     return "#E23232";
     // #FCEBEB
   }
-  if (messageCode === "673" && status !== "01") {
+  if (messageCode === "673" && status !== "01" && cukStatus === "XXX") {
     return "#FFC600";
     //#FFF9E6 backgorun
   }
@@ -45,14 +53,18 @@ const getChipColor = (messageCode: string, status: string) => {
     return "#0C2093";
   }
 };
-const getChipBackgroundColor = (messageCode: string, status: string) => {
+const getChipBackgroundColor = (
+  messageCode: string,
+  status: string,
+  cukStatus: string
+) => {
   if (messageCode === "679" && status !== "01") {
     return "#e4f9f1";
   }
   if (messageCode === "672" && status !== "01") {
     return "#FCEBEB";
   }
-  if (messageCode === "673" && status !== "01") {
+  if (messageCode === "673" && status !== "01" && cukStatus === "XXX") {
     return "#FFF9E6";
   }
   if (status === "01") {
@@ -69,9 +81,11 @@ const getChipBackgroundColor = (messageCode: string, status: string) => {
 const StatusChip = ({
   status = "",
   messageCode = "",
+  cukStatus = "",
 }: {
   status: string;
   messageCode: string;
+  cukStatus: string;
 }) => {
   return !status && !messageCode ? (
     <Box
@@ -89,9 +103,9 @@ const StatusChip = ({
     </Box>
   ) : (
     <StyledChip
-      label={getChipText(messageCode, status)}
-      colorText={getChipColor(messageCode, status)}
-      background={getChipBackgroundColor(messageCode, status)}
+      label={getChipText(messageCode, status, cukStatus)}
+      colorText={getChipColor(messageCode, status, cukStatus)}
+      background={getChipBackgroundColor(messageCode, status, cukStatus)}
     />
   );
 };

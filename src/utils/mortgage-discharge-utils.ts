@@ -159,4 +159,5 @@ export const isMortgageDischargeMessage = (messageCode: string) =>
   ].includes(messageCode);
 
 export const withRadioButton = (row: Message) =>
-  ["678", "679"].includes(row?.messageCode) && row.status === "";
+  ["678", "679"].includes(row?.messageCode) &&
+  (row.status === "" || row.status === "01");
