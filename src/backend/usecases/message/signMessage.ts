@@ -24,6 +24,7 @@ import {
 } from "@/backend/entities/cuk/codes";
 
 import { storeDocs } from "./updateMessage";
+import { MessageActions } from "@/backend/entities/message/actions";
 
 
 // Create message function
@@ -86,6 +87,14 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
             let cuk = new CUK();
             cuk.cukCode = messageResponse.cukCode;
             cuk.status = ForeclosureStatus.INIT
+
+            let actions = [];
+
+            actions.push(MessageActions.SHOW_DETAIL);
+            actions.push(MessageActions.EDIT);
+            actions.push(MessageActions.DELETE);
+              
+            message.actions = actions.join(',');      
             
             updatedCuk = await updateForclosure(cukRepository, repository, cuk, message);
             

@@ -1,5 +1,6 @@
+import { MessageActions } from '@/backend/entities/message/actions';
 import { Message } from '@/backend/entities/message/message';
-import { getDescriptionByType } from '@/backend/entities/message/types';
+import { getDescriptionByType, MessageTypes } from '@/backend/entities/message/types';
 
 function prepareMessages(messages: Message[], filter: any = {detail:false}): any{
     
@@ -46,6 +47,15 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
           if (message.messageCode == '678' || message.messageCode == '679' && statusFilered?.length == 1) { //TODO: replace this with a better condition
             statusFilered = statusFilered?.filter(d => d.id != '01')
           }
+        }
+
+        if (isReceiver) {
+          let actions = []
+          if (message.messageCode != MessageTypes.DATOS_PARA_EL_PAGO_AH) {
+            actions.push(MessageActions.SHOW_DETAIL)
+          }
+
+          message.actions = actions.join(',')
         }
       }
 
