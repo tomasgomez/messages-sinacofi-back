@@ -1,7 +1,6 @@
 import { MessageActions } from '@/backend/entities/message/actions';
 import { Message } from '@/backend/entities/message/message';
 import { getDescriptionByType, MessageTypes } from '@/backend/entities/message/types';
-import { stat } from 'fs';
 
 function prepareMessages(messages: Message[], filter: any = {detail:false}): any{
     
@@ -12,18 +11,20 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
   let preparedData = messages.map((message) => {
       let status = '';
 
+      
       /* If the filter has a status then filter the messages statuses */
       if (filter.status && filter.status.length > 0) {
         messages = messages.map(message => {
-            const filteredStatuses = message.status?.filter(s => filter?.status?.includes(s.id));
-            return {
-                ...message,
-                status: filteredStatuses
-            };
+          const filteredStatuses = message.status?.filter(s => filter?.status?.includes(s.id));
+          return {
+            ...message,
+            status: filteredStatuses
+          };
         }).filter(message => message.status && message.status.length > 0);
       }
       
       let statusFilered = message.status;
+      console.log('messageCode', message.messageCode, 'status', statusFilered)
 
       if (message670.length > 0 && (filter.origin?.length > 0 || filter.institutionCode?.length > 0)){
 
@@ -45,9 +46,6 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
           statusFilered = statusFilered?.filter(d => d.id != '05' && d.id != '01')
         } else if (isReceiver && ReceiverMessageCodes.includes(message.messageCode!)) {
           statusFilered = statusFilered?.filter(d => d.id != '06')
-          if (message.messageCode == '678' || message.messageCode == '679' && statusFilered?.length == 1) { //TODO: replace this with a better condition
-            statusFilered = statusFilered?.filter(d => d.id != '01')
-          }
         }
 
         if (isReceiver) {
@@ -59,6 +57,9 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
           message.actions = actions.join(',')
         }
       }
+
+      console.log('statusFilered', statusFilered)
+      console.log('-------------------')
 
       // Sort the statuses by id and get the last one
       status = statusFilered
