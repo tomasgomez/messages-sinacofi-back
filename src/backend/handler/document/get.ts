@@ -4,11 +4,11 @@ import { Documents } from "@/backend/entities/message/interface";
 
 export async function get(req: NextApiRequest, res: NextApiResponse < any >){
     try {
-        console.log(req.query);
         const { id } = req.query
 
         if (!id){
             res.status(400).json({error: "id is required" })
+            return;
         }
 
         const request: Documents = {
@@ -25,6 +25,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >){
 
         /* Return the message */
         res.status(200).json(document);
+        return;
 
       } catch (error) {
         console.error('Error fetching message:', error);

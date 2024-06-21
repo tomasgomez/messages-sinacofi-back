@@ -8,19 +8,19 @@ import {
 import {
     errorHandler
 } from '@/backend/utils/errorHandler';
-import { documentsCalls } from '@/backend/handler/document/handler';
+import { indexCalls } from '@/backend/handler/index/handler';
 
 
 
 /*
-docuemtns
+index
 */
 export default async function handler(req: NextApiRequest, res: NextApiResponse < any > ) {
     try {
         const method = req.method;
         switch (method) {
             case Methods.GET:
-                await documentsCalls.GET(req, res);
+                await indexCalls.GET(req, res);
                 return;
             default:
                 res.status(405).end(`Method ${method} Not Allowed`);
