@@ -53,7 +53,7 @@ export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRe
             let message670: Message = {
                 messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO,
                 cukCode: cuk.cukCode,
-                actions: [MessageActions.SHOW_DETAIL, MessageActions.EDIT].join(','),
+                actions: [MessageActions.SHOW_DETAIL, MessageActions.DUPLICATE].join(','),
             }
 
             message670.id = fetchMessage[0].id;   

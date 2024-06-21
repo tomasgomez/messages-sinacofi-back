@@ -91,8 +91,6 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
             let actions = [];
 
             actions.push(MessageActions.SHOW_DETAIL);
-            actions.push(MessageActions.EDIT);
-            actions.push(MessageActions.DELETE);
               
             message.actions = actions.join(',');      
             

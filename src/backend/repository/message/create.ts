@@ -32,7 +32,7 @@ async function create(message: Message): Promise < Message | Error > {
         const messageData = createData(message);
 
         // Create a new message with associated parameters and documents
-        const newMessage = await prismaClient.message.create({
+        const updatedMessage = await prismaClient.message.create({
             data: {
                 ...messageData,
                 documents: {},
@@ -92,55 +92,55 @@ async function create(message: Message): Promise < Message | Error > {
         });
 
         // TODO: FIX please correlative
-        let correlativesParams: Parameter[] = [
-            {
-                name:"OSN",
-                label: "OSN",
-                priority: 0,
-                value: newMessage.OSN?.id.toString(),
-                cukCode: newMessage.cukCode ?? null,
-                messageCode: newMessage.messageCode
-            },
-            {
-                name:"TSN",
-                label: "TSN",
-                priority: 0,
-                value: newMessage.TSN?.id.toString(),
-                cukCode: newMessage.cukCode ?? null,
-                messageCode: newMessage.messageCode
-            },
-            {
-                name:"NSE",
-                label: "NSE",
-                priority: 0,
-                value: newMessage.NSE?.id.toString(),
-                cukCode: newMessage.cukCode ?? null,
-                messageCode: newMessage.messageCode
-            }
-        ]
+        // let correlativesParams: Parameter[] = [
+        //     {
+        //         name:"OSN",
+        //         label: "OSN",
+        //         priority: 19,
+        //         value: newMessage.OSN?.id.toString(),
+        //         cukCode: newMessage.cukCode ?? null,
+        //         messageCode: newMessage.messageCode
+        //     },
+        //     {
+        //         name:"TSN",
+        //         label: "TSN",
+        //         priority: 0,
+        //         value: newMessage.TSN?.id.toString(),
+        //         cukCode: newMessage.cukCode ?? null,
+        //         messageCode: newMessage.messageCode
+        //     },
+        //     {
+        //         name:"NSE",
+        //         label: "NSE",
+        //         priority: 0,
+        //         value: newMessage.NSE?.id.toString(),
+        //         cukCode: newMessage.cukCode ?? null,
+        //         messageCode: newMessage.messageCode
+        //     }
+        // ]
 
-        const updatedMessage = await prismaClient.message.update({
-            where: {
-              id: newMessage.id
-            },
-            data: {
-              parameters: {
-                createMany: {
-                  data: correlativesParams
-                }
-              }
-            },
-            include: {
-            //   parameters: true,
-                  TSN: true,
-                LSN: true,
-                OSN: true,
-                NSE: true,
-                NSR: true,
-                NSQ: true,
-                status: true,
-            }
-        });
+        // const updatedMessage = await prismaClient.message.update({
+        //     where: {
+        //       id: newMessage.id
+        //     },
+        //     data: {
+        //       parameters: {
+        //         createMany: {
+        //           data: correlativesParams
+        //         }
+        //       }
+        //     },
+        //     include: {
+        //     //   parameters: true,
+        //           TSN: true,
+        //         LSN: true,
+        //         OSN: true,
+        //         NSE: true,
+        //         NSR: true,
+        //         NSQ: true,
+        //         status: true,
+        //     }
+        // });
        
 
 

@@ -1,6 +1,7 @@
 import { MessageActions } from '@/backend/entities/message/actions';
 import { Message } from '@/backend/entities/message/message';
 import { getDescriptionByType, MessageTypes } from '@/backend/entities/message/types';
+import { stat } from 'fs';
 
 function prepareMessages(messages: Message[], filter: any = {detail:false}): any{
     
@@ -89,11 +90,11 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
         destinationArea: message?.destinationArea ?? '',
         receivedDate: message?.receivedDate ?? '',
         receivedTime: message?.receivedTime ?? '',
-        actions: message?.actions ?? '',
+        actions: message?.actions?.split(','),
         cukCode: message?.cukCode ?? '',
         status,
         documents,
-      }});
+      }}).filter(message => message.status != '' && message.status != '-');
   
       return preparedData
   }

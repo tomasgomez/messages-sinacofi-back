@@ -24,8 +24,6 @@ export async function handleMessage(repository: MessageRepository, cukRepository
             return await createMessage(repository, message);
         }
 
-        console.log('Message:', message.messageCode)
-
         /* CUK flow */
         let cuk = new CUK();
 

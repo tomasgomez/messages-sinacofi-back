@@ -33,6 +33,8 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
         
       message.actions = actions.join(',');
 
+      console.log('Message:', message)
+
       updateMessage(messageRepository, message);
 
       cuk.status = MessageStatus.ENVIADO;
@@ -53,7 +55,6 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
         message.actions = actions.join(',');
 
         cuk.status = '-'
-
 
         const createdCuk = await cukRepository.create(cuk);
         

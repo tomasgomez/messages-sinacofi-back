@@ -26,11 +26,6 @@ export type Parameter = {
 
 export function adaptParameters(message: Message, messageSchema: any): any {
     return message.parameters?.map((parameter: Parameter) => {
-        //TODO: borrar esto
-        if (parameter.name == 'messageCode') {
-            parameter.value = message.messageCode;
-        }
-
         parameter.displayValue = parameter.value;
 
         if (messageSchema.parameters === undefined || messageSchema.parameters.length === 0) {

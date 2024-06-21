@@ -5,6 +5,7 @@ export enum MessageActions {
     SHOW_DETAIL = "SHOW_DETAIL",
     CHECK_OPTIONS = "CHECK_OPTIONS",
     PRINT = "PRINT",
+    DUPLICATE = "DUPLICATE",
 }
 
 export function displayActions(actions: string): string[] {
