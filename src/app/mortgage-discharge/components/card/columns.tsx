@@ -118,8 +118,8 @@ const AccionesColumn = ({ row }: { row: any }) => {
                 )
               }
             >
-              <SendOutlinedIcon />
-            </IconButton>
+            <SendOutlinedIcon />
+          </IconButton>
           </span>
         </Tooltip>
       )}

@@ -3,10 +3,9 @@ export interface Filter {
   messageId ? : string[];
   origin ? : string[];
   destination ? : string[];
-
   count ? : string;
   offset ? : string;
-
   cuk ? : string;
+  action? : string;
 }
 

@@ -85,28 +85,17 @@ const CreateMessage = () => {
   const messageId = searchParams?.get("messageId") || "";
   const cukCode = searchParams?.get("cukCode") || "";
   const action = searchParams?.get("action") || "";
+
+  console.log(action);
   useEffect(() => {
-    setLoading(true);
-    if (action == 'sign' && messageCode == '670'){
-      getMessageSchema(messageCode, messageId, cukCode)
+    setLoading(true); 
+    if (action == ('sign') && messageCode == '670'){
+      getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
       .then((schema: any) => {
         setMessageSchema({
           ...schema,
           actions: { saveDraftDisabled: true, sendButtonDisabled: false },
-          parameters: schema?.parameters.map((parameter: any) =>(
-              parameter.id === "sign" || parameter.id === "senderSign"
-              ? {
-                  ...parameter,
-                  type: "password",
-                  // label: parameter.label
-                  required: true,
-                  disabled: false,
-                }
-              : {
-                  ...parameter,
-                  disabled: true,
-                }
-          )),
+          parameters: schema?.parameters
         });
       })
       .catch((error) => {
@@ -119,9 +108,8 @@ const CreateMessage = () => {
 
     }
     else if ((cloneId || messageId) && !cukCode) {
-      getMessageDetails(cloneId || messageId).then((data) => {
-        
-        getMessageSchema(messageCode, messageId)
+      getMessageDetails(cloneId || messageId).then((data) => {    
+        getMessageSchema(messageCode, messageId, action, institutionId)
           .then((schema: any) => {
             setMessageSchema({
               ...schema,
@@ -198,7 +186,7 @@ const CreateMessage = () => {
       
         });
     } else {
-      getMessageSchema(messageCode, messageId, cukCode)
+      getMessageSchema(messageCode, messageId, cukCode, action)
         .then((schema: any) => {
           setMessageSchema({
             ...schema,

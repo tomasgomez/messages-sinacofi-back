@@ -1,3 +1,4 @@
+import { ButtonSchema } from "@/backend/entities/schema/interface";
 import { MessageSchemaFront, Parameter, Validations } from "@/backend/entities/schema/messageSchema";
 
 // Function to adapt data to Schema type
@@ -11,6 +12,43 @@ export function adaptSchema(dataToAdapt: any, userData: any): MessageSchemaFront
         schema.name = dataToAdapt.name;
         schema.createdAt = dataToAdapt.createdAt;
         schema.updatedAt = dataToAdapt.updatedAt;
+    }
+    // check buttons and assign buttons && modals
+    if (dataToAdapt.allowedActions && dataToAdapt.allowedActions.length > 0){
+        // get the first value 
+        const actionAllowed = dataToAdapt.allowedActions[0].values;
+        // check if buttons exists
+        if (actionAllowed.buttons && actionAllowed.length > 0){
+            let buttons = actionAllowed.buttons.map((button: any) => {
+                return {
+                    name:button.name,
+                    disabled:button.disabled,
+                    action:button.action,
+                    text: button.text
+                }
+            });
+            schema.actions = schema.actions ?? {};
+            schema.actions.buttons = buttons;
+        }
+        // check if modal exists
+        if (actionAllowed.modal){
+            let modal = { name: actionAllowed.modal.name, type: actionAllowed.modal.type }
+            schema.actions = schema.actions ?? {};
+            schema.actions.modal = modal;
+        }
+    }
+    if (dataToAdapt.allowedActions && dataToAdapt.allowedActions[0] && dataToAdapt.allowedActions[0].values.buttons && dataToAdapt.allowedActions[0].values.buttons.length > 0){ 
+        let buttons = dataToAdapt.allowedActions[0].values.buttons.map((button: any) => {
+            return {
+                name:button.name,
+                disabled:button.disabled,
+                action:button.action,
+                text: button.text
+            }
+        })
+
+        schema.actions = schema.actions ?? {};
+        schema.actions.buttons = buttons;
     }
     
     const newParameters: Parameter[] = extractParameters(dataToAdapt, userData);
@@ -67,6 +105,7 @@ function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiver
 
 // Adapt parameter object
 function adaptParameter(parameter: any, userData: any): Parameter {
+    console.log(parameter);
     let { name, messageCode, label, type, placeholder, priority, rules, optionValues, row, column, defaultValue } = parameter;
     const multiple = optionValues && optionValues.length > 0;
     const validations: Validations = extractValidations(rules);
