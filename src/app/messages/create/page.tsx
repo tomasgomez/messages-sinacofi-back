@@ -86,9 +86,9 @@ const CreateMessage = () => {
   const cukCode = searchParams?.get("cukCode") || "";
   const action = searchParams?.get("action") || "";
   useEffect(() => {
-    setLoading(true);
+    setLoading(true); 
     if (action == 'sign' && messageCode == '670'){
-      getMessageSchema(messageCode, messageId, cukCode)
+      getMessageSchema(messageCode, messageId, cukCode, action)
       .then((schema: any) => {
         setMessageSchema({
           ...schema,
@@ -119,8 +119,7 @@ const CreateMessage = () => {
 
     }
     else if ((cloneId || messageId) && !cukCode) {
-      getMessageDetails(cloneId || messageId).then((data) => {
-        
+      getMessageDetails(cloneId || messageId).then((data) => {    
         getMessageSchema(messageCode, messageId)
           .then((schema: any) => {
             setMessageSchema({

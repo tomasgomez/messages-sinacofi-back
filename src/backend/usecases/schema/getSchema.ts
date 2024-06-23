@@ -1,8 +1,6 @@
 import {
-  MessageRepository
-} from '@/backend/repository/messageRepository';
-import {
-  MessageSchema
+  MessageSchema,
+  Parameter
 } from '@/backend/entities/schema/messageSchema';
 import {
   getEnvVariable
@@ -11,26 +9,12 @@ import {
   envVariables
 } from '@/backend/utils/variables';
 import {
-  get
-} from "@/backend/adapters/rule/get";
-import {
-  FilterMessage
-} from '@/backend/entities/message/filter';
-import {
-  PrismaMessageAdapter as PrismaAdapter
-} from '../../repository/message/message';
-import {
-  Message
-} from '@/backend/entities/message/message';
-import {
   Filter
 } from '@/backend/entities/schema/filter';
-import { Parameter } from '@/backend/entities/message/parameter';
 import { parameterUsecase } from '../parameter/usecases';
 import { post } from '@/backend/adapters/rule/post';
 import { User } from '@/backend/entities/user/user';
 
-const messageRepository: MessageRepository = new PrismaAdapter();
 
 // Get message function
 export async function getSchema(filter: Filter, user: User): Promise < MessageSchema | Error > {
@@ -46,110 +30,29 @@ export async function getSchema(filter: Filter, user: User): Promise < MessageSc
       return path;
     }
 
-    if (filter.messageCode)
-      path = `${path}/${filter.messageCode}`;
+    path = path+"/"+filter.messageCode
 
-    // let schemas = await get(url, path, {}, {})
-
-    console.log(filter);
-
+    let parameters: any[] = [];
     // check if exists cukCode
     if (filter.cuk && filter.cuk != ''){
-      let parameters = await parameterUsecase.getParameters({cukCode: [filter.cuk]})
-      let schemas = await post(url, path, {}, {
-        user: user,
-      parameters
-      })
-      return schemas
+      const parametersResponse = await parameterUsecase.getParameters({cukCode: [filter.cuk]});
+      if (!(parametersResponse instanceof Error)){
+        parameters = parametersResponse;
+      }
     }
-
+    console.log(filter.action)
     let schemas = await post(url, path, {}, {
       user: user,
-    parameters: []
-    })
+      parameters,
+      actions: [filter.action]
+    });
+
+
 
     return schemas;
 
-    // if (!filter.messageCode?.includes('670') && filter.messageId && filter.messageId.length>0) {
-
-    //   let filterMessage: FilterMessage = {
-    //       id: filter.messageId,
-    //       detail: false,
-    //     };
-
-    //   let message = await messageRepository.find(filterMessage);
-
-    //   if (message instanceof Error) {
-    //     return message;
-    //   }
-
-    //   if (!message || message.length === 0) {
-    //     return schemas;
-    //   }
-
-    //   // get message 670
-    //   const cuk = message.map(msg => msg.cukCode ?? '').filter(c => c != '');
-      
-    //   filterMessage = {
-    //     cukCode: cuk,
-    //     messageCode: ["670"],
-    //     detail: true
-    //   }
-
-    //   let message670 = await messageRepository.find(filterMessage);
-
-    //   if (message670 instanceof Error) {
-    //     return message670;
-    //   }
-
-    //   if (!message670 || message.length === 0) {
-    //     return schemas;
-    //   }
-
-
-    //   schemas.parameters = adaptSchema(schemas.parameters, message670[0]);
-    // }
- 
-    return schemas;
   } catch (error: any) {
     console.error('Error updating message:', error);
     return error;
   }
-}
-
-function adaptSchema(parameters: Parameter[], message: Message): Parameter[] {
-  return parameters.map((schema: any) => {
-
-    // split schema name with _ and get the first one
-    let name = schema.name.split('_')[0];
-
-    let params = message.parameters?.find((param: any) => param.name === name);
-    
-    schema.value = params?.value;
-
-    if (params && params.name != 'messageDescription' && params.name != 'messageCode' && params.type != "label") {
-      let value = params.value;
-      schema.defaultValue = value;
-    }
-
-    if (schema && schema.type == 'select') {
-      let selected = schema.optionValues.find((option: any) => option.label === params?.value);
-      if (selected) {
-        schema.defaultValue = selected.value;
-      }
-    }
-
-    if (schema && schema.name == 'CUK') {
-      schema.defaultValue = message.cukCode;
-      schema.value = message.cukCode;
-    }
-
-    if (schema && schema.defaultValue == '') {
-      let rules = schema.rules.filter((rule: any) => rule.name !== 'disabled');
-      schema.rules = rules;
-    }
-
-    return schema;
-
-  });
 }

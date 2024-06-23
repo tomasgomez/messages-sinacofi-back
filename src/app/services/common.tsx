@@ -18,10 +18,11 @@ export const getMessageDescriptions = async () => {
 export const getMessageSchema = async (
   messageCode: string,
   messageId?: string,
-  cukCode?: string
+  cukCode?: string,
+  action?: string
 ) => {
   return fetch(
-    `/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&cukCode=${cukCode}`
+    `/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&cukCode=${cukCode}&action=${action}`
   ).then((response: any) => response.json());
 };
 

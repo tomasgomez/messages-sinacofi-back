@@ -18,7 +18,7 @@ export enum series {
 export type Index  = {
     value: string,
     type: IndexType,
-    lastDay: string
+    lastDate: string
 }
 
 export type Observation = {
