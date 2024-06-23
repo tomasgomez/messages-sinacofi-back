@@ -15,14 +15,33 @@ import { handle677 } from '@/backend/usecases/foreclosure/foreclosureMessages/ha
 import { handle678 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle678';
 import { handle679 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle679';
 import { CUKRepository } from "@/backend/repository/cukRepository";
-
+import { post } from "@/backend/adapters/rule/post";
+import { getEnvVariable } from '@/backend/utils/functions';
+import { envVariables } from '@/backend/utils/variables';
+import { User } from "@/backend/entities/user/user";
+  
 // Create message function
-export async function handleMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, ): Promise < Message | Error > {
+export async function handleMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, user: User): Promise < Message | Error > {
     try {
         /* Normal flow */
         if (!message.messageCode || !isForeclosureMessageCode(message?.messageCode)) {
             return await createMessage(repository, message);
         }
+        
+        let ruleUrl = getEnvVariable(envVariables.RULE_CLIENT_URL);
+        if (ruleUrl instanceof Error) {
+            return ruleUrl;
+        }
+
+        let validateMessagepath = getEnvVariable(envVariables.VALIDATE_MESSAGE);
+        if (validateMessagepath instanceof Error) {
+            return validateMessagepath;
+        }
+
+        let messageValidated = await post(ruleUrl, validateMessagepath, {}, {
+            user: user,
+            message,
+        })
 
         /* CUK flow */
         let cuk = new CUK();

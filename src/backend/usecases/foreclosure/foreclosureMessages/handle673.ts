@@ -4,15 +4,10 @@ import { MessageRepository } from '@/backend/repository/messageRepository';
 import { MessageStatus } from '@/backend/entities/message/status';
 import { updateLastMessage } from '@/backend/usecases/foreclosure/updateForeclosureLastMessage';
 import { CUK } from '@/backend/entities/cuk/cuk';
-import { MessageActions } from '@/backend/entities/message/actions';
 
 
 export async function handle673(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
-
-    let actions = []
-    actions.push(MessageActions.SHOW_DETAIL)
-    message.actions = actions.join(',')
 
     /* Update the last message */
     updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);

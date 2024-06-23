@@ -82,8 +82,6 @@ export async function update(message: Message): Promise<Message | Error> {
         
         // Update existing parameters
         for await (const parameter of toUpdate) {
-            console.log('Updating parameter:', parameter);
-            console.log('Message ID:', updatedMessage.id);
             await prismaClient.parameters.update({
                 where: {
                     messageId_name_priority: {

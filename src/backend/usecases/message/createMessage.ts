@@ -14,6 +14,8 @@ import { get } from "@/backend/adapters/rule/get";
 export async function createMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
     try {
 
+        console.log('Message actions: ', message.actions)
+
         if (!message.messageCode) {
             return new Error('Message code is required');
         }

@@ -1,7 +1,4 @@
 import {
-  MessageRepository
-} from '@/backend/repository/messageRepository';
-import {
   MessageSchema
 } from '@/backend/entities/schema/messageSchema';
 import {
@@ -10,15 +7,6 @@ import {
 import {
   envVariables
 } from '@/backend/utils/variables';
-import {
-  get
-} from "@/backend/adapters/rule/get";
-import {
-  FilterMessage
-} from '@/backend/entities/message/filter';
-import {
-  PrismaMessageAdapter as PrismaAdapter
-} from '../../repository/message/message';
 import {
   Message
 } from '@/backend/entities/message/message';
@@ -29,8 +17,6 @@ import { Parameter } from '@/backend/entities/message/parameter';
 import { parameterUsecase } from '../parameter/usecases';
 import { post } from '@/backend/adapters/rule/post';
 import { User } from '@/backend/entities/user/user';
-
-const messageRepository: MessageRepository = new PrismaAdapter();
 
 // Get message function
 export async function getSchema(filter: Filter, user: User): Promise < MessageSchema | Error > {

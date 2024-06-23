@@ -12,10 +12,6 @@ import { MessageActions } from '@/backend/entities/message/actions';
 export async function handle676(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
 
-    let actions = []
-    actions.push(MessageActions.PRINT)
-    message.actions = actions.join(',')
-
     /* Update the last message */
     updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
 

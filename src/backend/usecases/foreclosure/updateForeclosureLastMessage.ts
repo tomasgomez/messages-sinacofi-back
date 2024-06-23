@@ -84,6 +84,8 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
       }
     }
 
+    console.log("Message actions: ", newMessage.actions);
+
     let updated = await messageRepository.update(newMessage);
 
     if (updated instanceof Error) {

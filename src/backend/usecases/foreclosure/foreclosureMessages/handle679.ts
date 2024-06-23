@@ -14,12 +14,6 @@ import { MessageActions } from '@/backend/entities/message/actions';
 export async function handle679(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
 
-    let actions = []
-    actions.push(MessageActions.SHOW_DETAIL)
-    actions.push(MessageActions.CHECK_OPTIONS)
-    message.actions = actions.join(',')
-
-
     /* Find the last empty 678 message and delete it */
     let newMessage: FilterMessage = {
         detail: false

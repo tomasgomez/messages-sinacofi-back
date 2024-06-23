@@ -32,6 +32,7 @@ export async function updateMessage(repository: MessageRepository, message: Mess
         // Update the status of the message
         switch (status) {
             case MessageStatus.ENVIADO:
+                console.log("ENTRO EN EL UPDATE MESSAGE PARA ENVIAR")
                 if (message.setReceivedTime) {
                     message.setReceivedTime();
                 }
