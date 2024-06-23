@@ -105,7 +105,6 @@ function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiver
 
 // Adapt parameter object
 function adaptParameter(parameter: any, userData: any): Parameter {
-    console.log(parameter);
     let { name, messageCode, label, type, placeholder, priority, rules, optionValues, row, column, defaultValue } = parameter;
     const multiple = optionValues && optionValues.length > 0;
     const validations: Validations = extractValidations(rules);
