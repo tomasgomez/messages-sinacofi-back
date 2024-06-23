@@ -5,29 +5,39 @@ import { StyledPaper, StyledBox, StyledTableTitle } from "./styles";
 import NoContent from "../components/no-content";
 import DataTable from "@/app/component/inbox-table";
 import HeaderInforms from "@/app/mortgage-discharge/components/headers/header-informs";
-import { columnsInforms } from "./columns";
+import { columnsInformsAccepted, columnsInformsRejected } from "./columns";
 import { Button, Tab, Tabs } from "@mui/material";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
+import { getInformsAccepted, getInformsRejected } from "@/app/services/common";
 
 export default function SearchScreen() {
   const [filters, setFilters] = useState<Filter[]>([]);
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [selectedTab, setSelectedTab] = useState<number>(1);
+  const [columns, setColumns] = useState<any[]>(columnsInformsRejected);
 
   const { ErrorModal } = useModalManager();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = async (
+    event: React.SyntheticEvent,
+    newValue: number
+  ) => {
+    handleGetData(newValue);
     setSelectedTab(newValue);
   };
 
-  const handleGetData = async () => {
+  const handleGetData = async (tab: number) => {
     try {
       setLoading(true);
-      console.log("filters: ", filters);
-      // TODO: add api call
+      // console.log("filters: ", filters);
+      setColumns(tab ? columnsInformsRejected : columnsInformsAccepted);
+      const rowsData = tab
+        ? await getInformsRejected(filters)
+        : await getInformsAccepted(filters);
+      setData(rowsData);
       setLoading(false);
     } catch (error: any) {
       setData([]);
@@ -37,7 +47,7 @@ export default function SearchScreen() {
   };
 
   useEffect(() => {
-    handleGetData();
+    handleGetData(selectedTab);
   }, [filters]);
 
   const TableTitle = ({
@@ -87,16 +97,19 @@ export default function SearchScreen() {
         setFilters={setFilters}
       />
       <StyledBox>
-        <DataTable
+      <DataTable
           loading={loading}
-          maxHeight={350}
+          maxHeight={480}
           rows={data}
-          columns={columnsInforms}
+          columns={columns}
           tableTitle={
             <TableTitle selectedTab={selectedTab} handleChange={handleChange} />
           }
           emptyDataComponent={NoContent}
-          defaultRowsPerPage={10}
+          defaultRowsPerPage={7}
+          highlightRowDisabled
+          rowHeight={57}
+          loadingColums
         />
       </StyledBox>
     </StyledPaper>

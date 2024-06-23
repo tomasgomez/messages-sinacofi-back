@@ -8,9 +8,10 @@ import { ErrorModal } from "@/components/Modal/ErrorModal";
 import SuccessModal from "@/components/Modal/SuccessModal";
 import ConfirmModal from "@/components/Modal/ConfirmModal";
 import { MyContexLayout } from "../context";
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import ModalManagerProvider from "@/components/Modal/ModalManager";
 import { MessageExportProvider } from "../component/MessageExportProvider";
+import { getIndCurrencies } from "../services/common";
 
 export default function Layout({
   children,
@@ -19,7 +20,27 @@ export default function Layout({
 }) {
   const [selectedInstitution, setSelectedInsitution] = useState();
   const [currentInstitution, setCurrentInstitution] = useState();
+  const [currencies, setCurrencies] = useState({});
 
+  useEffect(() => {
+    getIndCurrencies("UF")
+    .then((currency: any) => {
+      console.log({ currency});
+      setCurrencies((prev) => ({...prev, [currency.type]: parseFloat(currency.value) }))
+    });
+  
+  getIndCurrencies("USD")
+    .then((currency: any) => {
+      console.log({ currency});
+      setCurrencies((prev) => ({...prev, [currency.type]: parseFloat(currency.value) }))
+    });
+  
+  getIndCurrencies("IPV")
+    .then((currency: any) => {
+      console.log({ currency});
+      setCurrencies((prev) => ({...prev, [currency.type]: parseFloat(currency.value) }))
+    });
+  }, [])
   return (
     <>
       <ModalManagerProvider>
@@ -31,6 +52,7 @@ export default function Layout({
                 setSelectedInsitution,
                 currentInstitution,
                 setCurrentInstitution,
+                currencies,
               }}
             >
               <AppBar />

@@ -10,6 +10,8 @@ import { createForeclosure } from './createForeclosure';
 import { CUK } from '../../entities/cuk/cuk';
 import { updateForclosure } from "./updateForeclosure";
 import { normalization } from "./normalization";
+import { getMessageForeclosureAccepted } from "./getForeclosureDetailAccepted";
+import { getMessageForeclosureRejected } from "./getForeclosureDetailRejected";
 
 // Message Detail usecases
 export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
@@ -20,6 +22,12 @@ export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
     // get message detail
     getMessageForeclosure = async (filter: Filter): Promise<CUK[] | Error> =>
         getMessageForeclosure(this.messageRepository, this.cukRepository, filter)
+
+    getMessageForeclosureAccepted = async (filter: Filter): Promise<CUK[] | Error> =>
+        getMessageForeclosureAccepted(this.messageRepository, this.cukRepository, filter)
+
+    getMessageForeclosureRejected = async (filter: Filter): Promise<CUK[] | Error> =>
+        getMessageForeclosureRejected(this.messageRepository, this.cukRepository, filter)
 
     // create foreclosure
     createForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 

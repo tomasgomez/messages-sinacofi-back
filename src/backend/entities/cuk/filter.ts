@@ -26,5 +26,9 @@ export interface Filter{
   status ? : string[];
   statusCategory ? : string[]; 
   notary ? : string[];
-  repertoireDate ? : string[]
+  repertoireDate ? : string[];
+  include?:{
+    documents?: boolean;
+    parameters?: boolean;
+  }
 }

@@ -166,21 +166,17 @@ export const formatDeedsReportsData = (
     const { documents: documents672 } = mostRecent672 || {};
     const { creationDate, creationTime, documents } = mostRecent670 || {};
 
-    // const documentGP = documents?.find((doc) => {
-    //   // console.log(doc.documentName, "docGP");
-    //   return doc?.documentName?.startswith("GP-");
-    // });
+    const documentGP = documents?.find((doc) => {
+      return doc?.documentName?.startsWith("GP-");
+    });
 
-    // const documentCM = documents?.find((doc) => {
-    //   // console.log(doc, "docCM");
-    //   return doc?.documentName?.startswith("CM-");
-    // });
+    const documentCM = documents?.find((doc) => {
+      return doc?.documentName?.startsWith("CM-");
+    });
 
-    // const documentR = documents672?.find((doc) => {
-    //   // console.log(doc, "docR");
-
-    //   return doc?.documentName?.startswith("R-");
-    // });
+    const documentR = documents672?.find((doc) => {
+      return doc?.documentName?.startsWith("R-");
+    });
 
     return {
       cukCode,
@@ -189,9 +185,9 @@ export const formatDeedsReportsData = (
       ownerDni,
       creationDate,
       creationTime,
-      documentGP: undefined,
-      documentCM: undefined,
-      documentR: undefined,
+      documentGP: documentGP,
+      documentCM: documentCM,
+      documentR: documentR,
     };
   });
 
