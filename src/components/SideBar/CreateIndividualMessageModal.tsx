@@ -56,7 +56,7 @@ const CreateIndividualMessageModal = ({ open, onClose } : { open: boolean; onClo
         <Button
           variant="contained"
           onClick={() => {
-            router.push(`/messages/create?messageCode=${messageCode}&institutionId=${selectedInstitution}`);
+            router.push(`/messages/create?messageCode=${messageCode}&institutionId=${selectedInstitution}&action=create`);
             onClose();
           }}
           disabled={!messageCode || !selectedInstitution}
