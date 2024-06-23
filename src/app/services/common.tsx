@@ -19,10 +19,12 @@ export const getMessageSchema = async (
   messageCode: string,
   messageId?: string,
   cukCode?: string,
-  action?: string
+  action?: string,
+  institutionId?: string
 ) => {
+  const destination = institutionId;
   return fetch(
-    `/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&cukCode=${cukCode}&action=${action}`
+    `/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&destination=${destination}&cukCode=${cukCode}&action=${action}`
   ).then((response: any) => response.json());
 };
 
@@ -263,3 +265,5 @@ export const validatePassword = async (password: string) => {
     throw error;
   }
 };
+
+

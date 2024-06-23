@@ -28,12 +28,9 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
   switch (message.statusCode) {
     case MessageStatus.ENVIADO: {
       actions.push(MessageActions.SHOW_DETAIL);
-      actions.push(MessageActions.EDIT);
-      actions.push(MessageActions.DELETE);
         
       message.actions = actions.join(',');
 
-      console.log('Message:', message)
 
       updateMessage(messageRepository, message);
 

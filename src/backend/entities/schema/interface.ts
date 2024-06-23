@@ -8,28 +8,30 @@ export interface IMessageSchema {
     createdAt?: Date;
     updatedAt?: Date;
     parameters?: any[];
-    actions?: SchemaAction
+    allowedActions?: SchemaAction
 }
 
 export type SchemaAction = {
-    buttons: ButtonSchema[],
+    buttons?: ButtonSchema[],
     modal?: ModalSchema
 }
 
-type ButtonSchema = {
-    name: string,
-    disabled: boolean,
-    action: ButtonAction
+export type ButtonSchema = {
+    text?: string,
+    name?: string,
+    disabled?: boolean,
+    action?: string
 }
 
-type ModalSchema = {
-    title: string,
-    body: string
+export type ModalSchema = {
+    title?: string,
+    body?: string,
+    name?: string,
+    type?: string
 }
 
 
-type ButtonAction = {
-    url: string,
-    method: Methods
-}
+
+
+
 

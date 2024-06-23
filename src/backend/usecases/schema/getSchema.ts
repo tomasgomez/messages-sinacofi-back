@@ -14,6 +14,7 @@ import {
 import { parameterUsecase } from '../parameter/usecases';
 import { post } from '@/backend/adapters/rule/post';
 import { User } from '@/backend/entities/user/user';
+import { PriorityHigh } from '@mui/icons-material';
 
 
 // Get message function
@@ -40,14 +41,16 @@ export async function getSchema(filter: Filter, user: User): Promise < MessageSc
         parameters = parametersResponse;
       }
     }
-    console.log(filter.action)
+    // detect if exist beneficiaryBank
+    const beneficiaryBank = parameters.filter(parameter => parameter.name == 'beneficiaryBank');
+    if (!beneficiaryBank){
+      parameters.push({"name": "beneficiaryBank", "messageCode": filter.messageCode, "priority": 0, "rules": [], value: filter.destination})
+    }
     let schemas = await post(url, path, {}, {
       user: user,
       parameters,
       actions: [filter.action]
     });
-
-
 
     return schemas;
 

@@ -9,7 +9,8 @@ export class MessageSchema implements IMessageSchema {
         public name: string,
         public createdAt: Date,
         public updatedAt: Date,
-        public parameters?: any[]
+        public parameters?: any[],
+        public allowedActions?: SchemaAction
     ) {}
 }
 export class MessageSchemaFront implements IMessageSchema {
