@@ -201,7 +201,7 @@ const CreateMessage = () => {
       
         });
     } else {
-      getMessageSchema(messageCode, messageId, cukCode, action)
+      getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
         .then((schema: any) => {
           setMessageSchema({
             ...schema,
