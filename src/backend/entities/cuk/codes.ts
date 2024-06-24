@@ -152,6 +152,7 @@ export function getForeclosureStatusCodesByStatus(status: Status): string[] {
             return [
                 ForeclosureStatus.END_NORMALIZATION,
                 ForeclosureStatus.SIGN_IN_PROGRESS,
+                ForeclosureStatus.APPROVED,
                 ForeclosureStatus.IN_PROCESS,
                 ForeclosureStatus.SIGNED,
                 ForeclosureStatus.INIT,
