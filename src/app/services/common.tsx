@@ -146,9 +146,9 @@ export async function getInformsRejected(
   }
 }
 
-export const createMessage = async (data: any, status: string) => {
+export const createMessage = async (data: any, status: string, action?: string) => {
   const payload = JSON.stringify({ ...data, status });
-  return fetch(`/api/message`, {
+  return fetch(`/api/message?&action=action`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

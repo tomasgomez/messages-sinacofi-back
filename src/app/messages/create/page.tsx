@@ -88,17 +88,16 @@ const CreateMessage = () => {
 
   // define default values
   let actions = { saveDraftDisabled: true, sendButtonDisabled: false };
-
+  let actionFn = 
   useEffect(() => {
     setLoading(true); 
-    // if (action == 'create'){
+    if (action == 'sign'){
       getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
       .then((schema: any) => {
         // check buttons
         if (schema.actions && schema.actions.buttons && schema.actions.buttons.length>0){
           let buttons = schema.actions.buttons;
           buttons.forEach((button: any) => {
-            
             if (button.name == 'saveDraft'){
               actions.saveDraftDisabled = button.disabled;
             }
@@ -106,6 +105,10 @@ const CreateMessage = () => {
               actions.sendButtonDisabled = button.disabled;
             }
           })
+          // check modals
+          if (schema.actions && schema.actions.modal){
+            let buttons = schema.actions.modal;
+          }
         }
         setMessageSchema({
           ...schema,
@@ -121,144 +124,144 @@ const CreateMessage = () => {
         setLoading(false);
       });
 
-    // }
-    // else if ((cloneId || messageId) && !cukCode) {
-    //   getMessageDetails(cloneId || messageId).then((data) => {    
-    //     getMessageSchema(messageCode, messageId, action, institutionId)
-    //       .then((schema: any) => {
-    //         setMessageSchema({
-    //           ...schema,
-    //           actions: { saveDraftDisabled: true, sendButtonDisabled: false },
-    //           parameters: schema?.parameters.map((parameter: any) =>
-    //             parameter.id.startsWith("beneficiaryBank")
-    //               ? // parameter.id === "destination"
-    //                 {
-    //                   ...parameter,
-    //                   selected: institutionId,
-    //                   defaultValue: institutionId,
-    //                   disabled: true,
-    //                 }
+    }
+    else if ((cloneId || messageId) && !cukCode) {
+      getMessageDetails(cloneId || messageId).then((data) => {    
+        getMessageSchema(messageCode, messageId, action, institutionId)
+          .then((schema: any) => {
+            setMessageSchema({
+              ...schema,
+              actions: { saveDraftDisabled: true, sendButtonDisabled: false },
+              parameters: schema?.parameters.map((parameter: any) =>
+                parameter.id.startsWith("beneficiaryBank")
+                  ? // parameter.id === "destination"
+                    {
+                      ...parameter,
+                      selected: institutionId,
+                      defaultValue: institutionId,
+                      disabled: true,
+                    }
                   
-    //               : parameter.id === "CUK"
-    //               ? {
-    //                   ...parameter,
-    //                   defaultValue: data[0]?.cukCode,
-    //                   disabled: true,
-    //                 }
-    //               : parameter.id === "messageCode"
-    //               ? {
-    //                   ...parameter,
-    //                   defaultValue: messageCode,
-    //                   disabled: true,
-    //                 }
-    //               : parameter.id === "priority"
-    //               ? {
-    //                   ...parameter,
-    //                   // defaultValue: data[0]?.priority,
-    //                   defaultValue: "priorityNormal",
-    //                   disabled: true,
-    //                 }
-    //               : // : { ...parameter, disabled: true }
-    //               parameter.id === "sign" || parameter.id === "senderSign"
-    //               ? {
-    //                   ...parameter,
-    //                   type: "password",
-    //                   // label: parameter.label
-    //                   required: true,
-    //                   defaultValue: initializarField(
-    //                     parameter.id,
-    //                     data[0]?.parameters
-    //                   ),
-    //                   disabled: false,
-    //                 }
-    //               : {
-    //                   ...parameter,
-    //                   defaultValue: initializarField(
-    //                     parameter.id,
-    //                     data[0]?.parameters
-    //                   ),
-    //                   ...(parameter.type === "select"
-    //                     ? {
-    //                         selected: initializarField(
-    //                           parameter.id,
-    //                           data[0]?.parameters
-    //                         ),
-    //                       }
-    //                     : {}),
-    //                   disabled: true,
-    //                 }
-    //           ),
-    //         });
-    //       })
-    //       .catch((error) => {
-    //         console.log({ error });
-    //         setError("El schema de formulario no fue encontrado");
-    //       })
-    //       .finally(() => {
-    //         setLoading(false);
-    //       });
+                  : parameter.id === "CUK"
+                  ? {
+                      ...parameter,
+                      defaultValue: data[0]?.cukCode,
+                      disabled: true,
+                    }
+                  : parameter.id === "messageCode"
+                  ? {
+                      ...parameter,
+                      defaultValue: messageCode,
+                      disabled: true,
+                    }
+                  : parameter.id === "priority"
+                  ? {
+                      ...parameter,
+                      // defaultValue: data[0]?.priority,
+                      defaultValue: "priorityNormal",
+                      disabled: true,
+                    }
+                  : // : { ...parameter, disabled: true }
+                  parameter.id === "sign" || parameter.id === "senderSign"
+                  ? {
+                      ...parameter,
+                      type: "password",
+                      // label: parameter.label
+                      required: true,
+                      defaultValue: initializarField(
+                        parameter.id,
+                        data[0]?.parameters
+                      ),
+                      disabled: false,
+                    }
+                  : {
+                      ...parameter,
+                      defaultValue: initializarField(
+                        parameter.id,
+                        data[0]?.parameters
+                      ),
+                      ...(parameter.type === "select"
+                        ? {
+                            selected: initializarField(
+                              parameter.id,
+                              data[0]?.parameters
+                            ),
+                          }
+                        : {}),
+                      disabled: true,
+                    }
+              ),
+            });
+          })
+          .catch((error) => {
+            console.log({ error });
+            setError("El schema de formulario no fue encontrado");
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       
       
-    //     });
-    // } else {
-    //   getMessageSchema(messageCode, messageId, cukCode, action)
-    //     .then((schema: any) => {
-    //       setMessageSchema({
-    //         ...schema,
-    //         actions: {
-    //           saveDraftDisabled: [
-    //             "671",
-    //             "672",
-    //             "673",
-    //             "674",
-    //             "675",
-    //             "676",
-    //             "677",
-    //             "678",
-    //             "679",
-    //           ].includes(messageCode),
-    //           sendButtonDisabled: messageCode === "670",
-    //         },
-    //         parameters:
-    //           messageCode === "670"
-    //             ? schema?.parameters.map((parameter: any) =>
-    //                 parameter.id.startsWith("beneficiaryBank")
-    //                   ? // parameter.id === "destination"
-    //                     {
-    //                       ...parameter,
-    //                       selected: institutionId,
-    //                       defaultValue: institutionId,
-    //                       disabled: true,
-    //                     }
-    //                   : parameter.id === "bank" ||
-    //                     parameter.id.startsWith("bank")
-    //                   ? // parameter.id === "destination"
-    //                     {
-    //                       ...parameter,
-    //                       defaultValue: selectedInstitution,
-    //                       disabled: true,
-    //                     }
-    //                   : parameter.id == 'senderAHName' && action !== 'sign' ? {
-    //                     ...parameter,
-    //                     defaultValue:"",
-    //                     disabled: true
-    //                   } : parameter.id == "senderAHDni" && action !== 'sign' ? {
-    //                     ...parameter,
-    //                     defaultValue: "",
-    //                     disabled: true
-    //                   }: parameter
-    //               )
-    //             : schema?.parameters,
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       console.log({ error });
-    //       setError("El schema de formulario no fue encontrado");
-    //     })
-    //     .finally(() => {
-    //       setLoading(false);
-    //     });
-    // }
+        });
+    } else {
+      getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
+        .then((schema: any) => {
+          setMessageSchema({
+            ...schema,
+            actions: {
+              saveDraftDisabled: [
+                "671",
+                "672",
+                "673",
+                "674",
+                "675",
+                "676",
+                "677",
+                "678",
+                "679",
+              ].includes(messageCode),
+              sendButtonDisabled: messageCode === "670",
+            },
+            parameters:
+              messageCode === "670"
+                ? schema?.parameters.map((parameter: any) =>
+                    parameter.id.startsWith("beneficiaryBank")
+                      ? // parameter.id === "destination"
+                        {
+                          ...parameter,
+                          selected: institutionId,
+                          defaultValue: institutionId,
+                          disabled: true,
+                        }
+                      : parameter.id === "bank" ||
+                        parameter.id.startsWith("bank")
+                      ? // parameter.id === "destination"
+                        {
+                          ...parameter,
+                          defaultValue: selectedInstitution,
+                          disabled: true,
+                        }
+                      : parameter.id == 'senderAHName' && action !== 'sign' ? {
+                        ...parameter,
+                        defaultValue:"",
+                        disabled: true
+                      } : parameter.id == "senderAHDni" && action !== 'sign' ? {
+                        ...parameter,
+                        defaultValue: "",
+                        disabled: true
+                      }: parameter
+                  )
+                : schema?.parameters,
+          });
+        })
+        .catch((error) => {
+          console.log({ error });
+          setError("El schema de formulario no fue encontrado");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
   }, [
     messageCode,
     institutionId,
@@ -270,7 +273,7 @@ const CreateMessage = () => {
 
   const createMessageFn = (payload: any) => {
     setLoading(true);
-    createMessage(payload, "05").then((response: any) => {
+    createMessage(payload, "05",action).then((response: any) => {
       setLoading(false);
       SuccessModal.open({
         title: "Mensaje Enviado Exitosamente",
@@ -425,7 +428,7 @@ const CreateMessage = () => {
       selectedInstitution,
       userInfo
     );
-    createMessage(payload, "01").then((response: any) => {
+    createMessage(payload, "01",action).then((response: any) => {
       setLoading(false);
       SuccessModal.open({
         title: "Mensaje Grabado en Preparados Exitosamente",

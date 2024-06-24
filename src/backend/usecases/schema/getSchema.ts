@@ -28,7 +28,11 @@ export async function getSchema(filter: Filter, user: User): Promise < MessageSc
       return path;
     }
 
-    path = path+"/"+filter.messageCode
+    if (!filter.messageCode || filter.messageCode.length ==0 ){
+      return new Error("no messageCode")
+    }
+
+    path = path+"/"+filter.messageCode[0]
 
     let parameters: any[] = [];
     // check if exists cukCode
@@ -40,9 +44,22 @@ export async function getSchema(filter: Filter, user: User): Promise < MessageSc
     }
     // detect if exist beneficiaryBank
     const beneficiaryBank = parameters.filter(parameter => parameter.name == 'beneficiaryBank');
-    if (!beneficiaryBank){
-      parameters.push({"name": "beneficiaryBank", "messageCode": filter.messageCode, "priority": 0, "rules": [], value: filter.destination})
+    if ((!beneficiaryBank || beneficiaryBank.length == 0) && filter.destination && filter.destination.length>0){
+
+      const dest = filter.destination[0]; 
+
+      parameters.push(
+        {"name": "beneficiaryBank", 
+        "messageCode": filter.messageCode, 
+        "priority": 0, 
+        "rules": [], 
+        "type": "select",
+        "defaultValue": dest, 
+        "value": dest,
+        "optionValues": 'institution'})
     }
+
+    console.log(parameters);
     let schemas = await post(url, path, {}, {
       user: user,
       parameters,
