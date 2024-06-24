@@ -91,7 +91,7 @@ const CreateMessage = () => {
   let actionFn = 
   useEffect(() => {
     setLoading(true); 
-    if (action == 'sign'){
+    if (action == 'sign' || action == 'duplicate'){
       getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
       .then((schema: any) => {
         // check buttons
@@ -127,7 +127,7 @@ const CreateMessage = () => {
     }
     else if ((cloneId || messageId) && !cukCode) {
       getMessageDetails(cloneId || messageId).then((data) => {    
-        getMessageSchema(messageCode, messageId, action, institutionId)
+        getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
           .then((schema: any) => {
             setMessageSchema({
               ...schema,

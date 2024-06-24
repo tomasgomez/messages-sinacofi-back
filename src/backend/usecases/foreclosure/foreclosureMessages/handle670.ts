@@ -26,7 +26,7 @@ export async function handle670(cuk: CUK, message: Message, user: User, cukRepos
   switch (message.statusCode) {
     case MessageStatus.ENVIADO: {
 
-      updateMessage(messageRepository, message);
+      updateMessage(messageRepository, message, user);
 
       cuk.status = MessageStatus.ENVIADO;
 

@@ -38,8 +38,11 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
             }
             return param;
         })
+
+        let messageToBeValidate = message;
+        let { documents,...messageWithoutDocs} = messageToBeValidate
         
-        let validateMessageResponse = await validateMessage(repository, message, user);
+        let validateMessageResponse = await validateMessage(repository, messageWithoutDocs, user);
 
         if (validateMessageResponse instanceof Error) {
             return validateMessageResponse;

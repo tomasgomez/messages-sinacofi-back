@@ -169,7 +169,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&action=edit`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=edit`
             )
           }
         >
@@ -185,7 +185,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&action=duplicate`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=duplicate`
             )
           }
         >

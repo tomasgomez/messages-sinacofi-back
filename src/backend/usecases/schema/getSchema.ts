@@ -59,7 +59,6 @@ export async function getSchema(filter: Filter, user: User): Promise < MessageSc
         "optionValues": 'institution'})
     }
 
-    console.log(parameters);
     let schemas = await post(url, path, {}, {
       user: user,
       parameters,
