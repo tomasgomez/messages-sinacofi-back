@@ -26,7 +26,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { TextInputFilters } from "../../form-elements/text-input-filters";
 import {
   optionsNotaria,
-  // optionsStatus,
+  optionsAHStatus,
   optionsInstitutions,
 } from "./constants";
 
@@ -108,30 +108,30 @@ export const Filters = (props: { handleGetData: Function }) => {
                 control={
                   <Radio
                     onClick={(event: any) =>
-                      handleChangeFilter("radioButton", event.target?.value)
+                      handleChangeFilter("status", event.target?.value)
                     }
                   />
                 }
                 label="Todos"
               />
               <FormControlLabel
-                value="sent"
+                value="05"
                 control={
                   <Radio
                     onClick={(event: any) =>
-                      handleChangeFilter("radioButton", event.target?.value)
+                      handleChangeFilter("status", event.target?.value)
                     }
                   />
                 }
                 label="Alzamientos Hipotecarios Enviados"
               />
               <FormControlLabel
-                value="received"
+                value="06"
                 style={{ marginRight: 0 }}
                 control={
                   <Radio
                     onClick={(event: any) =>
-                      handleChangeFilter("radioButton", event.target.value)
+                      handleChangeFilter("status", event.target.value)
                     }
                   />
                 }
@@ -220,7 +220,7 @@ export const Filters = (props: { handleGetData: Function }) => {
               title="Estado AH"
               handleChange={handleChangeFilter}
               keyLabel="AHStatus"
-              options={[{ label: "Todos", value: "all" }]}
+              options={optionsAHStatus}
               optionSelected={getValue("AHStatus", "all")}
             />
           </FilterGroup>

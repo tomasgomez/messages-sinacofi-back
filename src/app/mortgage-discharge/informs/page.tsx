@@ -11,13 +11,14 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 import { getInformsAccepted, getInformsRejected } from "@/app/services/common";
+import { exportToExcel } from "@/utils/functions";
 
 export default function SearchScreen() {
   const [filters, setFilters] = useState<Filter[]>([]);
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedTab, setSelectedTab] = useState<number>(1);
-  const [columns, setColumns] = useState<any[]>(columnsInformsRejected);
+  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [columns, setColumns] = useState<any[]>(columnsInformsAccepted);
 
   const { ErrorModal } = useModalManager();
 
@@ -32,7 +33,6 @@ export default function SearchScreen() {
   const handleGetData = async (tab: number) => {
     try {
       setLoading(true);
-      // console.log("filters: ", filters);
       setColumns(tab ? columnsInformsRejected : columnsInformsAccepted);
       const rowsData = tab
         ? await getInformsRejected(filters)
@@ -48,7 +48,23 @@ export default function SearchScreen() {
 
   useEffect(() => {
     handleGetData(selectedTab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
+
+  const getName = () => {
+    const name = selectedTab ? "Rechazos" : "Plazos";
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    const dateString = `${day}-${month}-${year}-${hours}-${minutes}-${seconds}`;
+
+    return "Informe-AH" + "-" + name + "-" + dateString;
+  };
 
   const TableTitle = ({
     selectedTab,
@@ -82,6 +98,7 @@ export default function SearchScreen() {
           variant="contained"
           sx={{ color: "#FFF", width: "190px", margin: "16px 20px" }}
           startIcon={<FileDownloadOutlinedIcon />}
+          onClick={() => exportToExcel(getName(), columns, data)}
         >
           Descargar Reporte
         </Button>
@@ -97,7 +114,7 @@ export default function SearchScreen() {
         setFilters={setFilters}
       />
       <StyledBox>
-      <DataTable
+        <DataTable
           loading={loading}
           maxHeight={480}
           rows={data}

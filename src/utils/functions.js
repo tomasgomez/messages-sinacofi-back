@@ -1,3 +1,6 @@
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
+
 export function reverseArray(arr) {
   if (!Array.isArray(arr) || arr.length === 0) return [];
   let reversedArray = [];
@@ -64,3 +67,50 @@ export function ObjectsAreEquals(object1, object2) {
 
   return true;
 }
+
+export const exportToExcel = async (name, columns, data) => {
+  if (!columns || !data) {
+    console.error("Columns or data is not defined.");
+    return;
+  }
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet("Data");
+
+  // Add columns
+  worksheet.columns = columns.map((col) => ({
+    header: col.label,
+    key: col.id,
+  }));
+
+  // Add rows
+  data.forEach((row) => {
+    for (let key in row) {
+      if (row[key] === "") {
+        row[key] = "-";
+      }
+    }
+    worksheet.addRow(row);
+  });
+
+  // Adjust column widths to content
+  worksheet.columns.forEach((column) => {
+    let maxLength = 0;
+    column.eachCell({ includeEmpty: true }, (cell) => {
+      const cellLength = cell.value ? cell.value.toString().length : 10;
+      if (cellLength > maxLength) {
+        maxLength = cellLength;
+      }
+    });
+    if (column) {
+      column.width = maxLength + 2; // Adding a little extra space
+    }
+  });
+
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  saveAs(
+    new Blob([buffer], { type: "application/octet-stream" }),
+    name + ".xlsx"
+  );
+};
