@@ -35,6 +35,8 @@ export async function handle675(cuk: CUK, message: Message, user: User, cukRepos
         cuk.status = ForeclosureStatus.PAYMENT_DATA
         cuk.cukCode = message.cukCode;
         await updateForclosure(cukRepository, messageRepository, cuk, message, user);
+
+        await handle676(cuk, message, user, cukRepository, messageRepository);
     }
     
     return updatedMessage;
