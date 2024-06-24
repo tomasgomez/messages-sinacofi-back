@@ -1,4 +1,4 @@
-import { Message } from '@/backend/entities/message/message';
+import { Message, setStatus } from '@/backend/entities/message/message';
 import { CUKRepository } from '@/backend/repository/cukRepository';
 import { MessageRepository } from '@/backend/repository/messageRepository';
 import { CUK } from '@/backend/entities/cuk/cuk';
@@ -19,17 +19,17 @@ export async function handle671(cuk: CUK, message: Message, user: User, cukRepos
 
     let status = '';
 
-    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
+    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined) {
             
         status = message.statusCode;
 
-        message.setStatus(status);
+        message = setStatus(message, status);
     }
 
     if (message.cukCode && message.cukCode !== ''){
         cuk.status = ForeclosureStatus.ACCEPTED
         cuk.cukCode = message.cukCode;
-        updateForclosure(cukRepository, messageRepository, cuk, message, user);
+        await updateForclosure(cukRepository, messageRepository, cuk, message, user);
     }
 
     return updatedMessage;

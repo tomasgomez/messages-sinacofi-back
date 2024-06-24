@@ -9,7 +9,6 @@ import {
 } from "@/backend/utils/functions";
 import { MessageStatus } from "@/backend/entities/message/status";
 import { createData } from "@/backend/repository/message/presenter/createData"; 
-import { Parameter } from "@/backend/entities/message/parameter";
 
 async function create(message: Message): Promise < Message | Error > {
     try {
@@ -28,6 +27,7 @@ async function create(message: Message): Promise < Message | Error > {
         }
 
         let status = message.statusCode ?? MessageStatus.PREPARADO;
+        
         // Prepare message data for Prisma create
         const messageData = createData(message);
 

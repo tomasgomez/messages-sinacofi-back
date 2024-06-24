@@ -27,6 +27,8 @@ export async function post(req: NextApiRequest, res: NextApiResponse < any > ) {
           return; 
         }
 
+        validatedMessage.originArea = user.area ?? '';
+
         let messageResponse = await messageUseCase.handleMessage(validatedMessage, user);
 
         if (messageResponse instanceof Error) {

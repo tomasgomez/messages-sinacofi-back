@@ -31,7 +31,9 @@ export async function post(url: string, path: string, headers?: any, body?: any)
         return response.data;
 
     } catch (error) {
-        console.error('Error fetching message:', error);
+        if (error instanceof Error)
+        console.error('Error fetching message:', error.message);
+
         return error;
     }
 }

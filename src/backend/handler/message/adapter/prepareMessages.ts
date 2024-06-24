@@ -10,6 +10,7 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
   /* Prepare the data for each message */
   let preparedData = messages.map((message) => {
       let status = '';
+      let actions = message.actions;
       
       /* If the filter has a status then filter the messages statuses */
       if (filter.status && filter.status.length > 0) {
@@ -45,16 +46,20 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
         } else if (isReceiver && ReceiverMessageCodes.includes(message.messageCode!)) {
           statusFilered = statusFilered?.filter(d => d.id != '06')
         }
+        
+        let defaultActions = [];
+        if (isSender && ReceiverMessageCodes.includes(message.messageCode!)) {
 
-        if (isReceiver) {
-          let actions = []
           if (message.messageCode != MessageTypes.DATOS_PARA_EL_PAGO_AH) {
-            actions.push(MessageActions.SHOW_DETAIL)
+            defaultActions.push(MessageActions.SHOW_DETAIL);
           } else {
-            actions.push(MessageActions.PRINT)
+            defaultActions.push(MessageActions.PRINT);
           }
 
-          message.actions = actions.join(',')
+          actions = defaultActions.join(',')
+        } else if (isReceiver && SenderMessageCodes.includes(message.messageCode!)) {
+            defaultActions.push(MessageActions.SHOW_DETAIL);
+            actions = defaultActions.join(',')
         }
       }
 
@@ -88,7 +93,7 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
         destinationArea: message?.destinationArea ?? '',
         receivedDate: message?.receivedDate ?? '',
         receivedTime: message?.receivedTime ?? '',
-        actions: message?.actions?.split(','),
+        actions: actions?.split(','),
         cukCode: message?.cukCode ?? '',
         status,
         documents,

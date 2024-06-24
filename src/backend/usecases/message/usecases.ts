@@ -33,8 +33,8 @@ export class MessageUscase implements MessageUsecases  {
         handleMessage(this.messageRepository, this.cukRepository, message, user);
 
     // update message
-    updateMessage = async (message: Message): Promise<Message | Error> => 
-        updateMessage(this.messageRepository, message);
+    updateMessage = async (message: Message, user: User): Promise<Message | Error> => 
+        updateMessage(this.messageRepository, message, user);
 
     // find documents
     findDocuments = async (message: Message): Promise<Message | Error> =>

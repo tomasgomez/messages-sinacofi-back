@@ -13,6 +13,7 @@ import {
 import {
   User
 } from '@/backend/entities/user/user';
+import { validateMessage } from '../message/validateMessage';
 
 /* When the cuk status is being updated, an empty message is created or updated the last empty message */
 export async function updateLastMessage(message: Message, user: User, messageRepository: MessageRepository, cukRepository: CUKRepository): Promise < Message | Error > {
@@ -74,6 +75,7 @@ export async function updateLastMessage(message: Message, user: User, messageRep
     newMessage.receivedDate = receivedDate;
     newMessage.receivedTime = receivedTime;
     newMessage.parameters = parameters;
+    newMessage.messageCode = message.messageCode;
 
     // Update the status of the message
 
@@ -87,7 +89,23 @@ export async function updateLastMessage(message: Message, user: User, messageRep
       }
     }
 
-    let updated = await messageRepository.update(newMessage);
+    let validateMessageResponse = await validateMessage(messageRepository, newMessage, user);
+
+    if (validateMessageResponse instanceof Error) {
+      return validateMessageResponse;
+    }
+
+    let toUpdateMessage = {
+      ...newMessage,
+      ...validateMessageResponse,
+      id: messageToUpdate.id
+    }
+
+    console.log('toUpdateMessage', toUpdateMessage);
+    
+    let updated = await messageRepository.update(toUpdateMessage);
+
+    console.log('updated', updated);
 
     if (updated instanceof Error) {
       return updated;

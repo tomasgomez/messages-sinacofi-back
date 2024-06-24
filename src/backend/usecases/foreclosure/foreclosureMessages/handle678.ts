@@ -1,4 +1,4 @@
-import { Message } from '@/backend/entities/message/message';
+import { Message, setStatus } from '@/backend/entities/message/message';
 import { CUKRepository } from '@/backend/repository/cukRepository';
 import { MessageRepository } from '@/backend/repository/messageRepository';
 import { updateLastMessage } from '@/backend/usecases/foreclosure/updateForeclosureLastMessage';
@@ -41,11 +41,11 @@ export async function handle678(cuk: CUK, message: Message, user: User, cukRepos
 
     let status = '';
 
-    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
+    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined) {
             
         status = message.statusCode;
 
-        message.setStatus(status);
+        message = setStatus(message, status);
     }
 
     if (message.cukCode && message.cukCode !== ''){

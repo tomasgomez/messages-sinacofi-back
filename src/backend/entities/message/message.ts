@@ -90,3 +90,21 @@ export class Message {
         }
     }
 }
+
+export function setStatus(message: Message, statusId: string): Message {
+    if (message.status) {
+        message.status.push({
+            id: statusId,
+            messageId: message.id ?? '',
+            createdAt: new Date(),
+        });
+    } else {
+        message.status = [{
+            id: statusId,
+            messageId: message.id ?? '',
+            createdAt: new Date(),
+        }];
+    }
+
+    return message;
+}

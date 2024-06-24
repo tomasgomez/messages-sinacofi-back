@@ -1,4 +1,4 @@
-import { Message } from '@/backend/entities/message/message';
+import { Message, setStatus } from '@/backend/entities/message/message';
 import { CUKRepository } from '@/backend/repository/cukRepository';
 import { MessageRepository } from '@/backend/repository/messageRepository';
 import { MessageStatus } from '@/backend/entities/message/status';
@@ -19,11 +19,11 @@ export async function handle673(cuk: CUK, message: Message, user: User, cukRepos
     
     let status = '';
 
-    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
+    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined) {
             
         status = message.statusCode;
 
-        message.setStatus(status);
+        message = setStatus(message, status);
     }
 
     // Update the status of the message
@@ -32,14 +32,11 @@ export async function handle673(cuk: CUK, message: Message, user: User, cukRepos
             if (message.setReceivedTime) {
                 message.setReceivedTime();
             }
-            if (message.setStatus) {
-                message.setStatus(MessageStatus.BANDEJA_DE_ENTRADA);
-            }
+            message = setStatus(message, MessageStatus.BANDEJA_DE_ENTRADA);
             break;
         case MessageStatus.BANDEJA_DE_ENTRADA:
-            if (message.setStatus) {
-                message.setStatus(MessageStatus.ENVIADO);
-            }
+
+            message = setStatus(message, MessageStatus.ENVIADO);
             break;
     }
     

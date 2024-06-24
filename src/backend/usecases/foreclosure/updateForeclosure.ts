@@ -21,6 +21,7 @@ import {
 } from '@/backend/repository/messageRepository';
 import { MessageActions } from '@/backend/entities/message/actions';
 import { User } from '@/backend/entities/user/user';
+import { MessageStatus } from '@/backend/entities/message/status';
 
 export async function updateForclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message, user: User): Promise < CUK | Error > {
   try {
@@ -35,7 +36,6 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     let hasToUpdateMessage = false;
     let origin = '';
     let destination = '';
-    let actions = [];
 
     if (!cuk.cukCode || cuk.cukCode === '') {
       return new Error('Invalid CUK');
@@ -138,7 +138,6 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         hasToUpdateMessage = true;
         newMessage.origin = origin;
         newMessage.destination = destination;
-        actions.push(MessageActions.CHECK_OPTIONS);
         break;
       
       case ForeclosureStatus.PAYMENT_OPTION_ACCEPTED: // 679 no
@@ -147,7 +146,6 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         hasToUpdateMessage = true;
         newMessage.origin = origin;
         newMessage.destination = destination;
-        actions.push(MessageActions.CHECK_OPTIONS);
         break;
       
       case ForeclosureStatus.INIT: // 670 enviado
@@ -175,12 +173,8 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
 
       newMessage.cukCode = cuk.cukCode;
       newMessage.messageCode = messageType;
-
-      actions.push(MessageActions.SIGN);
-              
-      message.actions = actions.join(',');      
-
-      
+      newMessage.statusCode = MessageStatus.PREPARADO;
+                 
       await createMessage(messageRepository, newMessage, user);   
     }
 

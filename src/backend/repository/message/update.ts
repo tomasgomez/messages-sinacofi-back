@@ -26,6 +26,7 @@ export async function update(message: Message): Promise<Message | Error> {
                     data: status,
                     });
                 }
+
             }
         }
 
@@ -34,7 +35,7 @@ export async function update(message: Message): Promise<Message | Error> {
             Object.entries(message).filter(([_, value]) => value !== '')
         );
 
-        const { parameters, documents, ...dataWithoutParameters } = dataToUpdate;
+        const { parameters, documents, statusCode, ...dataWithoutParameters } = dataToUpdate;
 
         if (message.documents && message.documents.length > 0) {
             documentsToUpdate = message.documents;

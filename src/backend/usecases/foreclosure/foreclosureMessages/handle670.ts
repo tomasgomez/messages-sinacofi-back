@@ -23,7 +23,6 @@ import { Parameter } from '@/backend/entities/message/parameter';
 
 export async function handle670(cuk: CUK, message: Message, user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
 
-  
   switch (message.statusCode) {
     case MessageStatus.ENVIADO: {
 

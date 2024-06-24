@@ -4,53 +4,42 @@ import {
 import {
     MessageRepository
 } from "@/backend/repository/messageRepository";
-import { post } from "@/backend/adapters/rule/post";
-import { getEnvVariable } from '@/backend/utils/functions';
-import { envVariables } from '@/backend/utils/variables';
+import {
+    validateMessage
+} from "@/backend/usecases/message/validateMessage";
 import { User } from "@/backend/entities/user/user";
 
 
 // Create message function
 export async function createMessage(repository: MessageRepository, message: Message, user: User): Promise < Message | Error > {
     try {
-
+        
+        if (message.setTime) message.setTime();
+        
         if (!message.messageCode) {
             return new Error('Message code is required');
         }
 
-        let ruleUrl = getEnvVariable(envVariables.RULE_CLIENT_URL);
+        let validateMessageResponse = await validateMessage(repository, message, user);
 
-        if (ruleUrl instanceof Error) {
-            return ruleUrl;
+        if (validateMessageResponse instanceof Error) {
+            console.error('Error validating message:', validateMessageResponse.message);
+            return validateMessageResponse;
         }
-
-        let validateMessagePath = getEnvVariable(envVariables.VALIDATE_MESSAGE);
-
-        if (validateMessagePath instanceof Error) {
-            return validateMessagePath;
-        }
-
-        let messageValidated = await post(ruleUrl, validateMessagePath, {}, {
-            user: user,
-            message,
-        })
-
-        if (messageValidated instanceof Error) {
-            return new Error('Message schema not found');
-        }
-
-        let messageResponse = await repository.create(messageValidated);
-
+        
+        let messageResponse = await repository.create(validateMessageResponse);
+        
         /* Check if the response is an error */
         if (messageResponse instanceof Error) {
+            console.error('Error creating message:', messageResponse.message);
             return messageResponse;
         }
-
+        
         /* Check if the id is undefined */
         if (messageResponse.id === undefined) {
             return new Error('No id returned');
         }
-
+        
         return messageResponse;
     } catch (error: any) {
         console.error('Error creating message:', error);
