@@ -75,7 +75,7 @@ export async function updateLastMessage(message: Message, user: User, messageRep
     newMessage.receivedDate = receivedDate;
     newMessage.receivedTime = receivedTime;
     newMessage.parameters = parameters;
-    newMessage.messageCode = message.messageCode;
+    newMessage.messageCode = messageToUpdate.messageCode;
 
     // Update the status of the message
 
