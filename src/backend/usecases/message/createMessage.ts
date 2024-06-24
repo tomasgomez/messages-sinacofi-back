@@ -4,48 +4,42 @@ import {
 import {
     MessageRepository
 } from "@/backend/repository/messageRepository";
-import { Filter } from "@/backend/entities/schema/filter";
-import { adaptParameters } from "@/backend/entities/message/parameter";
-import { getEnvVariable } from "@/backend/utils/functions";
-import { envVariables } from "@/backend/utils/variables";
-import { get } from "@/backend/adapters/rule/get";
+import { post } from "@/backend/adapters/rule/post";
+import { getEnvVariable } from '@/backend/utils/functions';
+import { envVariables } from '@/backend/utils/variables';
+import { User } from "@/backend/entities/user/user";
+
 
 // Create message function
-export async function createMessage(repository: MessageRepository, message: Message): Promise < Message | Error > {
+export async function createMessage(repository: MessageRepository, message: Message, user: User): Promise < Message | Error > {
     try {
-
-        console.log('Message actions: ', message.actions)
 
         if (!message.messageCode) {
             return new Error('Message code is required');
         }
 
-        let filter: Filter = {
-            messageCode: [message.messageCode]
+        let ruleUrl = getEnvVariable(envVariables.RULE_CLIENT_URL);
+
+        if (ruleUrl instanceof Error) {
+            return ruleUrl;
         }
 
-        
-        let url = getEnvVariable(envVariables.RULE_CLIENT_URL);
-        if (url instanceof Error) {
-            return url;
+        let validateMessagePath = getEnvVariable(envVariables.VALIDATE_MESSAGE);
+
+        if (validateMessagePath instanceof Error) {
+            return validateMessagePath;
         }
 
-        let path = getEnvVariable(envVariables.SCHEMA_PATH);
-            if (path instanceof Error) {
-            return path;
-        }
+        let messageValidated = await post(ruleUrl, validateMessagePath, {}, {
+            user: user,
+            message,
+        })
 
-        path = `${path}/${filter.messageCode}`;
-
-        let messageSchema = await get(url, path, {}, {})
-
-        if (messageSchema instanceof Error) {
+        if (messageValidated instanceof Error) {
             return new Error('Message schema not found');
         }
 
-        message.parameters = adaptParameters(message, messageSchema);
-
-        let messageResponse = await repository.create(message);
+        let messageResponse = await repository.create(messageValidated);
 
         /* Check if the response is an error */
         if (messageResponse instanceof Error) {

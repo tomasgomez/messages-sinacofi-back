@@ -10,13 +10,14 @@ import { updateMessage } from '../../message/updateMessage';
 import { MessageTypes } from '@/backend/entities/message/types';
 import { getMessage } from '../../message/getMessage';
 import { FilterMessage } from '@/backend/entities/message/filter';
+import { User } from '@/backend/entities/user/user';
 
 
-export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
+export async function handle672(cuk: CUK, message: Message,user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
 
     /* Update the last message */
-    updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
+    updatedMessage = await updateLastMessage(message,user, messageRepository, cukRepository);
 
     if (updatedMessage instanceof Error) {
         return updatedMessage;
@@ -34,7 +35,7 @@ export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRe
     if (message.cukCode && message.cukCode !== ''){
         cuk.status = ForeclosureStatus.REJECTED
         cuk.cukCode = message.cukCode;
-        updateForclosure(cukRepository,messageRepository,cuk,message);
+        updateForclosure(cukRepository, messageRepository, cuk, message, user);
 
         
         let filter: FilterMessage = {
@@ -51,7 +52,9 @@ export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRe
                 actions: [MessageActions.SHOW_DETAIL, MessageActions.DUPLICATE].join(','),
             }
 
-            message670.id = fetchMessage[0].id;   
+            message670.id = fetchMessage[0].id;
+            message670.previousMessageCode = MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO;
+
             await updateMessage(messageRepository, message670);
         }
     }

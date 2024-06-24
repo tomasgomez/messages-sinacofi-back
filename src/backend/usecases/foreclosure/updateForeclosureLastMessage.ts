@@ -10,9 +10,12 @@ import {
 import {
   MessageStatus
 } from '@/backend/entities/message/status';
+import {
+  User
+} from '@/backend/entities/user/user';
 
 /* When the cuk status is being updated, an empty message is created or updated the last empty message */
-export async function updateLastMessage(message: Message, messageRepository: MessageRepository, cukRepository: CUKRepository): Promise < Message | Error > {
+export async function updateLastMessage(message: Message, user: User, messageRepository: MessageRepository, cukRepository: CUKRepository): Promise < Message | Error > {
 
   let createdMessage = message;
   
@@ -83,8 +86,6 @@ export async function updateLastMessage(message: Message, messageRepository: Mes
         newMessage.setStatus(MessageStatus.ENVIADO);
       }
     }
-
-    console.log("Message actions: ", newMessage.actions);
 
     let updated = await messageRepository.update(newMessage);
 

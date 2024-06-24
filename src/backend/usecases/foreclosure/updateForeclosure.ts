@@ -20,8 +20,9 @@ import {
   MessageRepository
 } from '@/backend/repository/messageRepository';
 import { MessageActions } from '@/backend/entities/message/actions';
+import { User } from '@/backend/entities/user/user';
 
-export async function updateForclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message): Promise < CUK | Error > {
+export async function updateForclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message, user: User): Promise < CUK | Error > {
   try {
 
     if (!cuk?.cukCode) {
@@ -180,7 +181,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
       message.actions = actions.join(',');      
 
       
-      await createMessage(messageRepository, newMessage);   
+      await createMessage(messageRepository, newMessage, user);   
     }
 
     const updatedCuk = await cukRepository.update(cuk);

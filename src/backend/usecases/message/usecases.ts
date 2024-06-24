@@ -26,11 +26,11 @@ export class MessageUscase implements MessageUsecases  {
     
     // create message
     createMessage = async (message: Message, user: User): Promise<Message | Error> => 
-        createMessage(this.messageRepository, message);
+        createMessage(this.messageRepository, message, user);
     
     // handle message
-    handleMessage = async (message: Message): Promise<Message | Error> => 
-        handleMessage(this.messageRepository, this.cukRepository, message);
+    handleMessage = async (message: Message, user: User): Promise<Message | Error> => 
+        handleMessage(this.messageRepository, this.cukRepository, message, user);
 
     // update message
     updateMessage = async (message: Message): Promise<Message | Error> => 
@@ -41,8 +41,8 @@ export class MessageUscase implements MessageUsecases  {
         findDocuments(message);
 
     // sign message
-    signMessage = async (message: Message, dni: string, name:string): Promise<Message | Error> => 
-        signMessage(this.messageRepository, this.cukRepository, message, dni, name);
+    signMessage = async (message: Message, dni: string, name:string, user: User): Promise<Message | Error> => 
+        signMessage(this.messageRepository, this.cukRepository, message, dni, name, user);
 }
 
 // message repository

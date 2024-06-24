@@ -25,10 +25,10 @@ import {
 
 import { storeDocs } from "./updateMessage";
 import { MessageActions } from "@/backend/entities/message/actions";
-
+import { User } from "@/backend/entities/user/user";
 
 // Create message function
-export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, dni: string, name: string): Promise < Message | Error > {
+export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, dni: string, name: string, user: User): Promise < Message | Error > {
     try {        
         
         message.parameters = message.parameters?.map(param=> {
@@ -94,7 +94,7 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
               
             message.actions = actions.join(',');      
             
-            updatedCuk = await updateForclosure(cukRepository, repository, cuk, message);
+            updatedCuk = await updateForclosure(cukRepository, repository, cuk, message, user);
             
             if (updatedCuk instanceof Error) {
                 console.error('Error updating CUK:', updatedCuk);

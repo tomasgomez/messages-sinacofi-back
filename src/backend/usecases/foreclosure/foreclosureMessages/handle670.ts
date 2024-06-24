@@ -16,12 +16,12 @@ import {
 import {
   MessageStatus
 } from '@/backend/entities/message/status';
-import { MessageActions } from '@/backend/entities/message/actions';
+import { User } from '@/backend/entities/user/user';
 import { updateMessage } from '../../message/updateMessage';
 import { Parameter } from '@/backend/entities/message/parameter';
 
 
-export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
+export async function handle670(cuk: CUK, message: Message, user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
 
   
   switch (message.statusCode) {
@@ -72,5 +72,5 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
     }
     return parameter;
   });
-  return await createMessage(messageRepository, message);
+  return await createMessage(messageRepository, message, user);
 }

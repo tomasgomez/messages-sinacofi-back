@@ -5,13 +5,14 @@ import { CUK } from '@/backend/entities/cuk/cuk';
 import { updateLastMessage } from '@/backend/usecases/foreclosure/updateForeclosureLastMessage';
 import { updateForclosure } from '../updateForeclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
+import { User } from '@/backend/entities/user/user';
 
-export async function handle671(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
+export async function handle671(cuk: CUK, message: Message, user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
 
     let updatedMessage: Message | Error;
     
     /* Update the last message */
-    updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
+    updatedMessage = await updateLastMessage(message, user, messageRepository, cukRepository);
     if (updatedMessage instanceof Error) {
         return updatedMessage;
     }
@@ -28,7 +29,7 @@ export async function handle671(cuk: CUK, message: Message, cukRepository: CUKRe
     if (message.cukCode && message.cukCode !== ''){
         cuk.status = ForeclosureStatus.ACCEPTED
         cuk.cukCode = message.cukCode;
-        updateForclosure(cukRepository,messageRepository,cuk,message);
+        updateForclosure(cukRepository, messageRepository, cuk, message, user);
     }
 
     return updatedMessage;

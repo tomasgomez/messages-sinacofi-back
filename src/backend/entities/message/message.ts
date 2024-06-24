@@ -37,6 +37,7 @@ export class Message {
     cukCode ? : string | null;
 
     statusCode? : string | null;
+    previousMessageCode? : string | null;
 
     setTime ? () {
 

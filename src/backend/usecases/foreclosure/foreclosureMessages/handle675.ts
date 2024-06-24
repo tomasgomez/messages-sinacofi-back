@@ -6,14 +6,14 @@ import { CUK } from '@/backend/entities/cuk/cuk';
 import { updateForclosure } from '../updateForeclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 import { handle676 } from './handle676';
-import { MessageActions } from '@/backend/entities/message/actions';
+import { User } from '@/backend/entities/user/user';
 
 
-export async function handle675(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
+export async function handle675(cuk: CUK, message: Message, user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
 
     /* Update the last message */
-    updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
+    updatedMessage = await updateLastMessage(message, user, messageRepository, cukRepository);
 
     if (updatedMessage instanceof Error) {
         return updatedMessage;
@@ -31,9 +31,9 @@ export async function handle675(cuk: CUK, message: Message, cukRepository: CUKRe
     if (message.cukCode && message.cukCode !== ''){
         cuk.status = ForeclosureStatus.PAYMENT_DATA
         cuk.cukCode = message.cukCode;
-        await updateForclosure(cukRepository,messageRepository,cuk,message);
+        updateForclosure(cukRepository, messageRepository, cuk, message, user);
 
-        await handle676(cuk,message,cukRepository,messageRepository);
+        await handle676(cuk, message, user, cukRepository, messageRepository);
     }
     
     return updatedMessage;

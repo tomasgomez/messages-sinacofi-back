@@ -15,9 +15,6 @@ import { handle677 } from '@/backend/usecases/foreclosure/foreclosureMessages/ha
 import { handle678 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle678';
 import { handle679 } from '@/backend/usecases/foreclosure/foreclosureMessages/handle679';
 import { CUKRepository } from "@/backend/repository/cukRepository";
-import { post } from "@/backend/adapters/rule/post";
-import { getEnvVariable } from '@/backend/utils/functions';
-import { envVariables } from '@/backend/utils/variables';
 import { User } from "@/backend/entities/user/user";
   
 // Create message function
@@ -25,49 +22,34 @@ export async function handleMessage(repository: MessageRepository, cukRepository
     try {
         /* Normal flow */
         if (!message.messageCode || !isForeclosureMessageCode(message?.messageCode)) {
-            return await createMessage(repository, message);
+            return await createMessage(repository, message, user);
         }
         
-        let ruleUrl = getEnvVariable(envVariables.RULE_CLIENT_URL);
-        if (ruleUrl instanceof Error) {
-            return ruleUrl;
-        }
-
-        let validateMessagepath = getEnvVariable(envVariables.VALIDATE_MESSAGE);
-        if (validateMessagepath instanceof Error) {
-            return validateMessagepath;
-        }
-
-        let messageValidated = await post(ruleUrl, validateMessagepath, {}, {
-            user: user,
-            message,
-        })
-
         /* CUK flow */
         let cuk = new CUK();
 
         /* Depending on the message code, process the message */
         switch (message.messageCode) {
             /* 670 */
-            case (MessageTypes.ALZAMIENTO_HIPOTECARIO): { return handle670(cuk, message, cukRepository, repository) }
+            case (MessageTypes.ALZAMIENTO_HIPOTECARIO): { return handle670(cuk, message, user, cukRepository, repository) }
             /* 671 */
-            case (MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO): { return handle671(cuk, message, cukRepository, repository) }
+            case (MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO): { return handle671(cuk, message, user, cukRepository, repository) }
             /* 672 */
-            case (MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO): { return handle672(cuk, message, cukRepository, repository) }
+            case (MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO): { return handle672(cuk, message, user, cukRepository, repository) }
             /* 673 */
-            case (MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION): { return handle673(cuk, message, cukRepository, repository) }
+            case (MessageTypes.AVISO_DE_CLIENTE_EN_NORMALIZACION): { return handle673(cuk, message, user, cukRepository, repository) }
             /* 674 */
-            case (MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO): { return handle674(cuk, message, cukRepository, repository) }
+            case (MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO): { return handle674(cuk, message, user, cukRepository, repository) }
             /* 675 */
-            case (MessageTypes.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO): { return handle675(cuk, message, cukRepository, repository) }
+            case (MessageTypes.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO): { return handle675(cuk, message, user, cukRepository, repository) }
             /* 676 */
-            case (MessageTypes.DATOS_PARA_EL_PAGO_AH): { return handle676(cuk, message, cukRepository, repository) }
+            case (MessageTypes.DATOS_PARA_EL_PAGO_AH): { return handle676(cuk, message, user, cukRepository, repository) }
             /* 677 */
-            case (MessageTypes.AVISO_DE_PAGO_AH): { return handle677(cuk, message, cukRepository, repository) }
+            case (MessageTypes.AVISO_DE_PAGO_AH): { return handle677(cuk, message, user, cukRepository, repository) }
             /* 678 */
-            case (MessageTypes.RECHAZO_DE_PAGO_AH): { return handle678(cuk, message, cukRepository, repository) }
+            case (MessageTypes.RECHAZO_DE_PAGO_AH): { return handle678(cuk, message, user, cukRepository, repository) }
             /* 679 */
-            case (MessageTypes.CONFIRMACION_DE_PAGO_AH): { return handle679(cuk, message, cukRepository, repository) }
+            case (MessageTypes.CONFIRMACION_DE_PAGO_AH): { return handle679(cuk, message, user, cukRepository, repository) }
             /* Default */
             default: { return new Error('Invalid message code')}
         }

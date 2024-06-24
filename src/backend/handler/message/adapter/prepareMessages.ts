@@ -10,8 +10,6 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
   /* Prepare the data for each message */
   let preparedData = messages.map((message) => {
       let status = '';
-
-      console.log('actions', message.actions)
       
       /* If the filter has a status then filter the messages statuses */
       if (filter.status && filter.status.length > 0) {
