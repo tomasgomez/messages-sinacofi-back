@@ -71,7 +71,7 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
   return currentField?.value || null;
 };
 const CreateMessage = () => {
-  const { selectedInstitution } = useAppContext();
+  const { selectedInstitution, currencies } = useAppContext();
   const { userInfo } = useContext(SessionProviderContext) as any;
   const { SuccessModal, ConfirmModal, ErrorModal } = useModalManager();
   const AddFileModal = useModal({ id: ModalList.AddFileModal });
@@ -401,7 +401,7 @@ const CreateMessage = () => {
                 <Typography variant="caption" color="#49454F">
                   Crédito Inicial (UF / $)
                 </Typography>
-                <Typography variant="body2">3.799,59 / 221.217.265</Typography>
+                <Typography variant="body2">{data.borrowerUfAmount} / {data.borrowerUfAmount * currencies.UF}</Typography>
               </Stack>
               <Stack direction="column">
                 <Typography variant="caption" color="#49454F">

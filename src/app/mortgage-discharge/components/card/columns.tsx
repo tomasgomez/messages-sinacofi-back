@@ -70,7 +70,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("SIGN") && messageCode === "670" && (
         <Tooltip
           title={
-            userInfo.permissions.signMortgageDischarge
+            userInfo?.permissions?.signMortgageDischarge
               ? ""
               : "No tienes permisos para realizar esta acción."
           }
@@ -99,7 +99,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("SIGN") && messageCode !== "670" && (
         <Tooltip
           title={
-            userInfo.permissions.sendMessage
+            userInfo?.permissions?.sendMessage
               ? ""
               : "No tienes permisos para realizar esta acción."
           }
@@ -126,7 +126,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("SHOW_DETAIL") && (
         <Tooltip
           title={
-            userInfo.permissions.sendMessage
+            userInfo?.permissions?.sendMessage
               ? ""
               : "No tienes permisos para realizar esta acción."
           }
@@ -136,12 +136,12 @@ const AccionesColumn = ({ row }: { row: any }) => {
               key={`detail-icon-${id}`}
               style={{
                 ...iconButtonStyle,
-                color: userInfo.permissions.sendMessage
+                color: userInfo?.permissions?.sendMessage
                   ? defaultColor
                   : disabledColor,
               }}
               onClick={() => handlerOpenModal(row)}
-              disabled={!userInfo.permissions.sendMessage}
+              disabled={!userInfo?.permissions?.sendMessage}
             >
               <InfoOutlinedIcon />
             </IconButton>
