@@ -38,6 +38,10 @@ const getCreateMessagePayload = (
   payloadDefault.forEach((param: string) => {
     payload[param] = data[param];
   });
+
+  if (data.messageCode === "670" && data.borrowerUfAmount == 0) {
+    data.borrowerUfAmount = parseFloat(data.loanUF) + parseFloat(data.supplementaryLoanUF);
+  }
   payload.origin = origin;
   payload.destination = data.beneficiaryBank;
   payload.parameters = Object.entries(data)

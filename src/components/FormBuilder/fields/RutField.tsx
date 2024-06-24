@@ -2,6 +2,7 @@ import { FormControl } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useMemo, useRef } from "react";
 import MaskedInput from "react-text-mask";
+import Field from "./Field";
 
 export function validaRut(rutCompleto: string): boolean {
   rutCompleto = rutCompleto.replace(/\./g, "");
@@ -125,12 +126,13 @@ const RutMask = (props: any) => {
     <MaskedInput
       {...other}
       value={value}
-      ref={(ref) => {
+      ref={(ref: any) => {
         inputRef?.(ref ? ref.inputElement : null);
       }}
       mask={rutMask}
       onBlur={(e) => {
         other.onChange(e.target.value);
+        other.onBlur(e);
       }}
       placeholderChar={"\u200B"}
     />
@@ -141,7 +143,7 @@ const RutField = (props: any) => {
   const inputRef = useRef(null);
   return (
     <FormControl fullWidth>
-      <TextField
+      <Field
         {...props}
         InputProps={{
           inputComponent: RutMask,

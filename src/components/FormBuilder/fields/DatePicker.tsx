@@ -6,7 +6,7 @@ import { styled } from "@mui/material";
 import dayjs from "dayjs";
 
 const StyledDatePicker = styled(DataPickerMui)((props) => ({
-  "& .MuiBase-root.Mui-disabled": {
+  "& .MuiInputBase-root.Mui-disabled": {
     backgroundColor: "#E5E5E5",
     color: "#000000 !important",
   },

@@ -208,7 +208,7 @@ export const columnsInformsAccepted: Columns[] = [
 export const columnsInformsRejected: Columns[] = [
   {
     id: "cukCode",
-    label: "Codigo Interno2",
+    label: "Codigo Interno",
     align: Alignment.LEFT,
     sortable: false,
   },
