@@ -88,7 +88,7 @@ const CreateMessage = () => {
 
   // define default values
   let actions = { saveDraftDisabled: true, sendButtonDisabled: false };
-
+  let actionFn = 
   useEffect(() => {
     setLoading(true); 
     if (action == 'sign'){
@@ -98,7 +98,6 @@ const CreateMessage = () => {
         if (schema.actions && schema.actions.buttons && schema.actions.buttons.length>0){
           let buttons = schema.actions.buttons;
           buttons.forEach((button: any) => {
-            
             if (button.name == 'saveDraft'){
               actions.saveDraftDisabled = button.disabled;
             }
@@ -106,6 +105,10 @@ const CreateMessage = () => {
               actions.sendButtonDisabled = button.disabled;
             }
           })
+          // check modals
+          if (schema.actions && schema.actions.modal){
+            let buttons = schema.actions.modal;
+          }
         }
         setMessageSchema({
           ...schema,
@@ -270,7 +273,7 @@ const CreateMessage = () => {
 
   const createMessageFn = (payload: any) => {
     setLoading(true);
-    createMessage(payload, "05").then((response: any) => {
+    createMessage(payload, "05",action).then((response: any) => {
       setLoading(false);
       SuccessModal.open({
         title: "Mensaje Enviado Exitosamente",
@@ -425,7 +428,7 @@ const CreateMessage = () => {
       selectedInstitution,
       userInfo
     );
-    createMessage(payload, "01").then((response: any) => {
+    createMessage(payload, "01",action).then((response: any) => {
       setLoading(false);
       SuccessModal.open({
         title: "Mensaje Grabado en Preparados Exitosamente",

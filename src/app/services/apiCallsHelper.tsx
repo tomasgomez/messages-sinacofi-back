@@ -1,5 +1,7 @@
-import { signMessage } from "./common";
+import { createMessage, signMessage } from "./common";
 
 export const apiCalls = {
-    sign: signMessage
+    sign: signMessage,
+    createMessage: createMessage,
+    
 }
