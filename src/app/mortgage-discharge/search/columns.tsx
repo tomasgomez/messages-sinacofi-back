@@ -8,13 +8,28 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import { SessionProviderContext } from "@/context/SessionProvider";
 import { useContext } from "react";
+import { MortgageDischargeContext } from "../components/store/ModalStore";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const { id = "" } = row || {};
   const { userInfo } = useContext(SessionProviderContext) as any;
+  const { setModalIsOpen, setSelectedMessage } = useContext(
+    MortgageDischargeContext
+  );
 
-  const handlerOpenModal = (row: any) => {};
-  const handlerOpenModalTracking = (row: any) => {};
+  const { setIsOpenTrackingModal, setModalTrackingData } = useContext(
+    MortgageDischargeContext
+  );
+
+  const handlerOpenDetailModal = (row: any) => {
+    setSelectedMessage({ id: row.message670ID, cukCode: row.cukCode });
+    setModalIsOpen(true);
+  };
+
+  const handlerOpenModalTracking = (row: any) => {
+    setIsOpenTrackingModal(true);
+    setModalTrackingData(row?.modalTrackingData);
+  };
 
   const iconButtonStyle = { padding: 0, margin: "0px 2px" };
   const disabledColor = "#CCC";
@@ -45,7 +60,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
                 ? defaultColor
                 : disabledColor,
             }}
-            onClick={() => handlerOpenModal(row)}
+            onClick={() => handlerOpenDetailModal(row)}
             disabled={!userInfo?.permissions?.sendMessage}
           >
             <InfoOutlinedIcon />

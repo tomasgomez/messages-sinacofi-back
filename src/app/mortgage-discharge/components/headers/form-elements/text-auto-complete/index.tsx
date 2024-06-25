@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
-import { CardContext } from "@/app/mortgage-discharge/components/store/ModalStore";
 import Field from "@/components/Field";
 
 export const TextAutoComplete = (props: {

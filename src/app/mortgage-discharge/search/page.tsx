@@ -17,6 +17,9 @@ import { formatSearchData } from "@/utils/mortgage-discharge-format";
 import { MyContexLayout } from "@/app/context";
 import { getForeClosureData } from "../api-calls";
 import { MortgageDischargeData } from "@/app/component/inbox-table/type";
+import { MortgageDischargeContextProvider } from "../components/store/ModalStore";
+import { InfoModal } from "../components/info-modal";
+import { TrackingModal } from "../components/tracking-modal";
 
 export default function SearchScreen() {
   const [data, setData] = useState<any[]>([]);
@@ -43,26 +46,30 @@ export default function SearchScreen() {
     }
   };
   return (
-    <StyledPaper>
-      <ScrollableDiv>
-        <InboxHeaderSearch
-          title="Búsqueda de Alzamientos Hipotecarios"
-          handleGetData={handleGetData}
-        />
-        <StyledBox>
-          <StyledTypography>
-            Resultados {data.length ? `(${data.length})` : null}
-          </StyledTypography>
-          <DataTable
-            loading={loading}
-            maxHeight={350}
-            rows={data}
-            columns={columnsSearch}
-            emptyDataComponent={NoContent}
-            highlightRowDisabled
+    <MortgageDischargeContextProvider>
+      <StyledPaper>
+        <ScrollableDiv>
+          <InboxHeaderSearch
+            title="Búsqueda de Alzamientos Hipotecarios"
+            handleGetData={handleGetData}
           />
-        </StyledBox>
-      </ScrollableDiv>
-    </StyledPaper>
+          <StyledBox>
+            <StyledTypography>
+              Resultados {data.length ? `(${data.length})` : null}
+            </StyledTypography>
+            <DataTable
+              loading={loading}
+              maxHeight={350}
+              rows={data}
+              columns={columnsSearch}
+              emptyDataComponent={NoContent}
+              highlightRowDisabled
+            />
+          </StyledBox>
+        </ScrollableDiv>
+        <InfoModal />
+        <TrackingModal />
+      </StyledPaper>
+    </MortgageDischargeContextProvider>
   );
 }

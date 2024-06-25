@@ -20,15 +20,17 @@ import {
 } from "@/app/component/inbox-table/type";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
+import { MyContexLayout } from "@/app/context";
+import { MortgageDischargeContext } from "../store/ModalStore";
 
-export const TrackingModal = (props: {
-  open: boolean;
-  onClose: (state: boolean) => void;
-  data: ModalTrackingData | undefined;
-  handleGetDataList: () => void;
-  setLoading: (state: boolean) => void;
-  selectedInstitution: string;
-}) => {
+export const TrackingModal = (props: { handleGetDataList?: () => void }) => {
+  const {
+    isOpenTrackingModal,
+    setIsOpenTrackingModal,
+    modalTrackingData,
+    setModalTrackingData,
+  } = useContext(MortgageDischargeContext);
+
   const [statusSelected, setStatusSelected] = useState<string | undefined>(
     undefined
   );
@@ -36,15 +38,10 @@ export const TrackingModal = (props: {
   const [historyList, setHistoryList] = useState<HistoryTrackingModal[]>([]);
   const [dataOptions, setDataOptions] = useState<unknown[]>([]);
 
+  const { selectedInstitution } = useContext(MyContexLayout) as any;
   const { ErrorModal } = useModalManager();
 
-  const {
-    open = false,
-    onClose = () => null,
-    data,
-    handleGetDataList = () => null,
-    selectedInstitution = "",
-  } = props || {};
+  const { handleGetDataList = () => null } = props || {};
 
   const {
     cukCode = "",
@@ -52,12 +49,13 @@ export const TrackingModal = (props: {
     institutionDestination = "",
     lastMessage,
     ...restOfData
-  } = data || {};
+  } = modalTrackingData || {};
 
   const { userInfo } = useContext(SessionProviderContext);
 
   const handleClose = () => {
-    onClose(false);
+    setIsOpenTrackingModal(false);
+    setModalTrackingData(null);
     handleGetDataList();
   };
 
@@ -66,12 +64,11 @@ export const TrackingModal = (props: {
       setHistoryList(history);
       setDataOptions(EnabledExtraOptions(options, history));
     }
-  }, []);
+  }, [isOpenTrackingModal]);
 
   const handleChange = async () => {
     try {
       setLoading(true);
-
       const newCuk: MortgageDischargeData = await updateForeClosureMessage(
         cukCode,
         statusSelected
@@ -94,7 +91,7 @@ export const TrackingModal = (props: {
 
     if (selectedInstitution !== institutionDestination)
       return "Solo la institución destino puede cambiar el estado de la base de seguimiento";
-    
+
     if (dataOptions.every((elem: any) => elem?.disabled))
       return "No hay más opciones de cambio de estado";
 
@@ -131,7 +128,7 @@ export const TrackingModal = (props: {
         top: "calc((100% - 678px)/2)",
         margin: 0,
       }}
-      open={open}
+      open={isOpenTrackingModal}
       onClose={handleClose}
     >
       <IconButton

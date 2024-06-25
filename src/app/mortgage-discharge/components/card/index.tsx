@@ -24,14 +24,13 @@ import { Message } from "@/app/component/inbox-table/type";
 import { reverseArray } from "@/utils/functions";
 import { MyContexLayout } from "@/app/context";
 import { withRadioButton } from "@/utils/mortgage-discharge-utils";
+import { MortgageDischargeContext } from "../store/ModalStore";
 
 const CarDischarge = ({
   data,
-  handlerTrackingModal,
   isNormalizationScreen = false,
 }: {
   data: any;
-  handlerTrackingModal: (data?: ModalTrackingData) => void;
   isNormalizationScreen?: boolean;
 }) => {
   const [selectedMessage, setSelectorMessage] = React.useState<string | null>(
@@ -41,6 +40,10 @@ const CarDischarge = ({
 
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = React.useContext(MyContexLayout) as any;
+  
+  const { setIsOpenTrackingModal, setModalTrackingData } = React.useContext(
+    MortgageDischargeContext
+  );
 
   const {
     codeData,
@@ -120,7 +123,10 @@ const CarDischarge = ({
 
         <InfoColumn data={infoData} />
         <StyledButton
-          onClick={() => handlerTrackingModal(modalTrackingData)}
+          onClick={() => {
+            setModalTrackingData(modalTrackingData);
+            setIsOpenTrackingModal(true);
+          }}
           disabled={buttonDisabled}
           variant={isNormalizationScreen ? "contained" : "outlined"}
         >

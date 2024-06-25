@@ -6,7 +6,7 @@ import Button from "@mui/material/Button/Button";
 import IconButton from "@mui/material/IconButton/IconButton";
 import Typography from "@mui/material/Typography/Typography";
 import { CloseRounded } from "@mui/icons-material";
-import { CardContext } from "@/app/mortgage-discharge/components/store/ModalStore";
+import { MortgageDischargeContext } from "@/app/mortgage-discharge/components/store/ModalStore";
 import { useCallback, useContext, useState } from "react";
 import { handleGenericChangeFilter } from "@/utils/mortgage-discharge-utils";
 import { FilterDropdowns } from "@/app/mortgage-discharge/components/headers/form-elements/filters-dropdowns";
@@ -20,7 +20,7 @@ import {
 import { Filter } from "@/types/mortgage-discharge";
 
 export const FilterSelector = (props: { onClose: Function }) => {
-  const { handleChangeAddFilter, filters } = useContext(CardContext);
+  const { handleChangeAddFilter, filters } = useContext(MortgageDischargeContext);
   const [auxFilters, setAuxFilters] = useState<Filter[]>(
     // combines arrays, have priority in filter elements when the label is the same
     combineArrays(auxFiltersConstant, filters)
