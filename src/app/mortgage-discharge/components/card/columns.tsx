@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import { IconButton, Box } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { CardContext } from "../../in-process/store/ModalStore";
+import { CardContext } from "../store/ModalStore";
 import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
@@ -67,10 +67,10 @@ const AccionesColumn = ({ row }: { row: any }) => {
         alignItems: "center",
       }}
     >
-      {actions.includes("sing") && (
+      {actions.includes("SIGN") && messageCode === "670" && (
         <Tooltip
           title={
-            userInfo.permissions.signMortgageDischarge
+            userInfo?.permissions?.signMortgageDischarge
               ? ""
               : "No tienes permisos para realizar esta acción."
           }
@@ -87,7 +87,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
               disabled={!userInfo?.permissions?.signMortgageDischarge}
               onClick={() =>
                 router.push(
-                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
+                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=sign`
                 )
               }
             >
@@ -96,10 +96,10 @@ const AccionesColumn = ({ row }: { row: any }) => {
           </span>
         </Tooltip>
       )}
-      {actions.includes("sent") && (
+      {actions.includes("SIGN") && messageCode !== "670" && (
         <Tooltip
           title={
-            userInfo.permissions.sendMessage
+            userInfo?.permissions?.sendMessage
               ? ""
               : "No tienes permisos para realizar esta acción."
           }
@@ -114,19 +114,19 @@ const AccionesColumn = ({ row }: { row: any }) => {
               disabled={checkDisabledSent()}
               onClick={() =>
                 router.push(
-                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}`
+                  `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=sent`
                 )
               }
             >
-              <SendOutlinedIcon />
-            </IconButton>
+            <SendOutlinedIcon />
+          </IconButton>
           </span>
         </Tooltip>
       )}
-      {actions.includes("details") && (
+      {actions.includes("SHOW_DETAIL") && (
         <Tooltip
           title={
-            userInfo.permissions.sendMessage
+            userInfo?.permissions?.sendMessage
               ? ""
               : "No tienes permisos para realizar esta acción."
           }
@@ -136,19 +136,19 @@ const AccionesColumn = ({ row }: { row: any }) => {
               key={`detail-icon-${id}`}
               style={{
                 ...iconButtonStyle,
-                color: userInfo.permissions.sendMessage
+                color: userInfo?.permissions?.sendMessage
                   ? defaultColor
                   : disabledColor,
               }}
               onClick={() => handlerOpenModal(row)}
-              disabled={!userInfo.permissions.sendMessage}
+              disabled={!userInfo?.permissions?.sendMessage}
             >
               <InfoOutlinedIcon />
             </IconButton>
           </span>
         </Tooltip>
       )}
-      {actions.includes("print") && (
+      {actions.includes("PRINT") && (
         <IconButton
           key={`print-icon-${id}`}
           style={{
@@ -160,16 +160,32 @@ const AccionesColumn = ({ row }: { row: any }) => {
           <LocalPrintshopOutlinedIcon />
         </IconButton>
       )}
-      {messageCode === "670" && status === "01" && (
+      {actions.includes("EDIT") && (
         <IconButton
           key={`edit-icon-${id}`}
           style={{
             ...iconButtonStyle,
-            color: actions.includes("edit") ? enabledColor : defaultColor,
+            color: defaultColor,
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=edit`
+            )
+          }
+        >
+          <EditOutlinedIcon />
+        </IconButton>
+      )}
+      {actions.includes("DUPLICATE") && (
+        <IconButton
+          key={`edit-icon-${id}`}
+          style={{
+            ...iconButtonStyle,
+            color: enabledColor,
+          }}
+          onClick={() =>
+            router.push(
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=duplicate`
             )
           }
         >

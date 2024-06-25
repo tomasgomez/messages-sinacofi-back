@@ -44,6 +44,7 @@ export const StyledTableCellHeader = styled(TableCell)`
   width: fit-content;
   font-weight: bold;
   padding-left: 16px;
+  white-space: nowrap;
 `;
 
 export const StyledCapitalizedSpan = styled("span")`

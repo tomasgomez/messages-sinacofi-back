@@ -1,5 +1,5 @@
 import institutions from "./mock-instititutions.json";
-import { messagesTypes } from "../../utils/messagesSchemaTypes";
+import { Filter } from "@/types/mortgage-discharge";
 // import { messageSchemas } from "@/utils/messagesSchema";
 
 export const getInstitutions = async () => {
@@ -18,10 +18,21 @@ export const getMessageDescriptions = async () => {
 export const getMessageSchema = async (
   messageCode: string,
   messageId?: string,
-  cukCode?: string
+  cukCode?: string,
+  action?: string,
+  institutionId?: string
+) => {
+  const destination = institutionId;
+  return fetch(
+    `/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&destination=${destination}&cukCode=${cukCode}&action=${action}`
+  ).then((response: any) => response.json());
+};
+
+export const getIndCurrencies = async (
+  index?: string,
 ) => {
   return fetch(
-    `/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&cukCode=${cukCode}`
+    `/api/ind?${index ? `index=${index}` : ""}`
   ).then((response: any) => response.json());
 };
 
@@ -30,9 +41,114 @@ export const getMessageDetails = async (messageId: number | string) => {
     res.json()
   );
 };
-export const createMessage = async (data: any, status: string) => {
+
+export const getDocument = async (documentId: string) => {
+  try {
+    const queryParams = new URLSearchParams();
+
+    if (documentId) {
+      queryParams.append("id", documentId);
+    }
+
+    const url = `/api/documents?${queryParams.toString()}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data = await response?.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch message details:", error);
+    throw error;
+  }
+};
+
+
+export async function getInformsAccepted(
+  filters?: Filter[]
+) {
+  try {
+    let url = `/api/informs/accepted`;
+
+    const newFilters = filters?.slice() || [];
+
+    if (newFilters.length > 0) {
+      const queryParams = newFilters
+        .map(
+          (filter) =>
+            `${encodeURIComponent(filter?.label)}=${encodeURIComponent(
+              filter.value ?? ""
+            )}`
+        )
+        .join("&");
+      url = `${url}?${queryParams}`;
+    }
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: Failed api call, Status: ${response.status}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data: any[] = await response.json();
+
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+}
+
+export async function getInformsRejected(
+  filters?: Filter[]
+) {
+  try {
+    let url = `/api/informs/rejected`;
+
+    const newFilters = filters?.slice() || [];
+
+    if (newFilters.length > 0) {
+      const queryParams = newFilters
+        .map(
+          (filter) =>
+            `${encodeURIComponent(filter?.label)}=${encodeURIComponent(
+              filter.value ?? ""
+            )}`
+        )
+        .join("&");
+      url = `${url}?${queryParams}`;
+    }
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: Failed api call, Status: ${response.status}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data: any[] = await response.json();
+
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+}
+
+export const createMessage = async (data: any, status: string, action?: string) => {
   const payload = JSON.stringify({ ...data, status });
-  return fetch(`/api/message`, {
+  return fetch(`/api/message?&action=${action}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,7 +172,9 @@ export const signMessage = async (
     });
 
     if (!response.ok) {
-      let err = new Error(`Error: ${response.status} ${response.statusText}`) as any;
+      let err = new Error(
+        `Error: ${response.status} ${response.statusText}`
+      ) as any;
       err.status = response.status;
       throw err;
     }
@@ -121,3 +239,31 @@ export const getMessage = async (params: {
     throw error;
   }
 };
+
+export const validatePassword = async (password: string) => {
+  try {
+    const response = await fetch(`/api/message/${password}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // body: JSON.stringify({ ...data, id: id, status }),
+    });
+
+    if (!response.ok) {
+      let err = new Error(
+        `Error: ${response.status} ${response.statusText}`
+      ) as any;
+      err.status = response.status;
+      throw err;
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error with password:", error);
+    throw error;
+  }
+};
+
+

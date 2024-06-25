@@ -11,9 +11,23 @@ export async function update(message: Message): Promise<Message | Error> {
         let documentsToUpdate: Document[] = [];
 
         if (message.status && message.id !== undefined && message.status.length > 0 && message.id !== '') {
-            await prismaClient.status.createMany({
-                data: message.status
-            });
+            for (const status of message.status) {
+                const existingStatus = await prismaClient.status.findUnique({
+                    where: {
+                        messageId_id: {
+                            messageId: message.id,
+                            id: status.id,
+                        },
+                    },
+                });
+
+                if (!existingStatus) {
+                    await prismaClient.status.create({
+                    data: status,
+                    });
+                }
+
+            }
         }
 
         /* Filter out empty values from the message object */
@@ -21,12 +35,11 @@ export async function update(message: Message): Promise<Message | Error> {
             Object.entries(message).filter(([_, value]) => value !== '')
         );
 
-        const { parameters, documents, ...dataWithoutParameters } = dataToUpdate;
+        const { parameters, documents, statusCode, ...dataWithoutParameters } = dataToUpdate;
 
         if (message.documents && message.documents.length > 0) {
             documentsToUpdate = message.documents;
         }
-
 
         delete dataWithoutParameters.status;
 
@@ -61,20 +74,22 @@ export async function update(message: Message): Promise<Message | Error> {
 
         // Separate parameters into toUpdate and toCreate lists
         const toUpdate = message.parameters?.filter((p: any) => 
-            existingParameters.some(ep => ep.name === p.name)
+            existingParameters.some(ep => ep.name === p.name && ep.value !== p.value && p.value !== '')
         ) || [];
 
         const toCreate = message.parameters?.filter((p: any) => 
             !existingParameters.some(ep => ep.name === p.name)
         ) || [];
-
+        
         // Update existing parameters
-        for (const parameter of toUpdate) {
-            prismaClient.parameters.updateMany({
+        for await (const parameter of toUpdate) {
+            await prismaClient.parameters.update({
                 where: {
-                    messageId: updatedMessage.id,
-                    name: parameter.name,
-                    priority: parameter.priority
+                    messageId_name_priority: {
+                        messageId: updatedMessage.id,
+                        name: parameter.name,
+                        priority: parameter.priority,
+                    }
                 },
                 data: {
                     value: parameter.value

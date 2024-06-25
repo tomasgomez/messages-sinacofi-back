@@ -14,15 +14,12 @@ export default function RootLayout({
       sessionStorage.setItem("Section", "");
   }, []);
 
-
   return (
-    <html lang="en">
+    <html lang="en" style={{ overflow: "hidden" }}>
       <body style={{ background: "#fffffff !important" }}>
         {/* {session ? */}
         <NextAuthProvider>
-          <SessionProvider>
-            {children}
-          </SessionProvider>
+          <SessionProvider>{children}</SessionProvider>
         </NextAuthProvider>
       </body>
     </html>

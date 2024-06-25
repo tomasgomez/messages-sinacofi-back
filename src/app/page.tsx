@@ -11,7 +11,9 @@ export default function Home() {
 
   useEffect(() => {
     if (!loading && !session) {
+      
       signIn("oidc", { prompt: "login" });
+      
     } else if (session && !loading) {
       router.push("/messages/inbox");
     }

@@ -16,13 +16,15 @@ const isHighlightRow = (
   isLastRow: boolean,
   isRadioButtonSelected: boolean | null,
   withRadioButton: boolean,
-  row: Message
+  row: Message,
+  highlightRowDisabled: boolean
 ) => {
+  if (highlightRowDisabled) return false;
+  if (highlightLastRow) return isLastRow;
   if (withRadioButton && (row?.status === "01" || !row?.status)) {
     return !!isRadioButtonSelected;
   }
   if (!withRadioButton) return row?.status === "01" || !row?.status;
-  return highlightLastRow && isLastRow;
 };
 
 const isHighlightRejected = (isLastRow: boolean, row: Message) =>
@@ -42,6 +44,7 @@ type CustomCellType = {
   highlightRow?: boolean;
   highlightRowRejected?: boolean;
   withBorderLeft?: boolean;
+  rowHeight: number;
 };
 
 const CustomCell = ({
@@ -49,9 +52,10 @@ const CustomCell = ({
   render: Component,
   row,
   rowOptions,
-  highlightRow,
+  highlightRow = false,
   highlightRowRejected,
   withBorderLeft,
+  rowHeight,
 }: CustomCellType) => {
   return (
     <StyledTabCell
@@ -60,7 +64,7 @@ const CustomCell = ({
       highlightRowRejected={highlightRowRejected}
       withBorderLeft={withBorderLeft}
       scope="row"
-      style={rowOptions?.style}
+      style={{ height: rowHeight, ...rowOptions?.style }}
       align={rowOptions?.align}
     >
       {Component ? <Component value={value} row={row} /> : value}
@@ -84,6 +88,8 @@ export function TableContentRows(props: TableProps) {
     isExpansible = false,
     rowOptions = {} as RowOptions,
     selectedRadioButton = null,
+    highlightRowDisabled = false,
+    rowHeight = 57,
   } = props || {};
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -134,6 +140,7 @@ export function TableContentRows(props: TableProps) {
         {/* ///////////////////////  Rows /////////////////////// */}
         {columns.map((column: any, idx: number) => (
           <CustomCell
+            rowHeight={rowHeight}
             key={`row-${column?.id}-${idx}`}
             value={row[column?.id as keyof Message] || "-"}
             row={row}
@@ -144,7 +151,8 @@ export function TableContentRows(props: TableProps) {
               isLastRow,
               selectedRadioButton === row?.id,
               withRadioButton,
-              row
+              row,
+              highlightRowDisabled
             )}
             highlightRowRejected={isHighlightRejected(isLastRow, row)}
             withBorderLeft={withBorderLeft(highlightLastRow, isLastRow, !idx)}

@@ -18,17 +18,6 @@ export interface UserInfo {
   permissions: { [key: string]: boolean };
 }
 
-// type initialUserInfoType = {
-//   userInfo: UserInfo | undefined,
-//   setUserInfo: React.Dispatch<React.SetStateAction<UserInfo | undefined>>,
-// };
-
-// const initialUserInfoState: initialUserInfoType = {
-//   userInfo: undefined,
-//   setUserInfo: () => undefined,
-// };
-
-
 type initialUserInfoType = UserInfo | undefined;
 
 interface SessionContextType {

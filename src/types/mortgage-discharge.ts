@@ -5,6 +5,7 @@ export interface CodeCardMortgageDischarge {
   foreclosureDate: string;
   cukStatus: string;
   lastMessageCode: string;
+  lasMessageStatus: string;
 }
 
 export interface InforCardMortgageDischarge {
@@ -26,6 +27,7 @@ export interface ModalTrackingData {
   region: string;
   institutionDestination: string;
   history: any[];
+  lastMessage: Message;
 }
 
 export interface DataMortgageDischarge {
@@ -49,7 +51,8 @@ export interface DataHeaderInfoModal {
 }
 
 interface ObjectInfoModal {
-  accessor?: string;
+  name?: string;
+  text?: string;
   label?: string;
   value?: string;
 }

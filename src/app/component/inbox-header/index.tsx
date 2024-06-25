@@ -1,8 +1,8 @@
 "use client";
 import * as React from "react";
 import DropdrownInbox from "../inbox-dropdown";
-import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import PrintOutlinedIcon from "@mui/icons-material/PrintOutlined";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import {
   StyledInboxHeaderContent,
@@ -14,27 +14,31 @@ import { Typography } from "@mui/material";
 import { montserrat } from "@/utils/fonts";
 import { MessageExportContext } from "../MessageExportProvider";
 
-export default function InboxHeader(props: { amountMessages: number, title:string; }) {
+export default function InboxHeader(props: {
+  amountMessages: number;
+  title: string;
+}) {
   const { amountMessages, title } = props;
-  const { setPrintPDF, selectedMessages, setDownloadPDF } = React.useContext(MessageExportContext);
+  const { setPrintPDF, selectedMessages, setDownloadPDF } =
+    React.useContext(MessageExportContext);
 
   const handlePrint = () => {
-    if(selectedMessages.length) {
+    if (selectedMessages.length) {
       setPrintPDF(true);
-    };
+    }
   };
 
   const handleDonwload = () => {
-    if(selectedMessages.length) {
+    if (selectedMessages.length) {
       setDownloadPDF(true);
-    };
+    }
   };
 
   return (
     <StyledInboxHeaderContent>
       <StyledTitleAndDropdown
         sx={{
-          m: 2,
+          margin: "0px 16px 16px 16px",
         }}
         width="100%"
       >
@@ -48,7 +52,10 @@ export default function InboxHeader(props: { amountMessages: number, title:strin
         }}
         width="100%"
       >
-        <Typography variant="subtitle1" sx={{ color: "#898989", fontFamily:montserrat.style.fontFamily }}>
+        <Typography
+          variant="subtitle1"
+          sx={{ color: "#898989", fontFamily: montserrat.style.fontFamily }}
+        >
           {amountMessages} mensajes en total
         </Typography>
         <StyledIconsContent width={88}>

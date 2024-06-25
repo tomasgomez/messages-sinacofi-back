@@ -10,6 +10,9 @@ import { createForeclosure } from './createForeclosure';
 import { CUK } from '../../entities/cuk/cuk';
 import { updateForclosure } from "./updateForeclosure";
 import { normalization } from "./normalization";
+import { getMessageForeclosureAccepted } from "./getForeclosureDetailAccepted";
+import { getMessageForeclosureRejected } from "./getForeclosureDetailRejected";
+import { User } from "@/backend/entities/user/user";
 
 // Message Detail usecases
 export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
@@ -21,12 +24,18 @@ export class MessageForeclosureUsecase implements MessageForeclosureUsecases {
     getMessageForeclosure = async (filter: Filter): Promise<CUK[] | Error> =>
         getMessageForeclosure(this.messageRepository, this.cukRepository, filter)
 
+    getMessageForeclosureAccepted = async (filter: Filter): Promise<CUK[] | Error> =>
+        getMessageForeclosureAccepted(this.messageRepository, this.cukRepository, filter)
+
+    getMessageForeclosureRejected = async (filter: Filter): Promise<CUK[] | Error> =>
+        getMessageForeclosureRejected(this.messageRepository, this.cukRepository, filter)
+
     // create foreclosure
     createForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 
         createForeclosure(this.cukRepository, cuk, message)
 
-    updateForeclosure = async (cuk: CUK, message: Message): Promise < CUK | Error > => 
-        updateForclosure(this.cukRepository, this.messageRepository, cuk, message)
+    updateForeclosure = async (cuk: CUK, message: Message, user: User): Promise < CUK | Error > => 
+        updateForclosure(this.cukRepository, this.messageRepository, cuk, message, user)
 
     normalization = async (cuk: CUK, message: Message): Promise < CUK | Error > =>
         normalization(this.cukRepository, cuk, message)

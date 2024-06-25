@@ -1,14 +1,12 @@
 import { MessageRepository } from '../../repository/messageRepository';
 import { Message } from '../../entities/message/message';
-import { docUseCase } from '../docs/usecases';
-import { Documents } from '@/backend/entities/message/interface';
 import { findDocuments } from './findDocuments';
 import { FilterMessage } from '@/backend/entities/message/filter';
 
 // Get message function
 export async function getMessage(repository: MessageRepository, filter: FilterMessage): Promise<Message[] | Error> {
   try {
-    let messageResponse = await repository.find(filter);
+    let messageResponse = await repository.find(filter, false, true);
     
     /* Check if the response is an error */
     if (messageResponse instanceof Error) {
@@ -29,6 +27,7 @@ export async function getMessage(repository: MessageRepository, filter: FilterMe
       }
       return messageWithDocs;
     });
+
     // wait for all messages to be updated
     const messages = await Promise.all(messageUpdated);
     return messages;

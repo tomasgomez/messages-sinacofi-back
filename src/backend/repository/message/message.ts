@@ -8,7 +8,15 @@ import { deleteMany } from '@/backend/repository/message/deleteMany';
 import { FilterMessage } from '@/backend/entities/message/filter';
 export class PrismaMessageAdapter implements MessageRepository {
   // find message
-  find = async(filter: FilterMessage): Promise<Message[] | Error> => find(filter);
+  find = async(
+    filter: FilterMessage, 
+    includeParameters: boolean,
+    includeDocuments: boolean
+  ): Promise<Message[] | Error> => find(
+    filter,
+    includeParameters,
+    includeDocuments
+  );
   
   // create message
   create = async(message: Message): Promise<Message | Error> => create(message);

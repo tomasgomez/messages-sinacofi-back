@@ -2,7 +2,6 @@ import { Parameter } from "./parameter";
 
 export interface FilterMessage {
   [key: string]: unknown ;
-
   id ? : string[]
   messageCode ? : string[]
   status ? : string[]
@@ -16,11 +15,7 @@ export interface FilterMessage {
   actions ? : string[]
   createdAt ? : Date
   updatedAt ? : Date
-
-  detail: boolean ;
-
   parameters ? : Parameter[];
-
   count ? : string;
   offset ? : string;
 }

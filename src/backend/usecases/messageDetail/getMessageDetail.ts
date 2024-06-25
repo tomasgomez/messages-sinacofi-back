@@ -10,7 +10,7 @@ import { FilterMessage } from '@/backend/entities/message/filter';
 // Get messageDetail function
 export async function getMessageDetail(repository: MessageRepository, message: FilterMessage): Promise < Message[] | Error > {
     try {
-        return await repository.find(message);
+        return await repository.find(message, true, true);
     } catch (error: any) {
 
         console.error('Error fetching messageDetail:', error);

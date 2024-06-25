@@ -19,8 +19,11 @@ import {
 import {
   MessageRepository
 } from '@/backend/repository/messageRepository';
+import { MessageActions } from '@/backend/entities/message/actions';
+import { User } from '@/backend/entities/user/user';
+import { MessageStatus } from '@/backend/entities/message/status';
 
-export async function updateForclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message): Promise < CUK | Error > {
+export async function updateForclosure(cukRepository: CUKRepository, messageRepository: MessageRepository, cuk: CUK, message: Message, user: User): Promise < CUK | Error > {
   try {
 
     if (!cuk?.cukCode) {
@@ -41,8 +44,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     let fetchedMessage = await messageRepository.find({
       cukCode: [cuk.cukCode],
       messageCode: [MessageTypes.ALZAMIENTO_HIPOTECARIO],
-      detail: false
-    });
+    },false,false);
 
     if (fetchedMessage instanceof Error) {
       return new Error('Error fetching message');
@@ -58,11 +60,11 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
     /* Check if is updating cuk status and set the new status with new message values */
     switch (cuk.status) {
       case ForeclosureStatus.SIGNED: // 671
-      messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
-      cuk.status = ForeclosureStatus.SIGNED;
-      hasToUpdateMessage = true;
-      newMessage.origin = origin;
-      newMessage.destination = destination;
+        messageType = MessageTypes.ACEPTACION_DE_ALZAMIENTO_HIPOTECARIO
+        cuk.status = ForeclosureStatus.SIGNED;
+        hasToUpdateMessage = true;
+        newMessage.origin = origin;
+        newMessage.destination = destination;
         break;
 
       case ForeclosureStatus.REJECTED: // 672
@@ -114,7 +116,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         newMessage.destination = destination;
         break;
       
-      case ForeclosureStatus.PAYMENT_DATA: // 676
+      case ForeclosureStatus.PAYMENT_DATA: // 676 no
         messageType = MessageTypes.DATOS_PARA_EL_PAGO_AH
         cuk.status = ForeclosureStatus.SEND_LIQUIDATION_PAYMENT;
         hasToUpdateMessage = true;
@@ -130,7 +132,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         newMessage.destination = origin;
         break;
       
-      case ForeclosureStatus.PAYMENT_OPTION_REJECTION: // 678
+      case ForeclosureStatus.PAYMENT_OPTION_REJECTION: // 678 no
         messageType = MessageTypes.RECHAZO_DE_PAGO_AH
         cuk.status = ForeclosureStatus.PAYMENT_OPTION_REJECTION;
         hasToUpdateMessage = true;
@@ -138,7 +140,7 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         newMessage.destination = destination;
         break;
       
-      case ForeclosureStatus.PAYMENT_OPTION_ACCEPTED: // 679
+      case ForeclosureStatus.PAYMENT_OPTION_ACCEPTED: // 679 no
         messageType = MessageTypes.CONFIRMACION_DE_PAGO_AH
         cuk.status = ForeclosureStatus.PAYMENT_OPTION_ACCEPTED;
         hasToUpdateMessage = true;
@@ -150,15 +152,15 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
         cuk.status = ForeclosureStatus.INIT;
         break;
       
-      case ForeclosureStatus.PAYMENT: // 11
+      case ForeclosureStatus.PAYMENT: // 11 677
         cuk.status = ForeclosureStatus.PAYMENT;
         break;
       
-      case ForeclosureStatus.SENT_REJECTION: // 12
+      case ForeclosureStatus.SENT_REJECTION: // 12 678
         cuk.status = ForeclosureStatus.SENT_REJECTION;
         break;
 
-      case ForeclosureStatus.SENT_CONFIRM_PAYMENT: // 14
+      case ForeclosureStatus.SENT_CONFIRM_PAYMENT: // 14 679
         cuk.status = ForeclosureStatus.SENT_CONFIRM_PAYMENT;
         break;
 
@@ -171,8 +173,9 @@ export async function updateForclosure(cukRepository: CUKRepository, messageRepo
 
       newMessage.cukCode = cuk.cukCode;
       newMessage.messageCode = messageType;
-      
-      await createMessage(messageRepository, newMessage);   
+      newMessage.statusCode = MessageStatus.PREPARADO;
+                 
+      await createMessage(messageRepository, newMessage, user);   
     }
 
     const updatedCuk = await cukRepository.update(cuk);

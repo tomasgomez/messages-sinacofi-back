@@ -2,6 +2,8 @@ import { messageUseCase } from "@/backend/usecases/message/usecases";
 import { validateCreateMessage } from "@/backend/handler/message/presenter/createMessage";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prepareMessages } from "./adapter/prepareMessages";
+import { getToken } from "next-auth/jwt";
+import { getUser } from "../user/get";
 
 // post message function
 export async function post(req: NextApiRequest, res: NextApiResponse < any > ) {
@@ -13,7 +15,21 @@ export async function post(req: NextApiRequest, res: NextApiResponse < any > ) {
             return;
         }
 
-        let messageResponse = await messageUseCase.handleMessage(validatedMessage);
+        const token = await getToken({req});
+        if (!token || token.dni ==''){
+          res.status(400).json([]);
+          return;
+        }
+
+        let user = await getUser(token.dni!);
+        if (user instanceof Error){
+          res.status(400).json([]);
+          return; 
+        }
+
+        validatedMessage.originArea = user.area ?? '';
+
+        let messageResponse = await messageUseCase.handleMessage(validatedMessage, user);
 
         if (messageResponse instanceof Error) {
             res.status(400).json(messageResponse.message);

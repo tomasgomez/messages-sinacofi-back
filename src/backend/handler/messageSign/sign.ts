@@ -3,27 +3,42 @@ import { validateUpdateMessage } from "@/backend/handler/messageSign/presenter/u
 import { NextApiRequest, NextApiResponse } from "next";
 import { prepareMessages } from "./adapter/prepareMessages";
 import { getToken } from "next-auth/jwt";
+import { getUser } from "../user/get";
 
 // put message function
 export async function sign(req: NextApiRequest, res: NextApiResponse < any > ) {
     try {
         const token = await getToken({req});
+
+        if (!token || token.dni ==''){
+            res.status(400).json([]);
+            return;
+        }
         
         let dni: string='';
         let name: string='';
+
         if(token?.dni){
             dni = token.dni;
         } 
         if(token?.name){
             name= token.name;
-        } 
+        }
+
         let message = validateUpdateMessage(req.body);
 
         if (message instanceof Error) {
             res.status(400).json(message);
             return;
         }
-        let messageResponse = await messageUseCase.signMessage(message, dni, name);
+
+        let user = await getUser(token.dni!);
+        if (user instanceof Error){
+          res.status(400).json([]);
+          return; 
+        }
+
+        let messageResponse = await messageUseCase.signMessage(message, dni, name, user);
 
         if (messageResponse instanceof Error) {
             res.status(400).json(messageResponse);

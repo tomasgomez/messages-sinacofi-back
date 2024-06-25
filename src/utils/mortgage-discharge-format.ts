@@ -1,4 +1,7 @@
-import { Message } from "@/app/component/inbox-table/type";
+import {
+  HistoryTrackingModal,
+  Message,
+} from "@/app/component/inbox-table/type";
 import {
   BankDetailsMSInfoModal,
   DetailsMSInfoModal,
@@ -48,70 +51,41 @@ const formatModalInfoHeader = (
   return dataHeader;
 };
 
+const SortAndGetLastMessage = (
+  messages: Message[],
+  filterMessageCode: string
+) => {
+  let sortedMessages = sortMessagesOldToNew(messages);
+  const ListMessages = messages.filter(
+    (message) => message?.messageCode === filterMessageCode
+  );
+
+  // The order of the messages is oldest to newest, (1,2,3,4) with respect to creation identifiers
+  const mostRecentMessage = ListMessages[ListMessages.length - 1];
+
+  return { sortedMessages, mostRecentMessage };
+};
+
 export const formatCardData = (
   data: MortgageDischargeData[] | undefined
 ): DataMortgageDischarge[] => {
   if (!data) return [];
 
   const formattedData = data?.map((elem) => {
-    let { messages: unSortedMessages = [] } = elem;
+    let { messages: unSortedMessages = [], status: cukStatus } = elem;
 
-    let messages = sortMessagesOldToNew(unSortedMessages);
-
-    // // To Mock Data
-    // const mewMessages2: Message[] = [
-    //   messages[0],
-    //   messages[0],
-    //   messages[0],
-    //   messages[0],
-    // ];
-    // // Mock different status to test
-    // const newMessages: Message[] = mewMessages2.map((message, i) => {
-    //   const updatedMessage: Message = { ...message };
-    //   if (i === 0) updatedMessage.messageCode = "670";
-    //   if (i === 1) updatedMessage.messageCode = "671";
-    //   if (i === 2) updatedMessage.messageCode = "674";
-    //   if (i === 3) updatedMessage.messageCode = "675";
-    //   // if (i === 4) updatedMessage.messageCode = "670";
-    //   // if (i === 5) updatedMessage.messageCode = "671";
-    //   // if (i === 6) updatedMessage.messageCode = "674";
-    //   if (i === 0) updatedMessage.status = "06";
-    //   if (i === 1) updatedMessage.status = "05";
-    //   if (i === 2) updatedMessage.status = "06";
-    //   if (i === 3) updatedMessage.status = "05";
-    //   if (i === 0) updatedMessage.actions = ["details"];
-    //   if (i === 1) updatedMessage.actions = ["details"];
-    //   if (i === 2) updatedMessage.actions = ["sent"];
-    //   if (i === 3) updatedMessage.actions = ["sent"];
-    //   // if (i === 4) updatedMessage.status = "05";
-    //   // if (i === 5) updatedMessage.status = "06";
-    //   // if (i === 6) updatedMessage.status = "05";
-    //   if (i === 0) updatedMessage.creationDate = "3/20/2024";
-    //   if (i === 1) updatedMessage.creationDate = "4/1/2024";
-    //   if (i === 2) updatedMessage.creationDate = "4/5/2024";
-    //   if (i === 3) updatedMessage.creationDate = "4/15/2024";
-    //   // if (i === 4) updatedMessage.creationDate = "4/16/2024";
-    //   // if (i === 5) updatedMessage.creationDate = "4/17/2024";
-    //   return updatedMessage;
-    // });
-    // messages = newMessages;
-
-    const ListMessages670 = messages.filter(
-      (message) => message?.messageCode === "670"
-    );
-
-    // The order of the messages is oldest to newest, (1,2,3,4) with respect to creation identifiers
-    const mostRecent670 = ListMessages670[ListMessages670.length - 1];
+    const { sortedMessages, mostRecentMessage: mostRecent670 } =
+      SortAndGetLastMessage(unSortedMessages, "670");
 
     const buttonDisabled = mostRecent670?.status === "01";
 
     let lastMessageStatusWithStatus = ""; // "01"
     let lastMessageCodeWithStatus = "";
 
-    for (let i = messages?.length - 1; i >= 0; i--) {
-      if (messages[i].status && messages[i].status !== "-") {
-        lastMessageStatusWithStatus = messages[i].status;
-        lastMessageCodeWithStatus = messages[i].messageCode;
+    for (let i = sortedMessages?.length - 1; i >= 0; i--) {
+      if (sortedMessages[i].status && sortedMessages[i].status !== "-") {
+        lastMessageStatusWithStatus = sortedMessages[i].status;
+        lastMessageCodeWithStatus = sortedMessages[i].messageCode;
         break;
       }
     }
@@ -119,7 +93,8 @@ export const formatCardData = (
     const codeData = {
       cukCode: elem?.cukCode || "",
       foreclosureDate: elem?.creationDate?.split(" ")[0] || "",
-      cukStatus: lastMessageStatusWithStatus,
+      lasMessageStatus: lastMessageStatusWithStatus,
+      cukStatus: cukStatus || "",
       lastMessageCode: lastMessageCodeWithStatus,
     };
 
@@ -141,26 +116,128 @@ export const formatCardData = (
       region: elem?.region || "",
       institutionDestination: elem?.institutionDestination || "",
       history: sortHistoryList(elem?.history || []),
+      lastMessage: sortedMessages[sortedMessages?.length - 1] || {},
     };
 
-    const newMessaje = messages.map((message) => {
-      return {
-        ...message,
-        actions: getActions(
-          message?.messageCode || "",
-          message?.status || "",
-          elem?.status || ""
-        ),
-      };
-    });
+    // const newMessaje = sortedMessages.map((message) => {
+    //   return {
+    //     ...message,
+    //     actions: getActions(
+    //       message?.messageCode || "",
+    //       message?.status || "",
+    //       elem?.status || ""
+    //     ),
+    //   };
+    // });
     return {
       codeData,
       infoData,
-      messages: newMessaje,
+      messages: sortedMessages,
       buttonDisabled,
       modalTrackingData,
     };
   });
+  return formattedData;
+};
+
+export const formatDeedsReportsData = (
+  data: MortgageDischargeData[] | undefined
+): any[] => {
+  if (!data) return [];
+
+  const formattedData = data?.map((elem) => {
+    let {
+      messages: unSortedMessages = [],
+      cukCode = "",
+      institutionDestination = "",
+      buyerDni = "",
+      ownerDni = "",
+    } = elem || {};
+
+    const { mostRecentMessage: mostRecent670 } = SortAndGetLastMessage(
+      unSortedMessages,
+      "670"
+    );
+    const { mostRecentMessage: mostRecent672 } = SortAndGetLastMessage(
+      unSortedMessages,
+      "672"
+    );
+
+    const { documents: documents672 } = mostRecent672 || {};
+    const { creationDate, creationTime, documents } = mostRecent670 || {};
+
+    const documentGP = documents?.find((doc) => {
+      return doc?.documentName?.startsWith("GP-");
+    });
+
+    const documentCM = documents?.find((doc) => {
+      return doc?.documentName?.startsWith("CM-");
+    });
+
+    const documentR = documents672?.find((doc) => {
+      return doc?.documentName?.startsWith("R-");
+    });
+
+    return {
+      cukCode,
+      institutionDestination,
+      buyerDni,
+      ownerDni,
+      creationDate,
+      creationTime,
+      documentGP: documentGP,
+      documentCM: documentCM,
+      documentR: documentR,
+    };
+  });
+
+  return formattedData;
+};
+
+export const formatSearchData = (
+  data: MortgageDischargeData[] | undefined
+): any[] => {
+  if (!data) return [];
+
+  const formattedData = data?.map((elem) => {
+    let {
+      messages: unSortedMessages = [],
+      cukCode = "",
+      history = [],
+      id = "",
+    } = elem || {};
+
+    const { mostRecentMessage: mostRecent670 } = SortAndGetLastMessage(
+      unSortedMessages,
+      "670"
+    );
+
+    const sorttedHistory = sortHistoryList(history);
+
+    const lastHistory: HistoryTrackingModal =
+      sorttedHistory[0] as HistoryTrackingModal;
+
+    const { OSN, receivedDate, status: status670 } = mostRecent670 || {};
+    const { status: historyStatus = "", date: dateTime } = lastHistory || {};
+
+    let dateHistory = "";
+
+    if (dateTime) {
+      const dateObj = new Date(dateTime);
+      dateHistory = dateObj.toISOString().split("T")[0];
+    }
+
+    return {
+      cukCode,
+      receivedDate,
+      historyStatus,
+      dateHistory,
+      OSN,
+      status670,
+      id,
+    };
+  });
+
   return formattedData;
 };
 
@@ -171,7 +248,7 @@ export const formatModalDetailsCompleted = (
 
   const dataHeader = formatModalInfoHeader(message);
 
-  const detailsMS: DetailsMSInfoModal[] = paramsTo670;
+  const detailsMS: DetailsMSInfoModal[] = [];
 
   const bankDetailsMS: BankDetailsMSInfoModal = {
     bank: "",
@@ -179,16 +256,16 @@ export const formatModalDetailsCompleted = (
     sign_2: "",
   };
 
-  parameters?.forEach((parameter) => {
+  parameters.forEach((parameter) => {
     if (parameter?.name in bankDetailsMS) {
       (bankDetailsMS as any)[parameter?.name] = parameter?.value;
     }
-    detailsMS.forEach((detailElem: any) => {
-      if (detailElem.accessor === parameter?.name) {
-        detailElem.value = parameter?.value;
-        return;
-      }
-    });
+    if (paramsTo670.includes(parameter.name)) {
+      detailsMS.push({
+        label: parameter?.label,
+        value: parameter?.value || "",
+      });
+    }
   });
 
   return { dataHeader, detailsMS, bankDetailsMS, documents };
@@ -200,6 +277,7 @@ export const formatModalDetailSmall = (
   const { messageCode = undefined, parameters = [], documents = [] } = message;
 
   const dataHeader = formatModalInfoHeader(message);
+
   // Get all data necessary of the parameters
   const smallMsDetail: any[] = getDetailsObjetToMSCode(messageCode);
 
@@ -211,10 +289,13 @@ export const formatModalDetailSmall = (
       // while by  element
       columnsElements.forEach((column: any) => {
         const parameter = parameters?.find(
-          (param) => param.name === column.accessor
+          (param) => param.name === column.name
         );
         if (parameter) {
           column.value = parameter.value;
+          if (parameter?.label) column.label = parameter?.label;
+          //Delete after backend fix
+          // else column.label = parameter.name;
         }
       });
     });

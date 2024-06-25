@@ -92,7 +92,7 @@ export type KeyOfData =
 export type Order = "asc" | "desc";
 
 export interface Columns {
-  id: KeyOfData;
+  id: KeyOfData | string;
   label: string;
   align?: Alignment;
   render?: any;
@@ -120,7 +120,7 @@ export interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: KeyOfData
+    property: KeyOfData | string,
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
@@ -134,6 +134,7 @@ export interface EnhancedTableProps {
 }
 
 export interface TableProps {
+  highlightRowDisabled?: boolean;
   withCheckbox?: boolean;
   withRadioButton?: boolean;
   showColumnToRadioButton?: boolean;
@@ -152,6 +153,7 @@ export interface TableProps {
   isExpansible?: boolean;
   rowOptions?: RowOptions;
   selectedRadioButton?: string | number | null;
+  rowHeight: number;
 }
 
 export interface MSParameter {

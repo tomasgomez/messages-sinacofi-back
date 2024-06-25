@@ -2,8 +2,10 @@ import { validateGetMessageForeclosure } from "@/backend/handler/foreclosure/pre
 import { messageForeclosureUseCase } from "@/backend/usecases/foreclosure/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prepareForclosure } from "./adapter/prepareForeclosure";
+import { getToken } from "next-auth/jwt";
+import { getUser } from "../user/get";
 
-export async function get(req: NextApiRequest, res: NextApiResponse < any >, detail: boolean = false){
+export async function get(req: NextApiRequest, res: NextApiResponse < any >){
     try {
         /* Validate the query params and get the Message */
         let filter = validateGetMessageForeclosure(req.query);
@@ -12,6 +14,20 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >, det
           res.status(400).json([]);
           return;
         }
+
+        const token = await getToken({req});
+        if (!token || token.dni ==''){
+          res.status(400).json([]);
+          return;
+        }
+
+        let user = await getUser(token.dni!);
+        if (user instanceof Error){
+          res.status(400).json([]);
+          return; 
+        }
+
+        filter.institutionCode = user.institutionCode ? [user.institutionCode] : filter.institutionCode;
         
         /* Use the PrismaAreaAdapter to get the Message from the database */
         let messageResponse = await messageForeclosureUseCase.getMessageForeclosure(filter)

@@ -1,5 +1,6 @@
+import { MessageActions } from '@/backend/entities/message/actions';
 import { Message } from '@/backend/entities/message/message';
-import { getDescriptionByType } from '@/backend/entities/message/types';
+import { getDescriptionByType, MessageTypes } from '@/backend/entities/message/types';
 
 function prepareMessages(messages: Message[], filter: any = {detail:false}): any{
     
@@ -9,15 +10,16 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
   /* Prepare the data for each message */
   let preparedData = messages.map((message) => {
       let status = '';
-
+      let actions = message.actions;
+      
       /* If the filter has a status then filter the messages statuses */
       if (filter.status && filter.status.length > 0) {
         messages = messages.map(message => {
-            const filteredStatuses = message.status?.filter(s => filter?.status?.includes(s.id));
-            return {
-                ...message,
-                status: filteredStatuses
-            };
+          const filteredStatuses = message.status?.filter(s => filter?.status?.includes(s.id));
+          return {
+            ...message,
+            status: filteredStatuses
+          };
         }).filter(message => message.status && message.status.length > 0);
       }
       
@@ -43,9 +45,21 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
           statusFilered = statusFilered?.filter(d => d.id != '05' && d.id != '01')
         } else if (isReceiver && ReceiverMessageCodes.includes(message.messageCode!)) {
           statusFilered = statusFilered?.filter(d => d.id != '06')
-          if (message.messageCode == '678' || message.messageCode == '679' && statusFilered?.length == 1) { //TODO: replace this with a better condition
-            statusFilered = statusFilered?.filter(d => d.id != '01')
+        }
+        
+        let defaultActions = [];
+        if (isSender && ReceiverMessageCodes.includes(message.messageCode!)) {
+
+          if (message.messageCode != MessageTypes.DATOS_PARA_EL_PAGO_AH) {
+            defaultActions.push(MessageActions.SHOW_DETAIL);
+          } else {
+            defaultActions.push(MessageActions.PRINT);
           }
+
+          actions = defaultActions.join(',')
+        } else if (isReceiver && SenderMessageCodes.includes(message.messageCode!)) {
+            defaultActions.push(MessageActions.SHOW_DETAIL);
+            actions = defaultActions.join(',')
         }
       }
 
@@ -60,9 +74,10 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
               id: document.id,
               url: document.url,
               documentName: document.documentName,
+              document: document.content
           }
       });
-  
+
       return {
         ...message,
         TSN: message?.TSN?.id,
@@ -78,11 +93,11 @@ function prepareMessages(messages: Message[], filter: any = {detail:false}): any
         destinationArea: message?.destinationArea ?? '',
         receivedDate: message?.receivedDate ?? '',
         receivedTime: message?.receivedTime ?? '',
-        actions: message?.actions ?? '',
+        actions: actions?.split(','),
         cukCode: message?.cukCode ?? '',
         status,
         documents,
-      }});
+      }}).filter(message => message.status != '' && message.status != '-');
   
       return preparedData
   }

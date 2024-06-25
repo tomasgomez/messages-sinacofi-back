@@ -1,8 +1,5 @@
-import {
-    FilterMessage
-} from '@/backend/entities/message/filter';
 
-function findSelect(filter: FilterMessage = {detail: false}): any {
+function findSelect(parameters: boolean=false, documents:boolean=false): any {
     const select: any = {
         id: true,
         messageCode: true,
@@ -24,12 +21,12 @@ function findSelect(filter: FilterMessage = {detail: false}): any {
         OSN: true,
         NSE: true,
         NSR: true,
-        NSQ: true
+        NSQ: true,
     };
     
     // Always include 'detail' related properties
-    select.documents = filter.detail;
-    select.parameters = filter.detail;
+    select.documents = documents;
+    select.parameters = parameters;
 
     return select;
 }

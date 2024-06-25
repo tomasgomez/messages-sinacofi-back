@@ -19,7 +19,7 @@ export const StyledContentCard = styled(Box)<StyledContentCardProps>(
     height: height ? `${height}px` : "auto",
     display: "flex",
     flexDirection: "column",
-    overflow: "scroll",
+    overflow: "auto",
     width: "100%",
   })
 );
@@ -66,7 +66,7 @@ interface StyledChipProps {
 
 export const StyledChip = styled(Chip)<StyledChipProps>(
   ({ colorText, background }: StyledChipProps): CSSObject => ({
-    height: 14,
+    height: 18,
     color: colorText || "inherit",
     backgroundColor: background || "inherit",
     fontSize: 12,
@@ -92,7 +92,7 @@ export const StyledButton = styled(Button)`
   border: ${(props) =>
     props.disabled ? "1px solid #bdbdbd" : "1px solid #00b2e2"};
   border-radius: 8px;
-  color: #00b2e2;
+  color: ${(props) => (props.variant === "contained" ? "white" : "#00b2e2")};
   text-align: center;
   font-family: ${montserrat.style.fontFamily};
   font-size: 14px;
@@ -161,12 +161,12 @@ export const StyledTitleProgressBar = styled(Typography)`
   font-weight: 500;
   line-height: 1.42;
   max-width: 80px;
-  margin-right: 16px;
+  margin-right: 14px;
 `;
 
 export const StyledContainerBar = styled(Box)`
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
 `;
 
 interface StyledStyledContainerBlockProps {
@@ -299,7 +299,7 @@ export const StyledLinearProgress = styled(
     borderRight,
   }: StyledLinearProgressProps): CSSObject => ({
     height: 8,
-    width: `calc((100vw - 462px) / 8)`,
+    width: `calc((100vw - 477px) / 7)`,
     borderRadius: getBorderRadius(borderRadius),
     borderRight: borderRight ? "1px solid #FFF" : "none",
     backgroundColor: "#d9d9d9",

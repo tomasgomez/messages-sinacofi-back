@@ -27,8 +27,13 @@ const ProgressBar = ({
 }) => {
   let blockList: any[] = [];
 
-  if (data.length < 8) {
-    const nullCount = 8 - data.length;
+  if (
+    !data.some(
+      (message) => message.messageCode === "679" && message.status !== "01"
+    ) &&
+    data.length < 7
+  ) {
+    const nullCount = 7 - data.length;
     blockList = [...data, ...new Array(nullCount).fill(null)];
   } else blockList = [...data];
 

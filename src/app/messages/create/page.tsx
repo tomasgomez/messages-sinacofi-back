@@ -7,6 +7,7 @@ import {
   getMessageDetails,
   getMessageSchema,
   signMessage,
+  validatePassword,
 } from "@/app/services/common";
 import Form from "@/components/Form";
 import { Container, Stack, Typography } from "@mui/material";
@@ -37,6 +38,10 @@ const getCreateMessagePayload = (
   payloadDefault.forEach((param: string) => {
     payload[param] = data[param];
   });
+
+  if (data.messageCode === "670" && data.borrowerUfAmount == 0) {
+    data.borrowerUfAmount = parseFloat(data.loanUF) + parseFloat(data.supplementaryLoanUF);
+  }
   payload.origin = origin;
   payload.destination = data.beneficiaryBank;
   payload.parameters = Object.entries(data)
@@ -60,13 +65,13 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
   const currentField = fieldList?.find(
     (field: any) => fieldName === field.name
   );
-  if (fieldName === "sign" && currentField?.value === "-") {
+  if ((fieldName === "sign" || fieldName === "senderSign") && currentField?.value === "-") {
     return "";
   }
   return currentField?.value || null;
 };
 const CreateMessage = () => {
-  const { selectedInstitution } = useAppContext();
+  const { selectedInstitution, currencies } = useAppContext();
   const { userInfo } = useContext(SessionProviderContext) as any;
   const { SuccessModal, ConfirmModal, ErrorModal } = useModalManager();
   const AddFileModal = useModal({ id: ModalList.AddFileModal });
@@ -83,11 +88,50 @@ const CreateMessage = () => {
   const cloneId = searchParams?.get("cloneId") || "";
   const messageId = searchParams?.get("messageId") || "";
   const cukCode = searchParams?.get("cukCode") || "";
+  const action = searchParams?.get("action") || "";
+
+  // define default values
+  let actions = { saveDraftDisabled: true, sendButtonDisabled: false };
+  let actionFn = 
   useEffect(() => {
-    setLoading(true);
-    if ((cloneId || messageId) && !cukCode) {
-      getMessageDetails(cloneId || messageId).then((data) => {
-        getMessageSchema(messageCode, messageId)
+    setLoading(true); 
+    if (action == 'sign' || action == 'duplicate'){
+      getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
+      .then((schema: any) => {
+        // check buttons
+        if (schema.actions && schema.actions.buttons && schema.actions.buttons.length>0){
+          let buttons = schema.actions.buttons;
+          buttons.forEach((button: any) => {
+            if (button.name == 'saveDraft'){
+              actions.saveDraftDisabled = button.disabled;
+            }
+            if (button.name == 'sendButton'){
+              actions.sendButtonDisabled = button.disabled;
+            }
+          })
+          // check modals
+          if (schema.actions && schema.actions.modal){
+            let buttons = schema.actions.modal;
+          }
+        }
+        setMessageSchema({
+          ...schema,
+          actions: actions,
+          parameters: schema?.parameters
+        });
+      })
+      .catch((error) => {
+        console.log({ error });
+        setError("El schema de formulario no fue encontrado");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    }
+    else if ((cloneId || messageId) && !cukCode) {
+      getMessageDetails(cloneId || messageId).then((data) => {    
+        getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
           .then((schema: any) => {
             setMessageSchema({
               ...schema,
@@ -101,13 +145,7 @@ const CreateMessage = () => {
                       defaultValue: institutionId,
                       disabled: true,
                     }
-                  : parameter.id === "bank" || parameter.id.startsWith("bank")
-                  ? // parameter.id === "destination"
-                    {
-                      ...parameter,
-                      defaultValue: "BANCO",
-                      disabled: true,
-                    }
+                  
                   : parameter.id === "CUK"
                   ? {
                       ...parameter,
@@ -128,7 +166,7 @@ const CreateMessage = () => {
                       disabled: true,
                     }
                   : // : { ...parameter, disabled: true }
-                  parameter.id === "sign"
+                  parameter.id === "sign" || parameter.id === "senderSign"
                   ? {
                       ...parameter,
                       type: "password",
@@ -166,9 +204,11 @@ const CreateMessage = () => {
           .finally(() => {
             setLoading(false);
           });
-      });
+      
+      
+        });
     } else {
-      getMessageSchema(messageCode, messageId, cukCode)
+      getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
         .then((schema: any) => {
           setMessageSchema({
             ...schema,
@@ -205,94 +245,15 @@ const CreateMessage = () => {
                           defaultValue: selectedInstitution,
                           disabled: true,
                         }
-                      : parameter
-                  )
-                : messageCode === "675"
-                ? schema?.parameters.map((parameter: any) =>
-                    parameter.type === "accordion"
-                      ? {
-                          ...parameter,
-                          open:
-                            parameter.label !== "Datos de Hipoteca" &&
-                            parameter.label !== "Detalle Otros Créditos",
-                          parameters: parameter?.parameters.map(
-                            (parameter: any) =>
-                              parameter.id === "bank" ||
-                              parameter.id === "currentBank" ||
-                              parameter.id.startsWith("bank")
-                                ? {
-                                    ...parameter,
-                                    defaultValue: selectedInstitution,
-                                    disabled: true,
-                                  }
-                                : parameter.id === "typeOfObligation"
-                                ? {
-                                    ...parameter,
-                                    properties: {
-                                      ...parameter.properties,
-                                      options: [
-                                        {
-                                          label: "Credito Complementario",
-                                          value: "Credito Complementario",
-                                        },
-                                      ],
-                                    },
-                                    defaultValue: "Credito Complementario",
-                                  }
-                                : parameter.id === "typeOfDebt"
-                                ? {
-                                    ...parameter,
-                                    properties: {
-                                      ...parameter.properties,
-                                      options: [
-                                        {
-                                          label: "Directo",
-                                          value: "Directo",
-                                        },
-                                      ],
-                                    },
-                                    defaultValue: "Directo",
-                                  }
-                                : parameter.id === "typeOfCurrency"
-                                ? {
-                                    ...parameter,
-                                    properties: {
-                                      ...parameter.properties,
-                                      options: [
-                                        {
-                                          label: "UF",
-                                          value: "uf",
-                                        },
-                                        {
-                                          label: "Pesos $ -",
-                                          value: "pesos",
-                                        },
-                                      ],
-                                    },
-                                    defaultValue: "uf",
-                                  }
-                                : parameter.id === "typeOfCurrency_2"
-                                ? {
-                                    ...parameter,
-                                    properties: {
-                                      ...parameter.properties,
-                                      options: [
-                                        {
-                                          label: "UF",
-                                          value: "uf",
-                                        },
-                                        {
-                                          label: "Pesos $ -",
-                                          value: "pesos",
-                                        },
-                                      ],
-                                    },
-                                    defaultValue: "pesos",
-                                  }
-                                : parameter
-                          ),
-                        }
-                      : parameter
+                      : parameter.id == 'senderAHName' && action !== 'sign' ? {
+                        ...parameter,
+                        defaultValue:"",
+                        disabled: true
+                      } : parameter.id == "senderAHDni" && action !== 'sign' ? {
+                        ...parameter,
+                        defaultValue: "",
+                        disabled: true
+                      }: parameter
                   )
                 : schema?.parameters,
           });
@@ -316,7 +277,7 @@ const CreateMessage = () => {
 
   const createMessageFn = (payload: any) => {
     setLoading(true);
-    createMessage(payload, "05").then((response: any) => {
+    createMessage(payload, "05",action).then((response: any) => {
       setLoading(false);
       SuccessModal.open({
         title: "Mensaje Enviado Exitosamente",
@@ -349,10 +310,14 @@ const CreateMessage = () => {
       userInfo
     );
     if (messageCode === "670" || messageCode === "672") {
+      // / # TODOOO uncomment this
       AddFileModal.open({
+        isRejected: messageCode === "672",
         onConfirm: (document: any) => {
           AddFileModal.close();
           setLoading(true);
+          // TODO validate sign
+          //validatePassword(payload.parameters.find((p: any) => p.name === "sign")?.value)
           signMessage(messageId, statusCodes[1], {
             ...payload,
             documents: document,
@@ -436,13 +401,13 @@ const CreateMessage = () => {
                 <Typography variant="caption" color="#49454F">
                   Crédito Inicial (UF / $)
                 </Typography>
-                <Typography variant="body2">3.799,59 / 221.217.265</Typography>
+                <Typography variant="body2">{data.borrowerUfAmount} / {data.borrowerUfAmount * currencies.UF}</Typography>
               </Stack>
               <Stack direction="column">
                 <Typography variant="caption" color="#49454F">
                   Total a Pagar (UF / $)
                 </Typography>
-                <Typography variant="body2">6.100 / 143.217.265</Typography>
+                <Typography variant="body2">{data.totalPrepaidToPayUF} / {data.totalPrepaidToPayCLP}</Typography>
               </Stack>
             </Stack>
             <Typography variant="body2">
@@ -467,7 +432,7 @@ const CreateMessage = () => {
       selectedInstitution,
       userInfo
     );
-    createMessage(payload, "01").then((response: any) => {
+    createMessage(payload, "01",action).then((response: any) => {
       setLoading(false);
       SuccessModal.open({
         title: "Mensaje Grabado en Preparados Exitosamente",
@@ -493,33 +458,26 @@ const CreateMessage = () => {
   };
 
   return (
-    <Container
-      sx={{
-        width: "calc(100vw - 270px)",
-        maxWidth: "calc(100vw ) !important",
-        marginTop: "22px",
-      }} /* maxWidth={"100vw"} */
-    >
-      <Form
-        title="Nuevo Mensaje"
-        onBack={router.back}
-        loading={loading}
-        schema={messageSchema}
-        error={error}
-        onSubmit={onSubmit}
-        onPrepare={onPrepare}
-        actions={{
-          submit: {
-            onClick: onSubmit,
-            disabled: messageSchema?.actions?.sendButtonDisabled,
-          },
-          prepared: {
-            onClick: onPrepare,
-            disabled: messageSchema?.actions?.saveDraftDisabled,
-          },
-        }}
-      />
-    </Container>
+    <Form
+      styles={{ padding: 16 }}
+      title="Nuevo Mensaje"
+      onBack={router.back}
+      loading={loading}
+      schema={messageSchema}
+      error={error}
+      onSubmit={onSubmit}
+      onPrepare={onPrepare}
+      actions={{
+        submit: {
+          onClick: onSubmit,
+          disabled: messageSchema?.actions?.sendButtonDisabled,
+        },
+        prepared: {
+          onClick: onPrepare,
+          disabled: messageSchema?.actions?.saveDraftDisabled,
+        },
+      }}
+    />
   );
 };
 

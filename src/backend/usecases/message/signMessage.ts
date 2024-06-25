@@ -2,7 +2,8 @@ import {
     CUK
 } from "@/backend/entities/cuk/cuk";
 import {
-    Message
+    Message,
+    setStatus
 } from "@/backend/entities/message/message";
 import {
     MessageRepository
@@ -22,21 +23,14 @@ import {
 import {
     ForeclosureStatus
 } from "@/backend/entities/cuk/codes";
-
-import { validateToken } from "@/backend/adapters/iam/oracle/validateToken";
 import { storeDocs } from "./updateMessage";
-
+import { User } from "@/backend/entities/user/user";
+import { validateMessage } from "./validateMessage";
+import { handleAction672 } from "../foreclosure/foreclosureMessages/handle672";
 
 // Create message function
-export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, dni: string, name: string): Promise < Message | Error > {
+export async function signMessage(repository: MessageRepository, cukRepository: CUKRepository, message: Message, dni: string, name: string, user: User): Promise < Message | Error > {
     try {        
-        const sign = message.parameters?.find(param=> param.name ==='sign');
-
-        let signValidation = await validateToken(dni, sign?.value ? sign.value: '');
-
-        if (signValidation instanceof Error) {
-            return signValidation;
-        }
         
         message.parameters = message.parameters?.map(param=> {
             if(param.name === 'sign'){
@@ -45,21 +39,34 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
             return param;
         })
 
-        // Store the documents
-        let result = await storeDocs(message);
+        let messageToBeValidate = message;
+        let { documents,...messageWithoutDocs} = messageToBeValidate
+        
+        let validateMessageResponse = await validateMessage(repository, messageWithoutDocs, user);
 
-        if (result instanceof Error) {
-            return result;
+        if (validateMessageResponse instanceof Error) {
+            return validateMessageResponse;
         }
 
-        let status = '';
+        message = {...message, ...validateMessageResponse};
+
+        // Store the documents
+        if(process.env.NEXT_PUBLIC_TEST_ENV !== "true"){
+            let result = await storeDocs(message);
+
+            if (result instanceof Error) {
+                return result;
+            }
+        }
+
+        let status = ''
         let updatedCuk: CUK | Error;
 
-        if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
+        if (message.statusCode && message.statusCode !== undefined && message.id !== undefined) {
 
             status = message.statusCode;
-
-            message.setStatus(status);
+            
+            message = setStatus(message, status);
         }
 
         // Update the status of the message
@@ -68,14 +75,12 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
                 if (message.setReceivedTime) {
                     message.setReceivedTime();
                 }
-                if (message.setStatus) {
-                    message.setStatus(MessageStatus.BANDEJA_DE_ENTRADA);
-                }
+
+                message = setStatus(message, MessageStatus.BANDEJA_DE_ENTRADA);
+                
                 break;
             case MessageStatus.BANDEJA_DE_ENTRADA:
-                if (message.setStatus) {
-                    message.setStatus(MessageStatus.ENVIADO);
-                }
+                message = setStatus(message, MessageStatus.ENVIADO);
                 break;
         }
 
@@ -88,17 +93,21 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
             return messageResponse;
         }
 
-        if (messageResponse.messageCode === MessageTypes.ALZAMIENTO_HIPOTECARIO && status === MessageStatus.ENVIADO) {
+        
+        if (messageResponse.messageCode === MessageTypes.ALZAMIENTO_HIPOTECARIO) {
+
             let cuk = new CUK();
             cuk.cukCode = messageResponse.cukCode;
             cuk.status = ForeclosureStatus.INIT
             
-            updatedCuk = await updateForclosure(cukRepository, repository, cuk, message);
+            updatedCuk = await updateForclosure(cukRepository, repository, cuk, message, user);
             
             if (updatedCuk instanceof Error) {
                 console.error('Error updating CUK:', updatedCuk);
                 return updatedCuk;
             }
+        } else if(messageResponse.messageCode === MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO){
+            await handleAction672(new CUK, messageResponse, user, cukRepository, repository);
         }
 
         return messageResponse;

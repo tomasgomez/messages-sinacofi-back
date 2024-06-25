@@ -1,3 +1,4 @@
+import { getForeclosureStatusCodesByStatus } from '@/backend/entities/cuk/codes';
 import {
   Filter
 } from '@/backend/entities/cuk/filter';
@@ -28,7 +29,14 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
     borrowerDni,
     borrower,
     count,
-    offset
+    offset,
+    region,
+    messageCode,
+    statusCategory,
+    sellerDni,
+    seller,
+    notary,
+    repertoireDate
   } = data;
 
   /* Set all the possible filters */
@@ -49,6 +57,13 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   filter.borrowerDni = processStringArrayField(borrowerDni);
   filter.borrower = processStringArrayField(borrower);
   filter.messageStatus = processStringArrayField(messageStatus);
+  filter.region = processStringArrayField(region);
+  filter.messageCode = processStringArrayField(messageCode);
+  filter.statusCategory = getForeclosureStatusCodesByStatus(statusCategory);
+  filter.sellerDni = processStringArrayField(sellerDni);
+  filter.seller = processStringArrayField(seller);
+  filter.notary = processStringArrayField(notary);
+  filter.repertoireDate = processStringArrayField(repertoireDate);
   
   filter.count = count;
   filter.offset = offset;

@@ -1,6 +1,8 @@
 import { validateUpdateMessageForeclosure } from "@/backend/handler/foreclosure/presenter/updateMessage";
 import { messageForeclosureUseCase } from "@/backend/usecases/foreclosure/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getToken } from "next-auth/jwt";
+import { getUser } from "../user/get";
 
 export async function update(req: NextApiRequest, res: NextApiResponse < any >, detail: boolean = false){
     try {
@@ -13,10 +15,22 @@ export async function update(req: NextApiRequest, res: NextApiResponse < any >, 
           return;
         }
 
+        const token = await getToken({req});
+        if (!token || token.dni ==''){
+          res.status(400).json([]);
+          return;
+        }
+
+        let user = await getUser(token.dni!);
+        if (user instanceof Error){
+          res.status(400).json([]);
+          return; 
+        }
+
         let [cuk, message] = result;
 
         /* Use the PrismaAreaAdapter to get the Message from the database */
-        let messageResponse = await messageForeclosureUseCase.updateForeclosure(cuk, message);
+        let messageResponse = await messageForeclosureUseCase.updateForeclosure(cuk, message, user);
 
         /* If the message is not found, return a 204 error */
         if (!messageResponse) {

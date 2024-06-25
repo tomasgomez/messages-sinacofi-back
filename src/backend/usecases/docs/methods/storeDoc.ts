@@ -1,5 +1,4 @@
 import { Documents } from "@/backend/entities/message/interface";
-import { Message } from "@/backend/entities/message/message";
 import fs from 'fs';
 import path from 'path';
 
@@ -29,6 +28,7 @@ export async function storeDoc(doc: Documents, messagePath: string): Promise <Do
         ensureDirectoryExistence(storedPath);
     }catch(error){
         console.log(error)
+        return doc;
         return new Error("saving files")
     }
 
@@ -38,6 +38,8 @@ export async function storeDoc(doc: Documents, messagePath: string): Promise <Do
         // save the file
         fs.writeFileSync(storedPath, buffer);
     } catch (error) {
+        console.log(error);
+        return doc;
         return new Error('Error saving the file');
     }
 

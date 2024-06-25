@@ -1,6 +1,6 @@
 import { useFormContext, Controller } from "react-hook-form";
 import { Box, Typography } from "@mui/material";
-import { DatePickerInput } from "@/app/mortgage-discharge/in-process/header/components/filters/filter-selector/form-elements/date";
+import { DatePicker } from "./fields/DatePicker";
 import Dropdown from "../Dropdown";
 import RutField, { validaRut } from "./fields/RutField";
 import Checkbox from "./fields/Checkbox";
@@ -29,7 +29,7 @@ const FieldTypes = {
   checkbox: (props: any) => (
     <Checkbox {...props} options={props.properties.options} />
   ),
-  date: DatePickerInput,
+  date: DatePicker,
   select: Select,
   textArea: (props: any) => <Field {...props} multiline />,
   dni: RutField,
@@ -86,7 +86,7 @@ const ElementSelector = ({ type, props }: { type: any; props: any }) => {
     return <Accordion {...props} />;
   }
 
-  if (type === "linebreak" || type === "label") {
+  if (type === "linebreak" || type === "label" || type === "blankSpace") {
     const Label =
       LabelTypes[type as keyof typeof LabelTypes] || LabelTypes.label;
     return <Label {...props} />;
@@ -102,10 +102,20 @@ const ElementSelector = ({ type, props }: { type: any; props: any }) => {
       name={inputProps.id}
       control={inputProps.control}
       defaultValue={inputProps.defaultValue}
-      rules={{ ...rules, ...(type === "dni" ? { validate: (value, _) => {
-        return !validaRut(value) ? "Rut invalido"
-        : null
-      }} : {})}}
+      rules={{ ...rules,
+        ...(inputProps.id === "borrowerUfAmount" ? { validate: (value, formData) => {
+          console.log({ value, formData });
+
+          const parseValue = parseFloat(value)
+          
+          return parseValue > 0 && parseValue > (parseFloat(formData.loanUF) + parseFloat(formData.supplementaryLoanUF)) 
+            ? "* SGM: Monto UF no puede ser mayor a la sumatorio del Mutuo y Mutuo complementario"
+            : null
+          }}: null),
+        ...(type === "dni" ? { validate: (value, _) => {
+          return !validaRut(value) ? "Rut invalido"
+          : null
+        }} : {})}}
       render={({ field }) => {
         return (
           <FieldGotten

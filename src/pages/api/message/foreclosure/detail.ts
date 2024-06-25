@@ -12,7 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
   try {
     const method = req.method;
     switch (method) {
-      case Methods.GET: await messageForeclosureCalls.GET(req, res);
+      case Methods.GET:
+        await messageForeclosureCalls.GET(req, res);
         return;
       default:
         res.status(405).end(`Method ${method} Not Allowed`);

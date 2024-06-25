@@ -1,39 +1,33 @@
-import {
-  SmallMsDetailInfoModal,
-  SmallMsInfoModalMortgageDischarge,
-} from "@/types/mortgage-discharge";
+import { SmallMsDetailInfoModal } from "@/types/mortgage-discharge";
 
 export const paramsTo670 = [
-  { accessor: "issuedDate", label: "Fecha de Alzamiento" },
-  { accessor: "channel", label: "Canal" },
-  { accessor: "operationtype", label: "Tipo de Operacion" },
-  { accessor: "notary", label: "Notaria Repertorio" },
-  { accessor: "registrationDate", label: "Fecha Repertorio" },
-  { accessor: "registrationNumber", label: "Número Repertorio" },
-  { accessor: "beneficiaryBank_2", label: "Institución" },
-  { accessor: "owner", label: "Vendedor:" },
-  { accessor: "ownerDni", label: "RUT de Vendedor" },
-  { accessor: "buyer", label: "Comprador" },
-  { accessor: "buyerDni", label: "RUT de Comprador" },
-  { accessor: "propertyInfo", label: "Tipo de Inmueble" },
-  {
-    accessor: "E32",
-    label: "Descripción del Inmueble",
-  },
-  { accessor: "commune", label: "Comuna" },
-  { accessor: "region", label: "Region" },
-  { accessor: "bank", label: "Institución" },
-  { accessor: "loan", label: "Monto del Mutuo" },
-  { accessor: "loanTerm", label: "Plazo (años)" },
-  {
-    accessor: "addLoan",
-    label: "Monto del Mutuo Complementario",
-  },
-  { accessor: "CUK", label: "Código Interno" },
-  { accessor: "borrower", label: "Deudor" },
-  { accessor: "borrowerDni", label: "RUT del Deudor" },
-  { accessor: "ufAmount", label: "Monto UF" },
+  "issuedDate",
+  "channel",
+  "operationtype",
+  "notary",
+  "registrationDate",
+  "registrationNumber",
+  "beneficiaryBank",
+  "owner",
+  "ownerDni",
+  "buyer",
+  "buyerDni",
+  "propertyInfo",
+  "morePropertyInfo",
+  "location",
+  "region",
+  "commune",
+  "bank",
+  "loan",
+  "loanTerm",
+  "addLoan",
+  "CUK",
+  "borrowerName",
+  "borrowerDni",
+  "ufAmount",
 ];
+
+// Delete label after backend fix label
 
 export const paramsTo671: SmallMsDetailInfoModal[] = [
   // Array by row
@@ -41,14 +35,14 @@ export const paramsTo671: SmallMsDetailInfoModal[] = [
     // Array by column
     data: [
       [
-        { accessor: "approvalDate", label: "Fecha de Aceptación" },
+        { name: "approvalDate", label: "Fecha de Aceptación" },
         {
-          accessor: "prepaidSettlement",
+          name: "prepaidSettlement",
           label: "Requiere liquidación de Prepago Si/No",
         },
-        { accessor: "linebreak_6", label: "Firma Electrónica Receptor" },
-        { accessor: "sign_2", label: "Apoderado Nombre, RUT" },
-        { accessor: "observations", label: "Observaciones" },
+        { text: "Firma Electrónica Receptor" },
+        { name: "sign", label: "Apoderado Nombre, RUT" },
+        { name: "observations", label: "Observaciones" },
       ],
     ],
   },
@@ -61,12 +55,12 @@ export const paramsTo672: SmallMsDetailInfoModal[] =
       // Array by column
       data: [
         [
-          { accessor: "rejectionDate", label: "Fecha de Rechazo" },
-          { accessor: "rejectionReason", label: "Motivo" },
-          { accessor: "linebreak_6", label: "Firma Electrónica Receptor" },
-          { accessor: "sign_2", label: "Apoderado Nombre, RUT" },
-          { accessor: "observations", label: "Observaciones" },
-          { accessor: "E32_3", label: "E32" },
+          { name: "rejectionDate", label: "Fecha de Rechazo" },
+          { name: "rejectionReason", label: "Motivo" },
+          { text: "Firma Electrónica Receptor" },
+          { name: "sign", label: "Apoderado Nombre, RUT" },
+          { name: "observations", label: "Observaciones" },
+          { name: "E32", label: "E32" },
         ],
       ],
     },
@@ -79,9 +73,12 @@ export const paramsTo673: SmallMsDetailInfoModal[] =
       // Array by column
       data: [
         [
-          { accessor: "normalizationDate", label: "Fecha de Rechazo" },
-          { accessor: "openText", label: "Observaciones" },
-          { accessor: "E32_3", label: "E32" },
+          {
+            name: "normalizationDate",
+            label: "Fecha de Aviso de Cliente en  Normalización:",
+          },
+          { name: "openText", label: "Observaciones" },
+          { name: "observations", label: "E32" },
         ],
       ],
     },
@@ -97,37 +94,36 @@ export const paramsTo674: SmallMsDetailInfoModal[] =
       data: [
         [
           {
-            accessor: "owner",
+            name: "owner",
             label: "Nombre del Vendedor",
           },
-          { accessor: "ownerDni", label: "RUT del Vendedor" },
-          { accessor: "buyer", label: "Nombre del Comprador" },
-          { accessor: "buyerDni", label: "RUT del Comprador" },
-          { accessor: "borrower", label: " Nombre del Deudor" },
-          { accessor: "borrowerDni", label: "RUT del Deudor" },
-          { accessor: "observations", label: "Observaciones" },
-          { accessor: "E32_674", label: "E32" },
+          { name: "ownerDni", label: "RUT del Vendedor" },
+          { name: "buyer", label: "Nombre del Comprador" },
+          { name: "buyerDni", label: "RUT del Comprador" },
+          { name: "borrowerName", label: " Nombre del Deudor" },
+          { name: "borrowerDni", label: "RUT del Deudor" },
+          { name: "observations", label: "Observaciones" },
+          { name: "moreObservations", label: "E32" },
         ],
         [
           {
-            accessor: "mortgageLiftingReceptionNumber",
+            name: "mortgageLiftingReceptionNumber",
             label: "Número Recepción de Alzamiento (OSN)",
           },
           {
-            accessor: "issuedDate_2",
+            name: "issuedDate",
             label: "Asociado a Alzamiento Hipotecario de Fecha/NSE",
           },
-          { accessor: "loan", label: "Monto del mutuo (UF)" },
-          { accessor: "addLoan", label: "Un mutuo Complementario de (UF)" },
+          { name: "loan", label: "Monto del mutuo (UF)" },
+          { name: "addLoan", label: "Un mutuo Complementario de (UF)" },
           {
-            accessor: "cashPaymentAmount",
+            name: "cashPaymentAmount",
             label: "Monto del Pago Efectivo (U.F.)",
           },
           {
-            accessor: "voluntaryAdditionalAmount",
+            name: "voluntaryAdditionalAmount",
             label: "Monto Adicional Voluntuario $",
           },
-          { accessor: "observations", label: "Observaciones" },
         ],
       ],
     },
@@ -140,67 +136,152 @@ export const paramsTo675: SmallMsDetailInfoModal[] = [
     title: "Detalle Credito Hipotecario",
     // Array by column
     data: [
-      [{ accessor: "issuedDate", label: "Fecha de Liquidación Prepago" }],
-      [{ accessor: "issuedDate2", label: "Fecha de Liquidación Prepago" }],
-      [{ accessor: "issuedDate3", label: "Fecha de Liquidación Prepago" }],
+      [
+        { name: "loanNumber", label: "N° Préstamo" },
+        { name: "typeOfObligation", label: "Tipo Obligación" },
+        { name: "typeOfDebt", label: "Tipo de Deuda" },
+        { name: "typeOfCurrency", label: "Moneda" },
+
+        { name: "capital", label: "Capital" },
+        { name: "interest", label: "Intereses" },
+      ],
+      [
+        { name: "mora", label: "Mora / I. Penal" },
+        { name: "amortization", label: "Amortización" },
+        { name: "prepaidCost", label: "Costo Prepago" },
+        { name: "liftingExpenses", label: "Gastos Alzamiento" },
+        { name: "currency", label: "Moneda(s)" },
+        { name: "collection", label: "Cobranza" },
+      ],
+      [
+        { name: "judicial", label: "G. Judiciales" },
+        { name: "loanSubtotal", label: "Subtotal Préstamo" },
+        { name: "dividendAmount", label: "Cantidad Dividendos" },
+        { name: "totalAmount", label: "Monto Total ($)" },
+        { name: "collectionExpenses", label: "Gastos de Cobranza" },
+      ],
     ],
   },
+  // TODO ADD NEW COLUMNS
+  // {
+  //   // Title by column
+  //   title: "Detalle Otros Créditos 1",
+  //   // Array by column
+  //   data: [],
+  // },
   {
-    // Title by column
-    title: "Detalle Credito Hipotecario 2",
-    // Array by column
     data: [
-      [{ accessor: "issuedDate", label: "Fecha de Liquidación Prepago" }],
-      [{ accessor: "issuedDate2", label: "Fecha de Liquidación Prepago" }],
-      [{ accessor: "issuedDate3", label: "Fecha de Liquidación Prepago" }],
+      [
+        { name: "totalToPay", label: "Total a Pagar UF / $" },
+        { name: "observations", label: "Observaciones" },
+        { name: "E32", label: "E32" },
+      ],
     ],
   },
 ];
 
-// const checkMessageDate = (messageCode) => {
-//   switch (messageCode) {
-//     // "Alzamiento Hipotecario"
-//     case "670":
-//       return "Fecha de Alzamiento";
+export const paramsTo676: SmallMsDetailInfoModal[] =
+  // Array by row
+  [
+    {
+      // Array by column
+      data: [
+        [
+          { name: "loan", label: "Monto del Mutuo (U.F.)" },
+          {
+            name: "amountUfValidDatePrepaymentLiquidation",
+            label: "Monto del Mutuo Complementario (U.F.)",
+          },
+          { name: "addLoan", label: "Monto del Pago Efectivo (U.F.)" },
+          {
+            name: "amountCLPValidDatePrepaymentLiquidation",
+            label: "Monto Adicional Voluntario $",
+          },
+        ],
+        [
+          {
+            name: "cashPaymentAmount",
+            label: "Monto U.F. / Fecha de Validez Liquidación de Prepago",
+          },
+          {
+            name: "paymentDay",
+            label: "Monto $ / Fecha de Validez Liquidación de Prepago",
+          },
+          { name: "voluntaryAdditionalAmount", label: "Fecha de Pago" },
+        ],
+      ],
+    },
+    {
+      // Array by column
+      data: [[{ name: "E32", label: "E32" }]],
+    },
+  ];
 
-//     // Aceptación AH
-//     case "671":
-//       return "Fecha de Aceptación";
+export const paramsTo677: SmallMsDetailInfoModal[] =
+  // Array by row
+  [
+    {
+      // Array by column
+      data: [
+        [
+          {
+            name: "amountUfValidDatePrepaymentLiquidation",
+            label: "Monto U.F. / Fecha de Validez Liquidación de Prepago",
+          },
+          {
+            name: "amountCLPValidDatePrepaymentLiquidation",
+            label: "Monto $ / Fecha de Validez Liquidación de Prepago",
+          },
+          { name: "paymentDay", label: "Fecha de Pago" },
+        ],
+        [
+          { name: "totalPaymentAmount", label: "Monto Pagado Total" },
+          { name: "paymentMethod", label: "Medio de Pago" },
+        ],
+      ],
+    },
+    {
+      // Array by column
+      data: [
+        [
+          { name: "observations", label: "Observaciones" },
+          { name: "E32", label: "E32" },
+        ],
+      ],
+    },
+  ];
 
-//     // Rechazo AH
-//     case "672":
-//       return "Fecha de Rechazo";
+export const paramsTo678: SmallMsDetailInfoModal[] =
+  // Array by row
+  [
+    {
+      data: [
+        [
+          { name: "paymentDay", label: "Fecha de Pago" },
+          { name: "rejectionReason", label: "Motivo del Rechazo del Pago" },
+          { text: "Firma Electrónica Receptor" },
+          { name: "sign", label: "Apoderado Nombre, RUT" },
+          { name: "observations", label: "Observaciones" },
+          { name: "E32", label: "E32" },
+        ],
+      ],
+    },
+  ];
 
-//     // Aviso Cliente en Normalización
-//     case "673":
-//       return "Fecha de Normalización";
-
-//     // Solicitud Liquidación Prepago
-//     case "674":
-//       return "Fecha de Solicitud de Liquidación Prepago";
-
-//     // Liquidación Prepago
-//     case "675":
-//       return "Fecha de Liquidación Prepago";
-
-//     // Datos para el Pago AH
-//     case "676":
-//       return "Fecha de Datos para el Pago";
-
-//     // Aviso de Pago
-//     case "677":
-//       return "Fecha de Aviso de Pago";
-
-//     // Rechazo de Pago
-//     case "678":
-//       return "Fecha de Rechazo de Pago";
-
-//     // Aceptación de Pago
-//     case "679":
-//       return "Fecha de Aceptación de Pago";
-
-//     // Otro caso
-//     default:
-//       return "";
-//   }
-// };
+export const paramsTo679: SmallMsDetailInfoModal[] =
+  // Array by row
+  [
+    {
+      // Array by column
+      data: [
+        [
+          { name: "paymentDay", label: "Fecha de Pago" },
+          { name: "SHA", label: "SHA" },
+          { text: "Firma Electrónica Receptor" },
+          { name: "sign", label: "Apoderado Nombre, RUT" },
+          { name: "observations", label: "Observaciones" },
+          { name: "E32", label: "E32" },
+        ],
+      ],
+    },
+  ];
