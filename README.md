@@ -4,6 +4,8 @@ Project developed with Next and applying Clean Architecture
 
 ## Steps  
 
+
+
 First, run the development server:
 
 ```bash
