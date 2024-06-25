@@ -64,33 +64,24 @@ function extractParameters(dataToAdapt: any, userData: any): Parameter[] {
     const sortedParameters = sortParametersByPriority(parameters);
 
     const adaptedParameters = sortedParameters.map((parameter: any) => adaptParameter(parameter, userData));
-    let finalParameters: any[]= [];
-    
-    adaptedParameters.forEach((parameter) => {
-        
+    let filterParams: any[]= [];
+    const finalParameters = adaptedParameters.map((parameter) => {
         if (parameter.type === "accordion") {
-        const parameterChildren = adaptedParameters.filter((param: any) => {
-            if (param.validations){
-                if ('accordion' in param.validations && param.type !='accordion' && param.validations.accordion == parameter.id){
-                    return true
-                }
+            if (parameter.defaultValue === "") {
+                parameter.parameters = [];
+                return parameter;
             }
-            return false
-        })
-
-        if (!parameterChildren || parameterChildren.length == 0){
-            parameter.parameters = []
-            return parameter;
+            // const parameterChildren = parameter.defaultValue.split(",").map((el) => ({ [el]: true }));
+            const parameterChildren = parameter.defaultValue.split(",");
+            parameter.parameters = parameterChildren.map((child: any) => adaptedParameters.find(el => el.id === child));
+            filterParams = [...filterParams, ...parameterChildren];
         }
-        parameter.parameters = parameterChildren
-
-        finalParameters.push(parameter);
-        }else if(!('accordion' in parameter.validations)){
-            finalParameters.push(parameter);
-        }
-
+        return parameter;
     })
 
+    if (filterParams.length > 0) {
+        return finalParameters.filter((param) => !filterParams.includes(param.id));
+    }
     return finalParameters;
 }
 
