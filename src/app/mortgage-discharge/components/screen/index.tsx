@@ -11,16 +11,17 @@ import { getForeClosureData } from "../../api-calls";
 import Loader from "@/components/Loader";
 import { formatCardData } from "@/utils/mortgage-discharge-format";
 import { MyContexLayout } from "@/app/context";
-import {
-  DataMortgageDischarge,
-  Filter,
-  ModalTrackingData,
-} from "@/types/mortgage-discharge";
+import { DataMortgageDischarge, Filter } from "@/types/mortgage-discharge";
 import { MortgageDischargeData } from "@/app/component/inbox-table/type";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
-import EmptyScreen from "../empty-screen";
 import { useCalcDimensions } from "@/utils/dimensions";
+import NoSearchResult from "../empty-screens/no-search-results";
+import {
+  NoMortgageDischargeInProgress,
+  NoMortgageDischargeCompleted,
+  NoMortgageDischargeNormalization,
+} from "../empty-screens/no-mortgage-discharge";
 
 export default function MortgageDischargeScreen({
   title = "",
@@ -88,7 +89,6 @@ export default function MortgageDischargeScreen({
     setPage(newPage);
   };
 
-
   const usedHeight: number = 316;
   const { height: maxHeight }: { height: number } =
     useCalcDimensions(usedHeight);
@@ -101,6 +101,25 @@ export default function MortgageDischargeScreen({
     if (espaceByRow < maxHeight) return maxHeight - espaceByRow;
     return 0;
   }, [data?.length, maxHeight]);
+
+  function hasNonChannelFilter(): boolean {
+    return filters.some((filter) => filter.label !== "channel");
+  }
+
+  const getNoDataComponent = () => {
+    const statusCategory = extraFilter.find(
+      (filter) => filter.label === "statusCategory"
+    );
+    if (statusCategory?.value === "in_progress") {
+      return <NoMortgageDischargeInProgress height={maxHeight} />;
+    }
+    if (statusCategory?.value === "completed") {
+      return <NoMortgageDischargeCompleted height={maxHeight} />;
+    }
+    if (statusCategory?.value === "normalization") {
+      return <NoMortgageDischargeNormalization height={maxHeight} />;
+    }
+  };
 
   return (
     <MortgageDischargeContextProvider filters={filters} setFilters={setFilters}>
@@ -139,7 +158,11 @@ export default function MortgageDischargeScreen({
                 />
               ))}
               {!data || !data.length ? (
-                <EmptyScreen height={maxHeight} />
+                hasNonChannelFilter() ? (
+                  <NoSearchResult height={maxHeight} />
+                ) : (
+                  getNoDataComponent()
+                )
               ) : (
                 <div
                   style={{
