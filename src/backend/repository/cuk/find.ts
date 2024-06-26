@@ -263,35 +263,47 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         }, 
         parameters: {
             where: {
-                messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO, 
-                name: {
-                        in: [
-                            'id',
-                            'name',
-                            'cukCode',
-                            'description',
-                            'status',
-                            'creationDate',
-                            'issuedDate',
-                            'channel',
-                            'bank',
-                            'notary',
-                            'region',
-                            'buyerDni',
-                            'buyer',
-                            'ownerDni',
-                            'owner',
-                            'borrowerDni',
-                            'borrower',
-                            'beneficiaryBank',
-                            'repertoireNumber',
-                            'repertoireDate',
-                            'sellerDNI',
-                            'borrowerDni',
-                            'rejectionReason',
-                            'observations',
-                        ]
+                OR :[
+                    {
+                        messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO, 
+                        name: {
+                            in: [
+                                'id',
+                                'name',
+                                'cukCode',
+                                'description',
+                                'status',
+                                'creationDate',
+                                'issuedDate',
+                                'channel',
+                                'bank',
+                                'notary',
+                                'region',
+                                'buyerDni',
+                                'buyer',
+                                'ownerDni',
+                                'owner',
+                                'borrowerDni',
+                                'borrower',
+                                'beneficiaryBank',
+                                'repertoireNumber',
+                                'repertoireDate',
+                                'sellerDni',
+                                'borrowerDni',
+                                'observations',
+                            ]
+                        }
+                    },
+                    {
+                        messageCode: MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO, 
+                        name: {
+                            in: [
+                                'rejectionReason',
+                            ]
+                        }
                     }
+                ]
+               
             },
             select: {
                 name: true,
@@ -301,7 +313,9 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
         history: true
     };
 
-    query.include = include;          
+    query.include = include;   
+    console.log(JSON.stringify(query));
+           
     return query;
 }
 

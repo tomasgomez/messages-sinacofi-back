@@ -142,7 +142,7 @@ export function getStatusCodeByMessageCode(code?: string, status?: string[]): st
     }
   }
 
-export type Status = 'completed'|'in_progress'|'normalization';
+export type Status = 'completed'|'in_progress'|'normalization'|'rejected';
 
 export function getForeclosureStatusCodesByStatus(status: Status): string[] {
     switch (status) {
@@ -158,11 +158,12 @@ export function getForeclosureStatusCodesByStatus(status: Status): string[] {
                 ForeclosureStatus.SENT_LIQUIDATION,
                 ForeclosureStatus.SEND_LIQUIDATION_PAYMENT,
                 ForeclosureStatus.PAYMENT,
-                // ForeclosureStatus.SENT_REJECTION,
                 '-'
             ];
         case 'normalization':
             return [ForeclosureStatus.START_NORMALIZATION];
+        case 'rejected':
+            return [ForeclosureStatus.REJECTED];
         default:
             return [];
     }

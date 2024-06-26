@@ -7,11 +7,11 @@ type cukRejected  = {
   institutionCode: string; // atributo message, 670
   institutionDestination: string; // atributo message, 670
   messageCode: string; // 670
-  creationDate: string; //
+  creationDate: string; // 
   creationTime: string; //
   NSE: number; //
-  recievedDate: string; //
-  recievedTime: string; //
+  recievedDate: string; // NSR.createdAt
+  recievedTime: string; // NSR.createdAt
   NSR: number; //
   channel: string; //
   notary: string; //
@@ -22,7 +22,7 @@ type cukRejected  = {
   rejectedNSE: number; //  ultimo 672
   rejectedRecievedDate: string;//  ultimo 672recievedTime //  ultimo 672
   rejectedNSR: number; //  ultimo 672
-  sellerDNI: string;  //parameter
+  sellerDni: string;  //parameter
   buyerDni: string;  //parameter
   borrowerDni: string; //parameter
   cukCode: string; 
@@ -32,6 +32,8 @@ type cukRejected  = {
 
 function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
   const preparedCuk:cukRejected[] = cuks.map((cuk) => {
+    console.log(JSON.stringify(cuk));
+    
     const last670 = cuk.messages?.filter((message) =>
        message.messageCode === '670'
       ).sort((a, b) => {
@@ -44,6 +46,8 @@ function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
         return new Date(`${b.creationDate} ${b.creationTime}`).getTime() - new Date(`${a.creationDate} ${a.creationTime}`).getTime();
       })[0];
     
+    console.log(last672);
+    
     const parameters = cuk.parameters || [];
 
     return {
@@ -53,8 +57,8 @@ function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
       creationDate: last670?.creationDate || '',
       creationTime: last670?.creationTime || '',
       NSE:last670?.NSE?.id || 0,
-      recievedDate:last670?.receivedDate || '',
-      recievedTime:last670?.receivedTime || '',
+      recievedDate:last670?.receivedDate || '', //NSR.createdAt
+      recievedTime:last670?.receivedTime || '', //NSR.createdAt
       NSR:last670?.NSR?.id || 0,
       channel: filterParam(parameters || '', 'channel') || '',
       notary: filterParam(parameters || '', 'notary') || '',
@@ -64,9 +68,9 @@ function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
       rejectedMessageCode: last672?.messageCode || '', 
       rejectedCreationDate: last672?.creationDate || '',
       rejectedNSE: last672?.NSR?.id || 0, 
-      rejectedRecievedDate: last672?.receivedDate || '',
+      rejectedRecievedDate: last672?.receivedDate || '', //NSR.createdAt
       rejectedNSR: last672?.NSR?.id || 0, 
-      sellerDNI: filterParam(parameters || '', 'sellerDNI') || '',
+      sellerDni: filterParam(parameters || '', 'sellerDni') || '',
       buyerDni: filterParam(parameters || '', 'buyerDni') || '',
       borrowerDni: filterParam(parameters || '', 'borrowerDni') || '',
       cukCode: last672?.cukCode || '', 

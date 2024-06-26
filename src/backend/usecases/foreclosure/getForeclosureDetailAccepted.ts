@@ -10,6 +10,7 @@ import {
 import {
   Filter
 } from '../../entities/cuk/filter';
+import { getForeclosureStatusCodesByStatus } from '@/backend/entities/cuk/codes';
 
 // Get message function
 export async function getMessageForeclosureAccepted(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: Filter): Promise < CUK[] | Error > {
@@ -18,6 +19,7 @@ export async function getMessageForeclosureAccepted(messageRepository: MessageRe
     /* Get the CUKs */
     const cuks = await cukRepository.find({
       ...filter,
+      statusCategory: getForeclosureStatusCodesByStatus('completed'),
       include:{
         parameters:false,
         documents:false
@@ -31,29 +33,6 @@ export async function getMessageForeclosureAccepted(messageRepository: MessageRe
     if (cuks.length === 0) {
       return new Error('No message found');
     }
-
-    /* Get all messages with documents */
-    // const cuksUpdated = cuks.map(async (cuk: CUK) => {
-    //   // get messages
-    //   if (!cuk.messages || cuk.messages.length == 0) {
-    //     return cuk;
-    //   }
-    //   // mapping messages
-    //   const messages = cuk.messages.map(async (message) => {
-    //     // get message
-    //     const messageResponse = await messageUseCase.findDocuments(message);
-
-    //     console.log("message",messageResponse);
-    //     if (messageResponse instanceof Error) {
-    //       throw messageResponse;
-    //     }
-    //     return messageResponse;
-    //   });
-    //   const messagesUpdated = await Promise.all(messages);
-    //   // update messages
-    //   cuk.messages = messagesUpdated;
-    //   return cuk;
-    // });
 
     // wait for all messages to be updated
     const cukResponse = await Promise.all(cuks)
