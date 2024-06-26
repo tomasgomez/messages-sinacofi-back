@@ -108,6 +108,7 @@ export default function PreparedScreen() {
         <InboxHeader
           amountMessages={data.length}
           title={"Mensajes Preparados"}
+          handleRefresh={fetchData}
         />
         <DataTable
           rows={data}

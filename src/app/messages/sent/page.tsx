@@ -52,7 +52,11 @@ export default function SentScreen() {
   return (
     <Paper sx={{ width: "100%", height: "100%" }}>
       <Box sx={{ p: 2 }}>
-        <InboxHeader amountMessages={data.length} title={"Mensajes Enviados"} />
+        <InboxHeader
+          amountMessages={data.length}
+          title={"Mensajes Enviados"}
+          handleRefresh={fetchData}
+        />
         <DataTable
           rows={data}
           columns={columnsSent}

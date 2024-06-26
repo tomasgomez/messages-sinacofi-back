@@ -59,6 +59,7 @@ export default function InboxScreen() {
         <InboxHeader
           amountMessages={data.length}
           title={"Bandeja de Entrada"}
+          handleRefresh={fetchData}
         />
         <DataTable
           rows={data}
