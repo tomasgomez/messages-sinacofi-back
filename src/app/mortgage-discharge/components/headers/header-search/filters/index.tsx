@@ -13,7 +13,7 @@ import { handleGenericChangeFilter } from "@/utils/mortgage-discharge-utils";
 import { FilterDropdowns } from "../../form-elements/filters-dropdowns";
 import { Filter } from "@/types/mortgage-discharge";
 import { montserrat } from "@/utils/fonts";
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   Collapse,
   FormControlLabel,
@@ -23,12 +23,12 @@ import {
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { TextInputFilters } from "../../form-elements/text-input-filters";
 import {
   optionsNotaria,
   optionsAHStatus,
   optionsInstitutions,
 } from "./constants";
+import RutField from "../../form-elements/text-rut-field/RutField";
 
 export const Filters = (props: { handleGetData: Function }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -165,7 +165,7 @@ export const Filters = (props: { handleGetData: Function }) => {
             />
           </FilterGroup>
           <FilterGroup>
-            <TextInputFilters
+            <RutField
               placeholder="Ingrese RUT..."
               // 100% / 4 - 12px (gap between the 4 inputs ((3 * 16px) / 4))
               width={`calc( 100%  / 4 - 12px)`}
@@ -174,7 +174,7 @@ export const Filters = (props: { handleGetData: Function }) => {
               label="RUT Comprador"
               value={getValue("buyerDni")}
             />
-            <TextInputFilters
+            <RutField
               placeholder="Ingrese RUT..."
               width={`calc( 100%  / 4 - 12px)`}
               handleChange={handleChangeFilter}
@@ -182,7 +182,7 @@ export const Filters = (props: { handleGetData: Function }) => {
               label="RUT Vendedor"
               value={getValue("sellerDni")}
             />
-            <TextInputFilters
+            <RutField
               placeholder="Ingrese RUT..."
               width={`calc( 100%  / 4 - 12px)`}
               handleChange={handleChangeFilter}
@@ -190,7 +190,7 @@ export const Filters = (props: { handleGetData: Function }) => {
               label="RUT Deudor"
               value={getValue("debtorDni")}
             />
-            <TextInputFilters
+            <RutField
               placeholder="Ingrese el Codigo Interno..."
               width={`calc( 100%  / 4 - 12px)`}
               handleChange={handleChangeFilter}

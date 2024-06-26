@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box/Box";
 import { FilterSectorCard } from "../styles";
 import { DatePickerInput } from "@/app/mortgage-discharge/components/headers/form-elements/date";
-import { TextInputFilters } from "@/app/mortgage-discharge/components/headers/form-elements/text-input-filters";
 import Button from "@mui/material/Button/Button";
 import IconButton from "@mui/material/IconButton/IconButton";
 import Typography from "@mui/material/Typography/Typography";
@@ -18,6 +17,7 @@ import {
   auxFiltersConstant,
 } from "./constants";
 import { Filter } from "@/types/mortgage-discharge";
+import RutField from "../../../form-elements/text-rut-field/RutField";
 
 export const FilterSelector = (props: { onClose: Function }) => {
   const { handleChangeAddFilter, filters } = useContext(MortgageDischargeContext);
@@ -98,21 +98,21 @@ export const FilterSelector = (props: { onClose: Function }) => {
         options={optionsDestination}
         optionSelected={getValue("institutionDestination")}
       />
-      <TextInputFilters
+      <RutField
         placeholder="Ingrese RUT..."
         handleChange={handleAuxFilter}
         keyLabel="buyerDni"
         label="RUT Comprador"
         value={getValue("buyerDni")}
       />
-      <TextInputFilters
+      <RutField
         placeholder="Ingrese RUT..."
         handleChange={handleAuxFilter}
         keyLabel="sellerDni"
         label="RUT Vendedor"
         value={getValue("sellerDni")}
       />
-      <TextInputFilters
+      <RutField
         placeholder="Ingrese RUT..."
         handleChange={handleAuxFilter}
         keyLabel="debtorDni"
