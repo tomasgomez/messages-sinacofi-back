@@ -92,7 +92,6 @@ export async function signMessage(repository: MessageRepository, cukRepository: 
         if (messageResponse instanceof Error) {
             return messageResponse;
         }
-
         
         if (messageResponse.messageCode === MessageTypes.ALZAMIENTO_HIPOTECARIO) {
 
