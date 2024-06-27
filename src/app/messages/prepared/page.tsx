@@ -22,12 +22,16 @@ export default function PreparedScreen() {
   const { selectedInstitution } = React.useContext(MyContexLayout) as any;
   const { ConfirmModal, ErrorModal } = useModalManager();
 
+  // Fix after have next in pagination
   const fetchData = async () => {
     try {
       setIsLoading(true);
       const response = await getMessage({
         status: "01",
         origin: selectedInstitution,
+        // institutionCode: selectedInstitution,
+        // count: 100,
+        // offset: 0,
       });
       setData(response);
       setIsLoading(false);
@@ -73,7 +77,7 @@ export default function PreparedScreen() {
               style={{ padding: 0 }}
               onClick={() => {
                 ConfirmModal.open({
-                  title: "¿Quieres enviar esta mensaje?",
+                  title: "¿Quieres enviar este mensaje?",
                   body: (
                     <Typography
                       fontSize={14}
