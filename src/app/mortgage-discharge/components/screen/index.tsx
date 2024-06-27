@@ -6,7 +6,7 @@ import Header from "@/app/mortgage-discharge/components/headers/header-screen-ca
 import CarDischarge from "@/app/mortgage-discharge/components/card";
 import { TrackingModal } from "../tracking-modal";
 import { InfoModal } from "../info-modal";
-import { CardContextProvider } from "../store/ModalStore";
+import { MortgageDischargeContextProvider } from "../store/ModalStore";
 import { getForeClosureData } from "../../api-calls";
 import Loader from "@/components/Loader";
 import { formatCardData } from "@/utils/mortgage-discharge-format";
@@ -31,9 +31,6 @@ export default function MortgageDischargeScreen({
   extraFilter?: any[];
   isNormalizationScreen?: boolean;
 }) {
-  const [isOpenTrackingModal, setIsOpenTrackingModal] = useState(false);
-  const [modalTrackingData, setModalTrackingData] =
-    useState<ModalTrackingData>();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<DataMortgageDischarge[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -91,10 +88,6 @@ export default function MortgageDischargeScreen({
     setPage(newPage);
   };
 
-  const handlerTrackingModal = (data?: ModalTrackingData) => {
-    setIsOpenTrackingModal(true);
-    setModalTrackingData(data);
-  };
 
   const usedHeight: number = 316;
   const { height: maxHeight }: { height: number } =
@@ -110,7 +103,7 @@ export default function MortgageDischargeScreen({
   }, [data?.length, maxHeight]);
 
   return (
-    <CardContextProvider filters={filters} setFilters={setFilters}>
+    <MortgageDischargeContextProvider filters={filters} setFilters={setFilters}>
       <Paper sx={{ width: "100%", height: "100%" }}>
         <Box sx={{ padding: "16px 16px 6px 16px" }}>
           <Header
@@ -142,7 +135,6 @@ export default function MortgageDischargeScreen({
                 <CarDischarge
                   key={`key-card-${i}`}
                   data={elemCard}
-                  handlerTrackingModal={handlerTrackingModal}
                   isNormalizationScreen={isNormalizationScreen}
                 />
               ))}
@@ -158,17 +150,7 @@ export default function MortgageDischargeScreen({
             </>
           )}
         </Box>
-
-        {isOpenTrackingModal && (
-          <TrackingModal
-            open={isOpenTrackingModal}
-            onClose={setIsOpenTrackingModal}
-            data={modalTrackingData}
-            handleGetDataList={handleGetDataList}
-            setLoading={setLoading}
-            selectedInstitution={selectedInstitution}
-          />
-        )}
+        <TrackingModal handleGetDataList={handleGetDataList} />
         <InfoModal />
         <TablePagination
           rowsPerPageOptions={[5, 7, 10, 25, 50]}
@@ -190,6 +172,6 @@ export default function MortgageDischargeScreen({
           )}
         />
       </Paper>
-    </CardContextProvider>
+    </MortgageDischargeContextProvider>
   );
 }

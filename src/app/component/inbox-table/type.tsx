@@ -153,6 +153,7 @@ export interface TableProps {
   isExpansible?: boolean;
   rowOptions?: RowOptions;
   selectedRadioButton?: string | number | null;
+  rowHeight: number;
 }
 
 export interface MSParameter {

@@ -17,9 +17,16 @@ import { messageUseCase } from '../message/usecases';
 export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: Filter): Promise < CUK[] | Error > {
   try {
 
+
+    if (!filter.include)
+      filter.include = {};
+
+    filter.include.documents = true;
+
     /* Get the CUKs */
     const cuks = await cukRepository.find(filter);
 
+    
     if (cuks instanceof Error) {
       return cuks;
     }

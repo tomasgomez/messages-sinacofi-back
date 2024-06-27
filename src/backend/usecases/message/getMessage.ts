@@ -27,6 +27,7 @@ export async function getMessage(repository: MessageRepository, filter: FilterMe
       }
       return messageWithDocs;
     });
+
     // wait for all messages to be updated
     const messages = await Promise.all(messageUpdated);
     return messages;

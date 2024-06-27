@@ -1,7 +1,6 @@
-import { Message } from '@/backend/entities/message/message';
+import { Message, setStatus } from '@/backend/entities/message/message';
 import { CUKRepository } from '@/backend/repository/cukRepository';
 import { MessageRepository } from '@/backend/repository/messageRepository';
-import { MessageStatus } from '@/backend/entities/message/status';
 import { updateLastMessage } from '@/backend/usecases/foreclosure/updateForeclosureLastMessage';
 import { CUK } from '@/backend/entities/cuk/cuk';
 import { updateForclosure } from '../updateForeclosure';
@@ -11,17 +10,14 @@ import { updateMessage } from '../../message/updateMessage';
 import { MessageTypes } from '@/backend/entities/message/types';
 import { getMessage } from '../../message/getMessage';
 import { FilterMessage } from '@/backend/entities/message/filter';
+import { User } from '@/backend/entities/user/user';
 
 
-export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
+export async function handle672(cuk: CUK, message: Message,user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
 
-    let actions = []
-    actions.push(MessageActions.SHOW_DETAIL)
-    message.actions = actions.join(',')
-
     /* Update the last message */
-    updatedMessage = await updateLastMessage(message, messageRepository, cukRepository);
+    updatedMessage = await updateLastMessage(message,user, messageRepository, cukRepository);
 
     if (updatedMessage instanceof Error) {
         return updatedMessage;
@@ -29,17 +25,17 @@ export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRe
     
     let status = '';
 
-    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined && message.setStatus) {
+    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined) {
             
         status = message.statusCode;
 
-        message.setStatus(status);
+        message = setStatus(message, status);
     }
     
     if (message.cukCode && message.cukCode !== ''){
         cuk.status = ForeclosureStatus.REJECTED
         cuk.cukCode = message.cukCode;
-        updateForclosure(cukRepository,messageRepository,cuk,message);
+        await updateForclosure(cukRepository, messageRepository, cuk, message, user);
 
         
         let filter: FilterMessage = {
@@ -56,11 +52,55 @@ export async function handle672(cuk: CUK, message: Message, cukRepository: CUKRe
                 actions: [MessageActions.SHOW_DETAIL, MessageActions.DUPLICATE].join(','),
             }
 
-            message670.id = fetchMessage[0].id;   
-            await updateMessage(messageRepository, message670);
+            message670.id = fetchMessage[0].id;
+            message670.previousMessageCode = MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO;
+
+            await updateMessage(messageRepository, message670, user);
         }
     }
 
     return updatedMessage;
+}
+
+
+export async function handleAction672(cuk: CUK, message: Message,user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
+    
+    let status = '';
+
+    if (message.statusCode && message.statusCode !== undefined && message.id !== undefined) {
+            
+        status = message.statusCode;
+
+        message = setStatus(message, status);
+    }
+    
+    if (message.cukCode && message.cukCode !== ''){
+
+        let filter: FilterMessage = {
+            cukCode: [message.cukCode],
+            messageCode: [MessageTypes.ALZAMIENTO_HIPOTECARIO],
+        }
+        
+        let fetchMessage = await getMessage(messageRepository, filter);
+        
+        if (!(fetchMessage instanceof Error) && fetchMessage.length > 0) {
+            let { id, messageCode, origin, destination, status } = fetchMessage[0];
+            let message670: Message = {
+                id,
+                messageCode,
+                origin,
+                destination,
+                status,
+            }
+
+            message670.previousMessageCode = MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO;
+
+            console.log('message670', message670);
+
+            await updateMessage(messageRepository, message670, user);
+        }
+    }
+
+    return message;
 }
 

@@ -108,12 +108,22 @@ export const optionsInstitutions = [
   }
 ];
 
-export const optionsStatus = [
+export const optionsAHStatus = [
   { label: "Todos", value: "all" },
-  { label: "Pendiente de Envio", value: "01" },
-  { label: "Pendiente de Firma", value: "01" },
-  { label: "Operaciones Enviadas", value: "05" },
-  { label: "Operaciones Recibidas", value: "06" },
+  { label: "Alzamiento Hipotecario Enviado", value: "01" },
+  { label: "Alzamiento Hipotecario en Proceso", value: "021" },
+  { label: "Evaluación Alzamiento Hipotecario Aceptada", value: "022" },
+  { label: "Evaluación Alzamiento Hipotecario Rechazada", value: "023" },
+  { label: "Inicio de Cliente en Normalización", value: "XXX" },
+  { label: "Fin de Cliente en Normalización", value: "YYY" },
+  { label: "Firma de Escritura en Proceso", value: "041" },
+  { label: "Escritura Firmada", value: "042" },
+  { label: "Aceptación Alzamiento Hipotecario", value: "07" },
+  { label: "Envio de Liquidacion de Prepago", value: "09" },
+  { label: "Aviso de Pago", value: "10" },
+  { label: "Pago de Operación", value: "11" },
+  { label: "Rechazo de Pago", value: "12" },
+  { label: "Aceptación de Pago", value: "14" },
 ];
 
 export const optionsNotaria = [

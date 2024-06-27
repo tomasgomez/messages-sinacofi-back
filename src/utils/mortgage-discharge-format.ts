@@ -16,7 +16,6 @@ import { sortMessagesOldToNew } from "./messagesFuntions";
 import { paramsTo670 } from "./mortgage-discharge-constants";
 import {
   sortHistoryList,
-  getActions,
   getDetailsObjetToMSCode,
 } from "./mortgage-discharge-utils";
 
@@ -66,6 +65,37 @@ const SortAndGetLastMessage = (
   return { sortedMessages, mostRecentMessage };
 };
 
+const formatTrackingData = (
+  data: MortgageDischargeData,
+  sortedMessages: Message[]
+) => {
+  const {
+    cukCode,
+    ownerDni,
+    owner,
+    buyerDni,
+    buyer,
+    borrowerDni,
+    borrower,
+    region,
+    institutionDestination,
+    history,
+  } = data || {};
+
+  const modalTrackingData: ModalTrackingData = {
+    cukCode: cukCode || "",
+    seller: `${ownerDni || ""} ${owner || ""}`,
+    buyer: `${buyerDni || ""} ${buyer || ""}`,
+    debtor: `${borrowerDni || ""} ${borrower || ""}`,
+    region: region || "",
+    institutionDestination: institutionDestination || "",
+    history: sortHistoryList(history || []),
+    lastMessage: sortedMessages[sortedMessages?.length - 1] || {},
+  };
+
+  return modalTrackingData;
+};
+
 export const formatCardData = (
   data: MortgageDischargeData[] | undefined
 ): DataMortgageDischarge[] => {
@@ -108,33 +138,12 @@ export const formatCardData = (
       cukStatus: codeData?.cukStatus || "",
     };
 
-    const modalTrackingData: ModalTrackingData = {
-      cukCode: elem.cukCode || "",
-      seller: `${elem?.ownerDni || ""} ${elem?.owner || ""}`,
-      buyer: `${elem?.buyerDni || ""} ${elem?.buyer || ""}`,
-      debtor: `${elem?.borrowerDni || ""} ${elem?.borrower || ""}`,
-      region: elem?.region || "",
-      institutionDestination: elem?.institutionDestination || "",
-      history: sortHistoryList(elem?.history || []),
-      lastMessage: sortedMessages[sortedMessages?.length - 1] || {},
-    };
-
-    // const newMessaje = sortedMessages.map((message) => {
-    //   return {
-    //     ...message,
-    //     actions: getActions(
-    //       message?.messageCode || "",
-    //       message?.status || "",
-    //       elem?.status || ""
-    //     ),
-    //   };
-    // });
     return {
       codeData,
       infoData,
       messages: sortedMessages,
       buttonDisabled,
-      modalTrackingData,
+      modalTrackingData: formatTrackingData(elem, sortedMessages),
     };
   });
   return formattedData;
@@ -204,20 +213,23 @@ export const formatSearchData = (
       messages: unSortedMessages = [],
       cukCode = "",
       history = [],
-      id = "",
     } = elem || {};
 
-    const { mostRecentMessage: mostRecent670 } = SortAndGetLastMessage(
-      unSortedMessages,
-      "670"
-    );
+    const { sortedMessages, mostRecentMessage: mostRecent670 } =
+      SortAndGetLastMessage(unSortedMessages, "670");
 
     const sorttedHistory = sortHistoryList(history);
 
     const lastHistory: HistoryTrackingModal =
       sorttedHistory[0] as HistoryTrackingModal;
 
-    const { OSN, receivedDate, status: status670 } = mostRecent670 || {};
+    const {
+      OSN,
+      receivedDate,
+      status: status670,
+      id: message670ID = "",
+    } = mostRecent670 || {};
+
     const { status: historyStatus = "", date: dateTime } = lastHistory || {};
 
     let dateHistory = "";
@@ -234,7 +246,8 @@ export const formatSearchData = (
       dateHistory,
       OSN,
       status670,
-      id,
+      message670ID,
+      modalTrackingData: formatTrackingData(elem, sortedMessages),
     };
   });
 

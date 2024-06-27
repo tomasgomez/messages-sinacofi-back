@@ -38,6 +38,10 @@ const getCreateMessagePayload = (
   payloadDefault.forEach((param: string) => {
     payload[param] = data[param];
   });
+
+  if (data.messageCode === "670" && data.borrowerUfAmount == 0) {
+    data.borrowerUfAmount = parseFloat(data.loanUF) + parseFloat(data.supplementaryLoanUF);
+  }
   payload.origin = origin;
   payload.destination = data.beneficiaryBank;
   payload.parameters = Object.entries(data)
@@ -67,7 +71,7 @@ const initializarField = (fieldName: string, fieldList: [{ value: any }]) => {
   return currentField?.value || null;
 };
 const CreateMessage = () => {
-  const { selectedInstitution } = useAppContext();
+  const { selectedInstitution, currencies } = useAppContext();
   const { userInfo } = useContext(SessionProviderContext) as any;
   const { SuccessModal, ConfirmModal, ErrorModal } = useModalManager();
   const AddFileModal = useModal({ id: ModalList.AddFileModal });
@@ -85,28 +89,35 @@ const CreateMessage = () => {
   const messageId = searchParams?.get("messageId") || "";
   const cukCode = searchParams?.get("cukCode") || "";
   const action = searchParams?.get("action") || "";
+
+  // define default values
+  let actions = { saveDraftDisabled: true, sendButtonDisabled: false };
+  let actionFn = 
   useEffect(() => {
-    setLoading(true);
-    if (action == 'sign' && messageCode == '670'){
-      getMessageSchema(messageCode, messageId, cukCode)
+    setLoading(true); 
+    if (action == 'sign' || action == 'duplicate'){
+      getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
       .then((schema: any) => {
+        // check buttons
+        if (schema.actions && schema.actions.buttons && schema.actions.buttons.length>0){
+          let buttons = schema.actions.buttons;
+          buttons.forEach((button: any) => {
+            if (button.name == 'saveDraft'){
+              actions.saveDraftDisabled = button.disabled;
+            }
+            if (button.name == 'sendButton'){
+              actions.sendButtonDisabled = button.disabled;
+            }
+          })
+          // check modals
+          if (schema.actions && schema.actions.modal){
+            let buttons = schema.actions.modal;
+          }
+        }
         setMessageSchema({
           ...schema,
-          actions: { saveDraftDisabled: true, sendButtonDisabled: false },
-          parameters: schema?.parameters.map((parameter: any) =>(
-              parameter.id === "sign" || parameter.id === "senderSign"
-              ? {
-                  ...parameter,
-                  type: "password",
-                  // label: parameter.label
-                  required: true,
-                  disabled: false,
-                }
-              : {
-                  ...parameter,
-                  disabled: true,
-                }
-          )),
+          actions: actions,
+          parameters: schema?.parameters
         });
       })
       .catch((error) => {
@@ -119,9 +130,8 @@ const CreateMessage = () => {
 
     }
     else if ((cloneId || messageId) && !cukCode) {
-      getMessageDetails(cloneId || messageId).then((data) => {
-        
-        getMessageSchema(messageCode, messageId)
+      getMessageDetails(cloneId || messageId).then((data) => {    
+        getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
           .then((schema: any) => {
             setMessageSchema({
               ...schema,
@@ -198,7 +208,7 @@ const CreateMessage = () => {
       
         });
     } else {
-      getMessageSchema(messageCode, messageId, cukCode)
+      getMessageSchema(messageCode, messageId, cukCode, action, institutionId)
         .then((schema: any) => {
           setMessageSchema({
             ...schema,
@@ -267,7 +277,7 @@ const CreateMessage = () => {
 
   const createMessageFn = (payload: any) => {
     setLoading(true);
-    createMessage(payload, "05").then((response: any) => {
+    createMessage(payload, "05",action).then((response: any) => {
       setLoading(false);
       SuccessModal.open({
         title: "Mensaje Enviado Exitosamente",
@@ -391,13 +401,13 @@ const CreateMessage = () => {
                 <Typography variant="caption" color="#49454F">
                   Crédito Inicial (UF / $)
                 </Typography>
-                <Typography variant="body2">3.799,59 / 221.217.265</Typography>
+                <Typography variant="body2">{data.borrowerUfAmount} / {data.borrowerUfAmount * currencies.UF}</Typography>
               </Stack>
               <Stack direction="column">
                 <Typography variant="caption" color="#49454F">
                   Total a Pagar (UF / $)
                 </Typography>
-                <Typography variant="body2">6.100 / 143.217.265</Typography>
+                <Typography variant="body2">{data.totalPrepaidToPayUF} / {data.totalPrepaidToPayCLP}</Typography>
               </Stack>
             </Stack>
             <Typography variant="body2">
@@ -422,7 +432,7 @@ const CreateMessage = () => {
       selectedInstitution,
       userInfo
     );
-    createMessage(payload, "01").then((response: any) => {
+    createMessage(payload, "01",action).then((response: any) => {
       setLoading(false);
       SuccessModal.open({
         title: "Mensaje Grabado en Preparados Exitosamente",

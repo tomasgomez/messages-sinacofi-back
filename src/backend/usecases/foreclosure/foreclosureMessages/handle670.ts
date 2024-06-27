@@ -16,26 +16,17 @@ import {
 import {
   MessageStatus
 } from '@/backend/entities/message/status';
-import { MessageActions } from '@/backend/entities/message/actions';
+import { User } from '@/backend/entities/user/user';
 import { updateMessage } from '../../message/updateMessage';
 import { Parameter } from '@/backend/entities/message/parameter';
 
 
-export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
+export async function handle670(cuk: CUK, message: Message, user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise < Message | Error > {
 
-  let actions = [];
-  
   switch (message.statusCode) {
     case MessageStatus.ENVIADO: {
-      actions.push(MessageActions.SHOW_DETAIL);
-      actions.push(MessageActions.EDIT);
-      actions.push(MessageActions.DELETE);
-        
-      message.actions = actions.join(',');
 
-      console.log('Message:', message)
-
-      updateMessage(messageRepository, message);
+      updateMessage(messageRepository, message, user);
 
       cuk.status = MessageStatus.ENVIADO;
 
@@ -44,15 +35,10 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
       break;
     }
     case MessageStatus.PREPARADO: default: {
-      if (!cuk.cukCode) {
+
+      if (!cuk.cukCode && !message.cukCode) {
         if (cuk.setCukCode)
           cuk.setCukCode(message.origin ?? '');
-
-        actions.push(MessageActions.SIGN);
-        actions.push(MessageActions.EDIT);
-        actions.push(MessageActions.DELETE);
-
-        message.actions = actions.join(',');
 
         cuk.status = '-'
 
@@ -72,18 +58,18 @@ export async function handle670(cuk: CUK, message: Message, cukRepository: CUKRe
 
         message.cukCode = cuk.cukCode;
       
-      message.parameters = message?.parameters?.map((parameter: Parameter) => {
-        if (parameter.name === 'CUK') {
-          parameter.value = cuk.cukCode;
-        }
-        return parameter;
-      });
-
-      } else {
+        
+      } else if (cuk.cukCode){
         message.cukCode = cuk.cukCode;
       }
       break;
     }
   }
-  return await createMessage(messageRepository, message);
+  message.parameters = message?.parameters?.map((parameter: Parameter) => {
+    if (parameter.name === 'CUK') {
+      parameter.value = cuk.cukCode;
+    }
+    return parameter;
+  });
+  return await createMessage(messageRepository, message, user);
 }

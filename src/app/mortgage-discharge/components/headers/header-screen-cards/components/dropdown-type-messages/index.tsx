@@ -5,7 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { CardContext } from "@/app/mortgage-discharge/components/store/ModalStore";
+import { MortgageDischargeContext } from "@/app/mortgage-discharge/components/store/ModalStore";
 
 const options = [
   { label: "Todos", value: "all" },
@@ -23,7 +23,7 @@ const options = [
 
 export const MessageTypeDropdown = (props: { widthDropdown: number }) => {
   const { widthDropdown = 300 } = props || {};
-  const { handleChangeAddFilter } = useContext(CardContext);
+  const { handleChangeAddFilter } = useContext(MortgageDischargeContext);
 
   const [optionSelected, setOptionSelected] = useState(options[0].value);
 

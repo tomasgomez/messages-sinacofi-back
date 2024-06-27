@@ -1,4 +1,4 @@
-import { IMessageSchema } from "./interface";
+import { IMessageSchema, SchemaAction } from "./interface";
 
 export class MessageSchema implements IMessageSchema {
    
@@ -9,7 +9,8 @@ export class MessageSchema implements IMessageSchema {
         public name: string,
         public createdAt: Date,
         public updatedAt: Date,
-        public parameters?: any[]
+        public parameters?: any[],
+        public allowedActions?: SchemaAction
     ) {}
 }
 export class MessageSchemaFront implements IMessageSchema {
@@ -21,7 +22,8 @@ export class MessageSchemaFront implements IMessageSchema {
         public name?: string,
         public createdAt?: Date,
         public updatedAt?: Date,
-        public parameters?: Parameter[]
+        public parameters?: Parameter[],
+        public actions?: SchemaAction
     ) {}
 }
 

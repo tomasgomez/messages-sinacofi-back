@@ -1,5 +1,5 @@
 import institutions from "./mock-instititutions.json";
-import { messagesTypes } from "../../utils/messagesSchemaTypes";
+import { Filter } from "@/types/mortgage-discharge";
 // import { messageSchemas } from "@/utils/messagesSchema";
 
 export const getInstitutions = async () => {
@@ -18,10 +18,21 @@ export const getMessageDescriptions = async () => {
 export const getMessageSchema = async (
   messageCode: string,
   messageId?: string,
-  cukCode?: string
+  cukCode?: string,
+  action?: string,
+  institutionId?: string
+) => {
+  const destination = institutionId;
+  return fetch(
+    `/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&destination=${destination}&cukCode=${cukCode}&action=${action}`
+  ).then((response: any) => response.json());
+};
+
+export const getIndCurrencies = async (
+  index?: string,
 ) => {
   return fetch(
-    `/api/rule/schema?messageCode=${messageCode}&messageId=${messageId}&cukCode=${cukCode}`
+    `/api/ind?${index ? `index=${index}` : ""}`
   ).then((response: any) => response.json());
 };
 
@@ -58,9 +69,86 @@ export const getDocument = async (documentId: string) => {
   }
 };
 
-export const createMessage = async (data: any, status: string) => {
+
+export async function getInformsAccepted(
+  filters?: Filter[]
+) {
+  try {
+    let url = `/api/informs/accepted`;
+
+    const newFilters = filters?.slice() || [];
+
+    if (newFilters.length > 0) {
+      const queryParams = newFilters
+        .map(
+          (filter) =>
+            `${encodeURIComponent(filter?.label)}=${encodeURIComponent(
+              filter.value ?? ""
+            )}`
+        )
+        .join("&");
+      url = `${url}?${queryParams}`;
+    }
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: Failed api call, Status: ${response.status}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data: any[] = await response.json();
+
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+}
+
+export async function getInformsRejected(
+  filters?: Filter[]
+) {
+  try {
+    let url = `/api/informs/rejected`;
+
+    const newFilters = filters?.slice() || [];
+
+    if (newFilters.length > 0) {
+      const queryParams = newFilters
+        .map(
+          (filter) =>
+            `${encodeURIComponent(filter?.label)}=${encodeURIComponent(
+              filter.value ?? ""
+            )}`
+        )
+        .join("&");
+      url = `${url}?${queryParams}`;
+    }
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Error: Failed api call, Status: ${response.status}`);
+    }
+
+    if (response.status === 204) {
+      return [];
+    }
+
+    const data: any[] = await response.json();
+
+    return data;
+  } catch (err: any) {
+    throw err;
+  }
+}
+
+export const createMessage = async (data: any, status: string, action?: string) => {
   const payload = JSON.stringify({ ...data, status });
-  return fetch(`/api/message`, {
+  return fetch(`/api/message?&action=${action}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -177,3 +265,5 @@ export const validatePassword = async (password: string) => {
     throw error;
   }
 };
+
+

@@ -18,7 +18,7 @@ import {
 import { MessageTypeDropdown } from "./components/dropdown-type-messages";
 import { InputCode } from "./components/input-code-messages";
 import { Filter } from "./filters-modal";
-import { CardContext } from "../../store/ModalStore";
+import { MortgageDischargeContext } from "../../store/ModalStore";
 import { MessageStatusDropdown } from "./components/dropdown-status-messages";
 
 export default function InboxHeader(props: {
@@ -28,7 +28,7 @@ export default function InboxHeader(props: {
   const { title = "", dataCodeList = [] } = props || {};
 
   const [alignment, setAlignment] = React.useState("Personas");
-  const { handleChangeAddFilter } = React.useContext(CardContext);
+  const { handleChangeAddFilter } = React.useContext(MortgageDischargeContext);
 
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,

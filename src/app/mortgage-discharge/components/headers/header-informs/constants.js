@@ -3,7 +3,7 @@ export const auxFiltersConstant = [
   { label: "endDate", value: "" },
   { label: "buyerDni", value: "" },
   { label: "debtorDni", value: "" },
-  { label: "notaryRepertoire", value: "all" },
+  { label: "notary", value: "all" },
   { label: "region", value: "all" },
 ];
 

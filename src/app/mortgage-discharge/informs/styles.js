@@ -9,6 +9,7 @@ export const StyledPaper = styled(Paper)`
   flex-direction: column;
   align-items: center;
   border-radius: 0px;
+  gap: 64px;
 `;
 
 export const StyledTypography = styled(Typography)`

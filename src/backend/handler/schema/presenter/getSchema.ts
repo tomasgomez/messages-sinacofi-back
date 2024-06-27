@@ -13,7 +13,8 @@ export function validateGetSchema(data: any): Filter | Error {
     destination,
     count,
     offset,
-    cukCode
+    cukCode,
+    action
   } = data;
 
   /* Set all the possible filters */
@@ -22,6 +23,7 @@ export function validateGetSchema(data: any): Filter | Error {
   filter.origin = processStringArrayField(origin);
   filter.destination = processStringArrayField(destination);
   filter.cuk = cukCode
+  filter.action = action ?? ''
 
   filter.count = count;
   filter.offset = offset;

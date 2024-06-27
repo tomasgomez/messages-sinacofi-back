@@ -102,10 +102,20 @@ const ElementSelector = ({ type, props }: { type: any; props: any }) => {
       name={inputProps.id}
       control={inputProps.control}
       defaultValue={inputProps.defaultValue}
-      rules={{ ...rules, ...(type === "dni" ? { validate: (value, _) => {
-        return !validaRut(value) ? "Rut invalido"
-        : null
-      }} : {})}}
+      rules={{ ...rules,
+        ...(inputProps.id === "borrowerUfAmount" ? { validate: (value, formData) => {
+          console.log({ value, formData });
+
+          const parseValue = parseFloat(value)
+          
+          return parseValue > 0 && parseValue > (parseFloat(formData.loanUF) + parseFloat(formData.supplementaryLoanUF)) 
+            ? "* SGM: Monto UF no puede ser mayor a la sumatorio del Mutuo y Mutuo complementario"
+            : null
+          }}: null),
+        ...(type === "dni" ? { validate: (value, _) => {
+          return !validaRut(value) ? "Rut invalido"
+          : null
+        }} : {})}}
       render={({ field }) => {
         return (
           <FieldGotten

@@ -23,9 +23,9 @@ export enum ForeclosureStatus {
     ACCEPTED = "07", // 674
     SENT_LIQUIDATION = "09",  // 675
     SEND_LIQUIDATION_PAYMENT = "10",  // 677
-    PAYMENT = "11", // 677
-    SENT_REJECTION = "12", // 678
-    SENT_CONFIRM_PAYMENT = "14",  // 679
+        PAYMENT = "11", // 677
+        SENT_REJECTION = "12", // 678
+        SENT_CONFIRM_PAYMENT = "14",  // 679
     PAYMENT_DATA = "999", // non-visible
     PAYMENT_OPTION_REJECTION = "1000", // non-visible
     PAYMENT_OPTION_ACCEPTED = "1001", // non-visible
@@ -152,12 +152,15 @@ export function getForeclosureStatusCodesByStatus(status: Status): string[] {
             return [
                 ForeclosureStatus.END_NORMALIZATION,
                 ForeclosureStatus.SIGN_IN_PROGRESS,
+                ForeclosureStatus.APPROVED,
+                ForeclosureStatus.IN_PROCESS,
                 ForeclosureStatus.SIGNED,
                 ForeclosureStatus.INIT,
                 ForeclosureStatus.ACCEPTED,
                 ForeclosureStatus.SENT_LIQUIDATION,
                 ForeclosureStatus.SEND_LIQUIDATION_PAYMENT,
                 ForeclosureStatus.PAYMENT,
+                ForeclosureStatus.REJECTED,
                 '-'
             ];
         case 'normalization':

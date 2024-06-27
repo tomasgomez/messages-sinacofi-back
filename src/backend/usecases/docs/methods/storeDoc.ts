@@ -29,7 +29,6 @@ export async function storeDoc(doc: Documents, messagePath: string): Promise <Do
     }catch(error){
         console.log(error)
         return doc;
-        return new Error("saving files")
     }
 
     // decode the base64 content
@@ -40,7 +39,6 @@ export async function storeDoc(doc: Documents, messagePath: string): Promise <Do
     } catch (error) {
         console.log(error);
         return doc;
-        return new Error('Error saving the file');
     }
 
     const urlToBeStored = path.join(messagePath, doc.documentName);

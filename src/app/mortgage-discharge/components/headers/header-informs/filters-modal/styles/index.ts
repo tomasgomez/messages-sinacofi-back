@@ -23,6 +23,6 @@ export const FilterSectorCard = styled(Card)`
   // Delete if you don't want to limit in the card filter
   overflow: auto;
   ////////////
-  height: calc(100% - 215px);
-  max-height: 800px;
+  height: 550px
+  max-height: calc(100% - 215px);
 `;

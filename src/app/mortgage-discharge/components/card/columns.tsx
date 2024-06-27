@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import { IconButton, Box } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { CardContext } from "../store/ModalStore";
+import { MortgageDischargeContext } from "../store/ModalStore";
 import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
@@ -30,7 +30,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
     cukCode = "",
   } = row || {};
 
-  const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
+  const { setModalIsOpen, setSelectedMessage } = useContext(MortgageDischargeContext);
   const { userInfo } = useContext(SessionProviderContext) as any;
   const { setPrintPDF, setSelectedMessages, selectedRadioButtonMessages } =
     useContext(MessageExportContext);
@@ -70,7 +70,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("SIGN") && messageCode === "670" && (
         <Tooltip
           title={
-            userInfo.permissions.signMortgageDischarge
+            userInfo?.permissions?.signMortgageDischarge
               ? ""
               : "No tienes permisos para realizar esta acción."
           }
@@ -99,7 +99,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
       {actions.includes("SIGN") && messageCode !== "670" && (
         <Tooltip
           title={
-            userInfo.permissions.sendMessage
+            userInfo?.permissions?.sendMessage
               ? ""
               : "No tienes permisos para realizar esta acción."
           }
@@ -118,15 +118,15 @@ const AccionesColumn = ({ row }: { row: any }) => {
                 )
               }
             >
-              <SendOutlinedIcon />
-            </IconButton>
+            <SendOutlinedIcon />
+          </IconButton>
           </span>
         </Tooltip>
       )}
       {actions.includes("SHOW_DETAIL") && (
         <Tooltip
           title={
-            userInfo.permissions.sendMessage
+            userInfo?.permissions?.sendMessage
               ? ""
               : "No tienes permisos para realizar esta acción."
           }
@@ -136,12 +136,12 @@ const AccionesColumn = ({ row }: { row: any }) => {
               key={`detail-icon-${id}`}
               style={{
                 ...iconButtonStyle,
-                color: userInfo.permissions.sendMessage
+                color: userInfo?.permissions?.sendMessage
                   ? defaultColor
                   : disabledColor,
               }}
               onClick={() => handlerOpenModal(row)}
-              disabled={!userInfo.permissions.sendMessage}
+              disabled={!userInfo?.permissions?.sendMessage}
             >
               <InfoOutlinedIcon />
             </IconButton>
@@ -169,7 +169,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&action=edit`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=edit`
             )
           }
         >
@@ -185,7 +185,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
           }}
           onClick={() =>
             router.push(
-              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&action=duplicate`
+              `/messages/create?institutionId=${destination}&messageCode=${messageCode}&messageId=${id}&cukCode=${cukCode}&action=duplicate`
             )
           }
         >

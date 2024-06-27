@@ -28,10 +28,10 @@ export async function find(filter: Filter): Promise < CUK[] | Error > {
         let offsetAsInt = parseInt(filter.offset ?? '0', 10);
 
         const query = cukFindManyQuery(filter, countAsInt, offsetAsInt);
-
         // Find all messages if count is not provided or is 0
         cuks = await prismaClient.cUK.findMany(query);
-        
+
+
         // If the messages are not found, return an error
         if (cuks.length === 0) {
             return new Error('Message not found');
@@ -92,7 +92,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // const ReceiverMessageCodes = ["671", "672", "673", "675","676","678", "679"];
 
     // FILTER MESSAGES BY messageCode
-    if ((filter.messageCode && filter.messageCode.length > 0)&& (filter.status && filter.status.length > 0)) {
+    if ((filter.messageCode && filter.messageCode.length > 0) && (filter.status && filter.status.length > 0)) {
         const messageCode = {
             messageCode: { in: filter.messageCode },
             status:{},
@@ -259,7 +259,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     // define include
     let include: Prisma.CUKInclude = { 
         messages: { 
-            select: findSelect(filter.include?.parameters, filter.include?.parameters),
+            select: findSelect(filter.include?.parameters, filter.include?.documents),
         }, 
         parameters: {
             where: {
@@ -313,7 +313,7 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
                 updatedAt: true
             }
         },
-        history: true
+        history: true,
     };
 
     query.include = include;   

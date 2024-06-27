@@ -161,7 +161,7 @@ export const StyledTitleProgressBar = styled(Typography)`
   font-weight: 500;
   line-height: 1.42;
   max-width: 80px;
-  margin-right: 16px;
+  margin-right: 14px;
 `;
 
 export const StyledContainerBar = styled(Box)`
@@ -299,7 +299,7 @@ export const StyledLinearProgress = styled(
     borderRight,
   }: StyledLinearProgressProps): CSSObject => ({
     height: 8,
-    width: `calc((100vw - 478px) / 7)`,
+    width: `calc((100vw - 477px) / 7)`,
     borderRadius: getBorderRadius(borderRadius),
     borderRight: borderRight ? "1px solid #FFF" : "none",
     backgroundColor: "#d9d9d9",
