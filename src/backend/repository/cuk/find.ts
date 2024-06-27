@@ -291,6 +291,8 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
                                 'sellerDni',
                                 'borrowerDni',
                                 'observations',
+                                'senderSigned',
+                                'rejectionReason'
                             ]
                         }
                     },
@@ -307,7 +309,8 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
             },
             select: {
                 name: true,
-                value: true
+                value: true,
+                updatedAt: true
             }
         },
         history: true

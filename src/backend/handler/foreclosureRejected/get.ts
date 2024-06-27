@@ -22,7 +22,7 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >){
           return;
         }
 
-        let preparedData = prepareForclosure(messageResponse, filter);
+        let preparedData = prepareForclosure(messageResponse);
 
         /* Return the message */
         res.status(200).json(preparedData);
