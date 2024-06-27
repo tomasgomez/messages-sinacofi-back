@@ -3,7 +3,7 @@ import MaskedInput from "react-text-mask";
 import Field from "@/components/Field";
 
 export function validaRut(rutCompleto: string): boolean {
-  rutCompleto = rutCompleto.replace(/\./g, "");
+  rutCompleto = rutCompleto.replace(/[.\u200B]/g, "");
   if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) {
     return false;
   }

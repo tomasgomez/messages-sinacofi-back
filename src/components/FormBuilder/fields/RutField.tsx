@@ -1,11 +1,11 @@
 import { FormControl } from "@mui/material";
-import TextField from "@mui/material/TextField";
 import { useMemo, useRef } from "react";
 import MaskedInput from "react-text-mask";
 import Field from "./Field";
 
 export function validaRut(rutCompleto: string): boolean {
-  rutCompleto = rutCompleto.replace(/\./g, "");
+  rutCompleto = rutCompleto.replace(/[.\u200B]/g, "");
+  console.log(rutCompleto, rutCompleto.length);
   if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) {
     return false;
   }
