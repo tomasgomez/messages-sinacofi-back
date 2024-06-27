@@ -28,12 +28,10 @@ export const getMessageSchema = async (
   ).then((response: any) => response.json());
 };
 
-export const getIndCurrencies = async (
-  index?: string,
-) => {
-  return fetch(
-    `/api/ind?${index ? `index=${index}` : ""}`
-  ).then((response: any) => response.json());
+export const getIndCurrencies = async (index?: string) => {
+  return fetch(`/api/ind?${index ? `index=${index}` : ""}`).then(
+    (response: any) => response.json()
+  );
 };
 
 export const getMessageDetails = async (messageId: number | string) => {
@@ -69,10 +67,7 @@ export const getDocument = async (documentId: string) => {
   }
 };
 
-
-export async function getInformsAccepted(
-  filters?: Filter[]
-) {
+export async function getInformsAccepted(filters?: Filter[]) {
   try {
     let url = `/api/informs/accepted`;
 
@@ -108,9 +103,7 @@ export async function getInformsAccepted(
   }
 }
 
-export async function getInformsRejected(
-  filters?: Filter[]
-) {
+export async function getInformsRejected(filters?: Filter[]) {
   try {
     let url = `/api/informs/rejected`;
 
@@ -146,7 +139,11 @@ export async function getInformsRejected(
   }
 }
 
-export const createMessage = async (data: any, status: string, action?: string) => {
+export const createMessage = async (
+  data: any,
+  status: string,
+  action?: string
+) => {
   const payload = JSON.stringify({ ...data, status });
   return fetch(`/api/message?&action=${action}`, {
     method: "POST",
@@ -205,9 +202,24 @@ export const getMessage = async (params: {
   status?: string;
   destination?: string;
   origin?: string;
+  offset?: number | string;
+  count?: number | string;
+  institutionCode?: string;
 }) => {
   try {
     const queryParams = new URLSearchParams();
+
+    if (params?.offset) {
+      queryParams.append("offset", params.offset.toString());
+    }
+
+    if (params?.count) {
+      queryParams.append("count", params.count.toString());
+    }
+
+    if (params?.institutionCode) {
+      queryParams.append("institutionCode", params.institutionCode);
+    }
 
     if (params?.status) {
       queryParams.append("status", params.status);
@@ -265,5 +277,3 @@ export const validatePassword = async (password: string) => {
     throw error;
   }
 };
-
-

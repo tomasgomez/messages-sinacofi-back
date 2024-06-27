@@ -120,6 +120,7 @@ export default function PreparedScreen() {
           loading={isLoading}
           tableTitle={tableTitle}
           rowOptions={rowOptions}
+          highlightRowDisabled
         />
       </Box>
     </Paper>

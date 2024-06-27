@@ -16,6 +16,7 @@ const descriptor: Columns = {
   id: "description",
   label: "Descripción",
   align: Alignment.LEFT,
+  sortable: true,
   render: ({ row }: { row: any }) => {
     const { description = "", messageCode = "" } = row || {};
     return (

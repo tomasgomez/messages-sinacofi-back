@@ -19,6 +19,7 @@ import Grid from "@mui/material/Grid/Grid";
 import { PDFTemplate } from "@/app/component/PDFTemplate";
 import Loader from "@/components/Loader";
 import { getMessageDetails } from "@/app/services/common";
+import { useCalcDimensions } from "@/utils/dimensions";
 
 export function ModalLink(props: { isInProcess?: boolean; data: Message }) {
   const [details, setDetails] = useState<Message>();
@@ -55,6 +56,9 @@ export function ModalLink(props: { isInProcess?: boolean; data: Message }) {
     setPdfView(true);
   };
 
+  const windowsHeight = useCalcDimensions()?.height;
+  const height = Math.max(0.8 * windowsHeight, 650);
+
   return (
     <>
       <Link
@@ -66,7 +70,15 @@ export function ModalLink(props: { isInProcess?: boolean; data: Message }) {
         {OSN || TSN || null}
       </Link>
       <Modal
-        sx={{ color: "black", p: "40px", maxWidth: "960px" }}
+        sx={{
+          color: "black",
+          p: "40px",
+          maxWidth: "960px",
+          height: height,
+          overflow: "auto",
+          margin: 0,
+          top: `calc((100% - ${height}px) / 2)`,
+        }}
         open={isOpen}
         onClose={handleClose}
       >
@@ -78,7 +90,7 @@ export function ModalLink(props: { isInProcess?: boolean; data: Message }) {
         </IconButton>
         {!!details ? (
           isLoading ? (
-            <Loader label="Cargando Detalle..." />
+            <Loader label="Cargando Detalle..." minHeight={"100%"} />
           ) : pdfView ? (
             <>
               <Typography
@@ -112,10 +124,10 @@ export function ModalLink(props: { isInProcess?: boolean; data: Message }) {
                 </Button>
               </Grid>
               <Box>
-                <ModalHeaderSection data={details} />
+                <ModalHeaderSection data={details as Message} />
               </Box>
               <Box>
-                <ModalMainContent data={details} />
+                <ModalMainContent data={details as Message} />
               </Box>
               <Box display={"flex"} justifyContent={"flex-end"} mt={3}>
                 <Button variant="outlined" size="large" onClick={handleClose}>
@@ -125,7 +137,7 @@ export function ModalLink(props: { isInProcess?: boolean; data: Message }) {
             </>
           )
         ) : (
-          <Loader label="Cargando Detalle..." />
+          <Loader label="Cargando Detalle..." minHeight={"100%"} />
         )}
       </Modal>
     </>

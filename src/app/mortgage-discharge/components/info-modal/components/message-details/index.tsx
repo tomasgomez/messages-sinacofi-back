@@ -92,6 +92,7 @@ export function MessageDetails({ dataMessage = [] }: { dataMessage: any }) {
                 >
                   {row.data.map((column: any, colIndex: number) => (
                     <Box
+                      maxWidth={`calc(100% / ${row.data.length})`}
                       style={{ display: "flex", flexDirection: "column" }}
                       borderLeft={colIndex ? "1px solid #E5E5E5" : "none"}
                       key={colIndex}
@@ -126,7 +127,10 @@ export function MessageDetails({ dataMessage = [] }: { dataMessage: any }) {
                               >
                                 {field?.label || field?.name}:
                               </Typography>
-                              <StyledModalItem noWrap>
+                              <StyledModalItem
+                                noWrap
+                                maxWidth={`calc(100% / ${row.data.length})`}
+                              >
                                 {field?.value || "-"}
                               </StyledModalItem>
                             </div>
