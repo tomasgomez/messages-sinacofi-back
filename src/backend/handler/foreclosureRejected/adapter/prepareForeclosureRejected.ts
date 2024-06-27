@@ -1,5 +1,4 @@
 import { CUK } from '@/backend/entities/cuk/cuk';
-import { Parameter } from '@/backend/entities/message/parameter';
 import { getDateFromDateString, getTimeFromDateString } from '@/utils/dateFormatting';
 import { filterParam } from '@/utils/filterParameters';
 
@@ -52,11 +51,11 @@ function prepareForclosure(cuks: CUK[]): any{
       institutionCode: last670?.origin || '', 
       institutionDestination: last670?.destination || '',
       messageCode: last670?.messageCode || '', 
-      creationDate: getDateFromDateString(last670?.NSR?.createdAt as Date) || '',
-      creationTime: getTimeFromDateString(last670?.NSR?.createdAt as Date) || '',
+      creationDate: getDateFromDateString(last670?.NSE?.createdAt as Date) || '',
+      creationTime: getTimeFromDateString(last670?.NSE?.createdAt as Date) || '',
       NSE:last670?.NSE?.id || 0,
-      recievedDate: getDateFromDateString(last670?.NSE?.createdAt as Date) || '',
-      recievedTime: getTimeFromDateString(last670?.NSE?.createdAt as Date) || '',
+      recievedDate: getDateFromDateString(last670?.NSR?.createdAt as Date) || '',
+      recievedTime: getTimeFromDateString(last670?.NSR?.createdAt as Date) || '',
       NSR:last670?.NSR?.id || 0,
       channel: filterParam(parameters || '', 'channel')?.value || '',
       notary: filterParam(parameters || '', 'notary')?.value || '',
@@ -64,9 +63,9 @@ function prepareForclosure(cuks: CUK[]): any{
       repertorieDate: filterParam(parameters || '', 'repertoireDate')?.value || '',
     
       rejectedMessageCode: last672?.messageCode || '', 
-      rejectedCreationDate: getDateFromDateString(last672?.NSR?.createdAt as Date) || '',
+      rejectedCreationDate: getDateFromDateString(last672?.NSE?.createdAt as Date) || '',
       rejectedNSE: last672?.NSR?.id || 0, 
-      rejectedRecievedDate: getDateFromDateString(last672?.NSE?.createdAt as Date) || '',
+      rejectedRecievedDate: getDateFromDateString(last672?.NSR?.createdAt as Date) || '',
       rejectedNSR: last672?.NSR?.id || 0, 
       sellerDni: filterParam(parameters || '', 'sellerDni')?.value || '',
       buyerDni: filterParam(parameters || '', 'buyerDni')?.value || '',

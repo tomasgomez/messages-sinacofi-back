@@ -88,11 +88,11 @@ export function prepareForclosure( cuks: CUK[] ): any{
       repertoireDate: repertoireDate ? getDateFromDateString(new Date(repertoireDate)): '-',
       buyerDni: filterParam(parameters, 'buyerDni')?.value || '-',
       borrowerDni: filterParam(parameters, 'borrowerDni')?.value || '-',
-      creationDate: getDateFromDateString(first670?.NSR?.createdAt as Date) || '-', // NSR.createdAt
-      creationTime: getTimeFromDateString(first670?.NSR?.createdAt as Date) || '-', // NSR.createdAt
+      creationDate: getDateFromDateString(first670?.NSE?.createdAt as Date) || '-', // NSR.createdAt
+      creationTime: getTimeFromDateString(first670?.NSE?.createdAt as Date) || '-', // NSR.createdAt
       NSE: first670?.NSE?.id || 0,
-      recievedDate: getDateFromDateString(first670?.NSE?.createdAt as Date) || '-', // NSE.createdAt
-      recievedTime: getTimeFromDateString(first670?.NSE?.createdAt as Date) || '-', // NSE.createdAt
+      recievedDate: getDateFromDateString(first670?.NSR?.createdAt as Date) || '-', // NSE.createdAt
+      recievedTime: getTimeFromDateString(first670?.NSR?.createdAt as Date) || '-', // NSE.createdAt
       NSR: first670?.NSR?.id || 0,
       rejectedCount: cuk.messages?.filter((message) => message.messageCode === '672' || message.messageCode === '678').length ||0,
       rejectedCreationDate: getDateFromDateString(last672?.NSE?.createdAt as Date) || '-', // NSE.createdAt  last 672
