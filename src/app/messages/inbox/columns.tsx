@@ -10,6 +10,7 @@ import {
   RowOptions,
   Message,
 } from "@/app/component/inbox-table/type";
+import { completeInstitutions } from "@/utils/intitutions";
 // import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
 
 const descriptor: Columns = {
@@ -39,6 +40,16 @@ const ONS_COLUMN: Columns = {
   },
 };
 
+const originInstituion: Columns = {
+  id: "origin",
+  label: "Origen",
+  align: Alignment.LEFT,
+  sortable: true,
+  render: ({ row }: { row: Message }) => {
+    return completeInstitutions(row?.origin);
+  },
+};
+
 export const columnsInbox: Columns[] = [
   ONS_COLUMN,
   {
@@ -60,12 +71,7 @@ export const columnsInbox: Columns[] = [
     sortable: true,
   },
   descriptor,
-  {
-    id: "origin",
-    label: "Origen",
-    align: Alignment.LEFT,
-    sortable: true,
-  },
+  originInstituion,
   {
     id: "receivedDate",
     label: "Fecha",
