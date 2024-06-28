@@ -38,7 +38,7 @@ type cukAccepted = {
   confirmationMessageNumber: number, // message 679
 }
 
-export function prepareForclosure( cuks: CUK[] ): any{
+export function prepareInformAccepted( cuks: CUK[] ): cukAccepted[]{
   const preparedCuk:cukAccepted[] = cuks.map((cuk) => {
     const last670 = cuk.messages?.filter((message) =>
        message.messageCode === '670'

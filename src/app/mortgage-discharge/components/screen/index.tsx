@@ -11,16 +11,17 @@ import { getForeClosureData } from "../../api-calls";
 import Loader from "@/components/Loader";
 import { formatCardData } from "@/utils/mortgage-discharge-format";
 import { MyContexLayout } from "@/app/context";
-import {
-  DataMortgageDischarge,
-  Filter,
-  ModalTrackingData,
-} from "@/types/mortgage-discharge";
-import { MortgageDischargeData } from "@/app/component/inbox-table/type";
+import { DataMortgageDischarge, Filter } from "@/types/mortgage-discharge";
+import { PaginationAndMortgageDischargeData } from "@/app/component/inbox-table/type";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
-import EmptyScreen from "../empty-screen";
 import { useCalcDimensions } from "@/utils/dimensions";
+import NoSearchResult from "../empty-screens/no-search-results";
+import {
+  NoMortgageDischargeInProgress,
+  NoMortgageDischargeCompleted,
+  NoMortgageDischargeNormalization,
+} from "../empty-screens/no-mortgage-discharge";
 
 export default function MortgageDischargeScreen({
   title = "",
@@ -35,6 +36,7 @@ export default function MortgageDischargeScreen({
   const [data, setData] = useState<DataMortgageDischarge[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
+  const [amountCards, setAmountCards] = useState(0);
 
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
@@ -44,6 +46,10 @@ export default function MortgageDischargeScreen({
   const [filters, setFilters] = useState<Filter[]>([
     { label: "channel", value: "Personas" },
   ]);
+
+  const handlePaginations = (meta: any) => {
+    setAmountCards(meta?.filtered);
+  };
 
   const handleGetDataList = async () => {
     try {
@@ -57,11 +63,11 @@ export default function MortgageDischargeScreen({
         { label: "offset", value: `${page * rowsPerPage}` },
       ];
 
-      const result: MortgageDischargeData[] = await getForeClosureData(
-        auxFilters
-      );
-
-      setData(formatCardData(result));
+      const result: PaginationAndMortgageDischargeData =
+        await getForeClosureData(auxFilters);
+        
+      setData(formatCardData(result?.data || []));
+      handlePaginations(result?.meta || {});
       setLoading(false);
     } catch (error: any) {
       setData([]);
@@ -88,7 +94,6 @@ export default function MortgageDischargeScreen({
     setPage(newPage);
   };
 
-
   const usedHeight: number = 316;
   const { height: maxHeight }: { height: number } =
     useCalcDimensions(usedHeight);
@@ -101,6 +106,25 @@ export default function MortgageDischargeScreen({
     if (espaceByRow < maxHeight) return maxHeight - espaceByRow;
     return 0;
   }, [data?.length, maxHeight]);
+
+  function hasNonChannelFilter(): boolean {
+    return filters.some((filter) => filter.label !== "channel");
+  }
+
+  const getNoDataComponent = () => {
+    const statusCategory = extraFilter.find(
+      (filter) => filter.label === "statusCategory"
+    );
+    if (statusCategory?.value === "in_progress") {
+      return <NoMortgageDischargeInProgress height={maxHeight} />;
+    }
+    if (statusCategory?.value === "completed") {
+      return <NoMortgageDischargeCompleted height={maxHeight} />;
+    }
+    if (statusCategory?.value === "normalization") {
+      return <NoMortgageDischargeNormalization height={maxHeight} />;
+    }
+  };
 
   return (
     <MortgageDischargeContextProvider filters={filters} setFilters={setFilters}>
@@ -139,7 +163,11 @@ export default function MortgageDischargeScreen({
                 />
               ))}
               {!data || !data.length ? (
-                <EmptyScreen height={maxHeight} />
+                hasNonChannelFilter() ? (
+                  <NoSearchResult height={maxHeight} />
+                ) : (
+                  getNoDataComponent()
+                )
               ) : (
                 <div
                   style={{
@@ -155,7 +183,7 @@ export default function MortgageDischargeScreen({
         <TablePagination
           rowsPerPageOptions={[5, 7, 10, 25, 50]}
           component="div"
-          count={data?.length}
+          count={amountCards}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

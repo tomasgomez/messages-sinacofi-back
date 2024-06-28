@@ -109,7 +109,7 @@ export const formatCardData = (
 
     const buttonDisabled = mostRecent670?.status === "01";
 
-    let lastMessageStatusWithStatus = ""; // "01"
+    let lastMessageStatusWithStatus = "";
     let lastMessageCodeWithStatus = "";
 
     for (let i = sortedMessages?.length - 1; i >= 0; i--) {

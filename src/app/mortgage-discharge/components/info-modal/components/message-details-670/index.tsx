@@ -134,7 +134,7 @@ export function MessageDetails670({
             Contenido del Mensaje
           </StyledMoalSection>
           <Box display="flex">
-            <Box pr={8}>
+            <Box pr={8} maxWidth={"50%"}>
               {detailsMS.slice(0, 11)?.map((field: DetailsMSInfoModal) => {
                 return (
                   <Stack
@@ -154,7 +154,7 @@ export function MessageDetails670({
                 );
               })}
             </Box>
-            <Box borderLeft="1px solid #E5E5E5">
+            <Box borderLeft="1px solid #E5E5E5" maxWidth={"50%"}>
               {detailsMS.slice(11)?.map((field: DetailsMSInfoModal) => {
                 return (
                   <Stack

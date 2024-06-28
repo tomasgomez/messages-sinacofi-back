@@ -17,8 +17,9 @@ import { MessageExportContext } from "../MessageExportProvider";
 export default function InboxHeader(props: {
   amountMessages: number;
   title: string;
+  handleRefresh?: () => void;
 }) {
-  const { amountMessages, title } = props;
+  const { amountMessages = 0, title = "", handleRefresh = () => null } = props;
   const { setPrintPDF, selectedMessages, setDownloadPDF } =
     React.useContext(MessageExportContext);
 
@@ -63,7 +64,7 @@ export default function InboxHeader(props: {
             style={{
               cursor: "pointer",
             }}
-            onClick={() => console.log("Refresh")}
+            onClick={handleRefresh}
           />
           <PrintOutlinedIcon
             style={{

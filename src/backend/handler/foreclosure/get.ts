@@ -30,18 +30,18 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >){
         filter.institutionCode = user.institutionCode ? [user.institutionCode] : filter.institutionCode;
         
         /* Use the PrismaAreaAdapter to get the Message from the database */
-        let messageResponse = await messageForeclosureUseCase.getMessageForeclosure(filter)
+        let pagination = await messageForeclosureUseCase.getMessageForeclosure(filter)        
 
         /* If the message is not found, return a 204 error */
-        if (!messageResponse || messageResponse instanceof Error) {
+        if (!pagination || pagination instanceof Error) {
           res.status(204).json([]);
           return;
         }
 
-        let preparedData = prepareForclosure(messageResponse, filter);
+        let preparedData = prepareForclosure(pagination.data, filter);
 
         /* Return the message */
-        res.status(200).json(preparedData);
+        res.status(200).json({meta: pagination.meta, data: preparedData});
 
       } catch (error) {
         console.error('Error fetching message:', error);

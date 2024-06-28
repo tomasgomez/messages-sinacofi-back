@@ -3,7 +3,7 @@ import { Methods } from '@/backend/entities/calls/http';
 import { errorHandler } from '@/backend/utils/errorHandler'
 
 // import calls
-import { foreclouseRejectedHandler } from '@/backend/handler/foreclosureRejected/handler';
+import { informsRejectedHandler } from '@/backend/handler/informsRejected/handler';
 
 /*
 Message Detail API
@@ -13,7 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse 
     const method = req.method;
     switch (method) {
       case Methods.GET:
-        await foreclouseRejectedHandler.GET(req, res);
+        await informsRejectedHandler.GET(req, res);
         return;
       default:
         res.status(405).end(`Method ${method} Not Allowed`);

@@ -8,6 +8,7 @@ import {
 import { Box, IconButton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { CopyAll, SendOutlined } from "@mui/icons-material";
+import { completeInstitutions } from "@/utils/intitutions";
 
 const AccionesColumn = ({ row }: { row: any }) => {
   const router = useRouter();
@@ -61,6 +62,16 @@ const actions: Columns = {
   },
 };
 
+const destinationInstituion: Columns = {
+  id: "destination",
+  label: "Destino",
+  align: Alignment.LEFT,
+  sortable: true,
+  render: ({ row }: { row: Message }) => {
+    return completeInstitutions(row?.origin);
+  },
+};
+
 export const columnsSent: Columns[] = [
   {
     id: "TSN",
@@ -96,12 +107,7 @@ export const columnsSent: Columns[] = [
     align: Alignment.LEFT,
     sortable: true,
   },
-  {
-    id: "destination",
-    label: "Destino",
-    align: Alignment.LEFT,
-    sortable: true,
-  },
+  destinationInstituion,
   {
     id: "receivedDate",
     label: "Fecha",
@@ -153,5 +159,6 @@ export const rowOptions: RowOptions = {
   },
   actions: {
     align: Alignment.CENTER,
+    style: { padding: 10 },
   },
 };

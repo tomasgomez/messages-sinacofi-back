@@ -54,6 +54,22 @@ export interface HistoryTrackingModal {
   status: string;
   date: string;
 }
+
+export interface Pagination {
+  count: number;
+  currentPage: number;
+  filtered: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+  offset: number;
+  totalPages: number;
+}
+
+export interface PaginationAndMortgageDischargeData {
+  meta: Pagination;
+  data: MortgageDischargeData[];
+}
+
 export interface MortgageDischargeData {
   id?: string;
   name?: string;
@@ -120,7 +136,7 @@ export interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: KeyOfData | string,
+    property: KeyOfData | string
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
@@ -169,4 +185,9 @@ export interface MSParameter {
     maxLength: number;
     minLength: number;
   };
+}
+
+export interface PaginationAndInforms {
+  meta: Pagination;
+  data: unknown[];
 }

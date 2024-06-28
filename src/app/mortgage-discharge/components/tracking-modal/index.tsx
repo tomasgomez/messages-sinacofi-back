@@ -150,7 +150,7 @@ export const TrackingModal = (props: { handleGetDataList?: () => void }) => {
         Base de Seguimiento Alzamiento Hipotecario
       </Typography>
       <Box display="flex" gap="20px">
-        <CardDetails data={restOfData} />
+        <CardDetails data={{ institutionDestination, ...restOfData }} />
         <CardStatusUpdate data={historyList} loading={loading} />
       </Box>
       <Box display="flex" my="28px">

@@ -25,9 +25,22 @@ export default function Field(
     width?: number | string;
     options?: any;
     onChange?: any;
+    InputProps?: any;
+    onBlur?: any;
+    onFocus?: any;
   } & TextFieldProps
 ) {
-  const { width, label, value, defaultValue, onChange } = props;
+  const {
+    width,
+    label,
+    value,
+    defaultValue,
+    onChange,
+    InputProps,
+    onBlur,
+    onFocus,
+    ...other
+  } = props;
   const [isFocused, setIsFocused] = React.useState(false);
 
   const handleChange = React.useCallback(
@@ -62,11 +75,14 @@ export default function Field(
         <StyledTextField
           id="outlined-basic"
           variant="outlined"
-          {...props}
+          {...other}
+          onFocus={onFocus}
+          onBlur={onBlur}
           defaultValue={defaultValue}
           label={label}
           value={value || defaultValue}
           onChange={handleChange}
+          InputProps={InputProps}
         />
       </FormControl>
     </Box>

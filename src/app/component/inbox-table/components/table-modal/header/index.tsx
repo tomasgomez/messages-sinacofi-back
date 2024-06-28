@@ -14,7 +14,7 @@ export function ModalHeaderSection(props: {
   data: Message;
   isInProcess?: boolean;
 }) {
-  const { data } = props;
+  const { data } = props || {};
   return (
     <Box mb={0.75} pb={2}>
       <Grid>

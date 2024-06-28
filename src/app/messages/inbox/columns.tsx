@@ -10,12 +10,14 @@ import {
   RowOptions,
   Message,
 } from "@/app/component/inbox-table/type";
+import { completeInstitutions } from "@/utils/intitutions";
 // import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
 
 const descriptor: Columns = {
   id: "description",
   label: "Descripción",
   align: Alignment.LEFT,
+  sortable: true,
   render: ({ row }: { row: any }) => {
     const { description = "", messageCode = "" } = row || {};
     return (
@@ -32,8 +34,19 @@ const ONS_COLUMN: Columns = {
   id: "OSN",
   label: "OSN",
   align: Alignment.LEFT,
+  sortable: true,
   render: ({ row }: { row: Message }) => {
     return <ModalLink isInProcess={!!row?.status} data={row} />;
+  },
+};
+
+const originInstituion: Columns = {
+  id: "origin",
+  label: "Origen",
+  align: Alignment.LEFT,
+  sortable: true,
+  render: ({ row }: { row: Message }) => {
+    return completeInstitutions(row?.origin);
   },
 };
 
@@ -58,12 +71,7 @@ export const columnsInbox: Columns[] = [
     sortable: true,
   },
   descriptor,
-  {
-    id: "origin",
-    label: "Origen",
-    align: Alignment.LEFT,
-    sortable: true,
-  },
+  originInstituion,
   {
     id: "receivedDate",
     label: "Fecha",
