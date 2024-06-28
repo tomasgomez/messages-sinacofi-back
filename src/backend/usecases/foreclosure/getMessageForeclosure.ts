@@ -11,13 +11,12 @@ import {
   Filter
 } from '../../entities/cuk/filter';
 import { messageUseCase } from '../message/usecases';
+import { Paginated } from '@/backend/entities/pagination/Paginated';
 
 
 // Get message function
-export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: Filter): Promise < CUK[] | Error > {
+export async function getMessageForeclosure(messageRepository: MessageRepository, cukRepository: CUKRepository, filter: Filter): Promise < Paginated<CUK>| Error > {
   try {
-
-
     if (!filter.include)
       filter.include = {};
 
@@ -26,17 +25,16 @@ export async function getMessageForeclosure(messageRepository: MessageRepository
     /* Get the CUKs */
     const cuks = await cukRepository.find(filter);
 
-    
     if (cuks instanceof Error) {
       return cuks;
     }
 
-    if (cuks.length === 0) {
+    if (cuks.data.length === 0) {
       return new Error('No message found');
     }
 
     /* Get all messages with documents */
-    const cuksUpdated = cuks.map(async (cuk: CUK) => {
+    const cuksUpdated = cuks.data.map(async (cuk: CUK) => {
       // get messages
       if (!cuk.messages || cuk.messages.length == 0) {
         return cuk;
@@ -58,8 +56,8 @@ export async function getMessageForeclosure(messageRepository: MessageRepository
 
     // wait for all messages to be updated
     const cukResponse = await Promise.all(cuksUpdated)
-
-    return cukResponse;
+    cuks.data  = cukResponse;
+    return cuks;
   } catch (error: any) {
     console.error('Error updating message:', error);
     return error;

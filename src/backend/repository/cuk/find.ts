@@ -15,8 +15,71 @@ import {
 } from '@/backend/repository/message/presenter/findSelect';
 import { Prisma } from '@prisma/client';
 import { MessageTypes } from '@/backend/entities/message/types';
+import { Paginated } from '@/backend/entities/pagination/Paginated';
 
-export async function find(filter: Filter): Promise < CUK[] | Error > {
+const findInclude  = (filter: Filter): Prisma.CUKInclude => {
+    let include: Prisma.CUKInclude = { 
+        messages: { 
+            select: findSelect(filter.include?.parameters, filter.include?.documents),
+        }, 
+        parameters: {
+            where: {
+                OR :[
+                    {
+                        messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO, 
+                        name: {
+                            in: [
+                                'id',
+                                'name',
+                                'cukCode',
+                                'description',
+                                'status',
+                                'creationDate',
+                                'issuedDate',
+                                'channel',
+                                'bank',
+                                'notary',
+                                'region',
+                                'buyerDni',
+                                'buyer',
+                                'ownerDni',
+                                'owner',
+                                'borrowerDni',
+                                'borrower',
+                                'beneficiaryBank',
+                                'repertoireNumber',
+                                'repertoireDate',
+                                'sellerDni',
+                                'borrowerDni',
+                                'observations',
+                                'senderSigned',
+                                'rejectionReason'
+                            ]
+                        }
+                    },
+                    {
+                        messageCode: MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO, 
+                        name: {
+                            in: [
+                                'rejectionReason',
+                            ]
+                        }
+                    }
+                ]
+               
+            },
+            select: {
+                name: true,
+                value: true,
+                updatedAt: true
+            }
+        },
+        history: true,
+    };
+    return include;
+}
+
+export async function find(filter: Filter): Promise < Paginated<CUK> | Error > {
     try {
         let cuks: CUK[];
 
@@ -27,9 +90,14 @@ export async function find(filter: Filter): Promise < CUK[] | Error > {
         let countAsInt = parseInt(filter.count ?? '0', 10);
         let offsetAsInt = parseInt(filter.offset ?? '0', 10);
 
-        const query = cukFindManyQuery(filter, countAsInt, offsetAsInt);
         // Find all messages if count is not provided or is 0
-        cuks = await prismaClient.cUK.findMany(query);
+        cuks = await prismaClient.cUK.findMany({
+            take: countAsInt > 0 ? countAsInt : 5, 
+            skip: offsetAsInt,
+            orderBy: { createdAt: 'desc' },
+            include: findInclude(filter),
+            where: cukFindManyQuery(filter)
+        });
 
 
         // If the messages are not found, return an error
@@ -37,7 +105,11 @@ export async function find(filter: Filter): Promise < CUK[] | Error > {
             return new Error('Message not found');
         }
 
-        return cuks;
+        const count: number = await prismaClient.cUK.count({
+            where: cukFindManyQuery(filter)
+        });
+
+        return  Paginated.fromPrimitives(cuks, countAsInt, offsetAsInt, count);
 
     } catch (error: any) {
         console.error('Error fetching message:', error);
@@ -45,15 +117,7 @@ export async function find(filter: Filter): Promise < CUK[] | Error > {
     }
 }
 
-const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma.CUKFindManyArgs => {
-
-    // Create the response object
-    let query: Prisma.CUKFindManyArgs = {
-        take: count > 0 ? count : 5, 
-        skip: offset,
-        orderBy: { createdAt: 'desc' },
-    }
-
+const cukFindManyQuery = (filter: Filter): Prisma.CUKWhereInput => {
     let cukWhere: Prisma.CUKWhereInput = {
         ...createDateRangeFilter(filter.startDate, filter.endDate),
     };
@@ -251,74 +315,13 @@ const cukFindManyQuery = (filter: Filter, count: number, offset: number): Prisma
     }
         
     // set values to query
-    query.where = {
+    cukWhere = {
         ...cukWhere, 
         parameters:{ some: {...parametersWhere} }, 
         messages: { some: {...messagesWhere} } 
     };
     // define include
-    let include: Prisma.CUKInclude = { 
-        messages: { 
-            select: findSelect(filter.include?.parameters, filter.include?.documents),
-        }, 
-        parameters: {
-            where: {
-                OR :[
-                    {
-                        messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO, 
-                        name: {
-                            in: [
-                                'id',
-                                'name',
-                                'cukCode',
-                                'description',
-                                'status',
-                                'creationDate',
-                                'issuedDate',
-                                'channel',
-                                'bank',
-                                'notary',
-                                'region',
-                                'buyerDni',
-                                'buyer',
-                                'ownerDni',
-                                'owner',
-                                'borrowerDni',
-                                'borrower',
-                                'beneficiaryBank',
-                                'repertoireNumber',
-                                'repertoireDate',
-                                'sellerDni',
-                                'borrowerDni',
-                                'observations',
-                                'senderSigned',
-                                'rejectionReason'
-                            ]
-                        }
-                    },
-                    {
-                        messageCode: MessageTypes.RECHAZO_DE_ALZAMIENTO_HIPOTECARIO, 
-                        name: {
-                            in: [
-                                'rejectionReason',
-                            ]
-                        }
-                    }
-                ]
-               
-            },
-            select: {
-                name: true,
-                value: true,
-                updatedAt: true
-            }
-        },
-        history: true,
-    };
 
-    query.include = include;   
-    console.log(JSON.stringify(query));
-           
-    return query;
+    return cukWhere;
 }
 

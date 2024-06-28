@@ -15,33 +15,33 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >){
           return;
         }
 
-        const token = await getToken({req});
-        if (!token || token.dni ==''){
-          res.status(400).json([]);
-          return;
-        }
+        // const token = await getToken({req});
+        // if (!token || token.dni ==''){
+        //   res.status(400).json([]);
+        //   return;
+        // }
 
-        let user = await getUser(token.dni!);
-        if (user instanceof Error){
-          res.status(400).json([]);
-          return; 
-        }
+        // let user = await getUser(token.dni!);
+        // if (user instanceof Error){
+        //   res.status(400).json([]);
+        //   return; 
+        // }
 
-        filter.institutionCode = user.institutionCode ? [user.institutionCode] : filter.institutionCode;
+        // filter.institutionCode = user.institutionCode ? [user.institutionCode] : filter.institutionCode;
         
         /* Use the PrismaAreaAdapter to get the Message from the database */
-        let messageResponse = await messageForeclosureUseCase.getMessageForeclosure(filter)
+        let pagination = await messageForeclosureUseCase.getMessageForeclosure(filter)        
 
         /* If the message is not found, return a 204 error */
-        if (!messageResponse || messageResponse instanceof Error) {
+        if (!pagination || pagination instanceof Error) {
           res.status(204).json([]);
           return;
         }
 
-        let preparedData = prepareForclosure(messageResponse, filter);
+        let preparedData = prepareForclosure(pagination.data, filter);
 
         /* Return the message */
-        res.status(200).json(preparedData);
+        res.status(200).json({meta: pagination.meta, data: preparedData});
 
       } catch (error) {
         console.error('Error fetching message:', error);

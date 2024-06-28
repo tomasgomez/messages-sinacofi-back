@@ -31,7 +31,7 @@ type cukRejected  = {
   observations: string; //parameter
 }
 
-function prepareForclosure(cuks: CUK[]): any{
+export function prepareInformRejected(cuks: CUK[]): cukRejected[] {
   const preparedCuk:cukRejected[] = cuks.map((cuk) => {    
     const last670 = cuk.messages?.filter((message) =>
        message.messageCode === '670'
@@ -77,5 +77,3 @@ function prepareForclosure(cuks: CUK[]): any{
   })
   return preparedCuk;
 }
-
-export { prepareForclosure }
