@@ -285,3 +285,20 @@ export const paramsTo679: SmallMsDetailInfoModal[] =
       ],
     },
   ];
+
+export const statusDictionary = {
+  "01": "01 - Alzamiento Hipotecario Enviado",
+  "021": "021 - Alzamiento Hipotecario en Proceso",
+  "022": "022 - Evaluación Alzamiento Hipotecario Aceptada",
+  "023": "023 - Evaluación Alzamiento Hipotecario Rechazada",
+  XXX: "XXX - Inicio de Cliente en Normalización",
+  YYY: "YYY - Fin de Cliente en Normalización",
+  "041": "041 - Firma de Escritura en Proceso",
+  "042": "042 - Escritura Firmada",
+  "07": "07 - Aceptación Alzamiento Hipotecario",
+  "09": "09 - Envio de Liquidacion de Prepago",
+  "10": "10 - Aviso de Pago",
+  "11": "11 - Pago de Operación",
+  "12": "12 - Rechazo de Pago",
+  "14": "14 - Aceptación de Pago",
+};
