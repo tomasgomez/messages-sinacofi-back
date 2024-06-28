@@ -20,7 +20,9 @@ import { Filter } from "@/types/mortgage-discharge";
 import RutField from "../../../form-elements/text-rut-field/RutField";
 
 export const FilterSelector = (props: { onClose: Function }) => {
-  const { handleChangeAddFilter, filters } = useContext(MortgageDischargeContext);
+  const { handleChangeAddFilter, filters } = useContext(
+    MortgageDischargeContext
+  );
   const [auxFilters, setAuxFilters] = useState<Filter[]>(
     // combines arrays, have priority in filter elements when the label is the same
     combineArrays(auxFiltersConstant, filters)
@@ -115,9 +117,9 @@ export const FilterSelector = (props: { onClose: Function }) => {
       <RutField
         placeholder="Ingrese RUT..."
         handleChange={handleAuxFilter}
-        keyLabel="debtorDni"
+        keyLabel="borrowerDni"
         label="RUT Deudor"
-        value={getValue("debtorDni")}
+        value={getValue("borrowerDni")}
       />
       <FilterDropdowns
         title="Notoria"

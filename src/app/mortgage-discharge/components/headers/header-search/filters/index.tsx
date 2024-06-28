@@ -186,9 +186,9 @@ export const Filters = (props: { handleGetData: Function }) => {
               placeholder="Ingrese RUT..."
               width={`calc( 100%  / 4 - 12px)`}
               handleChange={handleChangeFilter}
-              keyLabel="debtorDni"
+              keyLabel="borrowerDni"
               label="RUT Deudor"
-              value={getValue("debtorDni")}
+              value={getValue("borrowerDni")}
             />
             <RutField
               placeholder="Ingrese el Codigo Interno..."

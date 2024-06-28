@@ -4,7 +4,7 @@ export const auxFiltersConstant = [
   { label: "institutionDestination", value: "all" },
   { label: "buyerDni", value: "" },
   { label: "sellerDni", value: "" },
-  { label: "debtorDni", value: "" },
+  { label: "borrowerDni", value: "" },
   { label: "region", value: "all" },
   { label: "repertoireDate", value: "" },
   { label: "notary", value: "all" },
