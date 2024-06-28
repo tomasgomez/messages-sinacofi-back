@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import { Box, Grid, IconButton, Paper, Typography } from "@mui/material";
 import DataTable from "../../component/inbox-table";
 import InboxHeader from "@/app/component/inbox-header";
@@ -14,12 +14,16 @@ import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 
 export default function PreparedScreen() {
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [data, setData] = React.useState<SentData[]>([]);
-  const [selected, setSelected] = React.useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [data, setData] = useState<SentData[]>([]);
+
+  // Add when the api call have pagination
+  const [amountData, setAmountData] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
 
   // Change after add users "selectedInstitution"
-  const { selectedInstitution } = React.useContext(MyContexLayout) as any;
+  const { selectedInstitution } = useContext(MyContexLayout) as any;
   const { ConfirmModal, ErrorModal } = useModalManager();
 
   // Fix after have next in pagination
@@ -29,10 +33,12 @@ export default function PreparedScreen() {
       const response = await getMessage({
         status: "01",
         origin: selectedInstitution,
-        // institutionCode: selectedInstitution,
-        // count: 100,
-        // offset: 0,
+        count: 1000,
+        offset: 0,
+        // count: rowsPerPage,
+        // offset: page * rowsPerPage,
       });
+      // setAmountData(response.length);
       setData(response);
       setIsLoading(false);
     } catch (error: unknown) {
@@ -44,7 +50,7 @@ export default function PreparedScreen() {
 
   useEffect(() => {
     fetchData();
-  }, [selectedInstitution]);
+  }, [selectedInstitution, page, rowsPerPage]);
 
   const tableTitle = (
     <Grid container p={2}>
@@ -121,6 +127,10 @@ export default function PreparedScreen() {
           tableTitle={tableTitle}
           rowOptions={rowOptions}
           highlightRowDisabled
+          // amountOfRows={amountData}
+          // handleChangeRowsPerPageExternally={setRowsPerPage}
+          // handleChangePageExternally={setPage}
+          // pageExternally={page}
         />
       </Box>
     </Paper>

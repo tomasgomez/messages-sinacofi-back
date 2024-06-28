@@ -59,7 +59,8 @@ export const Filters = (props: { handleGetData: Function }) => {
   const getValue = useCallback(
     (labelKey: string, defaultValue?: string) => {
       return (
-        filters.find((filter) => filter.label === labelKey)?.value ||
+        (filters.find((filter) => filter.label === labelKey)
+          ?.value as string) ||
         defaultValue ||
         ""
       );

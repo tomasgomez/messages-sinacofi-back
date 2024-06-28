@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Filter } from "@/types/mortgage-discharge";
 import DataTable from "@/app/component/inbox-table";
 import InboxHeaderSearch from "../components/headers/header-search";
@@ -16,7 +16,7 @@ import basicError from "@/components/Modal/ErrorModal/basicError";
 import { formatSearchData } from "@/utils/mortgage-discharge-format";
 import { MyContexLayout } from "@/app/context";
 import { getForeClosureData } from "../api-calls";
-import { MortgageDischargeData } from "@/app/component/inbox-table/type";
+import { PaginationAndMortgageDischargeData } from "@/app/component/inbox-table/type";
 import { MortgageDischargeContextProvider } from "../components/store/ModalStore";
 import { InfoModal } from "../components/info-modal";
 import { TrackingModal } from "../components/tracking-modal";
@@ -24,19 +24,30 @@ import { TrackingModal } from "../components/tracking-modal";
 export default function SearchScreen() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [curretFilters, setCurrentFilters] = useState<Filter[]>([]);
+  const [amountData, setAmountData] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
 
   const { ErrorModal } = useModalManager();
   const { selectedInstitution } = useContext(MyContexLayout) as any;
 
-  const handleGetData = async (filters: Filter[]) => {
+  const handleGetData = async (filters: Filter[], nextPage?: boolean) => {
     try {
       setLoading(true);
-      const result: MortgageDischargeData[] = await getForeClosureData([
-        ...filters,
-        { label: "institutionCode", value: selectedInstitution },
-        { label: "count", value: 100 },
-      ]);
-      const formattedData = formatSearchData(result);
+      setCurrentFilters(filters);
+      const result: PaginationAndMortgageDischargeData =
+        await getForeClosureData([
+          ...filters,
+          { label: "institutionCode", value: selectedInstitution },
+          { label: "count", value: rowsPerPage },
+          {
+            label: "offset",
+            value: `${page * rowsPerPage}`,
+          },
+        ]);
+      const formattedData = formatSearchData(result?.data);
+      setAmountData(result?.meta.filtered || 0);
       setData(formattedData);
       setLoading(false);
     } catch (error: any) {
@@ -45,6 +56,12 @@ export default function SearchScreen() {
       ErrorModal.open(basicError(error));
     }
   };
+
+  useEffect(() => {
+    handleGetData(curretFilters);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rowsPerPage, page]);
+
   return (
     <MortgageDischargeContextProvider>
       <StyledPaper>
@@ -64,6 +81,10 @@ export default function SearchScreen() {
               columns={columnsSearch}
               emptyDataComponent={NoContent}
               highlightRowDisabled
+              amountOfRows={amountData}
+              handleChangeRowsPerPageExternally={setRowsPerPage}
+              handleChangePageExternally={setPage}
+              pageExternally={page}
             />
           </StyledBox>
         </ScrollableDiv>

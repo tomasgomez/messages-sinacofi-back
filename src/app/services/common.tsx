@@ -1,3 +1,4 @@
+import { PaginationAndInforms } from "../component/inbox-table/type";
 import institutions from "./mock-instititutions.json";
 import { Filter } from "@/types/mortgage-discharge";
 // import { messageSchemas } from "@/utils/messagesSchema";
@@ -92,10 +93,21 @@ export async function getInformsAccepted(filters?: Filter[]) {
     }
 
     if (response.status === 204) {
-      return [];
+      return {
+        meta: {
+          count: 0,
+          currentPage: 0,
+          filtered: 0,
+          hasNextPage: false,
+          hasPrevPage: false,
+          offset: 0,
+          totalPages: 0,
+        },
+        data: [],
+      };
     }
 
-    const data: any[] = await response.json();
+    const data: PaginationAndInforms = await response.json();
 
     return data;
   } catch (err: any) {
@@ -128,10 +140,21 @@ export async function getInformsRejected(filters?: Filter[]) {
     }
 
     if (response.status === 204) {
-      return [];
+      return {
+        meta: {
+          count: 0,
+          currentPage: 0,
+          filtered: 0,
+          hasNextPage: false,
+          hasPrevPage: false,
+          offset: 0,
+          totalPages: 0,
+        },
+        data: [],
+      };
     }
 
-    const data: any[] = await response.json();
+    const data: PaginationAndInforms = await response.json();
 
     return data;
   } catch (err: any) {

@@ -12,7 +12,7 @@ import Loader from "@/components/Loader";
 import { formatCardData } from "@/utils/mortgage-discharge-format";
 import { MyContexLayout } from "@/app/context";
 import { DataMortgageDischarge, Filter } from "@/types/mortgage-discharge";
-import { MortgageDischargeData } from "@/app/component/inbox-table/type";
+import { PaginationAndMortgageDischargeData } from "@/app/component/inbox-table/type";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 import { useCalcDimensions } from "@/utils/dimensions";
@@ -36,6 +36,7 @@ export default function MortgageDischargeScreen({
   const [data, setData] = useState<DataMortgageDischarge[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
+  const [amountCards, setAmountCards] = useState(0);
 
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
@@ -45,6 +46,10 @@ export default function MortgageDischargeScreen({
   const [filters, setFilters] = useState<Filter[]>([
     { label: "channel", value: "Personas" },
   ]);
+
+  const handlePaginations = (meta: any) => {
+    setAmountCards(meta?.filtered);
+  };
 
   const handleGetDataList = async () => {
     try {
@@ -58,11 +63,11 @@ export default function MortgageDischargeScreen({
         { label: "offset", value: `${page * rowsPerPage}` },
       ];
 
-      const result: MortgageDischargeData[] = await getForeClosureData(
-        auxFilters
-      );
-
-      setData(formatCardData(result));
+      const result: PaginationAndMortgageDischargeData =
+        await getForeClosureData(auxFilters);
+        
+      setData(formatCardData(result?.data || []));
+      handlePaginations(result?.meta || {});
       setLoading(false);
     } catch (error: any) {
       setData([]);
@@ -178,7 +183,7 @@ export default function MortgageDischargeScreen({
         <TablePagination
           rowsPerPageOptions={[5, 7, 10, 25, 50]}
           component="div"
-          count={data?.length}
+          count={amountCards}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
