@@ -44,8 +44,8 @@ export function validateGetMessageForeclosure(data: any): Filter | Error {
   filter.id = processStringArrayField(id);
   filter.name = processStringArrayField(name);
   filter.description = processStringArrayField(description);
-  filter.startDate = processDateField(startDate) ?? new Date;
-  filter.endDate = processDateField(endDate) ?? new Date;
+  filter.startDate = processDateField(startDate);
+  filter.endDate = processDateField(endDate);
   filter.channel = processStringArrayField(channel);
   filter.status = processStringArrayField(status);
   filter.institutionCode = processStringArrayField(institutionCode);

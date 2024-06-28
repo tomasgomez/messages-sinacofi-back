@@ -15,19 +15,19 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >){
           return;
         }
 
-        // const token = await getToken({req});
-        // if (!token || token.dni ==''){
-        //   res.status(400).json([]);
-        //   return;
-        // }
+        const token = await getToken({req});
+        if (!token || token.dni ==''){
+          res.status(400).json([]);
+          return;
+        }
 
-        // let user = await getUser(token.dni!);
-        // if (user instanceof Error){
-        //   res.status(400).json([]);
-        //   return; 
-        // }
+        let user = await getUser(token.dni!);
+        if (user instanceof Error){
+          res.status(400).json([]);
+          return; 
+        }
 
-        // filter.institutionCode = user.institutionCode ? [user.institutionCode] : filter.institutionCode;
+        filter.institutionCode = user.institutionCode ? [user.institutionCode] : filter.institutionCode;
         
         /* Use the PrismaAreaAdapter to get the Message from the database */
         let pagination = await messageForeclosureUseCase.getMessageForeclosure(filter)        

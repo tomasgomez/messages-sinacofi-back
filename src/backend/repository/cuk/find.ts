@@ -82,7 +82,8 @@ const findInclude  = (filter: Filter): Prisma.CUKInclude => {
 export async function find(filter: Filter): Promise < Paginated<CUK> | Error > {
     try {
         let cuks: CUK[];
-
+        console.log(filter);
+        
         const prisma = new PrismaClientWrapper();
         const prismaClient = prisma.getClient();
 
@@ -121,6 +122,9 @@ const cukFindManyQuery = (filter: Filter): Prisma.CUKWhereInput => {
     let cukWhere: Prisma.CUKWhereInput = {
         ...createDateRangeFilter(filter.startDate, filter.endDate),
     };
+
+    console.log(cukWhere);
+    
     
     // FILTERS CUK by cukCode
     if(filter.cukCode && filter.cukCode.length > 0){
@@ -321,7 +325,8 @@ const cukFindManyQuery = (filter: Filter): Prisma.CUKWhereInput => {
         messages: { some: {...messagesWhere} } 
     };
     // define include
-
+    // console.log(JSON.stringify(cukWhere));
+    
     return cukWhere;
 }
 

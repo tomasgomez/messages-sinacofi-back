@@ -105,12 +105,12 @@ const filtersParametersWhere = (filter: Filter): Prisma.ParametersWhereInput => 
   return where;
 }
 
-const checkFilterAndAddAsParameter = (value: string[] | null | undefined) => {
+const checkFilterAndAddAsParameter = (name:string ,value: string[] | null | undefined) => {
   if(value && value.length > 0){
       return {
         parameters:{
           some:{
-              name: 'sellerDni',
+              name: name,
               value: { in: value}
           }
       }};
@@ -121,17 +121,17 @@ const checkFilterAndAddAsParameter = (value: string[] | null | undefined) => {
 const whereMessagesByParameters = (filter: Filter): Prisma.MessageWhereInput => {
   let where: Prisma.MessageWhereInput = {};
   where.AND=[
-    checkFilterAndAddAsParameter(filter.sellerDni),
-    checkFilterAndAddAsParameter(filter.channel),
-    checkFilterAndAddAsParameter(filter.region),
-    checkFilterAndAddAsParameter(filter.buyerDni),
-    checkFilterAndAddAsParameter(filter.buyer),
-    checkFilterAndAddAsParameter(filter.ownerDni),
-    checkFilterAndAddAsParameter(filter.owner),
-    checkFilterAndAddAsParameter(filter.borrowerDni),
-    checkFilterAndAddAsParameter(filter.borrower),
-    checkFilterAndAddAsParameter(filter.notary),
-    checkFilterAndAddAsParameter(filter.repertoireDate)
+    checkFilterAndAddAsParameter('sellerDni' ,filter.sellerDni),
+    checkFilterAndAddAsParameter('channel' ,filter.channel),
+    checkFilterAndAddAsParameter('region' ,filter.region),
+    checkFilterAndAddAsParameter('buyerDni' ,filter.buyerDni),
+    checkFilterAndAddAsParameter('buyer' ,filter.buyer),
+    checkFilterAndAddAsParameter('ownerDni' ,filter.ownerDni),
+    checkFilterAndAddAsParameter('owner' ,filter.owner),
+    checkFilterAndAddAsParameter('borrowerDni' ,filter.borrowerDni),
+    checkFilterAndAddAsParameter('borrower' ,filter.borrower),
+    checkFilterAndAddAsParameter('notary' ,filter.notary),
+    checkFilterAndAddAsParameter('repertoireDate' ,filter.repertoireDate)
   ];
 
   where.AND = where.AND.filter((value: {[key: string]: any}) => Object.keys(value).length > 0);

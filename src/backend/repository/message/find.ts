@@ -15,7 +15,8 @@ async function find(
         const prisma = new PrismaClientWrapper();
         const prismaClient = prisma.getClient();
         
-        let where = findWhere(filter)
+        let where = findWhere(filter);
+        
         let select: any = findSelect(includeParameters,includeDocuments);
         
         let status: any = {};
