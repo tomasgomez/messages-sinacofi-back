@@ -16,6 +16,7 @@ import { useEffect, useState, useContext } from "react";
 import { SessionProviderContext } from "@/context/SessionProvider";
 import { isMortgageDischargeMessage } from "@/utils/mortgage-discharge-utils";
 import basicError from "@/components/Modal/ErrorModal/basicError";
+import { formatToUF, formatToCLP } from "@/utils/formatCurrencies";
 
 const statusCodes = ["01", "05", "pending"];
 const payloadDefault: string[] = [
@@ -40,7 +41,7 @@ const getCreateMessagePayload = (
   });
 
   if (data.messageCode === "670" && data.borrowerUfAmount == 0) {
-    data.borrowerUfAmount = parseFloat(data.loanUF) + parseFloat(data.supplementaryLoanUF);
+    data.borrowerUfAmount = (parseFloat(data.loanUF) + parseFloat(data.supplementaryLoanUF)).toString();
   }
   payload.origin = origin;
   payload.destination = data.beneficiaryBank;
@@ -51,7 +52,7 @@ const getCreateMessagePayload = (
         name: el[0],
         label: schema?.parameters
           .filter(
-            (field: any) => field.type !== "label" && field.type !== "linebreak"
+            (field: any) => field.type !== "label" && field.type !== "linebreak" && field.type !== "accordion" && field.type !== "blankSpace"
           )
           .find((field: any) => field.name === el[0])?.label,
 
@@ -401,13 +402,13 @@ const CreateMessage = () => {
                 <Typography variant="caption" color="#49454F">
                   Crédito Inicial (UF / $)
                 </Typography>
-                <Typography variant="body2">{data.borrowerUfAmount} / {data.borrowerUfAmount * currencies.UF}</Typography>
+                <Typography variant="body2">{formatToUF(data.borrowerUfAmount)} / {formatToCLP(data.borrowerUfAmount * currencies.UF)}</Typography>
               </Stack>
               <Stack direction="column">
                 <Typography variant="caption" color="#49454F">
                   Total a Pagar (UF / $)
                 </Typography>
-                <Typography variant="body2">{data.totalPrepaidToPayUF} / {data.totalPrepaidToPayCLP}</Typography>
+                <Typography variant="body2">{formatToUF(data.totalPrepaidToPayUF)} / {formatToCLP(data.totalPrepaidToPayCLP)}</Typography>
               </Stack>
             </Stack>
             <Typography variant="body2">

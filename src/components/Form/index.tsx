@@ -23,7 +23,7 @@ const getDefaultValues = (schema: any) => {
   schema?.parameters
     ?.filter(
       (parameter: any) =>
-        parameter.type !== "label" && parameter.type !== "linebreak"
+        parameter.type !== "label" && parameter.type !== "linebreak" && parameter.type !== "accordion" && parameter.type !== "blankSpace"
     )
     .forEach(
       (parameter: {
