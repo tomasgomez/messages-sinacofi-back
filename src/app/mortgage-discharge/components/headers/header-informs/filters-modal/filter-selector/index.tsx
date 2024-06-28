@@ -98,9 +98,9 @@ export const FilterSelector = (props: {
       <RutField
         placeholder="Ingrese RUT..."
         handleChange={handleAuxFilter}
-        keyLabel="debtorDni"
+        keyLabel="borrowerDni"
         label="RUT Deudor"
-        value={getValue("debtorDni")}
+        value={getValue("borrowerDni")}
       />
       <FilterDropdowns
         title="Notoria"

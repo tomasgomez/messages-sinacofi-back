@@ -38,7 +38,7 @@ export const DatePicker = (props: {
       <StyledDatePicker
         sx={{ width: "100%", ...sx }}
         onChange={(newValue: any) => {
-          onChange(newValue.format("MM/DD/YYYY"));
+          onChange(newValue ? newValue.format("MM/DD/YYYY") : null);
         }}
         label={label}
         slotProps={{

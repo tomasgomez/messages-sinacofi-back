@@ -64,9 +64,9 @@ export default function HeaderInforms(props: {
         <DatePickerInput
           sx={{ width: `calc(((100% - 50px) / 4) - 16px)` }}
           onChange={handleChange}
-          keyLabel="RepertoireDate"
+          keyLabel="repertoireDate"
           label="Fecha de Repertorio"
-          value={getValue("RepertoireDate")}
+          value={getValue("repertoireDate")}
         />
         <RutField
           width={`calc(((100% - 50px) / 4) - 16px)`}
