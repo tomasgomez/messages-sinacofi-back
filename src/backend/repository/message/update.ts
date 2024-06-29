@@ -104,6 +104,8 @@ export async function update(message: Message): Promise<Message | Error> {
                 value: parameter.value,
                 messageId: updatedMessage.id,
                 priority: parameter.priority,
+                displayValue: parameter.displayValue,
+                label: parameter.label,
             }
             return createparameter;
         });

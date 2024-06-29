@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prepareMessages } from "./adapter/prepareMessages";
 import { getToken } from "next-auth/jwt";
 import { getUser } from "../user/get";
+import { User } from "@/backend/entities/user/user";
 
 // post message function
 export async function post(req: NextApiRequest, res: NextApiResponse < any > ) {
@@ -15,19 +16,36 @@ export async function post(req: NextApiRequest, res: NextApiResponse < any > ) {
             return;
         }
 
-        const token = await getToken({req});
-        if (!token || token.dni ==''){
-          res.status(400).json([]);
-          return;
-        }
+        let user: User;
 
-        let user = await getUser(token.dni!);
-        if (user instanceof Error){
-          res.status(400).json([]);
-          return; 
-        }
+        if (process.env.NEXT_PUBLIC_TEST_ENV !== 'true') {
 
-        validatedMessage.originArea = user.area ?? '';
+          const token = await getToken({req});
+          if (!token || token.dni ==''){
+            res.status(400).json([]);
+            return;
+          }
+
+          let fetchedUser = await getUser(token.dni!);
+          if (fetchedUser instanceof Error){
+            res.status(400).json([]);
+            return; 
+          }
+
+          validatedMessage.originArea = fetchedUser.area ?? '';
+
+          user = fetchedUser;
+        } else {
+          user = {
+            role: 'admin',
+            name: 'admin',
+            institutionCode: validatedMessage.origin ?? '0027',
+            area: 'admin',
+            email: '',
+            status: 'active',
+            dni: '18.782.721-3'
+        }
+      }
 
         let messageResponse = await messageUseCase.handleMessage(validatedMessage, user);
 

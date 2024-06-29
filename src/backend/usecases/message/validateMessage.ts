@@ -27,6 +27,10 @@ export async function validateMessage(repository: MessageRepository, message: Me
     message.parameters = message.parameters?.map((parameter) => {
         let param = messageValidated.parameters.find((param: any) => param?.name === parameter?.name);
 
+        if (!param) {
+            return parameter;
+        }
+
         return {
             ...parameter,
             ...param
