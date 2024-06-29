@@ -1,5 +1,6 @@
 import { CUK } from '@/backend/entities/cuk/cuk';
-import { Parameter } from '@/backend/entities/message/parameter';
+import { getDateFromDateString, getTimeFromDateString } from '@/utils/dateFormatting';
+import { filterParam } from '@/utils/filterParameters';
 
 type cukRejected  = {
   //Tengo que filtrar todos los CUKS donde mi ultimo mensaje es un 672
@@ -7,11 +8,11 @@ type cukRejected  = {
   institutionCode: string; // atributo message, 670
   institutionDestination: string; // atributo message, 670
   messageCode: string; // 670
-  creationDate: string; //
+  creationDate: string; // 
   creationTime: string; //
   NSE: number; //
-  recievedDate: string; //
-  recievedTime: string; //
+  recievedDate: string; // NSR.createdAt
+  recievedTime: string; // NSR.createdAt
   NSR: number; //
   channel: string; //
   notary: string; //
@@ -22,7 +23,7 @@ type cukRejected  = {
   rejectedNSE: number; //  ultimo 672
   rejectedRecievedDate: string;//  ultimo 672recievedTime //  ultimo 672
   rejectedNSR: number; //  ultimo 672
-  sellerDNI: string;  //parameter
+  sellerDni: string;  //parameter
   buyerDni: string;  //parameter
   borrowerDni: string; //parameter
   cukCode: string; 
@@ -30,8 +31,8 @@ type cukRejected  = {
   observations: string; //parameter
 }
 
-function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
-  const preparedCuk:cukRejected[] = cuks.map((cuk) => {
+export function prepareInformRejected(cuks: CUK[]): cukRejected[] {
+  const preparedCuk:cukRejected[] = cuks.map((cuk) => {    
     const last670 = cuk.messages?.filter((message) =>
        message.messageCode === '670'
       ).sort((a, b) => {
@@ -43,42 +44,36 @@ function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
       ).sort((a, b) => {
         return new Date(`${b.creationDate} ${b.creationTime}`).getTime() - new Date(`${a.creationDate} ${a.creationTime}`).getTime();
       })[0];
-    
+        
     const parameters = cuk.parameters || [];
 
     return {
       institutionCode: last670?.origin || '', 
       institutionDestination: last670?.destination || '',
       messageCode: last670?.messageCode || '', 
-      creationDate: last670?.creationDate || '',
-      creationTime: last670?.creationTime || '',
+      creationDate: getDateFromDateString(last670?.NSE?.createdAt as Date) || '',
+      creationTime: getTimeFromDateString(last670?.NSE?.createdAt as Date) || '',
       NSE:last670?.NSE?.id || 0,
-      recievedDate:last670?.receivedDate || '',
-      recievedTime:last670?.receivedTime || '',
+      recievedDate: getDateFromDateString(last670?.NSR?.createdAt as Date) || '',
+      recievedTime: getTimeFromDateString(last670?.NSR?.createdAt as Date) || '',
       NSR:last670?.NSR?.id || 0,
-      channel: filterParam(parameters || '', 'channel') || '',
-      notary: filterParam(parameters || '', 'notary') || '',
-      repertoireNumber: filterParam(parameters || '', 'repertoireNumber') || '',
-      repertorieDate: filterParam(parameters || '', 'repertoireDate') || '',
+      channel: filterParam(parameters || '', 'channel')?.value || '',
+      notary: filterParam(parameters || '', 'notary')?.value || '',
+      repertoireNumber: filterParam(parameters || '', 'repertoireNumber')?.value || '',
+      repertorieDate: filterParam(parameters || '', 'repertoireDate')?.value || '',
     
       rejectedMessageCode: last672?.messageCode || '', 
-      rejectedCreationDate: last672?.creationDate || '',
+      rejectedCreationDate: getDateFromDateString(last672?.NSE?.createdAt as Date) || '',
       rejectedNSE: last672?.NSR?.id || 0, 
-      rejectedRecievedDate: last672?.receivedDate || '',
+      rejectedRecievedDate: getDateFromDateString(last672?.NSR?.createdAt as Date) || '',
       rejectedNSR: last672?.NSR?.id || 0, 
-      sellerDNI: filterParam(parameters || '', 'sellerDNI') || '',
-      buyerDni: filterParam(parameters || '', 'buyerDni') || '',
-      borrowerDni: filterParam(parameters || '', 'borrowerDni') || '',
+      sellerDni: filterParam(parameters || '', 'sellerDni')?.value || '',
+      buyerDni: filterParam(parameters || '', 'buyerDni')?.value || '',
+      borrowerDni: filterParam(parameters || '', 'borrowerDni')?.value || '',
       cukCode: last672?.cukCode || '', 
-      rejectionReason: filterParam(parameters || '', 'rejectionReason') || '',
-      observations: filterParam(parameters || '', 'observations') || '',
+      rejectionReason: filterParam(parameters || '', 'rejectionReason')?.value || '',
+      observations: filterParam(parameters || '', 'observations')?.value || '', // TODO: check parameter name
     }
   })
   return preparedCuk;
 }
-
-const filterParam = (parameters: Parameter[], name: string) => {
-  return parameters.find((parameter) => parameter.name === name)?.value || '';
-}
-
-export { prepareForclosure }

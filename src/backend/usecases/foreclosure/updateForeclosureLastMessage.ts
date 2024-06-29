@@ -25,16 +25,16 @@ export async function updateLastMessage(message: Message, user: User, messageRep
   }
 
   /* Get Cuk */
-  let fetchedCuk = await cukRepository.find({
+  let fetchedCuk= await cukRepository.find({
     cukCode: [message.cukCode]
   });
 
   /* Check last message attached to the CUK */
-  if (fetchedCuk instanceof Error || fetchedCuk.length === 0) {
+  if (fetchedCuk instanceof Error || fetchedCuk.data.length === 0) {
     return new Error('No CUK found');
   }
 
-  let fetchedMessages = fetchedCuk[0].messages;
+  let fetchedMessages = fetchedCuk.data[0].messages;
 
   if (!fetchedMessages) {
     fetchedMessages = [];
@@ -102,12 +102,8 @@ export async function updateLastMessage(message: Message, user: User, messageRep
       cukCode: message.cukCode,
       id: messageToUpdate.id
     }
-
-    console.log('toUpdateMessage', toUpdateMessage);
     
     let updated = await messageRepository.update(toUpdateMessage);
-
-    console.log('updated', updated);
 
     if (updated instanceof Error) {
       return updated;

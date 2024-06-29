@@ -12,7 +12,7 @@ const ParamenterListBuilder = ({ parameters, control, register, errors, }: {para
                 props={{
                   ...field.properties,
                   control,
-                  ...(field.type !== "label" && field.type !== "linebreak") ? register(field.id) : {},
+                  ...(field.type !== "label" && field.type !== "linebreak" && field.type !== "accordion" && field.type !== "blankSpace") ? register(field.id) : {},
                   ...field,
                   errors
                 }}

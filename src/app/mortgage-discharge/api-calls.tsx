@@ -1,9 +1,12 @@
 import { Filter } from "@/types/mortgage-discharge";
-import { MortgageDischargeData } from "../component/inbox-table/type";
+import {
+  MortgageDischargeData,
+  PaginationAndMortgageDischargeData,
+} from "../component/inbox-table/type";
 
 export async function getForeClosureData(
   filters?: Filter[]
-): Promise<MortgageDischargeData[]> {
+): Promise<PaginationAndMortgageDischargeData> {
   try {
     const baseUrl = window.location.origin;
     let url = `${baseUrl}/api/message/foreclosure`;
@@ -29,10 +32,21 @@ export async function getForeClosureData(
     }
 
     if (response.status === 204) {
-      return [];
+      return {
+        meta: {
+          count: 0,
+          currentPage: 0,
+          filtered: 0,
+          hasNextPage: false,
+          hasPrevPage: false,
+          offset: 0,
+          totalPages: 1,
+        },
+        data: [],
+      };
     }
 
-    const data: MortgageDischargeData[] = await response.json();
+    const data: PaginationAndMortgageDischargeData = await response.json();
 
     return data;
   } catch (err: any) {

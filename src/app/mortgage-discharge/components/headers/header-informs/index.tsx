@@ -7,10 +7,10 @@ import { Filter } from "@/types/mortgage-discharge";
 import { Dispatch, SetStateAction } from "react";
 import { DatePickerInput } from "../form-elements/date";
 import { FilterDropdowns } from "../form-elements/filters-dropdowns";
-import { TextInputFilters } from "../form-elements/text-input-filters";
 import { Filters } from "@/app/mortgage-discharge/components/headers/header-informs/filters-modal";
 import { handleGenericChangeFilter } from "@/utils/mortgage-discharge-utils";
 import { optionsChannels, optionsIntitutions } from "./constants";
+import RutField from "../form-elements/text-rut-field/RutField";
 
 export default function HeaderInforms(props: {
   title: string;
@@ -64,11 +64,11 @@ export default function HeaderInforms(props: {
         <DatePickerInput
           sx={{ width: `calc(((100% - 50px) / 4) - 16px)` }}
           onChange={handleChange}
-          keyLabel="RepertoireDate"
+          keyLabel="repertoireDate"
           label="Fecha de Repertorio"
-          value={getValue("RepertoireDate")}
+          value={getValue("repertoireDate")}
         />
-        <TextInputFilters
+        <RutField
           width={`calc(((100% - 50px) / 4) - 16px)`}
           placeholder="Ingrese RUT..."
           handleChange={handleChange}

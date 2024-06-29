@@ -84,5 +84,5 @@ export interface SmallMsInfoModalMortgageDischarge {
 
 export interface Filter {
   label: string;
-  value: string | null | undefined;
+  value: string | number | null | undefined;
 }

@@ -113,13 +113,20 @@ export const intitutionLabelToCode = (label: string) => {
     ?.id;
 };
 
-export const completeInstitutions = (value: string | undefined) => {
+export const completeInstitutions = (
+  value: string | undefined,
+  fullName?: boolean
+) => {
   if (value === undefined) return "";
   const institution = institutionsList.find(
     (institution) => institution.id === value || institution.name === value
   );
 
-  if (!institution || (!institution.id && !institution.name)) return "";
+  if (fullName) {
+    if (!institution || (!institution.id && !institution.fullName)) return "";
+    return `${institution?.fullName || ""}`;
+  }
 
+  if (!institution || (!institution.id && !institution.name)) return "";
   return `${institution?.id || ""} - ${institution?.name || ""}`;
 };

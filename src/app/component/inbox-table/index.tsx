@@ -46,6 +46,11 @@ export default function EnhancedTable(props: {
   emptyDataComponent?: React.ReactNode;
   rowHeight?: number;
   loadingColums?: boolean;
+  amountOfRows?: number;
+  handleChangePageExternally?: Function;
+  handleChangeRowsPerPageExternally?: Function;
+  pageExternally?: number;
+  RowsPerPageExternally?: number;
 }) {
   const {
     rows = [] as Message[],
@@ -68,8 +73,11 @@ export default function EnhancedTable(props: {
     highlightRowDisabled = false,
     rowHeight = 57,
     loadingColums = false,
+    amountOfRows = 0,
+    handleChangePageExternally,
+    handleChangeRowsPerPageExternally,
+    pageExternally,
   } = props || {};
-
   const [order, setOrder] = React.useState<Order>(defaultOrder);
   const [orderBy, setOrderBy] = React.useState<keyof Message | undefined>(
     defaultOrderBy
@@ -140,22 +148,39 @@ export default function EnhancedTable(props: {
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+    if (handleChangePageExternally) {
+      handleChangePageExternally(newPage);
+    } else {
+      setPage(newPage);
+    }
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    if (handleChangeRowsPerPageExternally && handleChangePageExternally) {
+      handleChangeRowsPerPageExternally(parseInt(event.target.value, 10));
+      handleChangePageExternally(0);
+    } else {
+      setPage(0);
+    }
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
   };
 
   const isSelected = (id: number | string) => selected.indexOf(id) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
+
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - rows?.length);
 
   const visibleRows = React.useMemo(() => {
+    if (handleChangeRowsPerPageExternally && handleChangePageExternally) {
+      if (orderBy) {
+        return stableSort(rows, getComparator(order, orderBy));
+      }
+      return rows;
+    }
+
     if (orderBy) {
       return stableSort(rows, getComparator(order, orderBy)).slice(
         page * rowsPerPage,
@@ -276,9 +301,9 @@ export default function EnhancedTable(props: {
         <TablePagination
           rowsPerPageOptions={rowsPerPageOptions}
           component="div"
-          count={rows?.length}
+          count={amountOfRows || rows?.length}
           rowsPerPage={rowsPerPage}
-          page={page}
+          page={pageExternally || page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           labelRowsPerPage="Registros por página:"

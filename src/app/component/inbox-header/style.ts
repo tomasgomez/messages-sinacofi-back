@@ -27,18 +27,19 @@ export const StyledIconsContent = styled(Box)`
   justify-content: space-between;
 `;
 
-export const StyledModalItem= styled(Typography)`
-  max-width:80%;
-  font-size:14px;
-`
+export const StyledModalItem = styled(Typography)`
+  max-width: ${(props: { maxWidth?: string }) =>
+    props?.maxWidth ? props.maxWidth : "80%"};
+  font-size: 14px;
+`;
 
-export const StyledMoalSection=styled(Typography)`
+export const StyledMoalSection = styled(Typography)`
   font-size: 16px;
-  font-weight:600;
+  font-weight: 600;
   font-family: ${montserrat.style.fontFamily};
-  margin-bottom:16px;
-`
+  margin-bottom: 16px;
+`;
 
-export const StyledCapitalizedSpan=styled('span')`
-  text-transform:capitalize;
-`
+export const StyledCapitalizedSpan = styled("span")`
+  text-transform: capitalize;
+`;

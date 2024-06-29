@@ -42,7 +42,7 @@ export const columnsInformsAccepted: Columns[] = [
     sortable: false,
   },
   {
-    id: "registrationDate",
+    id: "repertoireDate",
     label: "Fecha Repertorio",
     align: Alignment.LEFT,
     sortable: false,
@@ -102,13 +102,13 @@ export const columnsInformsAccepted: Columns[] = [
     sortable: false,
   },
   {
-    id: "resendCreationDate",
+    id: "rejectedCreationDate",
     label: "Fecha del Último rechazo",
     align: Alignment.LEFT,
     sortable: false,
   },
   {
-    id: "resendCreationTime",
+    id: "rejectedCreationTime",
     label: "Hora del Último rechazo",
     align: Alignment.LEFT,
     sortable: false,
@@ -180,7 +180,7 @@ export const columnsInformsAccepted: Columns[] = [
     sortable: false,
   },
   {
-    id: "liquiidationMessageNumber",
+    id: "liquidationMessageNumber",
     label: "N° de 1era Solic. de Liquidación",
     align: Alignment.LEFT,
     sortable: false,
@@ -333,7 +333,7 @@ export const columnsInformsRejected: Columns[] = [
     sortable: false,
   },
   {
-    id: "sellerDNI",
+    id: "sellerDni",
     label: "RUT Vendedor",
     align: Alignment.LEFT,
     sortable: false,

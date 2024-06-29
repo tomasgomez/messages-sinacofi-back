@@ -1,11 +1,11 @@
 import { FormControl } from "@mui/material";
-import TextField from "@mui/material/TextField";
 import { useMemo, useRef } from "react";
 import MaskedInput from "react-text-mask";
 import Field from "./Field";
 
 export function validaRut(rutCompleto: string): boolean {
-  rutCompleto = rutCompleto.replace(/\./g, "");
+  rutCompleto = rutCompleto.replace(/[.\u200B]/g, "");
+  console.log(rutCompleto, rutCompleto.length);
   if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto)) {
     return false;
   }
@@ -27,7 +27,6 @@ function dv(T: number): string | number {
   }
   return S ? S - 1 : "k";
 }
-
 
 const RutMask = (props: any) => {
   const { inputRef, value = "", ...other } = props;
@@ -126,9 +125,9 @@ const RutMask = (props: any) => {
     <MaskedInput
       {...other}
       value={value}
-      ref={(ref: any) => {
-        inputRef?.(ref ? ref.inputElement : null);
-      }}
+      // ref={(ref: any) => {
+      //   inputRef?.(ref ? ref.inputElement : null);
+      // }}
       mask={rutMask}
       onBlur={(e) => {
         other.onChange(e.target.value);
@@ -141,13 +140,34 @@ const RutMask = (props: any) => {
 
 const RutField = (props: any) => {
   const inputRef = useRef(null);
+  const { value } = props;
+
+  const handleFixSpace = () => {
+    if (inputRef.current) {
+      const input = (inputRef.current as HTMLDivElement).querySelector("input");
+      const withoutSpace = value.split("\u200B")[0];
+      input?.setSelectionRange(
+        Math.max(withoutSpace.length, 0),
+        Math.max(withoutSpace.length, 0)
+      );
+    }
+  };
+
   return (
     <FormControl fullWidth>
       <Field
         {...props}
+        onClick={(e) => {
+          handleFixSpace();
+          props.onClick(e);
+        }}
+        onFocus={(e: any) => {
+          handleFixSpace();
+          props.onFocus(e);
+        }}
         InputProps={{
           inputComponent: RutMask,
-          inputRef: inputRef,
+          ref: inputRef,
         }}
       />
     </FormControl>

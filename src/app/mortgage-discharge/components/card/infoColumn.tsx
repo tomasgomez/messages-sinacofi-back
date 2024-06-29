@@ -6,6 +6,8 @@ import {
   StyledTypographyText,
   StyledTypographyData,
 } from "./styles";
+import { completeInstitutions } from "@/utils/intitutions";
+import { statusDictionary } from "@/utils/mortgage-discharge-constants";
 
 const InfoColumn = ({ data }: { data: any }) => {
   const {
@@ -46,28 +48,33 @@ const InfoColumn = ({ data }: { data: any }) => {
 
   return (
     <StyleInfoColumn>
-      <Box width="auto" maxWidth={90}>
+      <Box width={80}>
         <StyledTypographyText>Canal</StyledTypographyText>
         <StyledTypographyData>{channel}</StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box minWidth={90} width="auto" maxWidth={170}>
+      <Box width={180}>
         <StyledTypographyText>Estado Operación</StyledTypographyText>
-        <StyledTypographyData>{operationStatus}</StyledTypographyData>
+        <StyledTypographyData>
+          {(statusDictionary as { [key: string]: string })[operationStatus] ||
+            operationStatus}
+        </StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box minWidth={90} width="auto" maxWidth={170}>
+      <Box width={180}>
         <StyledTypographyText>Comprador</StyledTypographyText>
         <StyledTypographyData>
           {buyerDni}/{buyer}
         </StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box minWidth={90} width="auto" maxWidth={110}>
+      <Box width={150}>
         <StyledTypographyText>
           {getInstitutionText(cukStatus)}
         </StyledTypographyText>
-        <StyledTypographyData>{getInstitution(cukStatus)}</StyledTypographyData>
+        <StyledTypographyData>
+          {completeInstitutions(getInstitution(cukStatus))}
+        </StyledTypographyData>
       </Box>
     </StyleInfoColumn>
   );

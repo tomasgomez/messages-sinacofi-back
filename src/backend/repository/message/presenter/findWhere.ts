@@ -11,7 +11,7 @@ function findWhere(filter: FilterMessage): Partial < Message > {
 
     // Loop through the provided attributes and add them to the where object
     for (const key in filter) {
-        if (key === 'status') {
+        if (key === 'status' || key === 'count' || key === 'offset') {
             continue;
         }
 

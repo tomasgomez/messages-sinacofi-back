@@ -4,6 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { styled } from "@mui/material";
 import dayjs from "dayjs";
+import "dayjs/locale/es";
 
 const StyledDatePicker = styled(DatePicker)((props) => ({
   "& .MuiInputBase-root.Mui-disabled": {
@@ -34,11 +35,11 @@ export const DatePickerInput = (props: {
 }) => {
   const { label, onChange, keyLabel, value, defaultDate, sx = {} } = props;
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
       <StyledDatePicker
         sx={{ ...sx }}
         onChange={(newValue: any) => {
-          onChange(keyLabel, newValue.format("YYYY/MM/DD"));
+          onChange(keyLabel, newValue ? newValue.format("MM/DD/YYYY") : "");
         }}
         label={label}
         slotProps={{
