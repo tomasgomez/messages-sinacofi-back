@@ -29,6 +29,7 @@ import {
   optionsInstitutions,
 } from "./constants";
 import RutField from "../../form-elements/text-rut-field/RutField";
+import { TextInputFilters } from "../../form-elements/text-input-filters";
 
 export const Filters = (props: { handleGetData: Function }) => {
   const [isOpen, setIsOpen] = useState(true);
@@ -191,7 +192,7 @@ export const Filters = (props: { handleGetData: Function }) => {
               label="RUT Deudor"
               value={getValue("borrowerDni")}
             />
-            <RutField
+            <TextInputFilters
               placeholder="Ingrese el Codigo Interno..."
               width={`calc( 100%  / 4 - 12px)`}
               handleChange={handleChangeFilter}
