@@ -55,6 +55,7 @@ interface ObjectInfoModal {
   text?: string;
   label?: string;
   value?: string;
+  displayValue?: string;
 }
 
 export interface DetailsMSInfoModal extends ObjectInfoModal {}
@@ -62,7 +63,7 @@ export interface DetailsMSInfoModal extends ObjectInfoModal {}
 export interface BankDetailsMSInfoModal {
   bank: string;
   amountHeldByTheBank: string;
-  sign_2: string;
+  sender: string;
 }
 export interface InfoModalMortgageDischarge {
   dataHeader: DataHeaderInfoModal;

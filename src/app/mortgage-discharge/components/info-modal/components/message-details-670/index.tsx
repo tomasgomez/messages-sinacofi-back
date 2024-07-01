@@ -148,7 +148,7 @@ export function MessageDetails670({
                       {field.label}:
                     </Typography>
                     <StyledModalItem noWrap>
-                      {field.value || "-"}
+                      {field?.value || "-"}
                     </StyledModalItem>
                   </Stack>
                 );
@@ -168,7 +168,7 @@ export function MessageDetails670({
                       {field.label}:
                     </Typography>
                     <StyledModalItem noWrap>
-                      {field.value || "-"}
+                      {field?.value || "-"}
                     </StyledModalItem>
                   </Stack>
                 );
@@ -213,7 +213,7 @@ export function MessageDetails670({
               Apoderado/Enviador:
             </Typography>
             <StyledModalItem noWrap>
-              {`${bankDetailsMS?.sign_2 || "N/A"}`}
+              {`${bankDetailsMS?.sender || "N/A"}`}
             </StyledModalItem>
           </Stack>
           <Stack display="flex" flexDirection="row" alignItems="center">

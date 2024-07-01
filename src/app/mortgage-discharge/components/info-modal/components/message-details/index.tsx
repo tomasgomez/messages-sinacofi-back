@@ -79,7 +79,13 @@ export function MessageDetails({ dataMessage = [] }: { dataMessage: any }) {
             {smallMsDetail?.map((row, rowIndex) => (
               <>
                 {row.title && (
-                  <Typography fontSize="14px" color="#49454F" mr={1.5} mb={2}>
+                  <Typography
+                    fontSize="16px"
+                    color="#49454F"
+                    mr={1.5}
+                    mt={2}
+                    mb={2}
+                  >
                     {row.title}
                   </Typography>
                 )}
@@ -96,8 +102,8 @@ export function MessageDetails({ dataMessage = [] }: { dataMessage: any }) {
                       style={{ display: "flex", flexDirection: "column" }}
                       borderLeft={colIndex ? "1px solid #E5E5E5" : "none"}
                       key={colIndex}
-                      pl={colIndex ? 8 : 0}
-                      pr={8}
+                      pl={colIndex ? 5 : 0}
+                      pr={5}
                     >
                       {column.map((field: any, fieldIndex: number) => (
                         <Stack

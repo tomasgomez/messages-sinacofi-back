@@ -1,30 +1,29 @@
 import { SmallMsDetailInfoModal } from "@/types/mortgage-discharge";
 
 export const paramsTo670 = [
-  "issuedDate",
+  "dateOfApplication",
   "channel",
-  "operationtype",
+  "operationType",
   "notary",
-  "registrationDate",
-  "registrationNumber",
+  "repertoireDate",
+  "repertoireNumber",
   "beneficiaryBank",
-  "owner",
-  "ownerDni",
-  "buyer",
+  "sellerName",
+  "sellerDni",
+  "buyerName",
   "buyerDni",
   "propertyInfo",
   "morePropertyInfo",
   "location",
   "region",
   "commune",
-  "bank",
-  "loan",
+  "loanUF",
   "loanTerm",
-  "addLoan",
+  "supplementaryLoanUF",
   "CUK",
   "borrowerName",
   "borrowerDni",
-  "ufAmount",
+  "borrowerUfAmount",
 ];
 
 // Delete label after backend fix label
@@ -35,14 +34,15 @@ export const paramsTo671: SmallMsDetailInfoModal[] = [
     // Array by column
     data: [
       [
-        { name: "approvalDate", label: "Fecha de Aceptación" },
+        { name: "mlApprovalDate", label: "Fecha de Aceptación" },
         {
-          name: "prepaidSettlement",
+          name: "requiresPrepaidSettlement",
           label: "Requiere liquidación de Prepago Si/No",
         },
         { text: "Firma Electrónica Receptor" },
-        { name: "sign", label: "Apoderado Nombre, RUT" },
-        { name: "observations", label: "Observaciones" },
+        { name: "receiverAHName", label: "Apoderado Nombre" },
+        { name: "receiverAHDni", label: "Apoderado RUT" },
+        { name: "mlApprovalObservation", label: "Observaciones" },
       ],
     ],
   },
@@ -55,12 +55,12 @@ export const paramsTo672: SmallMsDetailInfoModal[] =
       // Array by column
       data: [
         [
-          { name: "rejectionDate", label: "Fecha de Rechazo" },
+          { name: "mlRejectionDate", label: "Fecha de Rechazo" },
           { name: "rejectionReason", label: "Motivo" },
           { text: "Firma Electrónica Receptor" },
-          { name: "sign", label: "Apoderado Nombre, RUT" },
-          { name: "observations", label: "Observaciones" },
-          { name: "E32", label: "E32" },
+          { name: "senderName", label: "Apoderado Nombre" },
+          { name: "senderDni", label: "Apoderado RUT" },
+          { name: "mlRejectionObservation", label: "Observaciones" },
         ],
       ],
     },
@@ -71,16 +71,7 @@ export const paramsTo673: SmallMsDetailInfoModal[] =
   [
     {
       // Array by column
-      data: [
-        [
-          {
-            name: "normalizationDate",
-            label: "Fecha de Aviso de Cliente en  Normalización:",
-          },
-          { name: "openText", label: "Observaciones" },
-          { name: "observations", label: "E32" },
-        ],
-      ],
+      data: [[{ name: "mlNormalizationObservation", label: "Observaciones" }]],
     },
   ];
 
@@ -94,34 +85,40 @@ export const paramsTo674: SmallMsDetailInfoModal[] =
       data: [
         [
           {
-            name: "owner",
+            name: "sellerName",
             label: "Nombre del Vendedor",
           },
-          { name: "ownerDni", label: "RUT del Vendedor" },
-          { name: "buyer", label: "Nombre del Comprador" },
+          { name: "sellerDni", label: "RUT del Vendedor" },
+          { name: "buyerName", label: "Nombre del Comprador" },
           { name: "buyerDni", label: "RUT del Comprador" },
           { name: "borrowerName", label: " Nombre del Deudor" },
           { name: "borrowerDni", label: "RUT del Deudor" },
-          { name: "observations", label: "Observaciones" },
-          { name: "moreObservations", label: "E32" },
+          {
+            name: "prepaymentSettlementRequestObservation",
+            label: "Observaciones",
+          },
         ],
         [
           {
-            name: "mortgageLiftingReceptionNumber",
+            name: "OSN",
             label: "Número Recepción de Alzamiento (OSN)",
           },
           {
-            name: "issuedDate",
-            label: "Asociado a Alzamiento Hipotecario de Fecha/NSE",
+            name: "dateOfApplication",
+            label: "Asociado a Alzamiento Hipotecario de Fecha",
           },
-          { name: "loan", label: "Monto del mutuo (UF)" },
-          { name: "addLoan", label: "Un mutuo Complementario de (UF)" },
+          { name: "NSE", label: "Número de Serie de Escritura (NSE)" },
+          { name: "loanUF", label: "Monto del mutuo (UF)" },
           {
-            name: "cashPaymentAmount",
+            name: "supplementaryLoanUF",
+            label: "Un mutuo Complementario de (UF)",
+          },
+          {
+            name: "borrowerUfAmount",
             label: "Monto del Pago Efectivo (U.F.)",
           },
           {
-            name: "voluntaryAdditionalAmount",
+            name: "amountHeldByTheBank",
             label: "Monto Adicional Voluntuario $",
           },
         ],
@@ -140,8 +137,7 @@ export const paramsTo675: SmallMsDetailInfoModal[] = [
         { name: "loanNumber", label: "N° Préstamo" },
         { name: "typeOfObligation", label: "Tipo Obligación" },
         { name: "typeOfDebt", label: "Tipo de Deuda" },
-        { name: "typeOfCurrency", label: "Moneda" },
-
+        { name: "mortgageCurrencyType", label: "Moneda" },
         { name: "capital", label: "Capital" },
         { name: "interest", label: "Intereses" },
       ],
@@ -149,16 +145,40 @@ export const paramsTo675: SmallMsDetailInfoModal[] = [
         { name: "mora", label: "Mora / I. Penal" },
         { name: "amortization", label: "Amortización" },
         { name: "prepaidCost", label: "Costo Prepago" },
-        { name: "liftingExpenses", label: "Gastos Alzamiento" },
-        { name: "currency", label: "Moneda(s)" },
+        { name: "mortgageExpenses", label: "Gastos Alzamiento" },
+        { name: "collectionCurrencyType", label: "Moneda(s)" },
         { name: "collection", label: "Cobranza" },
       ],
       [
         { name: "judicial", label: "G. Judiciales" },
         { name: "loanSubtotal", label: "Subtotal Préstamo" },
         { name: "dividendAmount", label: "Cantidad Dividendos" },
-        { name: "totalAmount", label: "Monto Total ($)" },
+        { name: "totalCredit", label: "Monto Total ($)" },
         { name: "collectionExpenses", label: "Gastos de Cobranza" },
+      ],
+    ],
+  },
+  {
+    // Title by column
+    title: "Detalle Otros Creditos",
+    // Array by column
+    data: [
+      [
+        { name: "loanNumberOther", label: "N° de Préstamo" },
+        { name: "typeOfObligationOther", label: "Tipo de Obligación" },
+        { name: "typeOfDebtOther", label: "Tipo de Deuda" },
+        { name: "mortgageCurrencyTypeOther", label: "Moneda" },
+      ],
+      [
+        { name: "capitalOther", label: "Capital" },
+        { name: "interestOther", label: "Intereses" },
+        { name: "moraOther", label: "Mora / I. Penal" },
+        { name: "collectionCurrencyTypeOther", label: "Moneda(s)" },
+      ],
+      [
+        { name: "collectionOther", label: "Cobranza" },
+        { name: "judicialOther", label: "G. Judiciales" },
+        { name: "loanSubtotalOther", label: "Subtotal Préstamo" },
       ],
     ],
   },
@@ -172,9 +192,9 @@ export const paramsTo675: SmallMsDetailInfoModal[] = [
   {
     data: [
       [
-        { name: "totalToPay", label: "Total a Pagar UF / $" },
-        { name: "observations", label: "Observaciones" },
-        { name: "E32", label: "E32" },
+        { name: "totalPrepaidToPayCLP", label: "Total a Pagar CLP" },
+        { name: "totalPrepaidToPayUF", label: "Total a Pagar UF" },
+        { name: "mlApprovalObservation", label: "Observaciones" },
       ],
     ],
   },
@@ -187,33 +207,44 @@ export const paramsTo676: SmallMsDetailInfoModal[] =
       // Array by column
       data: [
         [
-          { name: "loan", label: "Monto del Mutuo (U.F.)" },
+          { name: "loanUF", label: "Monto del Mutuo (U.F.)" },
           {
-            name: "amountUfValidDatePrepaymentLiquidation",
+            name: "supplementaryLoanUF",
             label: "Monto del Mutuo Complementario (U.F.)",
           },
-          { name: "addLoan", label: "Monto del Pago Efectivo (U.F.)" },
+          { name: "borrowerUfAmount", label: "Monto del Pago Efectivo (U.F.)" },
           {
-            name: "amountCLPValidDatePrepaymentLiquidation",
+            name: "amountHeldByTheBank",
             label: "Monto Adicional Voluntario $",
           },
         ],
         [
           {
-            name: "cashPaymentAmount",
-            label: "Monto U.F. / Fecha de Validez Liquidación de Prepago",
+            name: "totalPrepaidToPayUF",
+            label: "Monto U.F.",
           },
           {
-            name: "paymentDay",
-            label: "Monto $ / Fecha de Validez Liquidación de Prepago",
+            name: "totalPrepaidToPayCLP",
+            label: "Monto $",
           },
-          { name: "voluntaryAdditionalAmount", label: "Fecha de Pago" },
+          {
+            name: "prepaymentSettlementRequestDate",
+            label: "Fecha de Validez Liquidación de Prepago",
+          },
+          { name: "paymentDate", label: "Fecha de Pago" },
         ],
       ],
     },
     {
       // Array by column
-      data: [[{ name: "E32", label: "E32" }]],
+      data: [
+        [
+          {
+            name: "prepaymentSettlementRequestObservation",
+            label: "Observaciones",
+          },
+        ],
+      ],
     },
   ];
 
@@ -225,29 +256,28 @@ export const paramsTo677: SmallMsDetailInfoModal[] =
       data: [
         [
           {
-            name: "amountUfValidDatePrepaymentLiquidation",
-            label: "Monto U.F. / Fecha de Validez Liquidación de Prepago",
+            name: "totalPrepaidToPayUF",
+            label: "Monto U.F.",
           },
           {
-            name: "amountCLPValidDatePrepaymentLiquidation",
-            label: "Monto $ / Fecha de Validez Liquidación de Prepago",
+            name: "totalPrepaidToPayCLP",
+            label: "Monto $",
           },
-          { name: "paymentDay", label: "Fecha de Pago" },
+          {
+            name: "prepaymentSettlementRequestDate",
+            label: "Fecha de Validez Liquidación de Prepago",
+          },
+          { name: "paymentDate", label: "Fecha de Pago" },
         ],
         [
-          { name: "totalPaymentAmount", label: "Monto Pagado Total" },
+          { name: "totalAmountPaid", label: "Monto Pagado Total" },
           { name: "paymentMethod", label: "Medio de Pago" },
         ],
       ],
     },
     {
       // Array by column
-      data: [
-        [
-          { name: "observations", label: "Observaciones" },
-          { name: "E32", label: "E32" },
-        ],
-      ],
+      data: [[{ name: "noticeOfPaymentObservation", label: "Observaciones" }]],
     },
   ];
 
@@ -257,12 +287,12 @@ export const paramsTo678: SmallMsDetailInfoModal[] =
     {
       data: [
         [
-          { name: "paymentDay", label: "Fecha de Pago" },
+          { name: "paymentDate", label: "Fecha de Pago" },
           { name: "rejectionReason", label: "Motivo del Rechazo del Pago" },
           { text: "Firma Electrónica Receptor" },
-          { name: "sign", label: "Apoderado Nombre, RUT" },
-          { name: "observations", label: "Observaciones" },
-          { name: "E32", label: "E32" },
+          { name: "receiverAHName", label: "Apoderado Nombre" },
+          { name: "receiverAHDni", label: "Apoderado RUT" },
+          { name: "noticeOfPaymentObservation", label: "Observaciones" },
         ],
       ],
     },
@@ -275,12 +305,12 @@ export const paramsTo679: SmallMsDetailInfoModal[] =
       // Array by column
       data: [
         [
-          { name: "paymentDay", label: "Fecha de Pago" },
+          { name: "paymentDate", label: "Fecha de Pago" },
           { name: "SHA", label: "SHA" },
           { text: "Firma Electrónica Receptor" },
-          { name: "sign", label: "Apoderado Nombre, RUT" },
-          { name: "observations", label: "Observaciones" },
-          { name: "E32", label: "E32" },
+          { name: "receiverAHName", label: "Apoderado Nombre" },
+          { name: "receiverAHDni", label: "Apoderado RUT" },
+          { name: "noticeOfPaymentObservation", label: "Observaciones" },
         ],
       ],
     },
