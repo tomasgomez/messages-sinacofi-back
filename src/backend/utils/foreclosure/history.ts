@@ -1,5 +1,6 @@
 import { CUK } from '@/backend/entities/cuk/cuk';
 import { History } from '@/backend/entities/cuk/history';
+import { getChileanTime } from '@/backend/utils/functions';
 
 /* Function to transform history from Json and set it to CUK */
 export function setCukHistory(cuk: CUK): History[] {
@@ -12,7 +13,7 @@ export function addHistory(status: string, cuk: CUK): string {
     let history: History = {
         cukCode: cuk.cukCode ?? '',
         status: status ?? '',
-        date: new Date().toISOString()
+        date: getChileanTime().toString(),
     };
 
     let updatedHistoryArray: any[] = [];

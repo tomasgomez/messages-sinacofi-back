@@ -1,5 +1,6 @@
 import { ButtonSchema } from "@/backend/entities/schema/interface";
 import { MessageSchemaFront, Parameter, Validations } from "@/backend/entities/schema/messageSchema";
+import { getChileanTimeAsDate } from "@/utils/dateFormatting";
 
 // Function to adapt data to Schema type
 export function adaptSchema(dataToAdapt: any, userData: any): MessageSchemaFront {
@@ -92,7 +93,8 @@ function sortParametersByPriority(parameters: any[]): any[] {
 
 function getDefaultValue(defaultValue: any, userData: { senderId?: any, receiverId?: any, sender?: any, name?: any } = {}) {
     if (defaultValue === "Current Date" || defaultValue === "currentDate") {
-        return new Date();
+        let createdAt = getChileanTimeAsDate();
+        return createdAt;
     }
     if (defaultValue === "userInstitution") {
         return userData?.sender?.name;

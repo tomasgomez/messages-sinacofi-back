@@ -33,7 +33,8 @@ export async function validateMessage(repository: MessageRepository, message: Me
 
         return {
             ...parameter,
-            ...param
+            ...param,
+            label: param.label,
         }
     });
 
