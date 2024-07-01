@@ -98,7 +98,7 @@ export async function updateLastMessage(message: Message, user: User, messageRep
     let toUpdateMessage = {
       ...newMessage,
       ...validateMessageResponse,
-      messageCode: message.messageCode,
+      messageCode: messageToUpdate.messageCode,
       cukCode: message.cukCode,
       id: messageToUpdate.id
     }
