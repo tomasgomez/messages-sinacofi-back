@@ -317,7 +317,7 @@ export const formatModalDetailSmall = (
           (param) => param.name === column.name
         );
         if (parameter) {
-          column.value =  parameter?.displayValue || parameter?.value;
+          column.value = parameter?.displayValue || parameter?.value;
           if (parameter?.label) column.label = parameter?.label;
           //Delete after backend fix
           // else column.label = parameter.name;
