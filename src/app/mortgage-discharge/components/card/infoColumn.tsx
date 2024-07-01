@@ -53,7 +53,7 @@ const InfoColumn = ({ data }: { data: any }) => {
         <StyledTypographyData>{channel}</StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box width={180}>
+      <Box width={150}>
         <StyledTypographyText>Estado Operación</StyledTypographyText>
         <StyledTypographyData>
           {(statusDictionary as { [key: string]: string })[operationStatus] ||
@@ -61,7 +61,7 @@ const InfoColumn = ({ data }: { data: any }) => {
         </StyledTypographyData>
       </Box>
       <StyledDivider orientation="vertical" flexItem />
-      <Box width={180}>
+      <Box width={150}>
         <StyledTypographyText>Comprador</StyledTypographyText>
         <StyledTypographyData>
           {buyerDni}/{buyer}
