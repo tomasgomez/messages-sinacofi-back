@@ -23,7 +23,7 @@ function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
 
   export { prepareForclosure }
 
-  function prepareParametersForCuk(cuk: CUK): any {
+  function prepareParametersForCuk(cuk: CUK): any {    
     let adaptedCuk: any = {
       ...cuk
     }
@@ -45,6 +45,9 @@ function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
         case 'buyerDni':
           adaptedCuk.buyerDni = parameter.value;
           break;
+        case 'buyerName':
+          adaptedCuk.buyerName = parameter.value;
+          break;
         case 'buyer':
           adaptedCuk.buyer = parameter.value;
           break;
@@ -57,8 +60,17 @@ function prepareForclosure(cuks: CUK[], filter: any = { detail: true }): any{
         case 'borrowerDni':
           adaptedCuk.borrowerDni = parameter.value;
           break;
+        case 'borrowerName':
+          adaptedCuk.borrowerName = parameter.value;
+          break;
         case 'borrower':
           adaptedCuk.borrower = parameter.value;
+          break;
+        case 'sellerDni':
+          adaptedCuk.sellerDni = parameter.value;
+          break;
+        case 'sellerName':
+          adaptedCuk.sellerName = parameter.value;
           break;
       }
     });
