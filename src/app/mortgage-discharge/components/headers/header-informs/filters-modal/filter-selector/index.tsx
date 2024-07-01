@@ -107,14 +107,14 @@ export const FilterSelector = (props: {
         handleChange={handleAuxFilter}
         keyLabel="notary"
         options={optionsNotoria}
-        optionSelected={getValue("notary")}
+        optionSelected={getValue("notary") as string}
       />
       <FilterDropdowns
         title="Region"
         handleChange={handleAuxFilter}
         keyLabel="region"
         options={optionsRegion}
-        optionSelected={getValue("region")}
+        optionSelected={getValue("region") as string}
       />
       <Box display={"flex"} justifyContent={"space-between"}>
         <Button
