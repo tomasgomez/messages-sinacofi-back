@@ -51,7 +51,7 @@ export default function HeaderInforms(props: {
           handleChange={handleChange}
           keyLabel="channel"
           options={optionsChannels}
-          optionSelected={getValue("channel", "all")}
+          optionSelected={getValue("channel", "all") as string}
         />
         <FilterDropdowns
           sx={{ width: `calc(((100% - 50px) / 4) - 16px)` }}
@@ -59,7 +59,7 @@ export default function HeaderInforms(props: {
           handleChange={handleChange}
           keyLabel="institution"
           options={optionsIntitutions}
-          optionSelected={getValue("institution", "all")}
+          optionSelected={getValue("institution", "all") as string}
         />
         <DatePickerInput
           sx={{ width: `calc(((100% - 50px) / 4) - 16px)` }}
