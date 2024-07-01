@@ -1,6 +1,8 @@
 # Step 1: Build the Next.js application
 FROM node:alpine AS builder
 
+#RUN apk update && apk add curl
+
 # Define build arguments
 ARG DB_USER
 ARG DB_PASS
