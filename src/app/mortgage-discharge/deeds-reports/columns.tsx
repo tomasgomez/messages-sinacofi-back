@@ -89,7 +89,7 @@ export const columnsDeedsReports: Columns[] = [
     sortable: false,
   },
   {
-    id: "ownerDni",
+    id: "sellerDni",
     label: "RUT Vendedor",
     align: Alignment.LEFT,
     sortable: false,
