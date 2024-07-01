@@ -18,6 +18,7 @@ import {
   sortHistoryList,
   getDetailsObjetToMSCode,
 } from "./mortgage-discharge-utils";
+import { completeInstitutions } from "./intitutions";
 
 const formatModalInfoHeader = (
   message: Partial<Message> = {}
@@ -30,21 +31,23 @@ const formatModalInfoHeader = (
     destination = "",
     creationDate = "",
     creationTime = "",
-    priority = "",
     parameters = [],
   } = message;
+
+  const priority = parameters?.find((elem: any) => elem.name === "priority");
+
+  const aunthetication = parameters?.find((elem: any) => elem.name === "auth");
 
   const dataHeader: DataHeaderInfoModal = {
     NSR,
     messageCode,
     description,
     LSN,
-    destination,
+    destination: completeInstitutions(destination),
     creationDate,
     creationTime,
-    priority,
-    aunthetication:
-      parameters?.find((elem: any) => elem.name === "auth")?.value || "",
+    priority: priority?.displayValue || priority?.value || "",
+    aunthetication: aunthetication?.displayValue || aunthetication?.value || "",
   };
 
   return dataHeader;
@@ -109,7 +112,7 @@ export const formatCardData = (
 
     const buttonDisabled = mostRecent670?.status === "01";
 
-    let lastMessageStatusWithStatus = ""; // "01"
+    let lastMessageStatusWithStatus = "";
     let lastMessageCodeWithStatus = "";
 
     for (let i = sortedMessages?.length - 1; i >= 0; i--) {
@@ -263,23 +266,32 @@ export const formatModalDetailsCompleted = (
 
   const detailsMS: DetailsMSInfoModal[] = [];
 
-  const bankDetailsMS: BankDetailsMSInfoModal = {
+  const bankDetailsMSAux = {
     bank: "",
     amountHeldByTheBank: "",
-    sign_2: "",
+    senderAHName: "",
+    senderAHDni: "",
   };
 
   parameters.forEach((parameter) => {
-    if (parameter?.name in bankDetailsMS) {
-      (bankDetailsMS as any)[parameter?.name] = parameter?.value;
+    if (parameter?.name in bankDetailsMSAux) {
+      (bankDetailsMSAux as any)[parameter?.name] =
+        parameter?.displayValue || parameter?.value || "";
     }
     if (paramsTo670.includes(parameter.name)) {
       detailsMS.push({
         label: parameter?.label,
-        value: parameter?.value || "",
+        value: parameter?.displayValue || parameter?.value || "",
       });
     }
   });
+
+  const bankDetailsMS: BankDetailsMSInfoModal = {
+    bank: bankDetailsMSAux?.bank,
+    amountHeldByTheBank: bankDetailsMSAux?.amountHeldByTheBank,
+    sender:
+      bankDetailsMSAux?.senderAHName + " - " + bankDetailsMSAux?.senderAHDni,
+  };
 
   return { dataHeader, detailsMS, bankDetailsMS, documents };
 };
@@ -305,7 +317,7 @@ export const formatModalDetailSmall = (
           (param) => param.name === column.name
         );
         if (parameter) {
-          column.value = parameter.value;
+          column.value =  parameter?.displayValue || parameter?.value;
           if (parameter?.label) column.label = parameter?.label;
           //Delete after backend fix
           // else column.label = parameter.name;

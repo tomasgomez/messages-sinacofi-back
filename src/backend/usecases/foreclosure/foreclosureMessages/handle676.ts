@@ -10,6 +10,7 @@ import { User } from '@/backend/entities/user/user';
 
 export async function handle676(cuk: CUK, message: Message, user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
     let updatedMessage: Message | Error;
+    console.log('Handling message 676');
 
     /* Update the last message */
     updatedMessage = await updateLastMessage(message, user, messageRepository, cukRepository);

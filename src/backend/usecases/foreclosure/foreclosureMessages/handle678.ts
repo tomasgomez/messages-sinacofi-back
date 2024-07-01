@@ -61,22 +61,22 @@ export async function handle678(cuk: CUK, message: Message, user: User, cukRepos
 
         let filter: FilterMessage = {
             cukCode: [cuk.cukCode],
-            messageCode: [MessageTypes.ALZAMIENTO_HIPOTECARIO],
+            messageCode: [MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO],
         }
         
         let fetchMessage = await getMessage(messageRepository, filter);
         
         if (!(fetchMessage instanceof Error) && fetchMessage.length > 0) {
-            let message670: Message = {
-                messageCode: MessageTypes.ALZAMIENTO_HIPOTECARIO,
+            let message674: Message = {
+                messageCode: MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO,
                 cukCode: cuk.cukCode,
                 actions: [MessageActions.SHOW_DETAIL, MessageActions.DUPLICATE].join(','),
             }
 
-            message670.id = fetchMessage[0].id;
-            message670.previousMessageCode = MessageTypes.RECHAZO_DE_PAGO_AH;
+            message674.id = fetchMessage[0].id;
+            message674.previousMessageCode = MessageTypes.RECHAZO_DE_PAGO_AH;
 
-            await updateMessage(messageRepository, message670, user);
+            await updateMessage(messageRepository, message674, user);
         }
     }
     

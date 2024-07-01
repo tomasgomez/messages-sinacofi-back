@@ -5,6 +5,17 @@ import {
   Message,
   RowOptions,
 } from "@/app/component/inbox-table/type";
+import { completeInstitutions } from "@/utils/intitutions";
+
+const destinationInstituion: Columns = {
+  id: "destination",
+  label: "Destino",
+  align: Alignment.LEFT,
+  sortable: true,
+  render: ({ row }: { row: Message }) => {
+    return completeInstitutions(row?.origin);
+  },
+};
 
 export const columnsPrepared: Columns[] = [
   {
@@ -39,12 +50,7 @@ export const columnsPrepared: Columns[] = [
     align: Alignment.LEFT,
     sortable: true,
   },
-  {
-    id: "destination",
-    label: "Destino",
-    align: Alignment.LEFT,
-    sortable: true,
-  },
+  destinationInstituion,
   {
     id: "receivedDate",
     label: "Fecha",
@@ -92,5 +98,9 @@ export const rowOptions: RowOptions = {
   },
   NSE: {
     align: Alignment.LEFT,
+  },
+  actions: {
+    align: Alignment.CENTER,
+    style: { padding: 10 },
   },
 };

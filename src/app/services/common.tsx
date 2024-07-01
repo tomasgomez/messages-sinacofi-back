@@ -1,3 +1,4 @@
+import { PaginationAndInforms } from "../component/inbox-table/type";
 import institutions from "./mock-instititutions.json";
 import { Filter } from "@/types/mortgage-discharge";
 // import { messageSchemas } from "@/utils/messagesSchema";
@@ -28,12 +29,10 @@ export const getMessageSchema = async (
   ).then((response: any) => response.json());
 };
 
-export const getIndCurrencies = async (
-  index?: string,
-) => {
-  return fetch(
-    `/api/ind?${index ? `index=${index}` : ""}`
-  ).then((response: any) => response.json());
+export const getIndCurrencies = async (index?: string) => {
+  return fetch(`/api/ind?${index ? `index=${index}` : ""}`).then(
+    (response: any) => response.json()
+  );
 };
 
 export const getMessageDetails = async (messageId: number | string) => {
@@ -69,10 +68,7 @@ export const getDocument = async (documentId: string) => {
   }
 };
 
-
-export async function getInformsAccepted(
-  filters?: Filter[]
-) {
+export async function getInformsAccepted(filters?: Filter[]) {
   try {
     let url = `/api/informs/accepted`;
 
@@ -97,10 +93,21 @@ export async function getInformsAccepted(
     }
 
     if (response.status === 204) {
-      return [];
+      return {
+        meta: {
+          count: 0,
+          currentPage: 0,
+          filtered: 0,
+          hasNextPage: false,
+          hasPrevPage: false,
+          offset: 0,
+          totalPages: 0,
+        },
+        data: [],
+      };
     }
 
-    const data: any[] = await response.json();
+    const data: PaginationAndInforms = await response.json();
 
     return data;
   } catch (err: any) {
@@ -108,9 +115,7 @@ export async function getInformsAccepted(
   }
 }
 
-export async function getInformsRejected(
-  filters?: Filter[]
-) {
+export async function getInformsRejected(filters?: Filter[]) {
   try {
     let url = `/api/informs/rejected`;
 
@@ -135,10 +140,21 @@ export async function getInformsRejected(
     }
 
     if (response.status === 204) {
-      return [];
+      return {
+        meta: {
+          count: 0,
+          currentPage: 0,
+          filtered: 0,
+          hasNextPage: false,
+          hasPrevPage: false,
+          offset: 0,
+          totalPages: 0,
+        },
+        data: [],
+      };
     }
 
-    const data: any[] = await response.json();
+    const data: PaginationAndInforms = await response.json();
 
     return data;
   } catch (err: any) {
@@ -146,7 +162,11 @@ export async function getInformsRejected(
   }
 }
 
-export const createMessage = async (data: any, status: string, action?: string) => {
+export const createMessage = async (
+  data: any,
+  status: string,
+  action?: string
+) => {
   const payload = JSON.stringify({ ...data, status });
   return fetch(`/api/message?&action=${action}`, {
     method: "POST",
@@ -205,9 +225,24 @@ export const getMessage = async (params: {
   status?: string;
   destination?: string;
   origin?: string;
+  offset?: number | string;
+  count?: number | string;
+  institutionCode?: string;
 }) => {
   try {
     const queryParams = new URLSearchParams();
+
+    if (params?.offset) {
+      queryParams.append("offset", params.offset.toString());
+    }
+
+    if (params?.count) {
+      queryParams.append("count", params.count.toString());
+    }
+
+    if (params?.institutionCode) {
+      queryParams.append("institutionCode", params.institutionCode);
+    }
 
     if (params?.status) {
       queryParams.append("status", params.status);
@@ -265,5 +300,3 @@ export const validatePassword = async (password: string) => {
     throw error;
   }
 };
-
-

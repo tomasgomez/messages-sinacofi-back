@@ -12,13 +12,18 @@ import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 import { getInformsAccepted, getInformsRejected } from "@/app/services/common";
 import { exportToExcel } from "@/utils/functions";
+import { PaginationAndInforms } from "@/app/component/inbox-table/type";
 
-export default function SearchScreen() {
+export default function InformsScreen() {
+  // temporal fix
   const [filters, setFilters] = useState<Filter[]>([]);
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const [columns, setColumns] = useState<any[]>(columnsInformsAccepted);
+  const [amountData, setAmountData] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState(7);
+  const [page, setPage] = useState(0);
 
   const { ErrorModal } = useModalManager();
 
@@ -33,11 +38,22 @@ export default function SearchScreen() {
   const handleGetData = async (tab: number) => {
     try {
       setLoading(true);
-      setColumns(tab ? columnsInformsRejected : columnsInformsAccepted);
-      const rowsData = tab
-        ? await getInformsRejected(filters)
-        : await getInformsAccepted(filters);
-      setData(rowsData);
+      let offsetValue = page * rowsPerPage;
+      if (tab !== selectedTab) {
+        setColumns(tab ? columnsInformsRejected : columnsInformsAccepted);
+        setPage(0);
+        offsetValue = 0;
+      }
+      const newFilters: Filter[] = [
+        ...filters,
+        { label: "count", value: rowsPerPage },
+        { label: "offset", value: offsetValue },
+      ];
+      const rowsData: PaginationAndInforms = tab
+        ? await getInformsRejected(newFilters)
+        : await getInformsAccepted(newFilters);
+      setData(rowsData?.data || []);
+      setAmountData(rowsData?.meta?.filtered || 0);
       setLoading(false);
     } catch (error: any) {
       setData([]);
@@ -49,7 +65,7 @@ export default function SearchScreen() {
   useEffect(() => {
     handleGetData(selectedTab);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+  }, [filters, rowsPerPage, page]);
 
   const getName = () => {
     const name = selectedTab ? "Rechazos" : "Plazos";
@@ -123,10 +139,14 @@ export default function SearchScreen() {
             <TableTitle selectedTab={selectedTab} handleChange={handleChange} />
           }
           emptyDataComponent={NoContent}
-          defaultRowsPerPage={7}
+          defaultRowsPerPage={rowsPerPage}
           highlightRowDisabled
           rowHeight={57}
           loadingColums
+          amountOfRows={amountData}
+          handleChangeRowsPerPageExternally={setRowsPerPage}
+          handleChangePageExternally={setPage}
+          pageExternally={page}
         />
       </StyledBox>
     </StyledPaper>

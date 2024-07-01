@@ -134,7 +134,7 @@ export function MessageDetails670({
             Contenido del Mensaje
           </StyledMoalSection>
           <Box display="flex">
-            <Box pr={8}>
+            <Box pr={8} maxWidth={"50%"}>
               {detailsMS.slice(0, 11)?.map((field: DetailsMSInfoModal) => {
                 return (
                   <Stack
@@ -148,13 +148,13 @@ export function MessageDetails670({
                       {field.label}:
                     </Typography>
                     <StyledModalItem noWrap>
-                      {field.value || "-"}
+                      {field?.value || "-"}
                     </StyledModalItem>
                   </Stack>
                 );
               })}
             </Box>
-            <Box borderLeft="1px solid #E5E5E5">
+            <Box borderLeft="1px solid #E5E5E5" maxWidth={"50%"}>
               {detailsMS.slice(11)?.map((field: DetailsMSInfoModal) => {
                 return (
                   <Stack
@@ -168,7 +168,7 @@ export function MessageDetails670({
                       {field.label}:
                     </Typography>
                     <StyledModalItem noWrap>
-                      {field.value || "-"}
+                      {field?.value || "-"}
                     </StyledModalItem>
                   </Stack>
                 );
@@ -213,7 +213,7 @@ export function MessageDetails670({
               Apoderado/Enviador:
             </Typography>
             <StyledModalItem noWrap>
-              {`${bankDetailsMS?.sign_2 || "N/A"}`}
+              {`${bankDetailsMS?.sender || "N/A"}`}
             </StyledModalItem>
           </Stack>
           <Stack display="flex" flexDirection="row" alignItems="center">

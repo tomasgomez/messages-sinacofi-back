@@ -6,6 +6,7 @@ import Box from "@mui/material/Box/Box";
 import Stack from "@mui/material/Stack/Stack";
 import Typography from "@mui/material/Typography/Typography";
 import { MSParameter, Message } from "../../../type";
+import DocumentCard from "@/app/mortgage-discharge/components/info-modal/components/document-card";
 
 export function ModalMainContent(props: {
   data: Message;
@@ -35,6 +36,14 @@ export function ModalMainContent(props: {
               </Stack>
             );
           })}
+          <Stack display="flex" flexDirection="row" alignItems="center">
+            {data?.documents?.map((document: any, index: number) => (
+              <DocumentCard
+                document={document}
+                key={`${document.documentName}-${index}-document`}
+              />
+            ))}
+          </Stack>
         </Box>
       </Stack>
     </>

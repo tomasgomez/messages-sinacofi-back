@@ -26,7 +26,11 @@ export async function createMessage(repository: MessageRepository, message: Mess
             console.error('Error validating message:', validateMessageResponse.message);
             return validateMessageResponse;
         }
-        
+
+        validateMessageResponse?.parameters?.forEach(parameter => {
+            console.log('Parameter:', parameter);
+        }); 
+
         let messageResponse = await repository.create(validateMessageResponse);
         
         /* Check if the response is an error */

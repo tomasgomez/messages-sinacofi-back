@@ -59,7 +59,7 @@ export const InfoModal = () => {
         ]);
 
         const extraMessages: Message[] = sortMessagesOldToNew(
-          cukData[0]?.messages || []
+          cukData?.data[0]?.messages || []
         );
         // The get allways return a list
         const messageSelectedDetails: Message[] = await getMessageDetails(

@@ -7,6 +7,7 @@ import { updateForclosure } from '../updateForeclosure';
 import { ForeclosureStatus } from '@/backend/entities/cuk/codes';
 import { handle676 } from './handle676';
 import { User } from '@/backend/entities/user/user';
+import { MessageTypes } from '@/backend/entities/message/types';
 
 
 export async function handle675(cuk: CUK, message: Message, user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
@@ -34,6 +35,7 @@ export async function handle675(cuk: CUK, message: Message, user: User, cukRepos
     if (message.cukCode && message.cukCode !== ''){
         cuk.status = ForeclosureStatus.PAYMENT_DATA
         cuk.cukCode = message.cukCode;
+
         await updateForclosure(cukRepository, messageRepository, cuk, message, user);
 
         await handle676(cuk, message, user, cukRepository, messageRepository);

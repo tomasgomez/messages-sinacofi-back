@@ -10,21 +10,25 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >){
         /* Validate the query params and get the Message */
         let filter = validateGetMessageForeclosure(req.query);
 
+        let user: any = {};
+        
         if (filter instanceof Error) {
           res.status(400).json([]);
           return;
         }
+        if (process.env.NEXT_PUBLIC_TEST_ENV !== "true") {
 
-        const token = await getToken({req});
-        if (!token || token.dni ==''){
-          res.status(400).json([]);
-          return;
-        }
+          const token = await getToken({req});
+          if (!token || token.dni ==''){
+            res.status(400).json([]);
+            return;
+          }
 
-        let user = await getUser(token.dni!);
-        if (user instanceof Error){
-          res.status(400).json([]);
-          return; 
+          user = await getUser(token.dni!);
+          if (user instanceof Error){
+            res.status(400).json([]);
+            return; 
+          }
         }
 
         filter.institutionCode = user.institutionCode ? [user.institutionCode] : filter.institutionCode;

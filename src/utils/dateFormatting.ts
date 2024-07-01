@@ -1,3 +1,6 @@
+import { format } from 'date-fns';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+
 export const getDateFromDateString = (date: Date): string => {
   try {
     const day = String(date.getDate()).padStart(2, '0');
@@ -18,3 +21,28 @@ export const getTimeFromDateString = (date: Date): string => {
     return '';
   }
 }
+
+export const getChileanTimeAsDate = (): Date => {
+  const timezone = 'America/Santiago';
+  const createdAt = new Date();
+  
+  const zonedTime = toZonedTime(createdAt, timezone);
+
+  const formattedDateStr = formatInTimeZone(zonedTime, timezone, 'dd-MM-yyyy HH:mm:ss');
+
+  if (!formattedDateStr) {
+    return createdAt;
+  }
+
+  // Extract parts from the formatted date string
+  const matchArray = formattedDateStr.match(/\d+/g);
+  if (!matchArray || matchArray.length < 6) {
+    return createdAt;
+  }
+  const [day, month, year, hour, minute, second] = matchArray.map(Number);
+
+  // Create a new Date object with the extracted parts
+  const formattedDate = new Date(year, month - 1, day, hour, minute, second);
+
+  return formattedDate;
+};
