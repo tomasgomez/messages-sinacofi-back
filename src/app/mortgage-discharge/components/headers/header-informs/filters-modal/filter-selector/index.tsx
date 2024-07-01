@@ -9,7 +9,11 @@ import { useCallback, useState } from "react";
 import { handleGenericChangeFilter } from "@/utils/mortgage-discharge-utils";
 import { FilterDropdowns } from "@/app/mortgage-discharge/components/headers/form-elements/filters-dropdowns";
 import { ObjectsAreEquals, combineArrays } from "@/utils/functions";
-import { optionsRegion, optionsNotoria, auxFiltersConstant } from "../../constants";
+import {
+  optionsRegion,
+  optionsNotoria,
+  auxFiltersConstant,
+} from "../../constants";
 import { Filter } from "@/types/mortgage-discharge";
 import RutField from "../../../form-elements/text-rut-field/RutField";
 
@@ -107,14 +111,14 @@ export const FilterSelector = (props: {
         handleChange={handleAuxFilter}
         keyLabel="notary"
         options={optionsNotoria}
-        optionSelected={getValue("notary")}
+        optionSelected={getValue("notary") as string}
       />
       <FilterDropdowns
         title="Region"
         handleChange={handleAuxFilter}
         keyLabel="region"
         options={optionsRegion}
-        optionSelected={getValue("region")}
+        optionSelected={getValue("region") as string}
       />
       <Box display={"flex"} justifyContent={"space-between"}>
         <Button

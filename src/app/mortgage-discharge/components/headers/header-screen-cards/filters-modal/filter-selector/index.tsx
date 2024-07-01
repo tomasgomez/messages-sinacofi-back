@@ -98,7 +98,7 @@ export const FilterSelector = (props: { onClose: Function }) => {
         handleChange={handleAuxFilter}
         keyLabel="institutionDestination"
         options={optionsDestination}
-        optionSelected={getValue("institutionDestination")}
+        optionSelected={getValue("institutionDestination") as string}
       />
       <RutField
         placeholder="Ingrese RUT..."
@@ -126,7 +126,7 @@ export const FilterSelector = (props: { onClose: Function }) => {
         handleChange={handleAuxFilter}
         keyLabel="notary"
         options={optionsNotoria}
-        optionSelected={getValue("notary")}
+        optionSelected={getValue("notary") as string}
       />
       <DatePickerInput
         onChange={handleAuxFilter}
@@ -139,7 +139,7 @@ export const FilterSelector = (props: { onClose: Function }) => {
         handleChange={handleAuxFilter}
         keyLabel="region"
         options={optionsRegion}
-        optionSelected={getValue("region")}
+        optionSelected={getValue("region") as string}
       />
       <Box display={"flex"} justifyContent={"space-between"}>
         <Button
