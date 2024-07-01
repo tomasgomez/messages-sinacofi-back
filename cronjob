@@ -1,0 +1,1 @@
+0 7 * * * /usr/src/app/cronRequest.sh >> /var/log/cron.log 2>&1
