@@ -84,12 +84,12 @@ export interface MortgageDischargeData {
   createdAt?: string;
   updatedAt?: string;
   institutionCode?: string;
-  ownerDni?: string;
-  owner?: string;
+  sellerDni?: string;
+  sellerName?: string;
   buyerDni?: string;
-  buyer?: string;
+  buyerName?: string;
   borrowerDni?: string;
-  borrower?: string;
+  borrowerName?: string;
   history?: HistoryTrackingModal[];
   messages?: Message[];
 }

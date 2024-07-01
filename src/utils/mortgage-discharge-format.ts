@@ -74,12 +74,12 @@ const formatTrackingData = (
 ) => {
   const {
     cukCode,
-    ownerDni,
-    owner,
+    sellerDni,
+    sellerName,
     buyerDni,
-    buyer,
+    buyerName,
     borrowerDni,
-    borrower,
+    borrowerName,
     region,
     institutionDestination,
     history,
@@ -87,9 +87,9 @@ const formatTrackingData = (
 
   const modalTrackingData: ModalTrackingData = {
     cukCode: cukCode || "",
-    seller: `${ownerDni || ""} ${owner || ""}`,
-    buyer: `${buyerDni || ""} ${buyer || ""}`,
-    debtor: `${borrowerDni || ""} ${borrower || ""}`,
+    seller: `${sellerDni || ""} / ${sellerName || ""}`,
+    buyer: `${buyerDni || ""} / ${buyerName || ""}`,
+    debtor: `${borrowerDni || ""} / ${borrowerName || ""}`,
     region: region || "",
     institutionDestination: institutionDestination || "",
     history: sortHistoryList(history || []),
@@ -134,7 +134,7 @@ export const formatCardData = (
     const infoData = {
       channel: elem?.channel || "",
       operationStatus: elem?.status || "",
-      buyer: elem?.buyer || "",
+      buyer: elem?.buyerName || "",
       institutionDestination: elem?.institutionDestination || "",
       institutionCode: elem?.institutionCode || "",
       buyerDni: elem?.buyerDni || "",
@@ -163,7 +163,7 @@ export const formatDeedsReportsData = (
       cukCode = "",
       institutionDestination = "",
       buyerDni = "",
-      ownerDni = "",
+      sellerDni = "",
     } = elem || {};
 
     const { mostRecentMessage: mostRecent670 } = SortAndGetLastMessage(
@@ -194,7 +194,7 @@ export const formatDeedsReportsData = (
       cukCode,
       institutionDestination,
       buyerDni,
-      ownerDni,
+      sellerDni,
       creationDate,
       creationTime,
       documentGP: documentGP,
