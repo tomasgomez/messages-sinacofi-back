@@ -47,7 +47,6 @@ export async function findDoc(doc: Documents): Promise <Documents | Error> {
     } catch (error) {
         // console.error('Error reading the file:', error);    
         return doc;    
-        return new Error('Error reading the file');
     }
 
 }

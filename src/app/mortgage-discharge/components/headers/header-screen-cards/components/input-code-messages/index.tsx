@@ -3,12 +3,12 @@
 import * as React from "react";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { CardContext } from "@/app/mortgage-discharge/components/store/ModalStore";
+import { MortgageDischargeContext } from "@/app/mortgage-discharge/components/store/ModalStore";
 
 export const InputCode = (props: { title: string; options: string[] }) => {
   const { title = "", options = [] } = props || {};
   const [code, setCode] = React.useState("");
-  const { handleChangeAddFilter } = React.useContext(CardContext);
+  const { handleChangeAddFilter } = React.useContext(MortgageDischargeContext);
 
   return (
     <Autocomplete

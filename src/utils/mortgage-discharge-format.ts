@@ -16,9 +16,9 @@ import { sortMessagesOldToNew } from "./messagesFuntions";
 import { paramsTo670 } from "./mortgage-discharge-constants";
 import {
   sortHistoryList,
-  getActions,
   getDetailsObjetToMSCode,
 } from "./mortgage-discharge-utils";
+import { completeInstitutions } from "./intitutions";
 
 const formatModalInfoHeader = (
   message: Partial<Message> = {}
@@ -31,21 +31,23 @@ const formatModalInfoHeader = (
     destination = "",
     creationDate = "",
     creationTime = "",
-    priority = "",
     parameters = [],
   } = message;
+
+  const priority = parameters?.find((elem: any) => elem.name === "priority");
+
+  const aunthetication = parameters?.find((elem: any) => elem.name === "auth");
 
   const dataHeader: DataHeaderInfoModal = {
     NSR,
     messageCode,
     description,
     LSN,
-    destination,
+    destination: completeInstitutions(destination),
     creationDate,
     creationTime,
-    priority,
-    aunthetication:
-      parameters?.find((elem: any) => elem.name === "auth")?.value || "",
+    priority: priority?.displayValue || priority?.value || "",
+    aunthetication: aunthetication?.displayValue || aunthetication?.value || "",
   };
 
   return dataHeader;
@@ -66,6 +68,37 @@ const SortAndGetLastMessage = (
   return { sortedMessages, mostRecentMessage };
 };
 
+const formatTrackingData = (
+  data: MortgageDischargeData,
+  sortedMessages: Message[]
+) => {
+  const {
+    cukCode,
+    ownerDni,
+    owner,
+    buyerDni,
+    buyer,
+    borrowerDni,
+    borrower,
+    region,
+    institutionDestination,
+    history,
+  } = data || {};
+
+  const modalTrackingData: ModalTrackingData = {
+    cukCode: cukCode || "",
+    seller: `${ownerDni || ""} ${owner || ""}`,
+    buyer: `${buyerDni || ""} ${buyer || ""}`,
+    debtor: `${borrowerDni || ""} ${borrower || ""}`,
+    region: region || "",
+    institutionDestination: institutionDestination || "",
+    history: sortHistoryList(history || []),
+    lastMessage: sortedMessages[sortedMessages?.length - 1] || {},
+  };
+
+  return modalTrackingData;
+};
+
 export const formatCardData = (
   data: MortgageDischargeData[] | undefined
 ): DataMortgageDischarge[] => {
@@ -79,7 +112,7 @@ export const formatCardData = (
 
     const buttonDisabled = mostRecent670?.status === "01";
 
-    let lastMessageStatusWithStatus = ""; // "01"
+    let lastMessageStatusWithStatus = "";
     let lastMessageCodeWithStatus = "";
 
     for (let i = sortedMessages?.length - 1; i >= 0; i--) {
@@ -108,33 +141,12 @@ export const formatCardData = (
       cukStatus: codeData?.cukStatus || "",
     };
 
-    const modalTrackingData: ModalTrackingData = {
-      cukCode: elem.cukCode || "",
-      seller: `${elem?.ownerDni || ""} ${elem?.owner || ""}`,
-      buyer: `${elem?.buyerDni || ""} ${elem?.buyer || ""}`,
-      debtor: `${elem?.borrowerDni || ""} ${elem?.borrower || ""}`,
-      region: elem?.region || "",
-      institutionDestination: elem?.institutionDestination || "",
-      history: sortHistoryList(elem?.history || []),
-      lastMessage: sortedMessages[sortedMessages?.length - 1] || {},
-    };
-
-    // const newMessaje = sortedMessages.map((message) => {
-    //   return {
-    //     ...message,
-    //     actions: getActions(
-    //       message?.messageCode || "",
-    //       message?.status || "",
-    //       elem?.status || ""
-    //     ),
-    //   };
-    // });
     return {
       codeData,
       infoData,
       messages: sortedMessages,
       buttonDisabled,
-      modalTrackingData,
+      modalTrackingData: formatTrackingData(elem, sortedMessages),
     };
   });
   return formattedData;
@@ -204,20 +216,23 @@ export const formatSearchData = (
       messages: unSortedMessages = [],
       cukCode = "",
       history = [],
-      id = "",
     } = elem || {};
 
-    const { mostRecentMessage: mostRecent670 } = SortAndGetLastMessage(
-      unSortedMessages,
-      "670"
-    );
+    const { sortedMessages, mostRecentMessage: mostRecent670 } =
+      SortAndGetLastMessage(unSortedMessages, "670");
 
     const sorttedHistory = sortHistoryList(history);
 
     const lastHistory: HistoryTrackingModal =
       sorttedHistory[0] as HistoryTrackingModal;
 
-    const { OSN, receivedDate, status: status670 } = mostRecent670 || {};
+    const {
+      OSN,
+      receivedDate,
+      status: status670,
+      id: message670ID = "",
+    } = mostRecent670 || {};
+
     const { status: historyStatus = "", date: dateTime } = lastHistory || {};
 
     let dateHistory = "";
@@ -234,7 +249,8 @@ export const formatSearchData = (
       dateHistory,
       OSN,
       status670,
-      id,
+      message670ID,
+      modalTrackingData: formatTrackingData(elem, sortedMessages),
     };
   });
 
@@ -250,23 +266,32 @@ export const formatModalDetailsCompleted = (
 
   const detailsMS: DetailsMSInfoModal[] = [];
 
-  const bankDetailsMS: BankDetailsMSInfoModal = {
+  const bankDetailsMSAux = {
     bank: "",
     amountHeldByTheBank: "",
-    sign_2: "",
+    senderAHName: "",
+    senderAHDni: "",
   };
 
   parameters.forEach((parameter) => {
-    if (parameter?.name in bankDetailsMS) {
-      (bankDetailsMS as any)[parameter?.name] = parameter?.value;
+    if (parameter?.name in bankDetailsMSAux) {
+      (bankDetailsMSAux as any)[parameter?.name] =
+        parameter?.displayValue || parameter?.value || "";
     }
     if (paramsTo670.includes(parameter.name)) {
       detailsMS.push({
         label: parameter?.label,
-        value: parameter?.value || "",
+        value: parameter?.displayValue || parameter?.value || "",
       });
     }
   });
+
+  const bankDetailsMS: BankDetailsMSInfoModal = {
+    bank: bankDetailsMSAux?.bank,
+    amountHeldByTheBank: bankDetailsMSAux?.amountHeldByTheBank,
+    sender:
+      bankDetailsMSAux?.senderAHName + " - " + bankDetailsMSAux?.senderAHDni,
+  };
 
   return { dataHeader, detailsMS, bankDetailsMS, documents };
 };
@@ -292,7 +317,7 @@ export const formatModalDetailSmall = (
           (param) => param.name === column.name
         );
         if (parameter) {
-          column.value = parameter.value;
+          column.value =  parameter?.displayValue || parameter?.value;
           if (parameter?.label) column.label = parameter?.label;
           //Delete after backend fix
           // else column.label = parameter.name;

@@ -1,12 +1,12 @@
-import { messageForeclosureUseCase } from "@/backend/usecases/foreclosure/usecases";
+import { cukInformsUseCase } from "@/backend/usecases/informs/usecases";
 import { NextApiRequest, NextApiResponse } from "next";
-import { prepareForclosure } from "./adapter/prepareForeclosureRejected";
-import { validateFilterForeclosureRejected } from "./presenter/validateFilters";
+import { prepareInformAccepted } from "./adapter/prepareInformAccepted";
+import { validateFilterForeclosureAccepted } from "./presenter/validateFilter";
 
 export async function get(req: NextApiRequest, res: NextApiResponse < any >){
     try {
         /* Validate the query params and get the Message */
-        let filter = validateFilterForeclosureRejected(req.query);
+        let filter = validateFilterForeclosureAccepted(req.query);
 
         if (filter instanceof Error) {
           res.status(400).json([]);
@@ -14,18 +14,16 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any >){
         }
         
         /* Use the PrismaAreaAdapter to get the Message from the database */
-        let messageResponse = await messageForeclosureUseCase.getMessageForeclosureRejected(filter)
+        let pagination = await cukInformsUseCase.getInformsAccepted(filter)
 
         /* If the message is not found, return a 204 error */
-        if (!messageResponse || messageResponse instanceof Error) {
+        if (!pagination || pagination instanceof Error) {
           res.status(204).json([]);
           return;
         }
 
-        let preparedData = prepareForclosure(messageResponse, filter);
-
         /* Return the message */
-        res.status(200).json(preparedData);
+        res.status(200).json({meta: pagination.meta, data: prepareInformAccepted(pagination.data)});
 
       } catch (error) {
         console.error('Error fetching message:', error);

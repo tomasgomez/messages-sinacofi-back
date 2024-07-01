@@ -1,10 +1,11 @@
 import {
-    getChileanTime
+    getChileanTime,
 } from '@/backend/utils/functions';
 import { Parameter } from './parameter';
 import { Document } from '@/backend/entities/global/document';
 import { TSN, LSN, OSN, NSE, NSR, NSQ } from './correlatives';
 import { Status } from './status';
+import { getChileanTimeAsDate } from '@/utils/dateFormatting';
 
 export class Message {
     [key: string]: unknown;
@@ -75,17 +76,19 @@ export class Message {
     }
 
     setStatus?(statusId: string) {
+        let createdAt = getChileanTimeAsDate();
+
         if (this.status) {
             this.status.push({
                 id: statusId,
                 messageId: this.id ?? '',
-                createdAt: new Date(),
+                createdAt: createdAt,
             });
         } else {
             this.status = [{
                 id: statusId,
                 messageId: this.id ?? '',
-                createdAt: new Date(),
+                createdAt: createdAt,
             }];
         }
     }
@@ -96,13 +99,13 @@ export function setStatus(message: Message, statusId: string): Message {
         message.status.push({
             id: statusId,
             messageId: message.id ?? '',
-            createdAt: new Date(),
+            createdAt: getChileanTimeAsDate(),
         });
     } else {
         message.status = [{
             id: statusId,
             messageId: message.id ?? '',
-            createdAt: new Date(),
+            createdAt: getChileanTimeAsDate(),
         }];
     }
 

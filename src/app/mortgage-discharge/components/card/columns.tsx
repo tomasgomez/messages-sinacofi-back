@@ -9,7 +9,7 @@ import React, { useContext } from "react";
 import { IconButton, Box } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { CardContext } from "../store/ModalStore";
+import { MortgageDischargeContext } from "../store/ModalStore";
 import Link from "@mui/material/Link";
 import { useRouter } from "next/navigation";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
@@ -30,7 +30,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
     cukCode = "",
   } = row || {};
 
-  const { setModalIsOpen, setSelectedMessage } = useContext(CardContext);
+  const { setModalIsOpen, setSelectedMessage } = useContext(MortgageDischargeContext);
   const { userInfo } = useContext(SessionProviderContext) as any;
   const { setPrintPDF, setSelectedMessages, selectedRadioButtonMessages } =
     useContext(MessageExportContext);

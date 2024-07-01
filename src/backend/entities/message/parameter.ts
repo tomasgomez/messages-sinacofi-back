@@ -20,6 +20,7 @@ export type Parameter = {
     messageId? : string;
     cukCode ? : string | null;
     properties ? : Properties | null;
+    updatedAt?: Date;
 }
 
 

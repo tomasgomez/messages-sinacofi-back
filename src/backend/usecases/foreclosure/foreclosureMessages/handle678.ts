@@ -9,6 +9,9 @@ import { MessageTypes } from '@/backend/entities/message/types';
 import { MessageStatus } from '@/backend/entities/message/status';
 import { FilterMessage } from '@/backend/entities/message/filter';
 import { User } from '@/backend/entities/user/user';
+import { getMessage } from '@/backend/usecases/message/getMessage';
+import { updateMessage } from '@/backend/usecases/message/updateMessage';
+import { MessageActions } from '@/backend/entities/message/actions';
 
 
 export async function handle678(cuk: CUK, message: Message, user: User, cukRepository: CUKRepository, messageRepository: MessageRepository): Promise<Message | Error> {
@@ -55,6 +58,26 @@ export async function handle678(cuk: CUK, message: Message, user: User, cukRepos
         cuk.cukCode = message.cukCode;
 
         await updateForclosure(cukRepository, messageRepository, cuk, message, user);
+
+        let filter: FilterMessage = {
+            cukCode: [cuk.cukCode],
+            messageCode: [MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO],
+        }
+        
+        let fetchMessage = await getMessage(messageRepository, filter);
+        
+        if (!(fetchMessage instanceof Error) && fetchMessage.length > 0) {
+            let message674: Message = {
+                messageCode: MessageTypes.SOLICITUD_DE_ALZAMIENTO_HIPOTECARIO,
+                cukCode: cuk.cukCode,
+                actions: [MessageActions.SHOW_DETAIL, MessageActions.DUPLICATE].join(','),
+            }
+
+            message674.id = fetchMessage[0].id;
+            message674.previousMessageCode = MessageTypes.RECHAZO_DE_PAGO_AH;
+
+            await updateMessage(messageRepository, message674, user);
+        }
     }
     
     return updatedMessage;

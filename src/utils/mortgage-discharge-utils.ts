@@ -41,29 +41,29 @@ export const sortHistoryList = (obj?: unknown[]): unknown[] => {
 };
 
 // Use the getActions until backend sent the actions array
-export const getActions = (
-  messageCode: string,
-  statusMessage: string,
-  statusCuk: string
-) => {
-  if (messageCode === "676") {
-    return statusMessage === "06" ? ["print"] : ["details"];
-  }
-  if (statusMessage === "01") {
-    if (messageCode === "670") {
-      if (getOnlyTheValue(statusCuk) === "023") return ["details", "edit"];
-      return ["sing"];
-    }
-    return ["sent"];
-  }
-  if (!statusMessage || statusMessage === "-") {
-    return ["sent"];
-  }
-  if (statusMessage === "06" || statusMessage === "05") {
-    return ["details"];
-  }
-  return [];
-};
+// export const getActions = (
+//   messageCode: string,
+//   statusMessage: string,
+//   statusCuk: string
+// ) => {
+//   if (messageCode === "676") {
+//     return statusMessage === "06" ? ["print"] : ["details"];
+//   }
+//   if (statusMessage === "01") {
+//     if (messageCode === "670") {
+//       if (getOnlyTheValue(statusCuk) === "023") return ["details", "edit"];
+//       return ["sing"];
+//     }
+//     return ["sent"];
+//   }
+//   if (!statusMessage || statusMessage === "-") {
+//     return ["sent"];
+//   }
+//   if (statusMessage === "06" || statusMessage === "05") {
+//     return ["details"];
+//   }
+//   return [];
+// };
 
 export const getDetailsObjetToMSCode = (messageCode?: string) => {
   if (messageCode === "671") return paramsTo671;

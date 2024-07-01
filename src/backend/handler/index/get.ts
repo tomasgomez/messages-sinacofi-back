@@ -5,6 +5,7 @@ import {
 import { User } from '@/backend/entities/user/user';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Index, Observation, formatBCChDate, getClosestValue, indexType, series } from '@/backend/entities/index/interface';
+import { getChileanTimeAsDate } from '@/utils/dateFormatting';
 
 // get message function
 export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
@@ -31,8 +32,11 @@ export async function get(req: NextApiRequest, res: NextApiResponse < any > ){
     let user = process.env.BANCO_CENTRAL_USER || ''
     let pass = process.env.BANCO_CENTRAL_PASS || ''
 
-    let currentDate = new Date();
-    let pastDays = new Date();
+    let date = getChileanTimeAsDate();
+    
+    let currentDate = date;
+    let pastDays = date;
+    
     pastDays.setDate(currentDate.getDate() - 3);
     const lastdate = formatBCChDate(currentDate);
     const initDate = formatBCChDate(pastDays);

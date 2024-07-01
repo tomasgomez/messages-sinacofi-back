@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Box, Grid, Paper, Typography } from "@mui/material";
 import InboxHeader from "@/app/component/inbox-header";
@@ -13,11 +13,17 @@ import basicError from "@/components/Modal/ErrorModal/basicError";
 import { useModalManager } from "@/components/Modal";
 
 export default function InboxScreen() {
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [data, setData] = React.useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [data, setData] = useState<Message[]>([]);
+  // Add when the api call have pagination
+  const [amountData, setAmountData] = useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [page, setPage] = useState(0);
+
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
   const { ErrorModal } = useModalManager();
+
   const fetchData = async () => {
     try {
       // after backend change yo have to this change to this
@@ -25,10 +31,16 @@ export default function InboxScreen() {
       // because we have to filter by label
       setIsLoading(true);
 
+      // Fix after have next in pagination
       const response = await getMessage({
         status: "06",
         destination: selectedInstitution,
+        count: 1000,
+        offset: 0,
+        // count: rowsPerPage,
+        // offset: page * rowsPerPage,
       });
+      // setAmountData(response.length);
       setData(response);
       setIsLoading(false);
     } catch (error: unknown) {
@@ -40,7 +52,7 @@ export default function InboxScreen() {
 
   useEffect(() => {
     fetchData();
-  }, [selectedInstitution]);
+  }, [selectedInstitution, page, rowsPerPage]);
 
   const tableTitle = (
     <Grid container p={2}>
@@ -59,6 +71,7 @@ export default function InboxScreen() {
         <InboxHeader
           amountMessages={data.length}
           title={"Bandeja de Entrada"}
+          handleRefresh={fetchData}
         />
         <DataTable
           rows={data}
@@ -68,6 +81,10 @@ export default function InboxScreen() {
           rowOptions={rowOptions}
           isExpansible
           withCheckbox
+          // amountOfRows={amountData}
+          // handleChangeRowsPerPageExternally={setRowsPerPage}
+          // handleChangePageExternally={setPage}
+          // pageExternally={page}
         />
       </Box>
     </Paper>

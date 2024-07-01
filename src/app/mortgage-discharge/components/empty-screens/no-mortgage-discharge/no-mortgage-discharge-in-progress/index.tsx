@@ -9,8 +9,9 @@ import {
   StyledText,
 } from "./styles";
 
-const EmptyScreen = (props: { height: number }) => {
+const NoMortgageDischargeInProgress = (props: { height: number }) => {
   const { height = 474 } = props || {};
+
   const CreateMessageModal = useModal({
     id: ModalList.CreateIndividualMessageModal,
   });
@@ -36,4 +37,4 @@ const EmptyScreen = (props: { height: number }) => {
   );
 };
 
-export default EmptyScreen;
+export default NoMortgageDischargeInProgress;

@@ -6,21 +6,22 @@ import Header from "@/app/mortgage-discharge/components/headers/header-screen-ca
 import CarDischarge from "@/app/mortgage-discharge/components/card";
 import { TrackingModal } from "../tracking-modal";
 import { InfoModal } from "../info-modal";
-import { CardContextProvider } from "../store/ModalStore";
+import { MortgageDischargeContextProvider } from "../store/ModalStore";
 import { getForeClosureData } from "../../api-calls";
 import Loader from "@/components/Loader";
 import { formatCardData } from "@/utils/mortgage-discharge-format";
 import { MyContexLayout } from "@/app/context";
-import {
-  DataMortgageDischarge,
-  Filter,
-  ModalTrackingData,
-} from "@/types/mortgage-discharge";
-import { MortgageDischargeData } from "@/app/component/inbox-table/type";
+import { DataMortgageDischarge, Filter } from "@/types/mortgage-discharge";
+import { PaginationAndMortgageDischargeData } from "@/app/component/inbox-table/type";
 import { useModalManager } from "@/components/Modal";
 import basicError from "@/components/Modal/ErrorModal/basicError";
-import EmptyScreen from "../empty-screen";
 import { useCalcDimensions } from "@/utils/dimensions";
+import NoSearchResult from "../empty-screens/no-search-results";
+import {
+  NoMortgageDischargeInProgress,
+  NoMortgageDischargeCompleted,
+  NoMortgageDischargeNormalization,
+} from "../empty-screens/no-mortgage-discharge";
 
 export default function MortgageDischargeScreen({
   title = "",
@@ -31,13 +32,11 @@ export default function MortgageDischargeScreen({
   extraFilter?: any[];
   isNormalizationScreen?: boolean;
 }) {
-  const [isOpenTrackingModal, setIsOpenTrackingModal] = useState(false);
-  const [modalTrackingData, setModalTrackingData] =
-    useState<ModalTrackingData>();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<DataMortgageDischarge[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
+  const [amountCards, setAmountCards] = useState(0);
 
   // Change after add users "selectedInstitution"
   const { selectedInstitution } = useContext(MyContexLayout) as any;
@@ -47,6 +46,10 @@ export default function MortgageDischargeScreen({
   const [filters, setFilters] = useState<Filter[]>([
     { label: "channel", value: "Personas" },
   ]);
+
+  const handlePaginations = (meta: any) => {
+    setAmountCards(meta?.filtered);
+  };
 
   const handleGetDataList = async () => {
     try {
@@ -60,11 +63,11 @@ export default function MortgageDischargeScreen({
         { label: "offset", value: `${page * rowsPerPage}` },
       ];
 
-      const result: MortgageDischargeData[] = await getForeClosureData(
-        auxFilters
-      );
-
-      setData(formatCardData(result));
+      const result: PaginationAndMortgageDischargeData =
+        await getForeClosureData(auxFilters);
+        
+      setData(formatCardData(result?.data || []));
+      handlePaginations(result?.meta || {});
       setLoading(false);
     } catch (error: any) {
       setData([]);
@@ -91,11 +94,6 @@ export default function MortgageDischargeScreen({
     setPage(newPage);
   };
 
-  const handlerTrackingModal = (data?: ModalTrackingData) => {
-    setIsOpenTrackingModal(true);
-    setModalTrackingData(data);
-  };
-
   const usedHeight: number = 316;
   const { height: maxHeight }: { height: number } =
     useCalcDimensions(usedHeight);
@@ -109,8 +107,27 @@ export default function MortgageDischargeScreen({
     return 0;
   }, [data?.length, maxHeight]);
 
+  function hasNonChannelFilter(): boolean {
+    return filters.some((filter) => filter.label !== "channel");
+  }
+
+  const getNoDataComponent = () => {
+    const statusCategory = extraFilter.find(
+      (filter) => filter.label === "statusCategory"
+    );
+    if (statusCategory?.value === "in_progress") {
+      return <NoMortgageDischargeInProgress height={maxHeight} />;
+    }
+    if (statusCategory?.value === "completed") {
+      return <NoMortgageDischargeCompleted height={maxHeight} />;
+    }
+    if (statusCategory?.value === "normalization") {
+      return <NoMortgageDischargeNormalization height={maxHeight} />;
+    }
+  };
+
   return (
-    <CardContextProvider filters={filters} setFilters={setFilters}>
+    <MortgageDischargeContextProvider filters={filters} setFilters={setFilters}>
       <Paper sx={{ width: "100%", height: "100%" }}>
         <Box sx={{ padding: "16px 16px 6px 16px" }}>
           <Header
@@ -142,12 +159,15 @@ export default function MortgageDischargeScreen({
                 <CarDischarge
                   key={`key-card-${i}`}
                   data={elemCard}
-                  handlerTrackingModal={handlerTrackingModal}
                   isNormalizationScreen={isNormalizationScreen}
                 />
               ))}
               {!data || !data.length ? (
-                <EmptyScreen height={maxHeight} />
+                hasNonChannelFilter() ? (
+                  <NoSearchResult height={maxHeight} />
+                ) : (
+                  getNoDataComponent()
+                )
               ) : (
                 <div
                   style={{
@@ -158,22 +178,12 @@ export default function MortgageDischargeScreen({
             </>
           )}
         </Box>
-
-        {isOpenTrackingModal && (
-          <TrackingModal
-            open={isOpenTrackingModal}
-            onClose={setIsOpenTrackingModal}
-            data={modalTrackingData}
-            handleGetDataList={handleGetDataList}
-            setLoading={setLoading}
-            selectedInstitution={selectedInstitution}
-          />
-        )}
+        <TrackingModal handleGetDataList={handleGetDataList} />
         <InfoModal />
         <TablePagination
           rowsPerPageOptions={[5, 7, 10, 25, 50]}
           component="div"
-          count={data?.length}
+          count={amountCards}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -190,6 +200,6 @@ export default function MortgageDischargeScreen({
           )}
         />
       </Paper>
-    </CardContextProvider>
+    </MortgageDischargeContextProvider>
   );
 }

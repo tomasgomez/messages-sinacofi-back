@@ -5,6 +5,7 @@ import {
     CUK
 } from '@/backend/entities/cuk/cuk';
 import { History } from '@/backend/entities/cuk/history';
+import { getChileanTime } from '@/backend/utils/functions';
 
 export async function update(cuk: CUK): Promise < CUK | Error > {
     try {
@@ -47,7 +48,7 @@ export async function update(cuk: CUK): Promise < CUK | Error > {
                 // Add the new history object to the history array
                 const updatedHistory: History = {
                     status: cuk.status ?? '',
-                    date: new Date().toISOString()
+                    date: getChileanTime().toString(),
                 };
 
                 // Update the object

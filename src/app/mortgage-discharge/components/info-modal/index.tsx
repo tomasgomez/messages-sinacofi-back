@@ -10,7 +10,7 @@ import { PDFTemplate } from "@/app/component/PDFTemplate";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { MessageDetails } from "./components/message-details";
 import { MessageDetails670 } from "./components/message-details-670";
-import { CardContext } from "../store/ModalStore";
+import { MortgageDischargeContext } from "../store/ModalStore";
 import { findPreviousMessage670 } from "@/utils/mortgage-discharge-utils";
 import { sortMessagesOldToNew } from "@/utils/messagesFuntions";
 import { MyContexLayout } from "@/app/context";
@@ -27,8 +27,9 @@ export const InfoModal = () => {
   const [pdfView, setPdfView] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showOnlyOneMessage, setShowOnlyOneMessage] = useState<boolean>(true);
-  const { modalIsOpen, setModalIsOpen, selectedMessage } =
-    useContext(CardContext);
+  const { modalIsOpen, setModalIsOpen, selectedMessage } = useContext(
+    MortgageDischargeContext
+  );
 
   const contentRef = useRef<HTMLDivElement | null>(null);
 
@@ -58,7 +59,7 @@ export const InfoModal = () => {
         ]);
 
         const extraMessages: Message[] = sortMessagesOldToNew(
-          cukData[0]?.messages || []
+          cukData?.data[0]?.messages || []
         );
         // The get allways return a list
         const messageSelectedDetails: Message[] = await getMessageDetails(
