@@ -126,18 +126,18 @@ ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
 # Expose port
 EXPOSE $PORT
 
-# # Cron configuration
-# COPY cronRequest.sh /usr/src/app/cronRequest.sh
-# COPY cronjob /etc/cron.d/cronjob
+# Cron configuration
+COPY cronRequest.sh /usr/src/app/cronRequest.sh
+COPY cronjob /etc/cron.d/cronjob
 
-# RUN chmod +x /usr/src/app/cronRequest.sh
+RUN chmod +x /usr/src/app/cronRequest.sh
 
-# RUN apk update && apk add --no-cache dcron
+RUN apk update && apk add --no-cache dcron
 
-# RUN crontab /etc/cron.d/cronjob
+RUN crontab /etc/cron.d/cronjob
 
-# # Start cron
-# ENTRYPOINT ["crond", "-f"]
+# Start cron
+ENTRYPOINT ["crond", "-f"]
 
 # Start the application
 CMD ["npx", "next", "start", "-p", "$PORT"]
