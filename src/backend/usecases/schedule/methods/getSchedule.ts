@@ -16,8 +16,10 @@ export async function getSchedule(cukRepository: CUKRepository, messageRepositor
 
     /* Get total of CUKs */
     let totalCuk = await cukRepository.getTotal({
-      status: [ForeclosureStatus.SENT_REJECTION],
+      status: [ForeclosureStatus.SEND_LIQUIDATION_PAYMENT],
     });
+
+    console.log("TOTAL CUKS", totalCuk)
 
     if (totalCuk instanceof Error) {
       return totalCuk;
@@ -31,6 +33,10 @@ export async function getSchedule(cukRepository: CUKRepository, messageRepositor
 
     /* Loop through pages */
     for (let page = 0; page < pages; page++) {
+      if (page > 0) {
+        break;
+      }
+
       let cuk = await cukRepository.find({
         status: [ForeclosureStatus.SEND_LIQUIDATION_PAYMENT],
         count: count.toString(),
@@ -45,6 +51,10 @@ export async function getSchedule(cukRepository: CUKRepository, messageRepositor
         continue;
       }
 
+      console.log(cuk.data.length, 'CUKs found')
+      console.log('Page:', page + 1)
+      console.log(cuk.data.map((c: CUK) => c.cukCode ?? ''))
+
       let cukCodes = cuk.data.map((c: CUK) => c.cukCode ?? '');
 
       /* Get messages */
@@ -57,6 +67,10 @@ export async function getSchedule(cukRepository: CUKRepository, messageRepositor
         continue;
       }
 
+      cuk.data.forEach(async (c: CUK) => {
+        console.log('CUK:', c);
+      });
+
       let message675 = messages.find((m: any) => m.messageCode === MessageTypes.LIQUIDACION_DE_PREPAGO_DE_ALZAMIENTO_HIPOTECARIO);
       let message677 = messages.find((m: any) => m.messageCode === MessageTypes.AVISO_DE_PAGO_AH);
 
@@ -64,11 +78,16 @@ export async function getSchedule(cukRepository: CUKRepository, messageRepositor
         let liquidationDate = new Date(message675.createdAt);
         let paymentDate = new Date(message677.createdAt);
 
+        console.log('Liquidation Date:', liquidationDate);
+        console.log('Payment Date:', paymentDate);
+
         /* The difference of hours cant be higher than 24 */
         if (Math.abs(liquidationDate.getHours() - paymentDate.getHours()) <= 24) {
           console.log('Schedule is ok');
         } else {
           messages.forEach(async (message: Message) => {
+
+            console.log("Message: ", message.messageCode, message.actions);
             
             let actions: string[] = [];
 
