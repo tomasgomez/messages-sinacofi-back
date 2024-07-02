@@ -24,16 +24,21 @@ const AccionesColumn = ({ row }: { row: any }) => {
   const {
     actions = [],
     messageCode = "",
-    status = "",
     destination = "",
     id = "",
     cukCode = "",
   } = row || {};
 
-  const { setModalIsOpen, setSelectedMessage } = useContext(MortgageDischargeContext);
+  const { setModalIsOpen, setSelectedMessage } = useContext(
+    MortgageDischargeContext
+  );
   const { userInfo } = useContext(SessionProviderContext) as any;
-  const { setPrintPDF, setSelectedMessages, selectedRadioButtonMessages } =
-    useContext(MessageExportContext);
+  const {
+    setPrintPDF,
+    setSelectedMessages,
+    selectedRadioButtonMessages,
+    setWithFormat,
+  } = useContext(MessageExportContext);
   const router = useRouter();
 
   const handlerOpenModal = (row: any) => {
@@ -50,6 +55,7 @@ const AccionesColumn = ({ row }: { row: any }) => {
   };
 
   const handleActionPrint = async (id: string) => {
+    setWithFormat(true);
     setSelectedMessages([id]);
     setPrintPDF(true);
   };
@@ -118,8 +124,8 @@ const AccionesColumn = ({ row }: { row: any }) => {
                 )
               }
             >
-            <SendOutlinedIcon />
-          </IconButton>
+              <SendOutlinedIcon />
+            </IconButton>
           </span>
         </Tooltip>
       )}

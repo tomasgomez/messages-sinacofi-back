@@ -73,6 +73,7 @@ export default function SentScreen() {
           loading={isLoading}
           tableTitle={tableTitle}
           rowOptions={rowOptions}
+          withCheckbox
           // amountOfRows={amountData}
           // handleChangeRowsPerPageExternally={setRowsPerPage}
           // handleChangePageExternally={setPage}

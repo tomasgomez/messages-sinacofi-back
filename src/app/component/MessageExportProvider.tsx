@@ -4,6 +4,7 @@ import { pdf, usePDF } from "@react-pdf/renderer";
 import { PDFTemplate } from "./PDFTemplate";
 import { Message } from "./inbox-table/type";
 import { getMessageDetails } from "../services/common";
+import { formatToPrint } from "@/utils/mortgage-discharge-format";
 
 type initialinitialMessageExportType = {
   selectedMessages: [];
@@ -18,6 +19,8 @@ type initialinitialMessageExportType = {
   setIsLoading: Function;
   details: Message[] | [];
   setDetails: Function;
+  withFormat: boolean;
+  setWithFormat: Function;
 };
 
 const initialMessageExportState: initialinitialMessageExportType = {
@@ -33,6 +36,8 @@ const initialMessageExportState: initialinitialMessageExportType = {
   setIsLoading: () => {},
   details: [],
   setDetails: () => {},
+  withFormat: false,
+  setWithFormat: () => {},
 };
 
 export const MessageExportContext = createContext(initialMessageExportState);
@@ -45,8 +50,9 @@ export const MessageExportProvider = ({ children }: { children: any }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [details, setDetails] = useState<Message[] | []>([]);
   const [downloadPDF, setDownloadPDF] = useState<boolean>(false);
+  const [withFormat, setWithFormat] = useState<boolean>(false);
 
-  const downloadPDFFiles = async (data: Message | Message[]) => {
+  const downloadPDFFiles = async (data: Message | Message[] | any[]) => {
     const instance = pdf(<PDFTemplate data={data} />);
     try {
       const blob = await instance.toBlob();
@@ -66,20 +72,28 @@ export const MessageExportProvider = ({ children }: { children: any }) => {
   const fetchData = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
-
-      const responseData = await Promise.all(
+      const responseData: Message[][] = await Promise.all(
         selectedMessages.map((id) => getMessageDetails(id))
       );
-      const data = responseData.map((data) => data[0]);
-      setDetails(data);
-      setIsLoading(false);
+
+      const dataDetailsCompleted: Message[] = responseData.map(
+        (data) => data[0]
+      );
+
+      const dataDetailsToSet = withFormat
+        ? dataDetailsCompleted.map((data) => formatToPrint(data))
+        : dataDetailsCompleted;
+
       if (downloadPDF) {
-        downloadPDFFiles(data);
+        downloadPDFFiles(dataDetailsToSet);
       }
+
+      setDetails(dataDetailsToSet);
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
     }
-  }, [downloadPDF, selectedMessages]);
+  }, [downloadPDF, selectedMessages, withFormat]);
 
   useEffect(() => {
     if (printPDF) {
@@ -107,6 +121,8 @@ export const MessageExportProvider = ({ children }: { children: any }) => {
       setIsLoading,
       details,
       setDetails,
+      withFormat,
+      setWithFormat,
     }),
     [
       selectedRadioButtonMessages,
@@ -121,6 +137,8 @@ export const MessageExportProvider = ({ children }: { children: any }) => {
       setIsLoading,
       details,
       setDetails,
+      withFormat,
+      setWithFormat,
     ]
   );
 

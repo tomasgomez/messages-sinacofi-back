@@ -329,3 +329,62 @@ export const formatModalDetailSmall = (
   // Modify the array to the necessary format data
   return { dataHeader, smallMsDetail, documents };
 };
+
+export const formatToPrint = (message: Message): Message => {
+  const { messageCode = "", parameters = [], ...other } = message || {};
+
+  const headerParameters = [
+    "priority",
+    "auth",
+    "messageCode",
+    "messageDescription",
+    "beneficiaryBank",
+    "dateOfApplication",
+  ];
+
+  if (messageCode === "670") {
+    const extraParmeter = [
+      "bank",
+      "amountHeldByTheBank",
+      "senderAHName",
+      "senderAHDni",
+    ];
+
+    const filteredParameters = parameters.filter(
+      (parameter) =>
+        paramsTo670.includes(parameter?.name) ||
+        extraParmeter.includes(parameter?.name) ||
+        headerParameters.includes(parameter?.name)
+    );
+
+    return {
+      messageCode: messageCode,
+      parameters: filteredParameters || [],
+      ...other,
+    };
+  }
+
+  const smallMsDetail: any[] = getDetailsObjetToMSCode(messageCode);
+
+  // while by row
+  const filteredParameters = smallMsDetail.filter((rowElement: any) => {
+    const data = rowElement.data;
+    // while by  columna
+    data.forEach((columnsElements: any) => {
+      // while by  element
+      columnsElements.forEach((column: any) => {
+        const parameter = parameters?.find(
+          (param) =>
+            param.name === column.name || headerParameters.includes(param?.name)
+        );
+        return parameter;
+      });
+    });
+  });
+
+  return {
+    messageCode: messageCode,
+    parameters: filteredParameters || [],
+    ...other,
+  };
+};

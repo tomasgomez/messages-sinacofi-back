@@ -20,17 +20,19 @@ export default function InboxHeader(props: {
   handleRefresh?: () => void;
 }) {
   const { amountMessages = 0, title = "", handleRefresh = () => null } = props;
-  const { setPrintPDF, selectedMessages, setDownloadPDF } =
+  const { setPrintPDF, selectedMessages, setDownloadPDF, setWithFormat } =
     React.useContext(MessageExportContext);
 
   const handlePrint = () => {
     if (selectedMessages.length) {
+      setWithFormat(true);
       setPrintPDF(true);
     }
   };
 
   const handleDonwload = () => {
     if (selectedMessages.length) {
+      setWithFormat(true);
       setDownloadPDF(true);
     }
   };

@@ -11,17 +11,6 @@ import {
 } from "@react-pdf/renderer";
 import { Message } from "../inbox-table/type";
 
-// import DotMatrix from '../../../fonts/DOTMBold.ttf'; // TODO: DotMatrix font to be use
-
-// react-pdf register syntax to be use when font issue is fixed.
-
-// Font.register({
-//   family: 'DotMatrix',
-//   src: DotMatrix,
-//   format: "truetype",
-// });
-
-// Create styles
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
@@ -66,9 +55,9 @@ export const PDFTemplate = ({ data }: { data?: Message | Message[] }) => {
           ------------------------------------------------------------------------------------
         </Text>
         {parameters.map((field) => (
-          <React.Fragment key={field.id}>
+          <React.Fragment key={field?.id}>
             <Text>
-              {field?.label} : {field.value}
+              {field?.label} : {field?.displayValue || field?.value}
             </Text>
           </React.Fragment>
         ))}

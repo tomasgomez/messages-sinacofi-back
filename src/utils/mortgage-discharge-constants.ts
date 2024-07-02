@@ -13,7 +13,6 @@ export const paramsTo670 = [
   "buyerName",
   "buyerDni",
   "propertyInfo",
-  "morePropertyInfo",
   "location",
   "region",
   "commune",
@@ -24,6 +23,7 @@ export const paramsTo670 = [
   "borrowerName",
   "borrowerDni",
   "borrowerUfAmount",
+  "mlObservation",
 ];
 
 // Delete label after backend fix label
@@ -71,7 +71,12 @@ export const paramsTo673: SmallMsDetailInfoModal[] =
   [
     {
       // Array by column
-      data: [[{ name: "mlNormalizationObservation", label: "Observaciones" }]],
+      data: [
+        [
+          { name: "mlNormalizationObservation", label: "Observaciones" },
+          { name: "normalizationDate", label: "Fecha de Normalización" },
+        ],
+      ],
     },
   ];
 

@@ -127,6 +127,7 @@ export default function PreparedScreen() {
           tableTitle={tableTitle}
           rowOptions={rowOptions}
           highlightRowDisabled
+          withCheckbox
           // amountOfRows={amountData}
           // handleChangeRowsPerPageExternally={setRowsPerPage}
           // handleChangePageExternally={setPage}

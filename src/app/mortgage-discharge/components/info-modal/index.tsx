@@ -19,8 +19,8 @@ import { getMessageDetails } from "@/app/services/common";
 import { getForeClosureData } from "../../api-calls";
 import basicError from "@/components/Modal/ErrorModal/basicError";
 import { useModalManager } from "@/components/Modal";
-import { reverseArray } from "@/utils/functions";
 import { useCalcDimensions } from "@/utils/dimensions";
+import { formatToPrint } from "@/utils/mortgage-discharge-format";
 
 export const InfoModal = () => {
   const [details, setDetails] = useState<Message[]>([]);
@@ -141,7 +141,9 @@ export const InfoModal = () => {
               Previsualización de impresión
             </Typography>
             <PDFViewer width="100%" height="450px">
-              <PDFTemplate data={reverseArray(details)} />
+              <PDFTemplate
+                data={details.map((elem) => formatToPrint(elem))}
+              />
             </PDFViewer>
           </>
         ) : (

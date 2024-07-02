@@ -10,11 +10,12 @@ import { montserrat } from "@/utils/fonts";
 import Loader from "@/components/Loader";
 
 export const ModalPrint = () => {
-  const { printPDF, setPrintPDF, isLoading, details } =
+  const { printPDF, setPrintPDF, isLoading, details, setWithFormat } =
     useContext(MessageExportContext);
 
   const handleClose = () => {
     setPrintPDF(false);
+    setWithFormat(false);
   };
 
   return (
