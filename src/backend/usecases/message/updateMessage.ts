@@ -56,7 +56,8 @@ export async function updateMessage(repository: MessageRepository, message: Mess
         let { previousMessageCode, ...rest} = {
             ...message,
             ...validateMessageResponse,
-            id: message.id
+            id: message.id,
+            cukCode: message.cukCode,
         }
 
         message = rest

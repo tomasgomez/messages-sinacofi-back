@@ -126,7 +126,7 @@ ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
 # Expose port
 EXPOSE $PORT
 
-# Cron configuration
+# # Cron configuration
 # COPY cronRequest.sh /usr/src/app/cronRequest.sh
 # COPY cronjob /etc/cron.d/cronjob
 

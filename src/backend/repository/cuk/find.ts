@@ -120,7 +120,7 @@ export async function find(filter: Filter): Promise < Paginated<CUK> | Error > {
     }
 }
 
-const cukFindManyQuery = (filter: Filter): Prisma.CUKWhereInput => {
+export const cukFindManyQuery = (filter: Filter): Prisma.CUKWhereInput => {
     let cukWhere: Prisma.CUKWhereInput = {
         ...createDateRangeFilter(filter.startDate, filter.endDate),
     };

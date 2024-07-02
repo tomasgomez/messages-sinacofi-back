@@ -12,4 +12,5 @@ export interface CUKRepository {
   update(cuk: CUK): Promise < CUK | Error >
   findInformsAccepted(filter: Filter): Promise < Paginated<CUK> | Error >
   findInformsRejected(filter: Filter): Promise < Paginated<CUK> | Error >
+  getTotal(filter: Filter): Promise < string | Error >
 }

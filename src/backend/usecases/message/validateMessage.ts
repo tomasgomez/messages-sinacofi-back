@@ -35,6 +35,7 @@ export async function validateMessage(repository: MessageRepository, message: Me
             ...parameter,
             ...param,
             label: param.label,
+            cukCode: message.cukCode,
         }
     });
 
